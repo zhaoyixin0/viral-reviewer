@@ -1,0 +1,60 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+next-env.d.ts
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+Thumbs.db
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (never commit)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+
+# vercel
+.vercel
+
+# Claude Code state
+.claude/
+
+# typescript
+*.tsbuildinfo
+
+# scraped data dumps - keep enriched (deployed); raw is regeneratable
+/data/scraped/tiktok-*.json
+/data/scraped/instagram-*.json
+!/data/scraped/.gitkeep
+!/data/scraped/enriched-*.json
+
+# uploaded videos (demo only)
+/public/uploads
+
+.vercel
+.env*.local

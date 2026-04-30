@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+@theme {
+  /* Framer-inspired dark palette */
+  --color-bg-base: #08080c;
+  --color-bg-elevated: #101018;
+  --color-bg-card: rgba(255, 255, 255, 0.03);
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.16);
+  --color-text-primary: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.72);
+  --color-text-muted: rgba(255, 255, 255, 0.5);
+
+  /* Accent - purple to pink gradient */
+  --color-accent-start: #8b5cf6;
+  --color-accent-mid: #d946ef;
+  --color-accent-end: #fb7185;
+
+  --color-accent-cool-start: #3b82f6;
+  --color-accent-cool-end: #06b6d4;
+
+  --color-success: #22d3ee;
+  --color-warn: #f59e0b;
+  --color-danger: #f43f5e;
+
+  /* Spacing scale (Framer prefers larger spacing) */
+  --radius-card: 1.25rem;
+  --radius-pill: 999px;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans SC", "PingFang SC", "Hiragino Sans GB",
+    sans-serif;
+  --font-display: var(--font-sans);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border-subtle);
+  }
+
+  html,
+  body {
+    background: var(--color-bg-base);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-image:
+      radial-gradient(
+        circle at 20% -10%,
+        rgba(139, 92, 246, 0.18),
+        transparent 55%
+      ),
+      radial-gradient(
+        circle at 90% 10%,
+        rgba(217, 70, 239, 0.12),
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 50% 110%,
+        rgba(59, 130, 246, 0.16),
+        transparent 60%
+      );
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background: rgba(139, 92, 246, 0.4);
+    color: white;
+  }
+}
+
+@layer components {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(18px);
+    border-radius: var(--radius-card);
+  }
+
+  .glass-card-hover {
+    transition:
+      transform 0.4s ease,
+      box-shadow 0.4s ease,
+      border-color 0.4s ease;
+  }
+
+  .glass-card-hover:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow:
+      0 20px 60px -20px rgba(139, 92, 246, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  }
+
+  .text-gradient-primary {
+    background: linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #d946ef 40%,
+      #8b5cf6 65%,
+      #3b82f6 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-gradient-accent {
+    background: linear-gradient(135deg, #d946ef, #fb7185);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .btn-primary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%);
+    box-shadow:
+      0 10px 30px -10px rgba(217, 70, 239, 0.6),
+      0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 16px 40px -10px rgba(217, 70, 239, 0.75),
+      0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: var(--radius-pill);
+    font-weight: 500;
+    color: white;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: all 0.2s ease;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.24);
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.75rem;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+  }
+
+  .scroll-track {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+  }
+}

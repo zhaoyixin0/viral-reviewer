@@ -1,0 +1,20 @@
+# Same as .gitignore but allow scraped data into Vercel build
+node_modules
+.next
+.git
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.vercel
+*.tsbuildinfo
+.DS_Store
+Thumbs.db
+
+# Allow ALL data/scraped/*.json into deploy (lazy-load enriched at runtime)
+# (no negation needed — by default everything not listed above is included)
+
+# But never deploy uploaded videos or coverage
+/public/uploads
+/coverage
