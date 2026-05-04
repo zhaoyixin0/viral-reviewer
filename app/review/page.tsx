@@ -1,18 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "@/components/ui/Header";
 import { Footer } from "@/components/ui/Footer";
 import { InputPanel } from "@/components/review/InputPanel";
 import { OutputPanel } from "@/components/review/OutputPanel";
 import { ProgressTimeline } from "@/components/review/ProgressTimeline";
+import { AccountBinder } from "@/components/review/AccountBinder";
 import { Sparkles } from "lucide-react";
 import type {
   ReviewInput,
   ReviewResult,
   ViralVideo,
 } from "@/lib/review-engine/types";
+import type { AccountProfile } from "@/lib/account-profile/types";
+
+const ACCOUNT_PROFILE_STORAGE_KEY = "viral-reviewer.account-profile.v1";
 
 type RetrievedShape = {
   topic: string;
@@ -46,6 +50,33 @@ export default function ReviewPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [stages, setStages] = useState<StageEvent[]>([]);
+  const [accountProfile, setAccountProfile] =
+    useState<AccountProfile | null>(null);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(ACCOUNT_PROFILE_STORAGE_KEY);
+      if (raw) setAccountProfile(JSON.parse(raw));
+    } catch {
+      /* ignore corrupted storage */
+    }
+  }, []);
+
+  const handleProfileChange = (profile: AccountProfile | null) => {
+    setAccountProfile(profile);
+    try {
+      if (profile) {
+        localStorage.setItem(
+          ACCOUNT_PROFILE_STORAGE_KEY,
+          JSON.stringify(profile),
+        );
+      } else {
+        localStorage.removeItem(ACCOUNT_PROFILE_STORAGE_KEY);
+      }
+    } catch {
+      /* storage quota / blocked */
+    }
+  };
 
   const handleSubmit = async (input: ReviewInput) => {
     setLoading(true);
@@ -53,11 +84,15 @@ export default function ReviewPage() {
     setStages([]);
     setData(null);
 
+    const body = accountProfile
+      ? { ...input, creatorContext: accountProfile }
+      : input;
+
     try {
       const res = await fetch("/api/review", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(input),
+        body: JSON.stringify(body),
       });
       if (!res.ok || !res.body) {
         const err = await res.json().catch(() => ({}));
@@ -122,6 +157,13 @@ export default function ReviewPage() {
             描述你的想法或上传一段草稿，AI
             会基于真实爆款数据给你一份专业评审报告。
           </p>
+        </div>
+
+        <div className="mb-6">
+          <AccountBinder
+            profile={accountProfile}
+            onProfileChange={handleProfileChange}
+          />
         </div>
 
         <div className="grid lg:grid-cols-[420px_1fr] gap-8">

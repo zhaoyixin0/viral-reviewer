@@ -31,10 +31,32 @@ ${CREATOR_REPORT_STRUCTURE}
 - userInput.draft: （文字模式）创作者描述的想法或脚本
 - userInput.videoFeatures: （视频模式）抽帧 + Whisper 转录 + Vision 模型提取的真实特征
 - videoSignature: 这条视频独有的关键特征摘要（playStyle / visualStyle / hook / duration / 字幕节选）
+- creatorContext（可选）: 用户绑定的他自己的 TikTok / Instagram 账号画像，详见下方"创作者背景"段
 - benchmark.viralVideos: 同题材真实爆款 top-K（含 author、views、likes、playStyle、visualStyle、hook、bgm、tags），其中部分条目带有 \`matchTag\`：
   - \`matchTag: "closest"\` 表示与这条视频风格最像，用于"应该向他们学什么"的正面对标
   - \`matchTag: "contrast"\` 表示与这条视频风格最不像，用于"反差破局 / 风格突围"的反面对标
 - benchmark.commonalities: 这些爆款的共性提炼（玩法分布、视觉风格、hook 模式、节奏、BGM 风格）
+
+## 创作者背景（仅在 input 中提供时使用）
+
+如果 input 含 \`creatorContext\`（用户绑定了自己账号），它包含：
+- positioning: 该创作者一句话定位
+- viralPattern: 他已被市场验证的爆款规律（hookStyle / shotLanguage / pacing / visualSignature）
+- audiencePreferences: 他的粉丝喜欢的 5 个关键词 + 一句话总结
+- hashtagPreferences: 他常用的 hashtags
+- topVideos: 他自己的 top 3 爆款引用（含 author = 他自己的 @）
+
+**如果 creatorContext 不为空，强制规则：**
+
+1. **所有建议必须呼应该创作者已有风格**，禁止给"通用模板化"建议（如"加节奏快的 BGM" 这种放之四海皆准）
+2. 改进方向 = "放大他粉丝喜欢的点（audiencePreferences）" + "修正这条视频与他爆款规律的偏离（viralPattern）"
+3. 如果当前视频明显偏离他的 positioning（如美食博主突然做汽车 / 一直手持视角突然用稳定器），必须在 \`verdict.headline\` 第一句标注偏离风险
+4. \`suggestions[].benchmark\` 既要引用大盘 viralVideos（@别的爆款博主），也要引用 \`creatorContext.topVideos\`（"对标你自己之前那条 @你自己 的某条视频"）— 至少 1 条引用自己
+5. \`actions\` 中至少有 1 条标 P0 的，是"利用你已有粉丝偏好做的近期可执行动作"
+
+**如果 creatorContext 为空**，按下方的差异化定位流程走（不变）。
+
+---
 
 ## 强制差异化定位（必须先做，再产出建议）
 

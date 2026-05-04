@@ -11,6 +11,7 @@ import {
   selectModel,
 } from "@/lib/review-engine/llm";
 import type { ReviewInput } from "@/lib/review-engine/types";
+import type { AccountProfile } from "@/lib/account-profile/types";
 
 function deriveSignature(input: ReviewInput): VideoSignature | undefined {
   if (input.type === "text") {
@@ -37,6 +38,7 @@ const TextInputSchema = z.object({
   audience: z.string().max(200).optional().default(""),
   scene: z.string().max(200).optional().default(""),
   draft: z.string().max(4000).optional(),
+  creatorContext: z.unknown().optional(),
 });
 
 const VideoInputSchema = z.object({
@@ -54,9 +56,20 @@ const VideoInputSchema = z.object({
     detectedPlayStyle: z.string(),
     detectedVisualStyle: z.string(),
   }),
+  creatorContext: z.unknown().optional(),
 });
 
 const RequestSchema = z.union([TextInputSchema, VideoInputSchema]);
+
+function isAccountProfile(x: unknown): x is AccountProfile {
+  if (!x || typeof x !== "object") return false;
+  const p = x as Record<string, unknown>;
+  return (
+    typeof p.username === "string" &&
+    (p.platform === "tiktok" || p.platform === "instagram") &&
+    typeof p.positioning === "string"
+  );
+}
 
 type StreamEvent =
   | { type: "stage"; stage: string; message: string; data?: unknown }
@@ -87,7 +100,11 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const input = parsed.data as ReviewInput;
+  const { creatorContext: rawCreatorContext, ...inputFields } = parsed.data;
+  const input = inputFields as ReviewInput;
+  const creatorContext = isAccountProfile(rawCreatorContext)
+    ? rawCreatorContext
+    : undefined;
   const encode = makeEncoder();
 
   const stream = new ReadableStream({
@@ -144,6 +161,7 @@ export async function POST(req: NextRequest) {
               formula,
               matched,
               selection,
+              creatorContext,
             });
             mode = "llm";
             modelId = `${selection.provider}/${selection.modelId}`;

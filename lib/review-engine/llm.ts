@@ -8,6 +8,7 @@ import type {
   ViralFormula,
   ViralVideo,
 } from "./types";
+import type { AccountProfile } from "@/lib/account-profile/types";
 
 export type LLMProvider = "anthropic" | "openai";
 
@@ -163,17 +164,40 @@ function annotateMatch(
   }));
 }
 
+function buildCreatorContext(profile: AccountProfile | undefined) {
+  if (!profile) return null;
+  return {
+    username: profile.username,
+    platform: profile.platform,
+    positioning: profile.positioning,
+    viralPattern: profile.viralPattern,
+    audiencePreferences: profile.audiencePreferences,
+    hashtagPreferences: profile.hashtagPreferences,
+    topVideos: profile.topVideos.map((v) => ({
+      author: `@${profile.username}`,
+      url: v.url,
+      title: v.title,
+      plays: v.plays,
+      likes: v.likes,
+    })),
+    confidence: profile.confidence,
+    fetchedAt: profile.fetchedAt,
+  };
+}
+
 function buildUserPayload(args: {
   input: ReviewInput;
   videos: ViralVideo[];
   formula: ViralFormula;
   matched: boolean;
+  creatorContext?: AccountProfile;
 }) {
   const sig = buildVideoSignature(args.input);
   return JSON.stringify(
     {
       userInput: args.input,
       videoSignature: buildSignatureSummary(args.input, sig),
+      creatorContext: buildCreatorContext(args.creatorContext),
       benchmark: {
         topicMatched: args.matched,
         topicMatchNote: args.matched
@@ -204,6 +228,7 @@ export async function generateReviewWithLLM(args: {
   formula: ViralFormula;
   matched: boolean;
   selection: LLMSelection;
+  creatorContext?: AccountProfile;
 }): Promise<ReviewResult> {
   const userPayload = buildUserPayload(args);
 
