@@ -4,7 +4,7 @@ import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
-const MAX_BYTES = 30 * 1024 * 1024;
+const MAX_BYTES = 200 * 1024 * 1024;
 const ALLOWED = [
   "video/mp4",
   "video/quicktime",

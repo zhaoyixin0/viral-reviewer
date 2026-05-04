@@ -40,7 +40,7 @@ const STAGE_TEXT: Record<Stage, string> = {
   submitting: "评审中…",
 };
 
-const MAX_BYTES = 30 * 1024 * 1024;
+const MAX_BYTES = 200 * 1024 * 1024;
 
 export function InputPanel({ onSubmit, isLoading }: Props) {
   const [mode, setMode] = useState<Mode>("text");
@@ -70,7 +70,7 @@ export function InputPanel({ onSubmit, isLoading }: Props) {
     }
     if (f.size > MAX_BYTES) {
       setStageError(
-        `文件超过 30MB（${(f.size / 1024 / 1024).toFixed(1)}MB），请压缩后再传`,
+        `文件超过 ${(MAX_BYTES / 1024 / 1024).toFixed(0)}MB（${(f.size / 1024 / 1024).toFixed(1)}MB），请压缩后再传`,
       );
       return;
     }
@@ -252,7 +252,7 @@ export function InputPanel({ onSubmit, isLoading }: Props) {
                   : "点击或拖拽视频文件到这里"}
               </div>
               <div className="text-xs text-white/40 mt-1">
-                MP4 / MOV / WebM · 最大 30MB · AI 自动抽帧 + 视觉分析
+                MP4 / MOV / WebM · 最大 200MB · AI 自动抽帧 + 视觉分析
               </div>
             </div>
           </label>
