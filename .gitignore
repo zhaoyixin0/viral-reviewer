@@ -59,5 +59,9 @@ yarn-error.log*
 # uploaded videos (demo only)
 /public/uploads
 
+# local test fixtures (PDF / brief samples)
+/scripts/*.pdf
+/scripts/sample-*
+
 .vercel
 .env*.local

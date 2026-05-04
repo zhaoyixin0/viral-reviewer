@@ -119,28 +119,70 @@
 
 ---
 
-## v2 待建 Phase 1 — Generator 专业版（~5.5h）
+## v2 待建 Phase 1 — Generator 专业版（~7.5h，含 PDF 输入管线）
 
-| 子任务 | 工作量 |
-|---|---|
-| `lib/template-review/capabilities-dict.ts` (~40 个 AI/特效/工具能力，含 disambiguation) | 1.5h |
-| 7 种发散方法 prompt templates（SCAMPER / 第一性 / 逆向 / 跨域 / 极限 / 隐喻 / 消除约束） | 1h |
-| Generator system prompt（集成 Rule 9-16） | 30min |
-| **对比模式**：选 2 法 → 并发调用 → 合并 + 气质差异总结 | 45min |
-| **接入实时大盘**：调用 retrieveSimilarVideos(scene) 注入 benchmark | 30min |
-| `/api/template-brainstorm` 流式 API | 30min |
-| BrainstormPanel（能力多选 / 玩法 A/B/C / 目标多选权重 / 场景 / 痛点 / 7 法 dropdown / 对比模式开关）| 1h |
-| BrainstormOutput（14 字段卡片 + market_reference 真实爆款引用 + 对比模式双栏 + 多样性警告）| 45min |
+按"独立可测"原则拆 5 个 Stage。每个 Stage 完成后都能单独验证。
 
-**Generator v0.3 输入 schema**（4 件套 + 增强）：
+### Stage 0 — PDF 抽取管线（2h，独立可测）
+
+PDF 上传作为 4 件套填表的替代输入。将来飞书文档接入复用同一管线。
+
+| 子任务 | 文件 | 时长 |
+|---|---|---|
+| 装 `pdf-parse` (纯 JS / serverless 友好 / 1MB) | `package.json` | 15min |
+| PDF 解析 + Haiku 抽取 4 件套 + briefSummary 1500 字 | `lib/template-review/brief-extract.ts` | 45min |
+| `POST /api/template-brief` multipart 上传 → 返回 ExtractedBrief | `app/api/template-brief/route.ts` | 45min |
+| curl 冒烟测试 | — | 15min |
+
+`ExtractedBrief` schema：
+- capabilities: string[] — 抽取出的能力
+- playbookTypes: ("A" \| "B" \| "C")[]
+- goals: { name; weight? }[]
+- scene / userProblem
+- briefSummary — 1500 字以内 PDF 原文片段（保留给 LLM 引用）
+- confidence: 0-1
+
+### Stage 1 — Generator 核心知识（3h）
+
+| 子任务 | 文件 | 时长 |
+|---|---|---|
+| ~40 个能力字典（AI / VFX / Tool 三类，含 disambiguation） | `lib/template-review/capabilities-dict.ts` | 1h |
+| 7 种发散法 prompt 片段 | `lib/template-review/divergence-methods.ts` | 1h |
+| 主 system prompt（Rule 9-16 + 14 字段 schema + briefSummary/benchmark 引用规则） | `lib/template-review/brainstorm-prompt.ts` | 45min |
+| 复用 `retrieveSimilarVideos`（不需新建） | — | 15min |
+
+### Stage 2 — Generator API + 对比模式（2h）
+
+| 子任务 | 文件 | 时长 |
+|---|---|---|
+| 流式 NDJSON：retrieval → benchmark 注入 → LLM | `app/api/template-brainstorm/route.ts` | 1h |
+| 对比模式：并发 2 次 LLM + compareSummary 强制推荐一方向 | 同上 | 45min |
+| 多样性警告（关键词 jaccard，>70% 同主题报警） | 同上 | 15min |
+
+### Stage 3 — UI（2.5h）
+
+| 子任务 | 文件 | 时长 |
+|---|---|---|
+| 拖拽上传 + 解析预览 + 错误处理 | `components/template-review/BriefUploader.tsx` | 45min |
+| 表单（4 件套 + 7 法 dropdown + 对比开关 + 顶部 BriefUploader） | `components/template-review/BrainstormPanel.tsx` | 1h |
+| 14 字段卡片 + market_reference + 对比双栏 + 警告 banner | `components/template-review/BrainstormOutput.tsx` | 45min |
+
+### Stage 4 — 接入 4 tab + 部署（30min）
+
+升级 `app/template-review/page.tsx` 加第 3 tab "脑爆生成" → vercel deploy → 端到端测。
+
+### Generator v0.3 输入 schema（4 件套 + 增强）
+
 - capabilities[] — 多选能力字典
 - playbook_types[] — A 内容 / B 功能链路 / C 机制
 - goal[] — 多选目标 + 权重（传播 / 留存 / 付费 / 人设沉淀 / 功能拉新）
 - scene — 场景描述（DM / 直播 / feed / profile / 社交聊天等）
 - user_problem — 用户痛点（v0.3 新增）
 - divergence_method — 7 选 1，或 2 选 2（对比模式）
+- **briefSummary** — 来自 PDF/飞书文档的原文片段（系统注入，用户不直接编辑）
 
-**输出每条 idea 完整 14 字段**（v0.3）：
+### 输出每条 idea 完整 14 字段（v0.3）
+
 - highlight / core_play / output_form
 - context_signals / user_intent_gap / user_motivation / interaction_flow
 - ai_necessity / goal_fit
@@ -149,7 +191,8 @@
 - risk（分类：频次骚扰 / 隐私边界 / 转化摩擦 / 合规红线）
 - **market_reference** — 我们的增强：自动附 1-2 条真实 TikTok / IG 爆款引用 + 差异化判断
 
-**强制治理规则**（Rule 9-16）：
+### 强制治理规则（Rule 9-16）
+
 - DM 场景边界
 - 低频异步 DM 基线
 - IP 不可替代性自证
@@ -158,6 +201,26 @@
 - 玩法类型不混淆
 - 反「任务存在即参与」假设
 - 具体机制 vs 空话
+
+### 关键决策
+
+| # | 决策 | 理由 |
+|---|---|---|
+| D1 | PDF 库选 `pdf-parse` | 纯 JS / serverless 友好 / 1MB；pdfjs-dist 太重且需 worker |
+| D2 | 抽取用 Haiku 4.5 | 轻量结构化抽取，比 Opus 便宜 30x |
+| D3 | briefSummary 上限 1500 字 | 不挤压 main prompt 的 token 预算 |
+| D4 | PDF 走 multipart 直传 | 10MB / 30 页内，不需要 Vercel Blob |
+| D5 | 对比模式并发 2 次 LLM | 一次 prompt 写 2 方法会偏向其一 |
+| D6 | 多样性警告后处理（不让 LLM 自判） | LLM 自评容易撒谎，用 jaccard 客观 |
+
+### 风险
+
+| # | 风险 | 缓解 |
+|---|---|---|
+| R1 | 扫描版 PDF（图片）pdf-parse 解析为空 | 检测到空文本即报错"请上传文字版 PDF"，不做 OCR |
+| R2 | scene 不一定能映射到数据库 topic | 让 Haiku 从 scene 抽 topic 关键词后再 retrieval |
+| R3 | 对比模式 12 条 idea 重叠 | 合并 prompt 强制要求双方法各自独有的角度 |
+| R4 | briefSummary 简单 substring 会断段 | 取含数字 / 引号 / 标题词的整段优先，按段落边界切 |
 
 ---
 

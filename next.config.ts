@@ -18,7 +18,12 @@ const nextConfig: NextConfig = {
       "./node_modules/ffprobe-static/bin/linux/x64/ffprobe",
     ],
   },
-  serverExternalPackages: ["ffmpeg-static", "ffprobe-static", "fluent-ffmpeg"],
+  serverExternalPackages: [
+    "ffmpeg-static",
+    "ffprobe-static",
+    "fluent-ffmpeg",
+    "pdf-parse",
+  ],
   experimental: {
     serverActions: { bodySizeLimit: "20mb" },
   },

@@ -1,4 +1,5 @@
 import type { ViralVideo } from "@/lib/review-engine/types";
+import type { DivergenceMethodId } from "./divergence-methods";
 
 // ===== 场景 A：审核脑暴 =====
 
@@ -135,3 +136,82 @@ export type ExploreResult = {
   /** 应该规避的方向 */
   avoidDirections: { name: string; reason: string }[];
 };
+
+// ===== 场景 C：脑爆生成 (Generator v0.3) =====
+
+export type PlaybookType = "A" | "B" | "C";
+
+export type BrainstormGoal = {
+  name: string;
+  weight?: number;
+};
+
+export type BrainstormMethodSelection =
+  | { mode: "single"; methodId: DivergenceMethodId }
+  | {
+      mode: "compare";
+      methodA: DivergenceMethodId;
+      methodB: DivergenceMethodId;
+    };
+
+export type BrainstormInput = {
+  capabilities: string[];
+  playbookTypes: PlaybookType[];
+  goals: BrainstormGoal[];
+  scene: string;
+  userProblem: string;
+  briefSummary?: string;
+  method: BrainstormMethodSelection;
+};
+
+export type BrainstormIdea = {
+  highlight: string;
+  core_play: string;
+  output_form: string;
+  context_signals: string;
+  user_intent_gap: string;
+  user_motivation: string;
+  interaction_flow: string;
+  ai_necessity: string;
+  goal_fit: string;
+  playbook_mix: string;
+  capabilities_used: string[];
+  consumption_hook: string;
+  interaction_motivation: string;
+  risk: string;
+  market_reference: string;
+};
+
+export type BrainstormRuleCheck = {
+  passed: boolean;
+  violations: string[];
+};
+
+export type BrainstormSingleResult = {
+  mode: "single";
+  methodId: DivergenceMethodId;
+  ideas: BrainstormIdea[];
+  ruleCheck: BrainstormRuleCheck;
+  diversityWarning?: string;
+  referenceVideos: ViralVideo[];
+};
+
+export type BrainstormCompareResult = {
+  mode: "compare";
+  methodA: {
+    id: DivergenceMethodId;
+    ideas: BrainstormIdea[];
+    ruleCheck: BrainstormRuleCheck;
+  };
+  methodB: {
+    id: DivergenceMethodId;
+    ideas: BrainstormIdea[];
+    ruleCheck: BrainstormRuleCheck;
+  };
+  compareSummary: string;
+  recommendedMethod: DivergenceMethodId;
+  diversityWarning?: string;
+  referenceVideos: ViralVideo[];
+};
+
+export type BrainstormResult = BrainstormSingleResult | BrainstormCompareResult;

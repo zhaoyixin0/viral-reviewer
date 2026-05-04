@@ -8,9 +8,13 @@ import { AuditPanel } from "@/components/template-review/AuditPanel";
 import { AuditOutput } from "@/components/template-review/AuditOutput";
 import { ExplorePanel } from "@/components/template-review/ExplorePanel";
 import { ExploreOutput } from "@/components/template-review/ExploreOutput";
+import { BrainstormPanel } from "@/components/template-review/BrainstormPanel";
+import { BrainstormOutput } from "@/components/template-review/BrainstormOutput";
 import { ProgressTimeline } from "@/components/review/ProgressTimeline";
-import { ClipboardList, Compass, Sparkles } from "lucide-react";
+import { ClipboardList, Compass, Sparkles, Wand2 } from "lucide-react";
 import type {
+  BrainstormInput,
+  BrainstormResult,
   ExploreFilter,
   ExploreResult,
   TemplateAuditInput,
@@ -19,7 +23,7 @@ import type {
 import type { ViralVideo } from "@/lib/review-engine/types";
 import type { StageEvent } from "@/app/review/page";
 
-type Tab = "audit" | "explore";
+type Tab = "audit" | "explore" | "brainstorm";
 
 type AuditResponse = {
   modelId?: string;
@@ -35,10 +39,18 @@ type ExploreResponse = {
   result: ExploreResult;
 };
 
+type BrainstormResponse = {
+  modelId?: string;
+  retrieved: { topic: string; source: string; matched: boolean };
+  result: BrainstormResult;
+};
+
 export default function TemplateReviewPage() {
   const [tab, setTab] = useState<Tab>("audit");
   const [auditData, setAuditData] = useState<AuditResponse | null>(null);
   const [exploreData, setExploreData] = useState<ExploreResponse | null>(null);
+  const [brainstormData, setBrainstormData] =
+    useState<BrainstormResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [stages, setStages] = useState<StageEvent[]>([]);
@@ -117,6 +129,7 @@ export default function TemplateReviewPage() {
     setStages([]);
     setAuditData(null);
     setExploreData(null);
+    setBrainstormData(null);
     try {
       const res = await fetch("/api/template-explore", {
         method: "POST",
@@ -135,6 +148,31 @@ export default function TemplateReviewPage() {
     }
   };
 
+  const handleBrainstormSubmit = async (input: BrainstormInput) => {
+    setLoading(true);
+    setError(null);
+    setStages([]);
+    setAuditData(null);
+    setExploreData(null);
+    setBrainstormData(null);
+    try {
+      const res = await fetch("/api/template-brainstorm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || `请求失败 (${res.status})`);
+      }
+      await consumeStream<BrainstormResponse>(res, setBrainstormData);
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const switchTab = (t: Tab) => {
     if (loading) return;
     setTab(t);
@@ -142,9 +180,10 @@ export default function TemplateReviewPage() {
     setError(null);
     setAuditData(null);
     setExploreData(null);
+    setBrainstormData(null);
   };
 
-  const hasOutput = auditData || exploreData;
+  const hasOutput = auditData || exploreData || brainstormData;
 
   return (
     <>
@@ -168,6 +207,12 @@ export default function TemplateReviewPage() {
           <div className="glass-card p-1.5 inline-flex">
             {(
               [
+                {
+                  key: "brainstorm" as const,
+                  label: "脑爆生成",
+                  icon: Wand2,
+                  desc: "Generator v0.3",
+                },
                 {
                   key: "audit" as const,
                   label: "审核脑暴",
@@ -204,14 +249,21 @@ export default function TemplateReviewPage() {
         <div className="grid lg:grid-cols-[420px_1fr] gap-8">
           <div className="lg:sticky lg:top-24 lg:self-start">
             <div className="glass-card p-7">
-              {tab === "audit" ? (
+              {tab === "audit" && (
                 <AuditPanel
                   onSubmit={handleAuditSubmit}
                   isLoading={loading}
                 />
-              ) : (
+              )}
+              {tab === "explore" && (
                 <ExplorePanel
                   onSubmit={handleExploreSubmit}
+                  isLoading={loading}
+                />
+              )}
+              {tab === "brainstorm" && (
+                <BrainstormPanel
+                  onSubmit={handleBrainstormSubmit}
                   isLoading={loading}
                 />
               )}
@@ -253,21 +305,28 @@ export default function TemplateReviewPage() {
                   className="glass-card p-12 text-center"
                 >
                   <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-[#8b5cf6] to-[#d946ef] mb-5">
-                    {tab === "audit" ? (
+                    {tab === "audit" && (
                       <ClipboardList className="w-6 h-6 text-white" />
-                    ) : (
+                    )}
+                    {tab === "explore" && (
                       <Compass className="w-6 h-6 text-white" />
+                    )}
+                    {tab === "brainstorm" && (
+                      <Wand2 className="w-6 h-6 text-white" />
                     )}
                   </div>
                   <h3 className="text-xl font-semibold mb-2">
-                    {tab === "audit"
-                      ? "粘贴脑暴文档，开始评审"
-                      : "选择筛选条件（或不选），扫描大盘"}
+                    {tab === "audit" && "粘贴脑暴文档，开始评审"}
+                    {tab === "explore" && "选择筛选条件（或不选），扫描大盘"}
+                    {tab === "brainstorm" && "上传 brief 或填四件套，开始脑爆"}
                   </h3>
                   <p className="text-sm text-white/60 max-w-md mx-auto">
-                    {tab === "audit"
-                      ? "AI 会从文档抽取题材 / 玩法 / 视觉，检索同类爆款做对比，输出 7 维评分 + 改进建议。"
-                      : "Opus 4.7 会基于本周爆款大盘 + 平台动态，给你 5-8 条值得做的特效赛道。"}
+                    {tab === "audit" &&
+                      "AI 会从文档抽取题材 / 玩法 / 视觉，检索同类爆款做对比，输出 7 维评分 + 改进建议。"}
+                    {tab === "explore" &&
+                      "Opus 4.7 会基于本周爆款大盘 + 平台动态，给你 5-8 条值得做的特效赛道。"}
+                    {tab === "brainstorm" &&
+                      "PDF brief 自动抽 4 件套预填表单，调实时大盘做对标，按你选的发散方法产出 6-12 条结构化 idea。"}
                   </p>
                 </motion.div>
               )}
@@ -303,6 +362,21 @@ export default function TemplateReviewPage() {
                       playStyle: exploreData.filter.playStyle,
                       platform: exploreData.filter.platform,
                     }}
+                  />
+                </motion.div>
+              )}
+
+              {!loading && brainstormData && (
+                <motion.div
+                  key="brainstorm-result"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <BrainstormOutput
+                    result={brainstormData.result}
+                    modelId={brainstormData.modelId}
+                    retrieved={brainstormData.retrieved}
                   />
                 </motion.div>
               )}
