@@ -1,6 +1,9 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
-import { retrieveSimilarVideos } from "@/lib/review-engine/retrieval";
+import {
+  retrieveSimilarVideos,
+  type VideoSignature,
+} from "@/lib/review-engine/retrieval";
 import { extractCommonalities } from "@/lib/review-engine/commonalities";
 import { buildMockReview } from "@/lib/review-engine/mock";
 import {
@@ -8,6 +11,22 @@ import {
   selectModel,
 } from "@/lib/review-engine/llm";
 import type { ReviewInput } from "@/lib/review-engine/types";
+
+function deriveSignature(input: ReviewInput): VideoSignature | undefined {
+  if (input.type === "text") {
+    if (input.draft && input.draft.trim()) {
+      return { hook: input.draft.slice(0, 120) };
+    }
+    return undefined;
+  }
+  const f = input.videoFeatures;
+  return {
+    playStyle: f.detectedPlayStyle,
+    visualStyle: f.detectedVisualStyle,
+    hook: f.detectedHook,
+    duration: f.duration,
+  };
+}
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -90,6 +109,7 @@ export async function POST(req: NextRequest) {
             draft: input.type === "text" ? input.draft : undefined,
             videoFeatures:
               input.type === "video" ? input.videoFeatures : undefined,
+            videoSignature: deriveSignature(input),
             topK: 5,
           },
           (e) =>

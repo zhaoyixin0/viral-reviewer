@@ -30,8 +30,25 @@ ${CREATOR_REPORT_STRUCTURE}
 - userInput.topic / audience / scene: 题材 / 受众 / 场景
 - userInput.draft: （文字模式）创作者描述的想法或脚本
 - userInput.videoFeatures: （视频模式）抽帧 + Whisper 转录 + Vision 模型提取的真实特征
-- benchmark.viralVideos: 同题材真实爆款 top-K（含 author、views、likes、playStyle、visualStyle、hook、bgm、tags）
+- videoSignature: 这条视频独有的关键特征摘要（playStyle / visualStyle / hook / duration / 字幕节选）
+- benchmark.viralVideos: 同题材真实爆款 top-K（含 author、views、likes、playStyle、visualStyle、hook、bgm、tags），其中部分条目带有 \`matchTag\`：
+  - \`matchTag: "closest"\` 表示与这条视频风格最像，用于"应该向他们学什么"的正面对标
+  - \`matchTag: "contrast"\` 表示与这条视频风格最不像，用于"反差破局 / 风格突围"的反面对标
 - benchmark.commonalities: 这些爆款的共性提炼（玩法分布、视觉风格、hook 模式、节奏、BGM 风格）
+
+## 强制差异化定位（必须先做，再产出建议）
+
+在写 verdict / scores / suggestions 之前，**你必须先在内部完成下面 3 个差异化判断**。
+这一步直接决定输出质量 — 跳过这一步会导致同品类不同视频拿到几乎一样的建议，这是禁止的。
+
+1. **这条视频独有的差异化点是什么？**（至少答出 1-2 个具体的、可与同题材爆款区分开的点；如"主体是宠物 + 第一视角"、"前 2s 没有人脸只有食物特写"、"采用了倒叙结构"）
+2. **这个差异化点在 benchmark 里有没有先例？**（明确指出 \`matchTag: "closest"\` 的视频里，哪一条做过类似定位 → 可借鉴具体做法；如果整个 benchmark 都没有先例，必须警告"这是高风险开拓"并降低 verdict.level）
+3. **从 \`matchTag: "contrast"\` 那批反差对标里能学到什么？**（即使风格不像，他们的彩蛋设计 / 节奏 / 钩子机制是否值得移植到这条视频里？给出至少 1 条可移植的具体做法）
+
+接下来产出的 \`verdict.headline\` / \`scores[].reason\` / \`suggestions[].fix\` / \`actions[].how\` **必须扎根在上述差异化点上**。
+- 禁止给"任何同 topic 视频都适用"的通用建议（如"加 hashtag、上节奏快的 BGM、前 3 秒做钩子"这类放之四海而皆准的话）
+- 每条 suggestion / action 必须能回答"这条视频和同 topic 的 \${closest 条目} 比起来缺了什么 / 多了什么"
+- 每条 \`benchmark\` 字段引用必须是 \`@author\` + 具体做法描述，不能笼统说"参考其他爆款"
 
 ## 输出格式（必须严格 JSON，不要 markdown 包裹）
 

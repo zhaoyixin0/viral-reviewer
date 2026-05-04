@@ -26,6 +26,113 @@ function rankByEngagement(pool: ViralVideo[], topK: number): ViralVideo[] {
     .map((x) => x.v);
 }
 
+export type VideoSignature = {
+  playStyle?: string;
+  visualStyle?: string;
+  hook?: string;
+  duration?: number;
+};
+
+function tokens(s: string | undefined): Set<string> {
+  if (!s) return new Set();
+  return new Set(
+    s
+      .toLowerCase()
+      .replace(/[（）()【】\[\],.;:!?，。、；：！？\-_/]/g, " ")
+      .split(/\s+/)
+      .filter((t) => t.length >= 2),
+  );
+}
+
+function jaccard(a: Set<string>, b: Set<string>): number {
+  if (a.size === 0 && b.size === 0) return 0;
+  let inter = 0;
+  for (const t of a) if (b.has(t)) inter++;
+  const union = a.size + b.size - inter;
+  return union === 0 ? 0 : inter / union;
+}
+
+export function similarityScore(v: ViralVideo, sig: VideoSignature): number {
+  let s = 0;
+  s += 0.4 * jaccard(tokens(v.playStyle), tokens(sig.playStyle));
+  s += 0.3 * jaccard(tokens(v.visualStyle), tokens(sig.visualStyle));
+  s += 0.2 * jaccard(tokens(v.hook), tokens(sig.hook));
+  if (sig.duration && v.duration > 0) {
+    const diff = Math.abs(v.duration - sig.duration);
+    s += 0.1 * Math.max(0, 1 - diff / 30);
+  }
+  return s;
+}
+
+/**
+ * 同 topic 池子里聚类采样：按 playStyle 分桶，round-robin 取一条直到拼满。
+ * 文字模式（没有 videoSignature）下用，让两条同品类输入拿到风格多样化的 benchmark。
+ */
+function diversifyByCluster(pool: ViralVideo[], topK: number): ViralVideo[] {
+  if (pool.length <= topK) return rankByEngagement(pool, topK);
+  const buckets = new Map<string, ViralVideo[]>();
+  for (const v of pool) {
+    const key = (v.playStyle || "unknown").trim() || "unknown";
+    const arr = buckets.get(key);
+    if (arr) arr.push(v);
+    else buckets.set(key, [v]);
+  }
+  const sortedBuckets = [...buckets.values()].map((b) =>
+    [...b].sort((x, y) => y.views - x.views),
+  );
+  const result: ViralVideo[] = [];
+  let i = 0;
+  let progressed = true;
+  while (result.length < topK && progressed) {
+    progressed = false;
+    for (const b of sortedBuckets) {
+      if (result.length >= topK) break;
+      if (i < b.length) {
+        result.push(b[i]);
+        progressed = true;
+      }
+    }
+    i++;
+  }
+  return result;
+}
+
+/**
+ * 视频模式：一半挑"最像 user 视频"做正面对标，一半挑"最不像"做反差/破局对标，
+ * 让两条不同视频即使同 topic 也拿到真正不同的 benchmark 集合。
+ */
+function rankBySignature(
+  pool: ViralVideo[],
+  sig: VideoSignature,
+  topK: number,
+): ViralVideo[] {
+  if (pool.length <= topK) return rankByEngagement(pool, topK);
+  const scored = pool.map((v) => ({ v, sim: similarityScore(v, sig) }));
+  const closestN = Math.ceil(topK / 2);
+  const closest = [...scored]
+    .sort((a, b) => b.sim - a.sim || b.v.views - a.v.views)
+    .slice(0, closestN)
+    .map((x) => x.v);
+  const closestIds = new Set(closest.map((v) => v.id));
+  const rest = [...scored]
+    .filter((x) => !closestIds.has(x.v.id))
+    .sort((a, b) => a.sim - b.sim || b.v.views - a.v.views)
+    .slice(0, topK - closest.length)
+    .map((x) => x.v);
+  return [...closest, ...rest];
+}
+
+function pickFromTopicPool(
+  pool: ViralVideo[],
+  sig: VideoSignature | undefined,
+  topK: number,
+): ViralVideo[] {
+  if (sig && (sig.playStyle || sig.visualStyle || sig.hook || sig.duration)) {
+    return rankBySignature(pool, sig, topK);
+  }
+  return diversifyByCluster(pool, topK);
+}
+
 export type RetrievalSource = "local" | "cache" | "live" | "fallback";
 
 export type RetrievalResult = {
@@ -59,10 +166,11 @@ export async function retrieveSimilarVideos(
     draft?: string;
     videoFeatures?: ReviewInputVideo["videoFeatures"];
     topK?: number;
+    videoSignature?: VideoSignature;
   },
   onProgress?: (e: RetrievalProgressEvent) => void,
 ): Promise<RetrievalResult> {
-  const { topK = 5 } = opts;
+  const { topK = 5, videoSignature } = opts;
   const userTopic = opts.topic?.trim() ?? "";
   const emit = (e: RetrievalProgressEvent) => {
     try {
@@ -131,7 +239,7 @@ export async function retrieveSimilarVideos(
       });
       return {
         topic: canonicalTopic,
-        videos: rankByEngagement(local, topK),
+        videos: pickFromTopicPool(local, videoSignature, topK),
         matched: true,
         source: "local",
         inference,
@@ -153,7 +261,7 @@ export async function retrieveSimilarVideos(
     });
     return {
       topic: canonicalTopic,
-      videos: rankByEngagement(cached.videos, topK),
+      videos: pickFromTopicPool(cached.videos, videoSignature, topK),
       matched: true,
       source: "cache",
       hashtags: cached.hashtags,
@@ -183,7 +291,7 @@ export async function retrieveSimilarVideos(
       });
       return {
         topic: canonicalTopic,
-        videos: rankByEngagement(live.videos, topK),
+        videos: pickFromTopicPool(live.videos, videoSignature, topK),
         matched: true,
         source: "live",
         hashtags: live.hashtags,
