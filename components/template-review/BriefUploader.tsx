@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Upload, FileText, Loader2, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { upload } from "@vercel/blob/client";
 import type { ExtractedBrief } from "@/lib/template-review/brief-extract";
 
 type Props = {
@@ -12,12 +13,12 @@ type Props = {
 
 type Status =
   | { kind: "idle" }
-  | { kind: "uploading"; fileName: string }
+  | { kind: "uploading"; fileName: string; percentage: number }
   | { kind: "extracting"; fileName: string }
   | { kind: "ok"; fileName: string; brief: ExtractedBrief }
   | { kind: "error"; message: string };
 
-const MAX_BYTES = 4 * 1024 * 1024;
+const MAX_BYTES = 100 * 1024 * 1024;
 
 export function BriefUploader({ onExtracted, disabled }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -39,25 +40,45 @@ export function BriefUploader({ onExtracted, disabled }: Props) {
       return;
     }
 
-    setStatus({ kind: "uploading", fileName: file.name });
+    setStatus({ kind: "uploading", fileName: file.name, percentage: 0 });
+
+    let blobUrl: string;
+    try {
+      const blob = await upload(file.name, file, {
+        access: "public",
+        handleUploadUrl: "/api/template-brief-upload",
+        contentType: file.type,
+        onUploadProgress: ({ percentage }) => {
+          setStatus((s) =>
+            s.kind === "uploading"
+              ? { ...s, percentage: Math.round(percentage) }
+              : s,
+          );
+        },
+      });
+      blobUrl = blob.url;
+    } catch (e) {
+      setStatus({
+        kind: "error",
+        message: `上传失败：${(e as Error).message}`,
+      });
+      return;
+    }
+
+    setStatus({ kind: "extracting", fileName: file.name });
 
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      setStatus({ kind: "extracting", fileName: file.name });
       const res = await fetch("/api/template-brief", {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ blobUrl, fileName: file.name }),
       });
-
       const data = await res.json();
       if (!res.ok || !data.ok) {
         const msg = mapErrorMessage(data.error, data.message);
         setStatus({ kind: "error", message: msg });
         return;
       }
-
       setStatus({ kind: "ok", fileName: file.name, brief: data.extracted });
       onExtracted(data.extracted, file.name);
     } catch (e) {
@@ -93,7 +114,7 @@ export function BriefUploader({ onExtracted, disabled }: Props) {
         <span className="text-sm font-medium text-white/80">
           上传 brief 文档（可选）
         </span>
-        <span className="text-xs text-white/40">PDF · ≤ 4MB · 30 页内</span>
+        <span className="text-xs text-white/40">PDF · ≤ 100MB · 30 页内</span>
       </div>
 
       <input
@@ -121,13 +142,23 @@ export function BriefUploader({ onExtracted, disabled }: Props) {
           `}
         >
           {isLoading ? (
-            <div className="flex items-center justify-center gap-2 text-white/70">
-              <Loader2 className="w-4 h-4 animate-spin" />
-              <span className="text-sm">
-                {status.kind === "uploading"
-                  ? `上传中：${status.fileName}`
-                  : `Haiku 正在解析「${status.fileName}」…`}
-              </span>
+            <div className="space-y-2">
+              <div className="flex items-center justify-center gap-2 text-white/70">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span className="text-sm">
+                  {status.kind === "uploading"
+                    ? `上传中：${status.fileName} (${status.percentage}%)`
+                    : `Haiku 正在解析「${status.fileName}」…`}
+                </span>
+              </div>
+              {status.kind === "uploading" && (
+                <div className="w-full max-w-xs mx-auto h-1.5 rounded-full bg-white/10 overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] transition-all"
+                    style={{ width: `${status.percentage}%` }}
+                  />
+                </div>
+              )}
             </div>
           ) : status.kind === "error" ? (
             <div className="space-y-2">
