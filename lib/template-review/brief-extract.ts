@@ -266,10 +266,7 @@ async function llmExtract(rawText: string): Promise<{
       model: process.env.ANTHROPIC_HAIKU_MODEL || "claude-haiku-4-5-20251001",
       max_tokens: 1024,
       system: EXTRACT_SYSTEM_PROMPT,
-      messages: [
-        { role: "user", content: truncated },
-        { role: "assistant", content: "{" },
-      ],
+      messages: [{ role: "user", content: truncated }],
     });
   } catch (e) {
     throw new BriefExtractException({
@@ -279,12 +276,11 @@ async function llmExtract(rawText: string): Promise<{
   }
   const block = response.content[0];
   const text = block?.type === "text" ? block.text : "";
-  const reconstructed = "{" + text;
-  const jsonObject = extractFirstJSONObject(reconstructed);
+  const jsonObject = extractFirstJSONObject(text);
   if (!jsonObject) {
     throw new BriefExtractException({
       kind: "llm_failed",
-      message: `No balanced JSON object found in LLM output (got ${reconstructed.length} chars)`,
+      message: `No balanced JSON object found in LLM output (got ${text.length} chars)`,
     });
   }
   let parsed;

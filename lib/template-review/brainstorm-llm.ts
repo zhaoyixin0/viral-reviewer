@@ -130,18 +130,16 @@ export async function generateBrainstormSingle(args: {
     model: process.env.ANTHROPIC_MODEL || "claude-opus-4-7",
     max_tokens: 16384,
     system: systemPrompt,
-    messages: [
-      { role: "user", content: userPayload },
-      { role: "assistant", content: "{" },
-    ],
+    messages: [{ role: "user", content: userPayload }],
   });
 
   const block = response.content[0];
   const text = block?.type === "text" ? block.text : "";
-  const reconstructed = "{" + text;
-  const json = extractFirstJSONObject(reconstructed);
+  const json = extractFirstJSONObject(text);
   if (!json) {
-    throw new Error("Generator LLM output: no balanced JSON object found");
+    throw new Error(
+      `Generator LLM output: no balanced JSON object found (got ${text.length} chars)`,
+    );
   }
   const parsed = JSON.parse(json) as Record<string, unknown>;
 
@@ -225,16 +223,12 @@ export async function generateCompareSummary(args: {
       process.env.ANTHROPIC_HAIKU_MODEL || "claude-haiku-4-5-20251001",
     max_tokens: 2048,
     system: COMPARE_SUMMARY_SYSTEM_PROMPT,
-    messages: [
-      { role: "user", content: payload },
-      { role: "assistant", content: "{" },
-    ],
+    messages: [{ role: "user", content: payload }],
   });
 
   const block = response.content[0];
   const text = block?.type === "text" ? block.text : "";
-  const reconstructed = "{" + text;
-  const json = extractFirstJSONObject(reconstructed);
+  const json = extractFirstJSONObject(text);
   if (!json) {
     return {
       summary: "对比总结生成失败 — 请重试或改用单方法模式。",
