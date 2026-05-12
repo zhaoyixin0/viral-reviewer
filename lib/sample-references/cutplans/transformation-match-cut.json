@@ -1,0 +1,165 @@
+{
+  "videoId": "compare-transitions",
+  "durationSec": 6.867,
+  "fps": 30,
+  "resolution": {
+    "width": 1024,
+    "height": 576
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "第一人称视角跟随一个背着背包的人走下一个昏暗、陈旧的室内楼梯。"
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 1.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "text": "墙角开了一朵小花",
+      "durationSec": 2.2,
+      "style": {
+        "position": "none",
+        "animation": "none"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "type": "match_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "fromShotSize": "medium",
+      "toShotSize": "medium",
+      "shotDescription": "场景瞬间切换到同一个人的背影，走在一个充满生机、阳光明媚的户外阶梯上，周围是绿植和老建筑，前景有一朵模糊的黄花。"
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "type": "handheld",
+      "durationSec": 4.7,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4,
+        "frame": 120
+      },
+      "text": "没人管它自己长大",
+      "durationSec": 2.5,
+      "style": {
+        "position": "none",
+        "animation": "none"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "小花 (Cover)",
+    "trending": true,
+    "bpm": 75,
+    "startsAt": {
+      "sec": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.8,
+          "frame": 24
+        },
+        "kind": "vocal_in"
+      },
+      {
+        "at": {
+          "sec": 1.8,
+          "frame": 54
+        },
+        "kind": "beat"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 2,
+      "avgShotDurationSec": 3.25,
+      "cutDensityPerSec": 0.15,
+      "rhythmProfile": "slow",
+      "keyTwistAt": {
+        "sec": 1.8
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "tracking"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 2,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "match_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "抒情歌曲，歌词与画面内容形成强烈对比和叙事关联",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "none",
+      "colorGrade": "从冷色调、低饱和度的阴暗场景，转为暖色调、高饱和度的电影感明亮场景"
+    },
+    "structure": {
+      "hookFormat": "visual_contrast",
+      "openingShot": "跟随人物走下昏暗楼梯，营造压抑感",
+      "endingShot": "跟随人物走向充满生机的户外场景，给人希望感",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 1.8
+      }
+    }
+  },
+  "density": {
+    "editing": 25,
+    "transition": 75,
+    "effect": 30,
+    "bgmSync": 65,
+    "overall": 58
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-12T05:05:11.175Z",
+    "sourceUrl": "https://www.tiktok.com/@wheretonext.w2n/video/7594916354117881119"
+  }
+}

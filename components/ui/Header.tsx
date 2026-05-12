@@ -6,6 +6,7 @@ import { Sparkles } from "lucide-react";
 const NAV_ITEMS = [
   { href: "/", label: "首页" },
   { href: "/review", label: "开始评审" },
+  { href: "/technique-match", label: "剪辑参考" },
   { href: "/library", label: "爆款库" },
   { href: "/template-review", label: "模板审核" },
 ];

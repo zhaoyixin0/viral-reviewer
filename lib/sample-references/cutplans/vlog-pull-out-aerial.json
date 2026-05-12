@@ -1,0 +1,220 @@
+{
+  "videoId": "tt-7594916354117881119",
+  "durationSec": 25.611,
+  "fps": 29.97,
+  "resolution": {
+    "width": 576,
+    "height": 1024
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "航拍俯瞰视角，两个人站在沙滩上，碧绿的海浪拍打着海岸。"
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "push_in",
+      "durationSec": 6.5,
+      "scaleFrom": 1,
+      "scaleTo": 1.2,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "one life.",
+      "durationSec": 25,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center",
+        "animation": "static"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.5,
+        "frame": 195
+      },
+      "fromShotSize": "extreme_wide",
+      "toShotSize": "extreme_wide",
+      "shotDescription": "航拍俯瞰视角，镜头切换到清澈的绿松石色海水中，可以看到水下的珊瑚礁。"
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 6.5,
+        "frame": 195
+      },
+      "type": "push_in",
+      "durationSec": 3,
+      "scaleFrom": 1,
+      "scaleTo": 1.15,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.5,
+        "frame": 285
+      },
+      "fromShotSize": "extreme_wide",
+      "toShotSize": "wide",
+      "shotDescription": "航拍俯瞰视角，一艘蓝色的螃蟹船停泊在清澈的海面上。"
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 9.5,
+        "frame": 285
+      },
+      "type": "pull_out",
+      "durationSec": 3,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.5,
+        "frame": 375
+      },
+      "fromShotSize": "wide",
+      "toShotSize": "wide",
+      "shotDescription": "航拍镜头继续拉远，画面中出现第二艘白色的船。"
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 12.5,
+        "frame": 375
+      },
+      "type": "pull_out",
+      "durationSec": 3.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16,
+        "frame": 480
+      },
+      "fromShotSize": "extreme_wide",
+      "toShotSize": "wide",
+      "shotDescription": "航拍镜头继续拉远，画面中只有一艘白色的船在深蓝色的海面上，附近有几只海龟。"
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 16,
+        "frame": 480
+      },
+      "type": "pull_out",
+      "durationSec": 5.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.5,
+        "frame": 644
+      },
+      "fromShotSize": "extreme_wide",
+      "toShotSize": "extreme_wide",
+      "shotDescription": "航拍镜头最终拉远到只剩下广阔无垠的深蓝色海面。"
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 21.5,
+        "frame": 644
+      },
+      "type": "static",
+      "durationSec": 3.5,
+      "easing": "linear"
+    }
+  ],
+  "bgm": {
+    "name": "Motivational Speech (One Life)",
+    "trending": true,
+    "bpm": 70,
+    "startsAt": {
+      "sec": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 6,
+      "avgShotDurationSec": 4.17,
+      "cutDensityPerSec": 0.24,
+      "rhythmProfile": "slow_and_steady",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "pull_out",
+        "push_in"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 3,
+        "extreme_wide": 3
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "trending_motivational_speech",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "centered_minimal_static",
+      "colorGrade": "vibrant_oceanic_blues"
+    },
+    "structure": {
+      "hookFormat": "inspirational_quote_visual",
+      "openingShot": "航拍海滩情侣远景，营造浪漫氛围",
+      "endingShot": "航拍广阔无垠的海洋，象征无限可能",
+      "cta": null,
+      "payoffAt": {
+        "sec": 24
+      }
+    }
+  },
+  "density": {
+    "editing": 25,
+    "transition": 10,
+    "effect": 5,
+    "bgmSync": 80,
+    "overall": 40
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-12T05:00:46.657Z",
+    "sourceUrl": "https://www.tiktok.com/@wheretonext.w2n/video/7594916354117881119"
+  }
+}
