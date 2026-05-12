@@ -173,13 +173,13 @@ export const CameraDimensionSchema = z.object({
   dominantMovements: z.array(z.string()).describe("主要镜头运动模式"),
   shotSizeDistribution: z
     .object({
-      extreme_close_up: z.number().int().min(0).default(0),
-      close_up: z.number().int().min(0).default(0),
-      medium: z.number().int().min(0).default(0),
-      wide: z.number().int().min(0).default(0),
-      extreme_wide: z.number().int().min(0).default(0),
+      extreme_close_up: z.number().min(0).default(0),
+      close_up: z.number().min(0).default(0),
+      medium: z.number().min(0).default(0),
+      wide: z.number().min(0).default(0),
+      extreme_wide: z.number().min(0).default(0),
     })
-    .describe("各景别镜头数"),
+    .describe("各景别分布（Gemini 可能返回镜头数 int 或比例 float，两种都接受）"),
   transitionPatterns: z.array(z.string()).describe("用到的转场类型集合"),
 });
 
@@ -271,8 +271,8 @@ export const CutPlanSchema = z.object({
   /** 时序操作列表（剪辑/转场/镜头运动/特效/字幕） */
   actions: z.array(TimedActionSchema).default([]),
 
-  /** 音乐轨道 */
-  bgm: BgmTrackSchema.optional(),
+  /** 音乐轨道（Gemini 在视频静音时会返回 null） */
+  bgm: BgmTrackSchema.nullable().optional(),
 
   /** 四大维度汇总 */
   dimensions: z.object({
