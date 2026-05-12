@@ -108,6 +108,36 @@ export const TechniqueMatchReportSchema = z.object({
 export type TechniqueMatchReport = z.infer<typeof TechniqueMatchReportSchema>;
 
 /**
+ * BGM 推荐（Phase 5.5）
+ *
+ * Opus 综合用户素材的 metaphorHooks / videoFormat / 节奏 / 情绪推断适合的音乐方向。
+ * 由于现有爆款 enriched 数据里 195/299 条 bgm 是 "Original audio" 泛标签（缺乏具体歌名），
+ * 推荐结果不一定能给出真歌名，但一定要给：
+ *   - vibe 描述（"upbeat motivational speech + lo-fi instrumental"）
+ *   - 在 TikTok / Spotify 搜索的关键词
+ *   - 为什么适合用户素材的理由
+ */
+export const RecommendedBgmSchema = z.object({
+  /** 推荐音乐名（具体歌名 / 艺人优先；没有就给 vibe 概念名） */
+  name: z.string(),
+  /** 艺人 / 创作者（可选） */
+  artist: z.string().nullable().optional(),
+  /** 类型：trending_sound（TikTok 声音池）/ specific_track（具体歌曲）/ vibe_category（vibe 风格描述） */
+  kind: z.string().describe("trending_sound | specific_track | vibe_category"),
+  /** 推荐理由（必须引用用户的 metaphorHooks / videoFormat / 形态等具体维度） */
+  reasoning: z.string(),
+  /** TikTok / Spotify / YouTube 搜索关键词数组（用户复制即用） */
+  searchKeywords: z.array(z.string()),
+  /** 来自哪条爆款（如果是从 reference videos 提取的） */
+  fromReferenceId: z.string().nullable().optional(),
+  /** TikTok / Spotify 搜索 URL（可选，方便点击直跳） */
+  searchUrl: z.string().nullable().optional(),
+  /** 优先级 P0 必选 / P1 备选 */
+  priority: z.enum(["P0", "P1"]),
+});
+export type RecommendedBgm = z.infer<typeof RecommendedBgmSchema>;
+
+/**
  * 多条爆款的批量匹配结果（最终交付给前端）
  */
 export const TechniqueMatchingResultSchema = z.object({
@@ -132,6 +162,9 @@ export const TechniqueMatchingResultSchema = z.object({
 
   /** 跨爆款的"绝对不要做" */
   globalDoNots: z.array(z.string()).default([]),
+
+  /** Phase 5.5：3-5 首推荐 BGM */
+  recommendedBgms: z.array(RecommendedBgmSchema).default([]),
 
   meta: z
     .object({

@@ -74,6 +74,23 @@ export const TECHNIQUE_MATCH_SYSTEM_PROMPT = `你是顶尖 TikTok / Instagram Re
      · 如果两条爆款都建议在 user 5.5s 做卡点 cut，合并成一条（标注 sourcedFromReferenceId 用第一个的 id）
   - globalDoNots：跨所有 skip/inverse 提取的"绝对不要做"清单（去重）
 
+  - recommendedBgms：3-5 首推荐 BGM（Phase 5.5 配乐推荐）
+     综合用户素材的 metaphorHooks / videoFormat / 节奏画像 / 情绪 + 爆款里识别到的 bgm 标签，推断"用户视频应该配什么样的音乐"。
+
+     ★ 注意：爆款 bgm 字段里大多是 "Original audio" 这种泛标签，不是真实歌名。
+     ★ 所以你的推荐不能依赖具体歌名，而要给：
+        1. name：优先具体歌名+艺人（如果有真信息），否则给 vibe 概念名（如 "Upbeat motivational speech with lo-fi backing"）
+        2. kind："trending_sound"（如能识别为 TikTok 声音池热门音乐）/ "specific_track"（具体歌曲）/ "vibe_category"（vibe 风格描述）
+        3. reasoning：明确引用用户的 metaphorHooks 或 videoFormat 或 rhythmRange 等具体维度
+        4. searchKeywords：3-5 个在 TikTok / Spotify / YouTube 搜索的关键词（用户能直接复制使用）
+        5. fromReferenceId：如果是从某条爆款 reference 推断的，标注来源
+        6. searchUrl：可选，给 TikTok 搜索 URL 如 "https://www.tiktok.com/discover/<keyword>" 或 Spotify 搜索 URL
+        7. priority："P0"（必选）/ "P1"（备选）
+
+     ★ 至少 3 首 P0，至多 2 首 P1
+     ★ 多样性：3-5 首应该覆盖不同 vibe（如 1 首 motivational / 1 首 cinematic instrumental / 1 首 trending pop），让用户有选择
+     ★ 适配性：每首必须能跟用户素材的"情绪曲线"对得上（参考 metaphorHooks）
+
 【输出】
   返回严格 JSON 不要 markdown 包裹，结构为 TechniqueMatchingResult：
   {
@@ -109,6 +126,18 @@ export const TECHNIQUE_MATCH_SYSTEM_PROMPT = `你是顶尖 TikTok / Instagram Re
         "priority": "P0|P1|P2"
       }
     ],
-    "globalDoNots": ["..."]
+    "globalDoNots": ["..."],
+    "recommendedBgms": [
+      {
+        "name": "Espresso - Sabrina Carpenter (或 vibe 描述)",
+        "artist": "Sabrina Carpenter" 或 null,
+        "kind": "trending_sound | specific_track | vibe_category",
+        "reasoning": "因为用户的 metaphorHooks 第二条强调 leader 主题，需要英雄式 motivational 配乐",
+        "searchKeywords": ["motivational speech", "one life", "dream"],
+        "fromReferenceId": "tt-..." 或 null,
+        "searchUrl": "https://www.tiktok.com/discover/motivational" 或 null,
+        "priority": "P0"
+      }
+    ]
   }
 `;

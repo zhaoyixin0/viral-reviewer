@@ -10,6 +10,15 @@ const ALLOWED = [
   "video/quicktime",
   "video/x-m4v",
   "video/webm",
+  // Phase 5.5: BGM 上传支持
+  "audio/mpeg",
+  "audio/mp3",
+  "audio/wav",
+  "audio/x-wav",
+  "audio/m4a",
+  "audio/x-m4a",
+  "audio/mp4",
+  "audio/aac",
 ];
 
 /**

@@ -10,6 +10,8 @@ import { UserDiagnosis } from "@/components/technique-match/UserDiagnosis";
 import { PriorityActions } from "@/components/technique-match/PriorityActions";
 import { ReferenceReports } from "@/components/technique-match/ReferenceReports";
 import { GlobalDoNots } from "@/components/technique-match/GlobalDoNots";
+import { CapCutExport } from "@/components/technique-match/CapCutExport";
+import { BgmRecommendations } from "@/components/technique-match/BgmRecommendations";
 import { ProgressTimeline } from "@/components/review/ProgressTimeline";
 import type { StageEvent } from "@/app/review/page";
 import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
@@ -28,6 +30,7 @@ export default function TechniqueMatchPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [stages, setStages] = useState<StageEvent[]>([]);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
   const handleSubmit = async (args: {
     videoUrl: string;
@@ -38,6 +41,7 @@ export default function TechniqueMatchPage() {
     setError(null);
     setStages([]);
     setData(null);
+    setVideoUrl(args.videoUrl);
 
     try {
       const res = await fetch("/api/technique-match", {
@@ -190,6 +194,14 @@ export default function TechniqueMatchPage() {
                   )}
                   <UserDiagnosis potential={data.userPotential} />
                   <PriorityActions match={data.match} />
+                  <BgmRecommendations bgms={data.match.recommendedBgms ?? []} />
+                  {videoUrl && (
+                    <CapCutExport
+                      videoUrl={videoUrl}
+                      userPotential={data.userPotential}
+                      match={data.match}
+                    />
+                  )}
                   <GlobalDoNots items={data.match.globalDoNots} />
                   <ReferenceReports match={data.match} />
                 </motion.div>
