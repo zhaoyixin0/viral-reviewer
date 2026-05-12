@@ -1,0 +1,297 @@
+import { z } from "zod";
+
+/**
+ * CutPlan IR · 视频「剪辑计划」的中间表示
+ *
+ * 核心设计目标：
+ *   1. 既能描述爆款视频的剪辑结构（让 LLM 拿来对照）
+ *   2. 又能直接编译到 CapCut draft_content.json / Premiere XML（一键出片）
+ *   3. 同一份 schema 同时表达"现状"和"建议"，方便 diff
+ *
+ * 时间单位说明：
+ *   - 内部以 TimeCode {sec, frame} 为准（双单位，避免精度丢失）
+ *   - CapCut compiler 阶段统一转 μs（CapCut draft 用微秒）
+ *   - 详见 lib/cut-plan/time-code.ts
+ */
+
+// ============ TimeCode ============
+
+export const TimeCodeSchema = z.object({
+  sec: z.number().min(0).describe("秒，浮点（如 1.5 = 1.5s）"),
+  frame: z
+    .number()
+    .int()
+    .min(0)
+    .optional()
+    .describe("精确到帧（可选；compiler 阶段会从 sec * fps 算出）"),
+});
+export type TimeCode = z.infer<typeof TimeCodeSchema>;
+
+// ============ TimedAction · 时序操作 ============
+
+/**
+ * 镜头切换点（最基础的剪辑动作）
+ * 标记"在此时间点切到下一个镜头"
+ */
+export const CutActionSchema = z.object({
+  kind: z.literal("cut"),
+  at: TimeCodeSchema,
+  /** 切换前后的镜头景别（可选；近景→远景 / 远景→近景 等信号） */
+  fromShotSize: z
+    .enum(["extreme_close_up", "close_up", "medium", "wide", "extreme_wide"])
+    .optional(),
+  toShotSize: z
+    .enum(["extreme_close_up", "close_up", "medium", "wide", "extreme_wide"])
+    .optional(),
+  /** 该镜头的内容描述（来自 Gemini 视频理解） */
+  shotDescription: z.string().optional(),
+});
+
+/**
+ * 转场效果（硬切之外的转场处理）
+ *
+ * type 用 string 而非 enum：LLM 可能给出 "fade" / "wipe" / "glitch_transition"
+ * 等未预期值。建议值（参考）：hard_cut / whip_pan / match_cut / speed_ramp /
+ * fade_in / fade_out / cross_dissolve / morph / zoom_blur / flash / other
+ */
+export const TransitionActionSchema = z.object({
+  kind: z.literal("transition"),
+  at: TimeCodeSchema,
+  type: z.string().describe("转场类型（LLM 自由输出，参考值见 schema 注释）"),
+  durationFrames: z
+    .number()
+    .int()
+    .min(0)
+    .nullable()
+    .optional()
+    .default(0)
+    .describe("转场持续帧数；硬切 = 0"),
+  note: z.string().nullable().optional().describe("转场细节（如 whip pan 方向）"),
+});
+
+/**
+ * 镜头运动（推/拉/摇/移）
+ *
+ * type 用 string：参考值 push_in / pull_out / pan_left/right / tilt_up/down /
+ * tracking / handheld / dolly_zoom / orbit / static / other
+ */
+export const CameraMoveActionSchema = z.object({
+  kind: z.literal("camera_move"),
+  at: TimeCodeSchema,
+  type: z.string().describe("镜头运动类型（LLM 自由输出）"),
+  durationSec: z.number().min(0).default(0).describe("运动持续秒数"),
+  scaleFrom: z.number().nullable().optional(),
+  scaleTo: z.number().nullable().optional(),
+  easing: z.string().nullable().optional().default("linear"),
+  note: z.string().nullable().optional(),
+});
+
+/**
+ * 速度变化（变速、定格）
+ */
+export const SpeedChangeActionSchema = z.object({
+  kind: z.literal("speed_change"),
+  at: TimeCodeSchema,
+  multiplier: z.number().describe("速率（2 = 2 倍速，0.5 = 半速，0 = 定格）"),
+  durationSec: z.number().min(0),
+  note: z.string().nullable().optional(),
+});
+
+/**
+ * 特效（滤镜、贴纸、AI 效果、文字动画外）
+ */
+export const EffectActionSchema = z.object({
+  kind: z.literal("effect"),
+  at: TimeCodeSchema,
+  type: z.string().describe("特效类型（如 glitch / chromatic_aberration / vhs / film_grain / overlay_emoji）"),
+  durationSec: z.number().min(0),
+  params: z.record(z.unknown()).nullable().optional(),
+});
+
+/**
+ * 字幕（独立轨道，但也可以作为 TimedAction 出现）
+ */
+export const SubtitleActionSchema = z.object({
+  kind: z.literal("subtitle"),
+  at: TimeCodeSchema,
+  text: z.string(),
+  durationSec: z.number().min(0),
+  style: z
+    .object({
+      font: z.string().nullable().optional(),
+      sizePct: z.number().nullable().optional().describe("字号占画面短边的百分比"),
+      color: z.string().nullable().optional(),
+      strokeColor: z.string().nullable().optional(),
+      strokeWidthPx: z.number().nullable().optional(),
+      position: z.string().nullable().optional(),
+      animation: z.string().nullable().optional(),
+    })
+    .nullable()
+    .optional(),
+});
+
+export const TimedActionSchema = z.discriminatedUnion("kind", [
+  CutActionSchema,
+  TransitionActionSchema,
+  CameraMoveActionSchema,
+  SpeedChangeActionSchema,
+  EffectActionSchema,
+  SubtitleActionSchema,
+]);
+export type TimedAction = z.infer<typeof TimedActionSchema>;
+
+// ============ 音轨 ============
+
+export const BgmMarkerSchema = z.object({
+  at: TimeCodeSchema,
+  kind: z.string().describe("标记类型：beat / drop / vocal_in / vocal_out / vocal_phrase / transition / other"),
+  note: z.string().nullable().optional(),
+});
+
+export const BgmTrackSchema = z.object({
+  name: z.string(),
+  trending: z.boolean().nullable().optional(),
+  bpm: z.number().nullable().optional(),
+  startsAt: TimeCodeSchema.nullable().optional(),
+  markers: z.array(BgmMarkerSchema).default([]),
+});
+export type BgmTrack = z.infer<typeof BgmTrackSchema>;
+
+// ============ 四大维度结构化数据 ============
+
+export const PacingDimensionSchema = z.object({
+  shotCount: z.number().int().min(0).describe("总镜头数"),
+  avgShotDurationSec: z.number().min(0),
+  cutDensityPerSec: z.number().min(0).describe("每秒平均切换数"),
+  rhythmProfile: z
+    .string()
+    .describe("节奏画像（参考：fast_cut / medium / slow_burn / mixed / slow_and_steady 等）"),
+  keyTwistAt: TimeCodeSchema.nullable().optional().describe("剧情/视觉反转关键时刻"),
+});
+
+export const CameraDimensionSchema = z.object({
+  dominantMovements: z.array(z.string()).describe("主要镜头运动模式"),
+  shotSizeDistribution: z
+    .object({
+      extreme_close_up: z.number().int().min(0).default(0),
+      close_up: z.number().int().min(0).default(0),
+      medium: z.number().int().min(0).default(0),
+      wide: z.number().int().min(0).default(0),
+      extreme_wide: z.number().int().min(0).default(0),
+    })
+    .describe("各景别镜头数"),
+  transitionPatterns: z.array(z.string()).describe("用到的转场类型集合"),
+});
+
+export const AudiovisualDimensionSchema = z.object({
+  bgmPattern: z.string().describe("BGM 整体模式"),
+  bgmSyncTightness: z.string().describe("卡点精度（loose / moderate / tight）"),
+  subtitleStyle: z
+    .string()
+    .describe(
+      "字幕风格（none / large_white_stroke / centered_minimal / kinetic / auto_caption / decorative / other）",
+    ),
+  colorGrade: z.string().nullable().optional().describe("调色风格"),
+});
+
+export const StructureDimensionSchema = z.object({
+  hookFormat: z
+    .string()
+    .describe(
+      "0-3s 钩子形态（参考：number_assertion / visual_contrast / suspense_subtitle / pov / sound_anchor / question / tutorial_promise / before_after / other）",
+    ),
+  openingShot: z.string().describe("0-2s 开场画面描述"),
+  endingShot: z.string().describe("结尾画面描述"),
+  cta: z.string().nullable().optional().describe("结尾 CTA 文案"),
+  payoffAt: TimeCodeSchema.nullable().optional().describe("彩蛋 / payoff 出现时刻"),
+});
+
+// ============ 技法密度（关键评分） ============
+
+export const DensitySchema = z.object({
+  editing: z
+    .number()
+    .min(0)
+    .max(100)
+    .describe("剪辑密度 = f(cutDensity, shotCount, rhythmProfile)"),
+  transition: z
+    .number()
+    .min(0)
+    .max(100)
+    .describe("转场丰富度 = f(转场类型多样性 + 频次)"),
+  effect: z
+    .number()
+    .min(0)
+    .max(100)
+    .describe("特效使用密度 = f(特效次数 + 占时长比例)"),
+  bgmSync: z
+    .number()
+    .min(0)
+    .max(100)
+    .describe("BGM 同步度 = f(卡点精度 + 用 trending sound 与否)"),
+  overall: z
+    .number()
+    .min(0)
+    .max(100)
+    .describe("综合技法密度（用于 technique 模式 retrieval 筛选）"),
+});
+export type Density = z.infer<typeof DensitySchema>;
+
+// ============ Video Format（B+C 方案核心） ============
+
+/**
+ * Video Format（B+C 方案核心维度）
+ * 用 string 而非 enum：LLM 可能给出 "vlog_cinematic" 或 "story_vlog" 等细分变体
+ * 推荐值：vlog / tutorial / transformation / skit / comedy / listicle / review /
+ *        pov / interview / edit / ugc_native / other
+ * retrieval 阶段做 prefix 匹配（startsWith("vlog") 都算 vlog）
+ */
+export const VideoFormatSchema = z.string();
+export type VideoFormat = z.infer<typeof VideoFormatSchema>;
+
+// ============ 完整 CutPlan ============
+
+export const CutPlanSchema = z.object({
+  /** 关联的视频 ID（用户上传的或爆款的） */
+  videoId: z.string(),
+  /** 视频时长（秒） */
+  durationSec: z.number().min(0),
+  /** 帧率（来自 ffprobe；fallback 30） */
+  fps: z.number().default(30),
+  /** 分辨率 */
+  resolution: z
+    .object({ width: z.number(), height: z.number() })
+    .optional(),
+
+  /** 视频形态分类（B+C 方案的 C 部分；用于跨题材筛 vlog） */
+  videoFormat: VideoFormatSchema,
+  /** 形态判定置信度 0-1 */
+  videoFormatConfidence: z.number().min(0).max(1).default(0.8),
+
+  /** 时序操作列表（剪辑/转场/镜头运动/特效/字幕） */
+  actions: z.array(TimedActionSchema).default([]),
+
+  /** 音乐轨道 */
+  bgm: BgmTrackSchema.optional(),
+
+  /** 四大维度汇总 */
+  dimensions: z.object({
+    pacing: PacingDimensionSchema,
+    camera: CameraDimensionSchema,
+    audiovisual: AudiovisualDimensionSchema,
+    structure: StructureDimensionSchema,
+  }),
+
+  /** 技法密度评分 */
+  density: DensitySchema,
+
+  /** Gemini 解析时的元信息（可观测） */
+  meta: z
+    .object({
+      model: z.string().optional(),
+      analyzedAt: z.string().optional(),
+      sourceUrl: z.string().optional(),
+    })
+    .optional(),
+});
+export type CutPlan = z.infer<typeof CutPlanSchema>;

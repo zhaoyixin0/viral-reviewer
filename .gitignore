@@ -53,6 +53,9 @@ yarn-error.log*
 !/data/scraped/.gitkeep
 !/data/scraped/enriched-*.json
 
+# probe verification outputs (debugging)
+/data/probes/
+
 # uploaded videos (demo only)
 /public/uploads
 
