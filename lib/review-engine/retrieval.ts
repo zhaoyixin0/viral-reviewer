@@ -1,5 +1,5 @@
 import "server-only";
-import type { ViralVideo } from "./types";
+import type { ReviewInputVideo, ViralVideo } from "./types";
 import { loadVideos } from "@/lib/data/load-videos";
 import {
   readTopicCache,
@@ -9,32 +9,10 @@ import {
   researchTopicLive,
   type ResearchProgress,
 } from "@/lib/research/topic-research";
-
-const TOPIC_KEYWORDS: Record<string, string[]> = {
-  早餐健身: ["健身", "早餐", "fitness", "breakfast", "蛋白", "protein", "增肌", "减脂"],
-  变装秀: ["变装", "transition", "outfit", "glowup", "穿搭", "化妆", "makeup"],
-  宠物日常: ["狗", "猫", "宠物", "dog", "cat", "pet", "puppy"],
-  "旅行 vlog": ["旅行", "travel", "vlog", "东京", "巴黎", "纽约", "出差", "city walk"],
-  料理教程: ["做饭", "料理", "cooking", "recipe", "菜谱", "tutorial", "厨房"],
-  办公室搞笑: ["办公室", "office", "上班", "打工", "实习", "wfh", "周一"],
-};
-
-function detectTopic(input: string): string | null {
-  const text = input.toLowerCase();
-  let best: string | null = null;
-  let bestScore = 0;
-  for (const [topic, keywords] of Object.entries(TOPIC_KEYWORDS)) {
-    const score = keywords.reduce(
-      (s, kw) => s + (text.includes(kw.toLowerCase()) ? 1 : 0),
-      0,
-    );
-    if (score > bestScore) {
-      bestScore = score;
-      best = topic;
-    }
-  }
-  return bestScore > 0 ? best : null;
-}
+import {
+  inferTopic,
+  type InferredTopic,
+} from "@/lib/research/topic-inference";
 
 function rankByEngagement(pool: ViralVideo[], topK: number): ViralVideo[] {
   return [...pool]
@@ -56,9 +34,11 @@ export type RetrievalResult = {
   matched: boolean;
   source: RetrievalSource;
   hashtags?: string[];
+  inference?: InferredTopic;
 };
 
 export type RetrievalStage =
+  | "topic_inference"
   | "local_lookup"
   | "cache_hit"
   | "live_research"
@@ -77,6 +57,7 @@ export async function retrieveSimilarVideos(
     audience?: string;
     scene?: string;
     draft?: string;
+    videoFeatures?: ReviewInputVideo["videoFeatures"];
     topK?: number;
   },
   onProgress?: (e: RetrievalProgressEvent) => void,
@@ -91,98 +72,126 @@ export async function retrieveSimilarVideos(
     }
   };
 
+  const allVideos = await loadVideos();
+  const libraryTopics = Array.from(new Set(allVideos.map((v) => v.topic)));
+
+  // 1) LLM 强制题材推断（归一化或新题材识别）
   emit({
-    stage: "local_lookup",
-    message: "在本地爆款库中检索同题材…",
+    stage: "topic_inference",
+    message: opts.videoFeatures
+      ? "AI 解析视频内容与用户描述，判断真实题材…"
+      : "AI 解析用户描述，判断视频题材…",
   });
 
-  const allVideos = await loadVideos();
+  let inference: InferredTopic;
+  try {
+    inference = await inferTopic({
+      userTopic: opts.topic,
+      audience: opts.audience,
+      scene: opts.scene,
+      draft: opts.draft,
+      videoFeatures: opts.videoFeatures,
+      libraryTopics,
+    });
+    emit({
+      stage: "topic_inference",
+      message: inference.isFromLibrary
+        ? `AI 识别题材为「${inference.canonicalTopic}」（命中本地爆款库）`
+        : `AI 识别题材为「${inference.canonicalTopic}」（库内未覆盖，将实时搜索 TikTok/Instagram）`,
+      data: {
+        canonicalTopic: inference.canonicalTopic,
+        isFromLibrary: inference.isFromLibrary,
+        reasoning: inference.reasoning,
+      },
+    });
+  } catch (e) {
+    console.error("[retrieval] topic inference failed:", e);
+    // 兜底：用用户填的 topic；若用户也没填，走 fallback
+    const fallback = userTopic || "通用";
+    inference = {
+      canonicalTopic: fallback,
+      isFromLibrary:
+        !!userTopic && allVideos.some((v) => v.topic === userTopic),
+    };
+    emit({
+      stage: "topic_inference",
+      message: `AI 推断失败，使用「${fallback}」继续检索`,
+    });
+  }
 
-  // 1) 本地精确匹配
-  if (userTopic && allVideos.some((v) => v.topic === userTopic)) {
+  const canonicalTopic = inference.canonicalTopic;
+
+  // 2) 本地精确匹配（仅当 LLM 归一化到库内时尝试）
+  if (inference.isFromLibrary) {
+    const local = allVideos.filter((v) => v.topic === canonicalTopic);
+    if (local.length > 0) {
+      emit({
+        stage: "local_lookup",
+        message: `命中本地爆款库 ${local.length} 条同题材样本`,
+      });
+      return {
+        topic: canonicalTopic,
+        videos: rankByEngagement(local, topK),
+        matched: true,
+        source: "local",
+        inference,
+      };
+    }
+  }
+
+  // 3) Blob 周缓存
+  emit({
+    stage: "cache_hit",
+    message: `本周缓存中查找「${canonicalTopic}」爆款样本…`,
+  });
+  const cached = await readTopicCache(canonicalTopic);
+  if (cached && cached.videos.length > 0) {
+    emit({
+      stage: "cache_hit",
+      message: `命中本周缓存：${cached.videos.length} 条`,
+      data: { week: cached.week, hashtags: cached.hashtags },
+    });
     return {
-      topic: userTopic,
-      videos: rankByEngagement(
-        allVideos.filter((v) => v.topic === userTopic),
-        topK,
-      ),
+      topic: canonicalTopic,
+      videos: rankByEngagement(cached.videos, topK),
       matched: true,
-      source: "local",
+      source: "cache",
+      hashtags: cached.hashtags,
+      inference,
     };
   }
 
-  // 2) 用户没填题材时用关键词推断
-  if (!userTopic) {
-    const combined = [opts.audience, opts.scene, opts.draft]
-      .filter(Boolean)
-      .join(" ");
-    const detected = detectTopic(combined);
-    if (detected && allVideos.some((v) => v.topic === detected)) {
-      return {
-        topic: detected,
-        videos: rankByEngagement(
-          allVideos.filter((v) => v.topic === detected),
-          topK,
-        ),
-        matched: true,
-        source: "local",
-      };
-    }
-  }
-
-  // 3) 本地没有 → 用户给了明确题材，查 Blob 周缓存
-  if (userTopic) {
-    emit({
-      stage: "cache_hit",
-      message: `本周缓存中查找「${userTopic}」爆款样本…`,
-    });
-    const cached = await readTopicCache(userTopic);
-    if (cached && cached.videos.length > 0) {
+  // 4) Cache miss → 实时搜索 TikTok + Instagram top 10（TT 5 + IG 5）
+  emit({
+    stage: "live_research",
+    message: `缓存未命中，实时搜索 TikTok / Instagram「${canonicalTopic}」爆款…`,
+  });
+  try {
+    const live = await researchTopicLive(canonicalTopic, (p: ResearchProgress) => {
       emit({
-        stage: "cache_hit",
-        message: `命中本周缓存：${cached.videos.length} 条`,
-        data: { week: cached.week, hashtags: cached.hashtags },
+        stage: "live_research",
+        message: p.message,
+        data: p.data as Record<string, unknown> | undefined,
+      });
+    });
+
+    if (live.videos.length > 0) {
+      await writeTopicCache({
+        topic: canonicalTopic,
+        hashtags: live.hashtags,
+        videos: live.videos,
       });
       return {
-        topic: userTopic,
-        videos: rankByEngagement(cached.videos, topK),
+        topic: canonicalTopic,
+        videos: rankByEngagement(live.videos, topK),
         matched: true,
-        source: "cache",
-        hashtags: cached.hashtags,
+        source: "live",
+        hashtags: live.hashtags,
+        inference,
       };
     }
-
-    // 4) Cache miss → 实时搜索
-    emit({
-      stage: "live_research",
-      message: `缓存未命中，实时搜索 TikTok / Instagram「${userTopic}」爆款…`,
-    });
-    try {
-      const live = await researchTopicLive(userTopic, (p: ResearchProgress) => {
-        emit({
-          stage: "live_research",
-          message: p.message,
-          data: p.data as Record<string, unknown> | undefined,
-        });
-      });
-
-      if (live.videos.length > 0) {
-        await writeTopicCache({
-          topic: userTopic,
-          hashtags: live.hashtags,
-          videos: live.videos,
-        });
-        return {
-          topic: userTopic,
-          videos: rankByEngagement(live.videos, topK),
-          matched: true,
-          source: "live",
-          hashtags: live.hashtags,
-        };
-      }
-    } catch (e) {
-      console.error("[retrieval] live research failed:", e);
-    }
+  } catch (e) {
+    console.error("[retrieval] live research failed:", e);
   }
 
   // 5) Fallback：跨题材通用爆款
@@ -191,9 +200,10 @@ export async function retrieveSimilarVideos(
     message: "未能找到同题材样本，使用跨题材通用爆款 + 平台规律给出建议",
   });
   return {
-    topic: userTopic || "通用",
+    topic: canonicalTopic,
     videos: rankByEngagement(allVideos, topK),
     matched: false,
     source: "fallback",
+    inference,
   };
 }

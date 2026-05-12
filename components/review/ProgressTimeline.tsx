@@ -7,6 +7,7 @@ import type { StageEvent } from "@/app/review/page";
 type Props = { stages: StageEvent[] };
 
 const STAGE_ICONS: Record<string, string> = {
+  topic_inference: "🎯",
   local_lookup: "📚",
   cache_hit: "🗂️",
   live_research: "🔍",
@@ -17,6 +18,17 @@ const STAGE_ICONS: Record<string, string> = {
   scraping_instagram: "📸",
   enriching: "🤖",
   done: "✅",
+  extract: "📝",
+  load_corpus: "📦",
+  aggregate: "📊",
+  llm_explore: "🧭",
+  // technique-match pipeline
+  download: "⬇️",
+  ffprobe: "🎬",
+  potential_stage1: "🔬",
+  potential_stage2: "🧬",
+  load_refs: "📐",
+  match_engine: "✂️",
 };
 
 export function ProgressTimeline({ stages }: Props) {

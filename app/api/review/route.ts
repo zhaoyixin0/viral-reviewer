@@ -75,23 +75,31 @@ export async function POST(req: NextRequest) {
     async start(controller) {
       const send = (e: StreamEvent) => controller.enqueue(encode(e));
       try {
-        const { topic, videos, matched, source, hashtags } =
-          await retrieveSimilarVideos(
-            {
-              topic: input.topic,
-              audience: input.audience,
-              scene: input.scene,
-              draft: input.type === "text" ? input.draft : undefined,
-              topK: 5,
-            },
-            (e) =>
-              send({
-                type: "stage",
-                stage: e.stage,
-                message: e.message,
-                data: e.data,
-              }),
-          );
+        const {
+          topic,
+          videos,
+          matched,
+          source,
+          hashtags,
+          inference,
+        } = await retrieveSimilarVideos(
+          {
+            topic: input.topic,
+            audience: input.audience,
+            scene: input.scene,
+            draft: input.type === "text" ? input.draft : undefined,
+            videoFeatures:
+              input.type === "video" ? input.videoFeatures : undefined,
+            topK: 5,
+          },
+          (e) =>
+            send({
+              type: "stage",
+              stage: e.stage,
+              message: e.message,
+              data: e.data,
+            }),
+        );
 
         const formula = extractCommonalities(videos, topic);
         const selection = selectModel();
@@ -132,7 +140,7 @@ export async function POST(req: NextRequest) {
           data: {
             mode,
             modelId,
-            retrieved: { topic, videos, matched, source, hashtags },
+            retrieved: { topic, videos, matched, source, hashtags, inference },
             result,
           },
         });

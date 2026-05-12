@@ -20,6 +20,11 @@ type RetrievedShape = {
   matched: boolean;
   source?: "local" | "cache" | "live" | "fallback";
   hashtags?: string[];
+  inference?: {
+    canonicalTopic: string;
+    isFromLibrary: boolean;
+    reasoning?: string;
+  };
 };
 
 type ResponseShape = {
