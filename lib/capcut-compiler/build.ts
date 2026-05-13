@@ -509,6 +509,56 @@ export function buildDraftContent(input: CompileInput): {
     },
   };
 
+  // CapCut 5.7+ 通过 draft_meta_info.draft_materials[0].value[].file_Path
+  // 来定位媒体文件。漏写就弹"链接媒体"对话框。id 必须跟 draft_content
+  // materials.videos[].id (和 audios[].id) 完全一致。
+  const nowSec = Math.floor(Date.now() / 1000);
+  const nowMicros = Date.now() * 1000;
+  const draftMaterialEntries = [
+    {
+      id: videoMaterial.id,
+      file_Path: `./materials/${input.videoFileName}`,
+      extra_info: input.videoFileName,
+      metetype: "video" as const,
+      width: input.meta.width,
+      height: input.meta.height,
+      duration: durationUs,
+      type: 0,
+      item_source: 1,
+      ai_group_type: "" as const,
+      create_time: nowSec,
+      enter_from: 0 as const,
+      import_time: nowSec,
+      import_time_ms: nowMicros,
+      md5: "" as const,
+      roughcut_time_range: { duration: durationUs, start: 0 },
+      sub_time_range: { duration: -1 as const, start: -1 as const },
+    },
+    ...(bgmMaterial && input.bgmFileName
+      ? [
+          {
+            id: bgmMaterial.id,
+            file_Path: `./materials/${input.bgmFileName}`,
+            extra_info: input.bgmFileName,
+            metetype: "audio" as const,
+            width: 0,
+            height: 0,
+            duration: bgmMaterial.duration,
+            type: 0,
+            item_source: 1,
+            ai_group_type: "" as const,
+            create_time: nowSec,
+            enter_from: 0 as const,
+            import_time: nowSec,
+            import_time_ms: nowMicros,
+            md5: "" as const,
+            roughcut_time_range: { duration: bgmMaterial.duration, start: 0 },
+            sub_time_range: { duration: -1 as const, start: -1 as const },
+          },
+        ]
+      : []),
+  ];
+
   const metaInfo: DraftMetaInfo = {
     draft_id: projectId,
     draft_name: input.projectName,
@@ -516,7 +566,7 @@ export function buildDraftContent(input: CompileInput): {
     draft_fold_path: "",
     draft_removable_storage_device: "",
     draft_timeline_materials_size_: 0,
-    draft_materials: [],
+    draft_materials: [{ type: 0, value: draftMaterialEntries }],
     draft_materials_copied_info: [],
     tm_draft_create: nowMs(),
     tm_draft_modified: nowMs(),

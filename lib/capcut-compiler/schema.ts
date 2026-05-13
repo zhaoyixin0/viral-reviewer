@@ -225,6 +225,36 @@ export type DraftContent = {
 
 // ===== Meta (draft_meta_info.json) =====
 
+/**
+ * CapCut 5.7+ 用 draft_meta_info.draft_materials[0].value[].file_Path 来定位
+ * 媒体文件。漏写这个数组 → CapCut 启动校验失败 → 弹"链接媒体"对话框。
+ * id 必须跟 draft_content.materials.videos[].id（或 audios[].id）一致。
+ */
+export type DraftMaterialEntry = {
+  id: string; // 跟 draft_content video/audio material id 一致
+  file_Path: string; // 相对项目目录的相对路径，如 ./materials/input.mp4
+  extra_info: string; // 文件名，如 input.mp4
+  metetype: "video" | "audio" | "image" | "none";
+  width: number;
+  height: number;
+  duration: number; // μs
+  type: number; // 固定 0
+  item_source: number; // 固定 1
+  ai_group_type: "";
+  create_time: number;
+  enter_from: 0;
+  import_time: number;
+  import_time_ms: number;
+  md5: "";
+  roughcut_time_range: { duration: number; start: number };
+  sub_time_range: { duration: -1; start: -1 };
+};
+
+export type DraftMaterialGroup = {
+  type: number; // 通常 0 = video/audio 主组
+  value: DraftMaterialEntry[];
+};
+
 export type DraftMetaInfo = {
   draft_id: string; // 同 DraftContent.id
   draft_name: string;
@@ -232,7 +262,7 @@ export type DraftMetaInfo = {
   draft_fold_path: string;
   draft_removable_storage_device: "";
   draft_timeline_materials_size_: number;
-  draft_materials: never[];
+  draft_materials: DraftMaterialGroup[];
   draft_materials_copied_info: never[];
   tm_draft_create: number;
   tm_draft_modified: number;
