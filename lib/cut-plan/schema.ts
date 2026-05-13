@@ -12,6 +12,46 @@ import { z } from "zod";
  *   - 内部以 TimeCode {sec, frame} 为准（双单位，避免精度丢失）
  *   - CapCut compiler 阶段统一转 μs（CapCut draft 用微秒）
  *   - 详见 lib/cut-plan/time-code.ts
+ *
+ * =============================================================
+ * SCHEMA DESIGN RULES（加/改字段之前先读）
+ * =============================================================
+ *
+ * 历史上踩过 4 轮 schema 灾难（详见 v1/v2/v3/v4 commit history 与
+ * docs/superpowers/plans/2026-05-13-cutplan-enrichment-plus-technique-index.md）：
+ *
+ * RULE 1 · 描述性字段不要用 `z.enum([...])`
+ *   Gemini 2.5 Pro 经常输出枚举外的细分值（如 `medium_close_up`、
+ *   `glitch_transition`、`n/a`）。所有 LLM 自由输出的描述性字段都用
+ *   `z.string()` + 在 `.describe()` 里写参考值。
+ *
+ * RULE 2 · LLM 自由文本字段必须接受 null
+ *   Gemini 在没识别到某个属性时常返 `null` 而不是省略字段。所以这类字段写：
+ *     z.string().nullable().optional()
+ *   `BgmTrack.name`、`BgmMarker.kind`、各 TimedAction 的 `.type`、
+ *   `rhythmProfile`、`hookFormat`、`openingShot`、`endingShot` 都是。
+ *
+ * RULE 3 · 不要随便 `.default(X)`
+ *   Zod 4 的 `.default(X)` 让 z.infer<> 的 OUTPUT 类型把字段标成 required
+ *   （即使 input 是 optional）。这会让 fixture / 直接构造对象的代码必须
+ *   填该字段。`easing` 字段就因为 `.default("linear")` 在 v4 fixture 里
+ *   要求每个 camera_move 都填 easing，删 default 才解决（见 commit ff340c2）。
+ *
+ *   只在以下场景用 `.default()`：
+ *     - 数组：`.default([])`（消费者总能 iterate）
+ *     - 必需数字：`.default(30)`（如 fps）
+ *     - 当前 schema 里 LLM-free-text 字段仍保留 `.default("")` 是因为还
+ *       没有代码直接构造 BgmTrack / 各 Dimension 对象（全走 safeParse）。
+ *       未来若加手写构造代码，把那些 `.default("")` 都删掉。
+ *
+ * RULE 4 · 防回归测试
+ *   `tests/cut-plan/schema.test.ts` 锁定了 Gemini null tolerance 契约。
+ *   任何字段的 nullable / optional / default 改动都跑一下那个文件。
+ *
+ * 长期解药：Gemini structured output `responseSchema` 由模型侧保证字段
+ * 形态，但还没接（见 HANDOVER-2026-05-12.md B 项）。在接通之前，loose
+ * 是唯一靠谱的姿势。
+ * =============================================================
  */
 
 // ============ TimeCode ============
