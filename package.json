@@ -13,7 +13,8 @@
     "probe": "tsx --env-file=.env.local scripts/probe-one-video.ts",
     "probe:potential": "tsx --env-file=.env.local scripts/probe-user-potential.ts",
     "probe:match": "tsx --env-file=.env.local scripts/probe-technique-match.ts",
-    "rescrape:with-urls": "tsx --env-file=.env.local scripts/rescrape-with-video-urls.ts"
+    "rescrape:with-urls": "tsx --env-file=.env.local scripts/rescrape-with-video-urls.ts",
+    "download:mp4s": "tsx --env-file=.env.local scripts/download-mp4s.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.12",
@@ -38,6 +39,7 @@
     "react-dom": "^19.0.0",
     "server-only": "^0.0.1",
     "tailwind-merge": "^2.6.0",
+    "youtube-dl-exec": "^3.1.6",
     "zod": "^3.24.1"
   },
   "devDependencies": {
