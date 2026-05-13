@@ -70,3 +70,6 @@ yarn-error.log*
 data/raw-mp4s/
 data/enrichment-errors.json
 data/rescrape-*.json
+
+# Multi-window worktree isolation (superpowers:using-git-worktrees)
+.worktrees/
