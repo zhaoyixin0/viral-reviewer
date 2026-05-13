@@ -134,9 +134,16 @@ export async function POST(req: NextRequest) {
           stage: "load_refs",
           message: "加载爆款 CutPlan 参考池…",
         });
+        const { potentialToDesiredTags } = await import("@/lib/technique-index/similarity");
+        const desiredTechniques = potentialToDesiredTags({
+          pushInOpportunities: userPotential.potential.pushInOpportunities as never,
+          matchCutCandidates: userPotential.potential.matchCutCandidates as never,
+          sceneTransitionCandidates: userPotential.potential.sceneTransitionCandidates as never,
+        });
         const refs = await loadReferenceCutPlans({
           userFormat: userPotential.detectedFormat,
           userTopic: topic || undefined,
+          desiredTechniques,
           limit: 5,
         });
         send({

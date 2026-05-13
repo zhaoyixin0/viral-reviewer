@@ -1,12 +1,8 @@
 import { readFile, readdir } from "fs/promises";
 import { join } from "path";
 import { CutPlanSchema, type CutPlan } from "@/lib/cut-plan/schema";
-
-/**
- * Phase 6 后：从 data/enriched-cutplans/ 加载真实富化爆款池。
- *
- * 兼容回退：若 enriched-cutplans 为空（未跑富化），退回 lib/sample-references/cutplans/ 的 2 条 demo。
- */
+import { loadTechniqueIndex } from "@/lib/technique-index/load-index";
+import { scoreCandidates } from "@/lib/technique-index/similarity";
 
 const ENRICHED_DIR = "data/enriched-cutplans";
 const FALLBACK_DIR = "lib/sample-references/cutplans";
@@ -18,16 +14,18 @@ const FALLBACK_FILES = [
 export type ReferenceFilter = {
   userFormat?: string;
   userTopic?: string;
+  /** P2 新增：用户期望的技法 tag（来自 potential → desiredTags 映射） */
+  desiredTechniques?: string[];
   limit?: number;
 };
 
 export type ReferenceLoadResult = {
   cutPlans: CutPlan[];
-  source: "sample" | "database";
+  source: "sample" | "database" | "technique-cluster";
   notice?: string;
 };
 
-let cache: { plans: CutPlan[]; source: "sample" | "database" } | null = null;
+let cache: { plans: CutPlan[]; map: Map<string, CutPlan>; source: "sample" | "database" } | null = null;
 let cacheTime = 0;
 const CACHE_TTL_MS = 60 * 1000;
 
@@ -65,15 +63,21 @@ async function loadFallback(): Promise<CutPlan[]> {
   return results;
 }
 
-async function getCache(): Promise<{ plans: CutPlan[]; source: "sample" | "database" }> {
+async function getCache(): Promise<{ plans: CutPlan[]; map: Map<string, CutPlan>; source: "sample" | "database" }> {
   if (cache && Date.now() - cacheTime < CACHE_TTL_MS) return cache;
   const enriched = await loadEnriched();
+  let plans: CutPlan[];
+  let source: "sample" | "database";
   if (enriched.length >= 10) {
-    cache = { plans: enriched, source: "database" };
+    plans = enriched;
+    source = "database";
   } else {
-    const fallback = await loadFallback();
-    cache = { plans: [...enriched, ...fallback], source: "sample" };
+    plans = [...enriched, ...(await loadFallback())];
+    source = "sample";
   }
+  const map = new Map<string, CutPlan>();
+  for (const p of plans) map.set(p.videoId, p);
+  cache = { plans, map, source };
   cacheTime = Date.now();
   return cache;
 }
@@ -86,9 +90,31 @@ function filterByFormat(plans: CutPlan[], format: string): CutPlan[] {
 export async function loadReferenceCutPlans(
   filter: ReferenceFilter = {},
 ): Promise<ReferenceLoadResult> {
-  const { plans, source } = await getCache();
+  const { plans, map, source } = await getCache();
   const limit = filter.limit ?? 5;
 
+  // Path A: technique-cluster 召回（P2 优先路径）
+  if (filter.desiredTechniques && filter.desiredTechniques.length > 0) {
+    const idx = await loadTechniqueIndex();
+    if (idx) {
+      const scored = scoreCandidates(idx, filter.desiredTechniques);
+      const matched: CutPlan[] = [];
+      for (const c of scored) {
+        const p = map.get(c.videoId);
+        if (p) matched.push(p);
+        if (matched.length >= limit) break;
+      }
+      if (matched.length >= Math.min(3, limit)) {
+        return {
+          cutPlans: matched,
+          source: "technique-cluster",
+          notice: `技法簇召回：按 ${filter.desiredTechniques.join(", ")} 命中 ${matched.length} 条爆款`,
+        };
+      }
+    }
+  }
+
+  // Path B: format 召回（P1 baseline）
   let pool = plans;
   if (filter.userFormat) {
     const matched = filterByFormat(plans, filter.userFormat);
