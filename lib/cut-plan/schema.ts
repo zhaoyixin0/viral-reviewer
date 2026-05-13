@@ -56,7 +56,12 @@ export const CutActionSchema = z.object({
 export const TransitionActionSchema = z.object({
   kind: z.literal("transition"),
   at: TimeCodeSchema,
-  type: z.string().describe("转场类型（LLM 自由输出，参考值见 schema 注释）"),
+  type: z
+    .string()
+    .nullable()
+    .optional()
+    .default("")
+    .describe("转场类型（LLM 自由输出，参考值见 schema 注释；未识别时返 null）"),
   durationFrames: z
     .number()
     .int()
@@ -77,11 +82,16 @@ export const TransitionActionSchema = z.object({
 export const CameraMoveActionSchema = z.object({
   kind: z.literal("camera_move"),
   at: TimeCodeSchema,
-  type: z.string().describe("镜头运动类型（LLM 自由输出）"),
+  type: z
+    .string()
+    .nullable()
+    .optional()
+    .default("")
+    .describe("镜头运动类型（LLM 自由输出；未识别时返 null）"),
   durationSec: z.number().min(0).default(0).describe("运动持续秒数"),
   scaleFrom: z.number().nullable().optional(),
   scaleTo: z.number().nullable().optional(),
-  easing: z.string().nullable().optional().default("linear"),
+  easing: z.string().nullable().optional(),
   note: z.string().nullable().optional(),
 });
 
@@ -102,7 +112,12 @@ export const SpeedChangeActionSchema = z.object({
 export const EffectActionSchema = z.object({
   kind: z.literal("effect"),
   at: TimeCodeSchema,
-  type: z.string().describe("特效类型（如 glitch / chromatic_aberration / vhs / film_grain / overlay_emoji）"),
+  type: z
+    .string()
+    .nullable()
+    .optional()
+    .default("")
+    .describe("特效类型（如 glitch / chromatic_aberration / vhs / film_grain / overlay_emoji；未识别时返 null）"),
   durationSec: z.number().min(0),
   params: z.record(z.unknown()).nullable().optional(),
 });
@@ -143,12 +158,22 @@ export type TimedAction = z.infer<typeof TimedActionSchema>;
 
 export const BgmMarkerSchema = z.object({
   at: TimeCodeSchema,
-  kind: z.string().describe("标记类型：beat / drop / vocal_in / vocal_out / vocal_phrase / transition / other"),
+  kind: z
+    .string()
+    .nullable()
+    .optional()
+    .default("")
+    .describe("标记类型：beat / drop / vocal_in / vocal_out / vocal_phrase / transition / other（未识别时返 null）"),
   note: z.string().nullable().optional(),
 });
 
 export const BgmTrackSchema = z.object({
-  name: z.string(),
+  name: z
+    .string()
+    .nullable()
+    .optional()
+    .default("")
+    .describe("BGM 名称（Gemini 在没识别到具体曲名时会返 null）"),
   trending: z.boolean().nullable().optional(),
   bpm: z.number().nullable().optional(),
   startsAt: TimeCodeSchema.nullable().optional(),
@@ -164,7 +189,10 @@ export const PacingDimensionSchema = z.object({
   cutDensityPerSec: z.number().min(0).describe("每秒平均切换数"),
   rhythmProfile: z
     .string()
-    .describe("节奏画像（参考：fast_cut / medium / slow_burn / mixed / slow_and_steady 等）"),
+    .nullable()
+    .optional()
+    .default("")
+    .describe("节奏画像（参考：fast_cut / medium / slow_burn / mixed / slow_and_steady；LLM 自由输出，未识别时返 null）"),
   keyTwistAt: TimeCodeSchema.nullable().optional().describe("剧情/视觉反转关键时刻"),
 });
 
@@ -204,11 +232,24 @@ export const AudiovisualDimensionSchema = z.object({
 export const StructureDimensionSchema = z.object({
   hookFormat: z
     .string()
+    .nullable()
+    .optional()
+    .default("")
     .describe(
-      "0-3s 钩子形态（参考：number_assertion / visual_contrast / suspense_subtitle / pov / sound_anchor / question / tutorial_promise / before_after / other）",
+      "0-3s 钩子形态（参考：number_assertion / visual_contrast / suspense_subtitle / pov / sound_anchor / question / tutorial_promise / before_after / other；LLM 自由输出，未识别时返 null）",
     ),
-  openingShot: z.string().describe("0-2s 开场画面描述"),
-  endingShot: z.string().describe("结尾画面描述"),
+  openingShot: z
+    .string()
+    .nullable()
+    .optional()
+    .default("")
+    .describe("0-2s 开场画面描述（LLM 未识别时返 null）"),
+  endingShot: z
+    .string()
+    .nullable()
+    .optional()
+    .default("")
+    .describe("结尾画面描述（LLM 未识别时返 null）"),
   cta: z.string().nullable().optional().describe("结尾 CTA 文案"),
   payoffAt: TimeCodeSchema.nullable().optional().describe("彩蛋 / payoff 出现时刻"),
 });

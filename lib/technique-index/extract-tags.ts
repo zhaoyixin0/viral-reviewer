@@ -1,7 +1,7 @@
 import type { CutPlan, TimedAction } from "@/lib/cut-plan/schema";
 import type { TechniqueTags } from "./types";
 
-export function normalizeTag(raw: string): string {
+export function normalizeTag(raw: string | null | undefined): string {
   if (!raw) return "";
   const t = raw
     .trim()
