@@ -1,14 +1,13 @@
 import type { CandidateScore, TechniqueIndex } from "./types";
 
+/**
+ * 用 ReadonlyArray<unknown> 而非具体形状：函数只看 `.length`，调用方传入的
+ * `MaterialPotential.potential.*` 字段形状演化不会破坏这里。
+ */
 export type DesiredFromPotential = {
-  pushInOpportunities: Array<{ at: { sec: number }; reason: string }>;
-  matchCutCandidates: Array<{
-    pairId: string;
-    from: { sec: number };
-    to: { sec: number };
-    reason: string;
-  }>;
-  sceneTransitionCandidates: Array<{ at: { sec: number }; reason: string }>;
+  pushInOpportunities: ReadonlyArray<unknown>;
+  matchCutCandidates: ReadonlyArray<unknown>;
+  sceneTransitionCandidates: ReadonlyArray<unknown>;
 };
 
 /**

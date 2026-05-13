@@ -136,9 +136,10 @@ export async function POST(req: NextRequest) {
         });
         const { potentialToDesiredTags } = await import("@/lib/technique-index/similarity");
         const desiredTechniques = potentialToDesiredTags({
-          pushInOpportunities: userPotential.potential.pushInOpportunities as never,
-          matchCutCandidates: userPotential.potential.matchCutCandidates as never,
-          sceneTransitionCandidates: userPotential.potential.sceneTransitionCandidates as never,
+          pushInOpportunities: userPotential.potential.pushInOpportunities ?? [],
+          matchCutCandidates: userPotential.potential.matchCutCandidates ?? [],
+          sceneTransitionCandidates:
+            userPotential.potential.sceneTransitionCandidates ?? [],
         });
         const refs = await loadReferenceCutPlans({
           userFormat: userPotential.detectedFormat,
