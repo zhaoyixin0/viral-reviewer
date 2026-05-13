@@ -12,7 +12,8 @@
     "enrich": "tsx --env-file=.env.local scripts/enrich-videos.ts",
     "probe": "tsx --env-file=.env.local scripts/probe-one-video.ts",
     "probe:potential": "tsx --env-file=.env.local scripts/probe-user-potential.ts",
-    "probe:match": "tsx --env-file=.env.local scripts/probe-technique-match.ts"
+    "probe:match": "tsx --env-file=.env.local scripts/probe-technique-match.ts",
+    "rescrape:with-urls": "tsx --env-file=.env.local scripts/rescrape-with-video-urls.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.12",
