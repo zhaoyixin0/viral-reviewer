@@ -36,13 +36,12 @@ export type TimeCode = z.infer<typeof TimeCodeSchema>;
 export const CutActionSchema = z.object({
   kind: z.literal("cut"),
   at: TimeCodeSchema,
-  /** 切换前后的镜头景别（可选；近景→远景 / 远景→近景 等信号） */
-  fromShotSize: z
-    .enum(["extreme_close_up", "close_up", "medium", "wide", "extreme_wide"])
-    .optional(),
-  toShotSize: z
-    .enum(["extreme_close_up", "close_up", "medium", "wide", "extreme_wide"])
-    .optional(),
+  /** 切换前后的镜头景别（可选；近景→远景 / 远景→近景 等信号）
+   * 用 string 而非 enum：Gemini 实际会输出 `medium_close_up` 等细分景别。
+   * 标准参考值：extreme_close_up / close_up / medium / wide / extreme_wide
+   */
+  fromShotSize: z.string().optional(),
+  toShotSize: z.string().optional(),
   /** 该镜头的内容描述（来自 Gemini 视频理解） */
   shotDescription: z.string().optional(),
 });
