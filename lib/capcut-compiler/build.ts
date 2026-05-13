@@ -3,6 +3,14 @@ import { secToMicroseconds } from "@/lib/cut-plan/time-code";
 import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
 import type { TechniqueMatchingResult } from "@/lib/technique-matching/types";
 import type { VideoMeta } from "@/lib/video/ffprobe-meta";
+import {
+  extractTrimRanges,
+  computeKeepRanges,
+  planEditSegments,
+  pickAnimation,
+  makeEasedScaleKeyframes,
+  type EditSegmentPlan,
+} from "./edit-plan";
 import type {
   AudioMaterial,
   AudioSegment,
@@ -76,93 +84,42 @@ export type CompileInput = {
  * 把 topPriorityActions 里的「在 X 秒切镜」抽出来作为时间轴 cut points。
  * 同时把 push_in / pull_out 动作识别出来用于 keyframe。
  */
-function extractCutPointsAndAnimations(
+/**
+ * 计算输出视频的 segment 计划：
+ *   1) 从 LLM match 里抽出"必删片段"
+ *   2) 从源视频里减去删除区间 → 剩余 keep ranges
+ *   3) 在 keep ranges 内按用户素材/LLM 推荐的切点切成多段
+ *   4) 每段在输出时间轴上紧贴拼接（target_timerange 从 0 累计递增）
+ *
+ * 返回的 plan 直接对应 CapCut segments。
+ */
+function buildEditPlan(
   match: TechniqueMatchingResult,
   potential: MaterialPotential,
-  durationSec: number,
-) {
-  // 候选切点 = topPriorityActions 里带 userVideoAt 的 + 用户已有 actions 中的 cut
-  const cutSet = new Set<number>([0]); // 永远从 0 开始
+  totalDurSec: number,
+): EditSegmentPlan[] {
+  // a) trim → keep
+  const trims = extractTrimRanges(match, totalDurSec);
+  const keepRanges = computeKeepRanges(totalDurSec, trims);
 
-  for (const a of match.topPriorityActions) {
+  // b) 切点：用户原视频自带的 cut + match 给的切点（仅那些在 keep range 内的会用上）
+  const cutSet = new Set<number>();
+  for (const a of match.topPriorityActions ?? []) {
     if (a.userVideoAt && typeof a.userVideoAt.sec === "number") {
       cutSet.add(a.userVideoAt.sec);
     }
   }
-  // 用户原视频本身的切点也作为基础（避免 LLM 漏掉的）
   for (const action of potential.base.actions) {
     if (action.kind === "cut" && typeof action.at.sec === "number") {
       cutSet.add(action.at.sec);
     }
   }
+  const cutPoints = Array.from(cutSet).sort((a, b) => a - b);
 
-  const sorted = Array.from(cutSet)
-    .filter((t) => t >= 0 && t < durationSec - 0.2) // 离结尾太近不切
-    .sort((a, b) => a - b);
-
-  // 转成 [start, end] 区间
-  const cutRanges: { startSec: number; endSec: number }[] = [];
-  for (let i = 0; i < sorted.length; i++) {
-    const startSec = sorted[i];
-    const endSec = i + 1 < sorted.length ? sorted[i + 1] : durationSec;
-    cutRanges.push({ startSec, endSec });
-  }
-
-  // 每段都给一个可见的缩放动画，让画面有"呼吸感"，跟原片连续画面形成视觉差异
-  // 优先级：用户素材里识别到的 camera_move > match 推荐 > 兜底默认 push_in
-  const animationByRange = cutRanges.map((range, idx) => {
-    type Anim = {
-      type: "push_in" | "pull_out";
-      scaleFrom: number;
-      scaleTo: number;
-    };
-
-    // 1) 用户原视频在该范围内的 camera_move
-    for (const action of potential.base.actions) {
-      if (action.kind !== "camera_move") continue;
-      const at = action.at.sec;
-      if (at >= range.startSec && at < range.endSec) {
-        if (action.type === "push_in") {
-          return {
-            type: "push_in" as const,
-            scaleFrom: action.scaleFrom ?? 1.0,
-            scaleTo: action.scaleTo ?? 1.15,
-          };
-        }
-        if (action.type === "pull_out") {
-          return {
-            type: "pull_out" as const,
-            scaleFrom: action.scaleFrom ?? 1.1,
-            scaleTo: action.scaleTo ?? 0.95,
-          };
-        }
-      }
-    }
-
-    // 2) match 推荐在该范围内
-    for (const report of match.reports) {
-      for (const rec of report.recommendations) {
-        if (rec.verdict !== "learn" && rec.verdict !== "adapt") continue;
-        if (!rec.userVideoAt) continue;
-        const t = rec.userVideoAt.sec;
-        if (t < range.startSec || t >= range.endSec) continue;
-        const name = rec.technique.name.toLowerCase();
-        if (name.includes("push") || name.includes("punch") || name.includes("推近") || name.includes("zoom in")) {
-          return { type: "push_in" as const, scaleFrom: 1.0, scaleTo: 1.15 };
-        }
-        if (name.includes("pull") || name.includes("拉远") || name.includes("zoom out")) {
-          return { type: "pull_out" as const, scaleFrom: 1.1, scaleTo: 1.0 };
-        }
-      }
-    }
-
-    // 3) 兜底：交替 push_in / pull_out 让每段都有可见运动差异
-    return idx % 2 === 0
-      ? { type: "push_in" as const, scaleFrom: 1.0, scaleTo: 1.12 }
-      : { type: "pull_out" as const, scaleFrom: 1.08, scaleTo: 1.0 };
-  });
-
-  return { cutRanges, animationByRange };
+  // c) plan
+  return planEditSegments(keepRanges, cutPoints, (sStart, sEnd, idx) =>
+    pickAnimation(sStart, sEnd, idx, potential, match),
+  );
 }
 
 /**
@@ -235,13 +192,22 @@ export function buildDraftContent(input: CompileInput): {
       }
     : null;
 
-  // ===== Cut points + animations =====
+  // ===== Edit plan: trim + keep + segment placement =====
+  // 把 LLM 的"必删片段"翻译成 source/target timerange 严格分离的 segments。
+  // source_timerange 是从原视频取片，target_timerange 是输出时间轴上紧贴的位置。
+  // 详见 lib/capcut-compiler/edit-plan.ts。
 
-  const { cutRanges, animationByRange } = extractCutPointsAndAnimations(
+  const editPlan = buildEditPlan(
     input.match,
     input.potential,
     input.meta.durationSec,
   );
+
+  // 输出总时长 = 最后一段 target_end（剪辑后的紧凑时长，比源视频短）
+  const outputDurationUs =
+    editPlan.length > 0
+      ? secToMicroseconds(editPlan[editPlan.length - 1].targetEndSec)
+      : durationUs;
 
   // ===== Companion materials per video segment =====
 
@@ -253,7 +219,7 @@ export function buildDraftContent(input: CompileInput): {
 
   // ===== Video track segments =====
 
-  const videoSegments: VideoSegment[] = cutRanges.map((range, idx) => {
+  const videoSegments: VideoSegment[] = editPlan.map((p) => {
     const speedMat: SpeedMaterial = {
       id: id(),
       type: "speed",
@@ -297,40 +263,44 @@ export function buildDraftContent(input: CompileInput): {
     };
     vocalSeparations.push(vocalMat);
 
-    const startUs = secToMicroseconds(range.startSec);
-    const endUs = secToMicroseconds(range.endSec);
-    const segDurationUs = endUs - startUs;
+    const sourceStartUs = secToMicroseconds(p.sourceStartSec);
+    const sourceDurUs =
+      secToMicroseconds(p.sourceEndSec) - secToMicroseconds(p.sourceStartSec);
+    const targetStartUs = secToMicroseconds(p.targetStartSec);
+    const targetDurUs =
+      secToMicroseconds(p.targetEndSec) - secToMicroseconds(p.targetStartSec);
 
-    const a = animationByRange[idx];
     // CapCut 要求 4 个 property type 一起设，否则整个动画被忽略
-    // ScaleX 驱动缩放，PositionX/Y/Rotation 给 0 占位
+    // ScaleX 用多 keyframe 模拟 ease-in-out（CapCut keyframe schema 不暴露 easing 字段）
+    const scaleFrom =
+      p.animation.type === "none" ? 1.0 : p.animation.scaleFrom;
+    const scaleTo = p.animation.type === "none" ? 1.0 : p.animation.scaleTo;
+    const scaleKfs = makeEasedScaleKeyframes(scaleFrom, scaleTo, targetDurUs);
+
     const keyframes: CommonKeyframe[] = [
       {
         property_type: "KFTypeScaleX",
-        keyframe_list: [
-          { time_offset: 0, values: [a.scaleFrom] },
-          { time_offset: segDurationUs, values: [a.scaleTo] },
-        ],
+        keyframe_list: scaleKfs,
       },
       {
         property_type: "KFTypePositionX",
         keyframe_list: [
           { time_offset: 0, values: [0] },
-          { time_offset: segDurationUs, values: [0] },
+          { time_offset: targetDurUs, values: [0] },
         ],
       },
       {
         property_type: "KFTypePositionY",
         keyframe_list: [
           { time_offset: 0, values: [0] },
-          { time_offset: segDurationUs, values: [0] },
+          { time_offset: targetDurUs, values: [0] },
         ],
       },
       {
         property_type: "KFTypeRotation",
         keyframe_list: [
           { time_offset: 0, values: [0] },
-          { time_offset: segDurationUs, values: [0] },
+          { time_offset: targetDurUs, values: [0] },
         ],
       },
     ];
@@ -338,15 +308,17 @@ export function buildDraftContent(input: CompileInput): {
     return {
       id: id(),
       material_id: videoMaterial.id,
-      target_timerange: { start: startUs, duration: segDurationUs },
-      source_timerange: { start: startUs, duration: segDurationUs },
+      // 关键：source 是从原视频取片范围，target 是在输出时间轴上的紧贴位置
+      // 两者分离 = 真正剪辑（删除 trim 区间 + 重排剩余段）
+      target_timerange: { start: targetStartUs, duration: targetDurUs },
+      source_timerange: { start: sourceStartUs, duration: sourceDurUs },
       speed: 1,
       volume: 1,
       visible: true,
       // clip.scale 必须跟 keyframe 起始值一致，否则 CapCut 不应用动画
       clip: {
         ...ZERO_CLIP,
-        scale: { x: a.scaleFrom, y: a.scaleFrom },
+        scale: { x: scaleFrom, y: scaleFrom },
       },
       extra_material_refs: [
         speedMat.id,
@@ -390,9 +362,10 @@ export function buildDraftContent(input: CompileInput): {
     soundMappings.push(audioSoundMat);
 
     // BGM 时长可能比视频长，截到视频时长
+    // BGM 长度截到剪辑后的输出总时长（不再截到原视频时长，否则结尾会有静音段）
     const bgmDur = Math.min(
       secToMicroseconds(input.bgmDurationSec ?? input.meta.durationSec),
-      durationUs,
+      outputDurationUs,
     );
 
     const bgmSegment: AudioSegment = {
@@ -421,11 +394,31 @@ export function buildDraftContent(input: CompileInput): {
 
   const subtitles = extractSubtitles(input.potential);
   const textMaterials: TextMaterial[] = [];
-  const textSegments: TextSegment[] = subtitles.map((sub, idx) => {
+
+  // 字幕段的 target_timerange 必须重映射到剪辑后的输出时间轴：
+  //   - 字幕落在被删除的 trim 区间 → 整条丢弃
+  //   - 字幕跨过 trim 区间边界 → 截断到 keep 内的部分（简化：直接丢弃跨界的）
+  const mapSourceToTarget = (srcSec: number): number | null => {
+    for (const p of editPlan) {
+      if (srcSec >= p.sourceStartSec - 1e-3 && srcSec <= p.sourceEndSec + 1e-3) {
+        return p.targetStartSec + (srcSec - p.sourceStartSec);
+      }
+    }
+    return null;
+  };
+
+  const textSegments: TextSegment[] = [];
+  let textIdx = 0;
+  for (const sub of subtitles) {
+    const targetStartSec = mapSourceToTarget(sub.atSec);
+    const targetEndSec = mapSourceToTarget(sub.atSec + sub.durationSec);
+    if (targetStartSec === null || targetEndSec === null) continue; // 字幕在被删的段里
+    const effectiveDur = Math.max(0, targetEndSec - targetStartSec);
+    if (effectiveDur < 0.1) continue;
+
     const textMat: TextMaterial = {
       id: id(),
       type: "text",
-      // CapCut text material.content is plain text. Styling goes through other fields.
       content: sub.text,
       font_size: 22,
       color: "#FFFFFF",
@@ -433,19 +426,20 @@ export function buildDraftContent(input: CompileInput): {
     };
     textMaterials.push(textMat);
 
-    const startUs = secToMicroseconds(sub.atSec);
-    const durUs = secToMicroseconds(sub.durationSec);
+    const startUs = secToMicroseconds(targetStartSec);
+    const durUs = secToMicroseconds(effectiveDur);
 
-    return {
+    textSegments.push({
       id: id(),
       material_id: textMat.id,
       target_timerange: { start: startUs, duration: durUs },
       source_timerange: { start: 0, duration: durUs },
       visible: true,
       extra_material_refs: [],
-      render_index: 1000 + idx, // 字幕在视频之上
-    };
-  });
+      render_index: 1000 + textIdx,
+    });
+    textIdx++;
+  }
 
   const textTrack: TextTrack | null = textSegments.length > 0
     ? {
@@ -471,7 +465,8 @@ export function buildDraftContent(input: CompileInput): {
   const draftContent: DraftContent = {
     id: projectId,
     name: input.projectName,
-    duration: durationUs,
+    // 剪辑后的输出总时长（比源视频短），CapCut 会用它画时间轴长度
+    duration: outputDurationUs,
     fps: Math.round(input.meta.fps),
     canvas_config: {
       width: input.meta.width,
@@ -570,7 +565,7 @@ export function buildDraftContent(input: CompileInput): {
     draft_materials_copied_info: [],
     tm_draft_create: nowMs(),
     tm_draft_modified: nowMs(),
-    tm_duration: durationUs,
+    tm_duration: outputDurationUs,
     draft_cover: "draft_cover.jpg",
     draft_deleted: false,
     draft_is_ai_packaging_used: false,

@@ -74,6 +74,16 @@ export const TECHNIQUE_MATCH_SYSTEM_PROMPT = `你是顶尖 TikTok / Instagram Re
      · 如果两条爆款都建议在 user 5.5s 做卡点 cut，合并成一条（标注 sourcedFromReferenceId 用第一个的 id）
   - globalDoNots：跨所有 skip/inverse 提取的"绝对不要做"清单（去重）
 
+  - trimRanges：用户素材里**必须从输出里删掉**的时间片段（单位秒），CapCut compiler 会用它生成真正剪辑过的视频
+     ★ 这是「必删片段」的结构化版本——别只写在 globalDoNots / actionableSteps 里，那是给人看的；这个字段是给程序看的
+     ★ 每个 entry：{ startSec, endSec, reason, priority: "P0|P1|P2" }
+     ★ P0 = 节奏杀手 / 多余停顿 / 重复动作（必删）
+     ★ P1 = 信息量低 / 拖戏（强烈建议删）
+     ★ P2 = 可保留但删了更紧凑
+     ★ 不要让 trim 区间相邻或重叠；不要超出视频总时长
+     ★ 至少给 1-3 段 P0 删除建议（除非素材本身已经很紧凑）
+     ★ 累计删除时长不要超过原片 35%（保守剪辑，避免破坏叙事）
+
   - recommendedBgms：3-5 首推荐 BGM（Phase 5.5 配乐推荐）
      综合用户素材的 metaphorHooks / videoFormat / 节奏画像 / 情绪 + 爆款里识别到的 bgm 标签，推断"用户视频应该配什么样的音乐"。
 
@@ -127,6 +137,20 @@ export const TECHNIQUE_MATCH_SYSTEM_PROMPT = `你是顶尖 TikTok / Instagram Re
       }
     ],
     "globalDoNots": ["..."],
+    "trimRanges": [
+      {
+        "startSec": 0.0,
+        "endSec": 0.6,
+        "reason": "重复抬手停顿，节奏拖沓",
+        "priority": "P0"
+      },
+      {
+        "startSec": 3.5,
+        "endSec": 3.6,
+        "reason": "手部摩擦无信息量",
+        "priority": "P1"
+      }
+    ],
     "recommendedBgms": [
       {
         "name": "Espresso - Sabrina Carpenter (或 vibe 描述)",

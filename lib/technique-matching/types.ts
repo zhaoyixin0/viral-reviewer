@@ -163,6 +163,30 @@ export const TechniqueMatchingResultSchema = z.object({
   /** 跨爆款的"绝对不要做" */
   globalDoNots: z.array(z.string()).default([]),
 
+  /**
+   * 显式的"必删片段"列表（Phase 5.6 新增）。
+   * LLM 在 topPriorityActions / globalDoNots 里用自由文本描述要删的片段，
+   * compiler 无法稳定解析。这个字段让 LLM 把"哪几秒必须从输出里删掉"
+   * 结构化地输出一份，方便 CapCut compiler 直接生成正确的 segments。
+   *
+   * 旧分析（没这个字段）会被 compiler 用 regex 从自由文本里 fallback 抽取。
+   */
+  trimRanges: z
+    .array(
+      z.object({
+        startSec: z.number().min(0),
+        endSec: z.number().min(0),
+        reason: z.string().nullable().optional().default(""),
+        priority: z.enum(["P0", "P1", "P2"]).nullable().optional(),
+      }),
+    )
+    .nullable()
+    .optional()
+    .default([])
+    .describe(
+      "用户素材里必须删除的时间片段列表，单位秒。LLM 把'必删 X-Ys'类指令显式输出在这里，CapCut compiler 用它生成真正剪辑过的 segments",
+    ),
+
   /** Phase 5.5：3-5 首推荐 BGM */
   recommendedBgms: z.array(RecommendedBgmSchema).default([]),
 
