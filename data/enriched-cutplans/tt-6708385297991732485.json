@@ -1,0 +1,128 @@
+{
+  "videoId": "tt-6708385297991732485",
+  "durationSec": 17.114,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "comedy",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A beautician applies a product to a man's face with a brush as he lies down with his eyes closed."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 3.8,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman in scrubs holds a toddler who is dramatically falling backwards onto a wooden floor, while another person films."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "type": "overlay_sparkles",
+      "durationSec": 13
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "type": "handheld",
+      "durationSec": 13,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 2,
+      "avgShotDurationSec": 8.4,
+      "cutDensityPerSec": 0.059,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": {
+        "sec": 3.8,
+        "frame": 114
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 1,
+        "medium": 0,
+        "wide": 1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "none",
+      "subtitleStyle": "none",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "misleading_setup",
+      "openingShot": "Close-up of a man receiving a facial treatment.",
+      "endingShot": "The woman picks up the toddler from the floor.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 3.8,
+        "frame": 114
+      }
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 5,
+    "effect": 15,
+    "bgmSync": 0,
+    "overall": 10
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:28:33.851Z"
+  }
+}

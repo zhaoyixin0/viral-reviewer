@@ -1,0 +1,155 @@
+{
+  "videoId": "tt-7062061484246912303",
+  "durationSec": 11.7,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "When the gym owner approves 💪",
+      "durationSec": 11.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man is bench pressing a heavy barbell, seen from the side. Another man stands in the background watching him with a serious expression."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 8.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up on the end of the barbell. The man in the background looks at the camera, then turns and walks away."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "type": "static",
+      "durationSec": 2.7,
+      "easing": "linear"
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Rock Track",
+    "trending": false,
+    "bpm": 128,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "beat",
+        "note": "Main guitar riff and drum beat starts"
+      },
+      {
+        "at": {
+          "sec": 4.5,
+          "frame": 135
+        },
+        "kind": "beat",
+        "note": "Guitar fill"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 2,
+      "avgShotDurationSec": 5.75,
+      "cutDensityPerSec": 0.087,
+      "rhythmProfile": "slow",
+      "keyTwistAt": {
+        "sec": 8.8,
+        "frame": 264
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.2,
+        "medium": 0.8,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Continuous driving rock music throughout, setting a powerful and slightly tense mood.",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "Top-center, white sans-serif font on a black semi-transparent rectangular background.",
+      "colorGrade": "Natural gym lighting with high contrast, no strong color grade applied."
+    },
+    "structure": {
+      "hookFormat": "Text overlay establishing a relatable premise.",
+      "openingShot": "Medium shot of a man bench pressing, with the 'gym owner' watching intently in the background.",
+      "endingShot": "Close-up on the barbell as the gym owner turns and walks out of frame, providing the punchline.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 8.8,
+        "frame": 264
+      }
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 5,
+    "effect": 0,
+    "bgmSync": 20,
+    "overall": 15
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:16:11.366Z"
+  }
+}

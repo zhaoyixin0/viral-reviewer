@@ -1,0 +1,130 @@
+{
+  "videoId": "tt-7633972727510043925",
+  "durationSec": 15.2,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman in a white bathrobe with hair clips stands in a hallway, looking at the camera."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "type": "other",
+      "durationFrames": 2,
+      "note": "A hard cut masked by the creator covering the lens with her hand in the previous shot, revealing the 'after' look."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The same woman is now fully dressed in a glamorous outfit (white corset, black skirt, feather boas), with her hair and makeup done, posing in the same hallway."
+    }
+  ],
+  "bgm": {
+    "name": "I Don't Wanna Know (Remix) - Mario Winans",
+    "trending": true,
+    "bpm": 100,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 1,
+          "frame": 30
+        },
+        "kind": "vocal_phrase",
+        "note": "Voiceover countdown '3, 2, 1, go' begins."
+      },
+      {
+        "at": {
+          "sec": 7.8,
+          "frame": 234
+        },
+        "kind": "drop",
+        "note": "The main beat drops precisely on the visual transformation."
+      },
+      {
+        "at": {
+          "sec": 8.5,
+          "frame": 255
+        },
+        "kind": "vocal_in",
+        "note": "The main song vocals begin."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 2,
+      "avgShotDurationSec": 7.5,
+      "cutDensityPerSec": 0.067,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": {
+        "sec": 7.8,
+        "frame": 234
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "cover_lens"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Countdown intro followed by a beat drop synchronized with the visual reveal.",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "none",
+      "colorGrade": "warm_natural"
+    },
+    "structure": {
+      "hookFormat": "before_after_setup",
+      "openingShot": "Medium shot of the subject in a bathrobe, establishing the 'before' state.",
+      "endingShot": "Medium shot of the subject in the final outfit, posing to showcase the result.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 7.8,
+        "frame": 234
+      }
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 25,
+    "effect": 0,
+    "bgmSync": 95,
+    "overall": 30
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:29:59.266Z"
+  }
+}

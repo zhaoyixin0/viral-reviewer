@@ -1,0 +1,338 @@
+{
+  "videoId": "tt-7633155390489840916",
+  "durationSec": 25.936,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1282
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A girl in a pink t-shirt and oversized black pants poses and dances against a white wall."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "Wait for the transition",
+      "durationSec": 9.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "red",
+        "position": "top_left"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 9.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 9.8,
+        "frame": 294
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.8,
+        "frame": 294
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The girl is now wearing a white hoodie with a black city graphic and matching white pants, posing with one arm up."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 10.8,
+        "frame": 324
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.8,
+        "frame": 324
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The girl is now wearing a white t-shirt, camouflage cargo pants, and a camouflage baseball cap."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The girl is now wearing a light blue jersey-style t-shirt, baggy denim cargo pants, and a silver necklace."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The girl is now wearing a white t-shirt with a red number and a red plaid skirt, crossing her arms."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Same outfit as before (white t-shirt, plaid skirt), but with a vertical mirror effect creating a reflection below her."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "type": "mirror",
+      "durationSec": 1
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 14.8,
+        "frame": 444
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.8,
+        "frame": 444
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The girl is now in a new location with a beige curtain, wearing a beige 'NEW YORK' tracksuit and dancing happily."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 16.5,
+        "frame": 495
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.5,
+        "frame": 495
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The girl is now wearing a dark green t-shirt and shorts set with black boots, dancing."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 18.2,
+        "frame": 546
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.2,
+        "frame": 546
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The girl is back in the beige tracksuit, dancing."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 19,
+        "frame": 570
+      },
+      "type": "push_in",
+      "durationSec": 0.2,
+      "scaleFrom": 1,
+      "scaleTo": 1.2,
+      "easing": "ease_in"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 19.2,
+        "frame": 576
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.2,
+        "frame": 576
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The girl is now wearing a purple tracksuit, posing with one hand on her hip and the other in the air."
+    }
+  ],
+  "bgm": {
+    "name": "Tshwala Bam (Remix)",
+    "trending": true,
+    "bpm": 112,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in"
+      },
+      {
+        "at": {
+          "sec": 9.8,
+          "frame": 294
+        },
+        "kind": "drop",
+        "note": "Main transition point"
+      },
+      {
+        "at": {
+          "sec": 10.8,
+          "frame": 324
+        },
+        "kind": "beat"
+      },
+      {
+        "at": {
+          "sec": 11.8,
+          "frame": 354
+        },
+        "kind": "beat"
+      },
+      {
+        "at": {
+          "sec": 12.8,
+          "frame": 384
+        },
+        "kind": "beat"
+      },
+      {
+        "at": {
+          "sec": 14.8,
+          "frame": 444
+        },
+        "kind": "beat"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 10,
+      "avgShotDurationSec": 2,
+      "cutDensityPerSec": 0.45,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": {
+        "sec": 9.8,
+        "frame": 294
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "push_in"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut_on_beat"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "build_up_drop",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "simple_overlay",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "text_overlay_promise",
+      "openingShot": "Medium shot of the 'before' state, building anticipation.",
+      "endingShot": "Medium shot of the final outfit, posing confidently.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 9.8,
+        "frame": 294
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 70,
+    "effect": 20,
+    "bgmSync": 95,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:27:08.442Z"
+  }
+}

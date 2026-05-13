@@ -1,0 +1,377 @@
+{
+  "videoId": "tt-7218140166739741953",
+  "durationSec": 21.434,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "listicle",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "1700 Cal Meal Plan Idea",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.5,
+        "frame": 45
+      },
+      "text": "160g Protein",
+      "durationSec": 1.2,
+      "style": {
+        "font": "cursive",
+        "color": "red"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2.6,
+        "frame": 78
+      },
+      "type": "other",
+      "durationFrames": 5,
+      "note": "Creative wipe transition where the creator 'carries' the fridge door across the screen to reveal the next shot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.7,
+        "frame": 81
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Pouring pancake batter into a hot pan on a stove."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand uses a spatula to flip a golden-brown pancake in the pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A finished bowl of chopped pancakes topped with fresh strawberries and blueberries."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5,
+        "frame": 150
+      },
+      "text": "Protein Pancake & Berries",
+      "durationSec": 1.5,
+      "style": {
+        "font": "cursive",
+        "color": "red"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.7,
+        "frame": 171
+      },
+      "text": "460 Calories & 32g Protein",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "black"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.8,
+        "frame": 204
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand takes a glass meal prep container of zucchini noodles from a fridge shelf."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Placing the glass container into a microwave."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The heated meal of zucchini noodles and chicken is shown on a countertop."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.7,
+        "frame": 291
+      },
+      "text": "Zucchini Noodles with Chicken & Broccoli",
+      "durationSec": 1.5,
+      "style": {
+        "font": "cursive",
+        "color": "red"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.7,
+        "frame": 321
+      },
+      "text": "314 Calories & 45g Protein",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "black"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand takes another glass meal prep container from the fridge."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Placing the container into the microwave."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The finished meal of sweet potato, beef, and brussel sprouts is shown on the counter."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14,
+        "frame": 420
+      },
+      "text": "Sweet Potato, Beef & Brussel Sprouts",
+      "durationSec": 1.5,
+      "style": {
+        "font": "cursive",
+        "color": "red"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.9,
+        "frame": 447
+      },
+      "text": "430 Calories & 47g Protein",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "black"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 474
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands place a baking tray of French toast bake onto the stove."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.8,
+        "frame": 504
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A knife cuts into the French toast bake in the tray."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.5,
+        "frame": 555
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A portion of the French toast bake is shown in a glass container."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.8,
+        "frame": 564
+      },
+      "text": "French Toast Bake",
+      "durationSec": 1.2,
+      "style": {
+        "font": "cursive",
+        "color": "red"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.5,
+        "frame": 585
+      },
+      "text": "500 Calories & 33g Protein",
+      "durationSec": 1.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "black"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat electronic track",
+    "trending": true,
+    "bpm": 124,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 2.7,
+          "frame": 81
+        },
+        "kind": "beat",
+        "note": "Cut to first meal prep"
+      },
+      {
+        "at": {
+          "sec": 4.8,
+          "frame": 144
+        },
+        "kind": "beat",
+        "note": "Reveal of first meal"
+      },
+      {
+        "at": {
+          "sec": 6.8,
+          "frame": 204
+        },
+        "kind": "beat",
+        "note": "Cut to second meal prep"
+      },
+      {
+        "at": {
+          "sec": 8.8,
+          "frame": 264
+        },
+        "kind": "beat",
+        "note": "Reveal of second meal"
+      },
+      {
+        "at": {
+          "sec": 11.8,
+          "frame": 354
+        },
+        "kind": "beat",
+        "note": "Cut to third meal prep"
+      },
+      {
+        "at": {
+          "sec": 13.8,
+          "frame": 414
+        },
+        "kind": "beat",
+        "note": "Reveal of third meal"
+      },
+      {
+        "at": {
+          "sec": 18.5,
+          "frame": 555
+        },
+        "kind": "beat",
+        "note": "Reveal of final meal"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 13,
+      "avgShotDurationSec": 1.6,
+      "cutDensityPerSec": 0.62,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.85,
+        "medium": 0.15,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut",
+        "creative_wipe"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_upbeat",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "mixed_font_overlay",
+      "colorGrade": "natural_warm"
+    },
+    "structure": {
+      "hookFormat": "direct_promise",
+      "openingShot": "Medium shot of creator walking to the fridge, establishing the theme of food/meals.",
+      "endingShot": "Close-up shot of the final prepared meal (French Toast Bake).",
+      "cta": null,
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 40,
+    "effect": 25,
+    "bgmSync": 95,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:28:20.080Z"
+  }
+}

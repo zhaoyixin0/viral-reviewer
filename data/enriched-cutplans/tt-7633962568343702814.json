@@ -1,0 +1,281 @@
+{
+  "videoId": "tt-7633962568343702814",
+  "durationSec": 170.134,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds the finished casserole dish, introducing the recipe."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 11.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "47g protein",
+      "durationSec": 11,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.5,
+        "frame": 45
+      },
+      "text": "• 385 calories",
+      "durationSec": 10,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.5,
+        "frame": 345
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator takes a satisfying first bite of the dish."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 11.5,
+        "frame": 345
+      },
+      "type": "static",
+      "durationSec": 6,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.5,
+        "frame": 525
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A long take showing the step-by-step preparation of the casserole, from adding broccoli to pouring the sauce."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 17.5,
+        "frame": 525
+      },
+      "type": "static",
+      "durationSec": 73,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 90.5,
+        "frame": 2715
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator presents the fully baked, golden-brown casserole."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 90.5,
+        "frame": 2715
+      },
+      "type": "static",
+      "durationSec": 6,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 96.5,
+        "frame": 2895
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator garnishes the casserole with chopped parsley."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 96.5,
+        "frame": 2895
+      },
+      "type": "static",
+      "durationSec": 3,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 99.5,
+        "frame": 2985
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator scoops a cheesy portion into a serving bowl."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 99.5,
+        "frame": 2985
+      },
+      "type": "static",
+      "durationSec": 3.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 103,
+        "frame": 3090
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator adds extra parmesan cheese to the bowl from a shaker."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 103,
+        "frame": 3090
+      },
+      "type": "static",
+      "durationSec": 12.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 115.5,
+        "frame": 3465
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator eats from the bowl, showcasing a long cheese pull and giving a detailed taste review."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 115.5,
+        "frame": 3465
+      },
+      "type": "static",
+      "durationSec": 36.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 152,
+        "frame": 4560
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator talks to the camera, giving a final review and CTA."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 152,
+        "frame": 4560
+      },
+      "type": "static",
+      "durationSec": 15.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 167.5,
+        "frame": 5025
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Final shot of the creator taking a last bite and smiling at the camera."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 167.5,
+        "frame": 5025
+      },
+      "type": "static",
+      "durationSec": 2.5,
+      "easing": "linear"
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 11,
+      "avgShotDurationSec": 15.45,
+      "cutDensityPerSec": 0.058,
+      "rhythmProfile": "slow",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.1,
+        "medium": 0.9,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "simple_white_sans_serif",
+      "colorGrade": "natural_warm"
+    },
+    "structure": {
+      "hookFormat": "result_preview",
+      "openingShot": "Creator holds the finished dish and introduces its benefits (high protein, low calorie).",
+      "endingShot": "Creator takes a final, satisfying bite and smiles.",
+      "cta": "Verbal CTA to try the recipe and follow for more.",
+      "payoffAt": {
+        "sec": 90.5,
+        "frame": 2715
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 10,
+    "effect": 10,
+    "bgmSync": 0,
+    "overall": 15
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:18:55.184Z"
+  }
+}

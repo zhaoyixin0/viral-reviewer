@@ -1,0 +1,247 @@
+{
+  "videoId": "tt-7628290397378268448",
+  "durationSec": 10.008,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "Sliced red onions are poured into a white baking dish already containing sliced white onions."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "Spices, including paprika and herbs, are sprinkled over the onions."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.1,
+        "frame": 33
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "Olive oil is drizzled over the seasoned onions."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "The onions are shown fully mixed with the spices and oil."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.5,
+        "frame": 75
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "A spoonful of white cheese (likely feta or cream cheese) is added to the center of the onions."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 3.7,
+        "frame": 111
+      },
+      "type": "whip_pan",
+      "durationFrames": 3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "The dish is shown after being baked, with caramelized onions and melted cheese."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.6,
+        "frame": 138
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "Chopped fresh parsley is sprinkled over the baked dish."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.8,
+        "frame": 174
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "A spoon mixes the baked onions, cheese, and parsley together to form a creamy sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.8,
+        "frame": 204
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "Cooked farfalle (bowtie) pasta is poured into the sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "A spoon mixes the pasta and sauce together until fully combined."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A final hero shot of a spoonful of the finished pasta dish being lifted towards the camera."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "type": "push_in",
+      "durationSec": 1.2,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_out"
+    }
+  ],
+  "bgm": {
+    "name": "Unknown sped-up pop song",
+    "trending": true,
+    "bpm": 145,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in",
+        "note": "Music starts with vocals"
+      },
+      {
+        "at": {
+          "sec": 0.8,
+          "frame": 24
+        },
+        "kind": "beat",
+        "note": "Cut to adding spices"
+      },
+      {
+        "at": {
+          "sec": 1.8,
+          "frame": 54
+        },
+        "kind": "beat",
+        "note": "Cut to mixed onions"
+      },
+      {
+        "at": {
+          "sec": 3.8,
+          "frame": 114
+        },
+        "kind": "beat",
+        "note": "Cut to baked dish reveal"
+      },
+      {
+        "at": {
+          "sec": 5.8,
+          "frame": 174
+        },
+        "kind": "beat",
+        "note": "Cut to mixing the sauce"
+      },
+      {
+        "at": {
+          "sec": 7.8,
+          "frame": 234
+        },
+        "kind": "beat",
+        "note": "Cut to mixing the pasta"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 11,
+      "avgShotDurationSec": 0.89,
+      "cutDensityPerSec": 1.12,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 3.8,
+        "frame": 114
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 10,
+        "medium": 90,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut",
+        "whip_pan"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Upbeat, driving pop song to maintain high energy and pace.",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "none",
+      "colorGrade": "Vibrant and saturated"
+    },
+    "structure": {
+      "hookFormat": "Action-oriented opening",
+      "openingShot": "Medium shot of ingredients being added to a baking dish.",
+      "endingShot": "Hero shot of a spoonful of the final dish being lifted to the camera.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 8.8,
+        "frame": 264
+      }
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 20,
+    "effect": 5,
+    "bgmSync": 95,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:00:34.521Z"
+  }
+}

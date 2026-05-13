@@ -1,0 +1,419 @@
+{
+  "videoId": "tt-7634004087985425684",
+  "durationSec": 109,
+  "fps": 25,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "review",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man in a black t-shirt stands in a kitchen behind a wooden cutting board."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 0.8,
+        "frame": 20
+      },
+      "type": "picture_in_picture",
+      "durationSec": 16.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.8,
+        "frame": 445
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The man puts his phone down and begins to put on black gloves, addressing the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.5,
+        "frame": 488
+      },
+      "text": "I AM A HUGE",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.4,
+        "frame": 510
+      },
+      "text": "FAN OF WAFFLES.",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.3,
+        "frame": 558
+      },
+      "text": "SEND ME THIS ONE.",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.8,
+        "frame": 620
+      },
+      "text": "GIVE THEM A TRY",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.8,
+        "frame": 670
+      },
+      "text": "WHETHER THEY F*CK,",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28.2,
+        "frame": 705
+      },
+      "text": "OR SUCK.",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.9,
+        "frame": 723
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A quick montage of ingredients being added to a blender cup begins. First, oats are poured from a white bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30.6,
+        "frame": 765
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Egg whites are poured into the blender cup."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.2,
+        "frame": 780
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Cottage cheese is added to the blender cup."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.9,
+        "frame": 798
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Vanilla extract is poured into the blender cup."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 32.7,
+        "frame": 818
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Baking powder is added."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33.4,
+        "frame": 835
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Salt is added."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.6,
+        "frame": 865
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The blended batter is poured into a double waffle maker."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36.1,
+        "frame": 903
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The man closes the lid of the waffle maker."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36.8,
+        "frame": 920
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He places a black plate on the cutting board."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.5,
+        "frame": 938
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He stacks the finished waffles onto the plate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.7,
+        "frame": 968
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "He adds blackberries and blueberries to the stack of waffles."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.8,
+        "frame": 995
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He holds the plate of waffles and pours maple syrup over them."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 43.4,
+        "frame": 1085
+      },
+      "type": "push_in",
+      "durationSec": 2.5,
+      "scaleFrom": 1,
+      "scaleTo": 1.3,
+      "easing": "ease_in_out",
+      "note": "He pushes the plate of waffles towards the camera."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.1,
+        "frame": 1153
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He pulls the plate back and continues talking to the camera, explaining the macros."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 55.2,
+        "frame": 1380
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He holds up a fork with a piece of waffle, making a point about taste."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59.6,
+        "frame": 1490
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He eats the piece of waffle."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 104.8,
+        "frame": 2620
+      },
+      "toShotSize": "medium",
+      "shotDescription": "After chewing thoughtfully, he gives a serious, deadpan look to the camera."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 106.2,
+        "frame": 2655
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He pushes the plate forward on the counter."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 106.6,
+        "frame": 2665
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He begins dancing energetically, slapping the counter to the beat of an imaginary song."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 107.8,
+        "frame": 2695
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 108.6,
+        "frame": 2715
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 109.2,
+        "frame": 2730
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 110,
+        "frame": 2750
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The angle changes to show him dancing away from the camera towards the fridge."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 114.2,
+        "frame": 2855
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He returns to the counter, calming down, and gives his final verdict."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 115.5,
+        "frame": 2888
+      },
+      "text": "THESE 100% F*CK",
+      "durationSec": 1.3
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 119.2,
+        "frame": 2980
+      },
+      "text": "AND THE GOOD NEWS IS,",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 125.9,
+        "frame": 3148
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Slightly tighter shot as he continues his review, holding a fork."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 141.5,
+        "frame": 3538
+      },
+      "text": "YOU CAN SEE ALL THE TWEAKS I MADE INTO THE CAPTION BELOW",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 147.8,
+        "frame": 3695
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He takes another large, enthusiastic bite of the waffle to end the video."
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 28,
+      "avgShotDurationSec": 3.89,
+      "cutDensityPerSec": 0.26,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": {
+        "sec": 106.6,
+        "frame": 2665
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "push_in"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.4,
+        "medium": 0.6,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "no_bgm",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "centered_all_caps_sans_serif",
+      "colorGrade": "natural_high_contrast"
+    },
+    "structure": {
+      "hookFormat": "reaction_to_viral_video",
+      "openingShot": "Creator reacts to a picture-in-picture video of a viral recipe.",
+      "endingShot": "Creator takes a final, enthusiastic bite of the food.",
+      "cta": "Check caption for recipe tweaks.",
+      "payoffAt": {
+        "sec": 106.6,
+        "frame": 2665
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 20,
+    "bgmSync": 30,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:18:02.429Z"
+  }
+}

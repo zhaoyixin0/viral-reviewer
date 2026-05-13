@@ -1,0 +1,177 @@
+{
+  "videoId": "tt-6700613841622928645",
+  "durationSec": 15.047,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 0.85,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A woman with elaborate pink and blue glitter eyeshadow and purple lipstick is applying more glitter to her right eyelid with a small brush."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "neon_frame",
+      "durationSec": 14.5,
+      "params": {
+        "color": "rainbow_gradient"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "push_in",
+      "durationSec": 14.5,
+      "scaleFrom": 1,
+      "scaleTo": 1.3,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.5,
+        "frame": 195
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The makeup brush is removed. The woman turns her head slightly to her right, looking towards the camera to show off the finished look."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8,
+        "frame": 240
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "She turns her head further to the right, showing her side profile and the glitter on her eyelid."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.5,
+        "frame": 285
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "She turns back to face the camera directly, blinking slowly."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.5,
+        "frame": 345
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "She tilts her head up and to her left, looking up and away from the camera with a confident expression."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13,
+        "frame": 390
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "She lowers her head, looking down and to her right with a sultry expression."
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat K-pop song",
+    "trending": true,
+    "bpm": 125,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.5,
+          "frame": 15
+        },
+        "kind": "vocal_phrase",
+        "note": "Repetitive hook 'Oh my my my' begins"
+      },
+      {
+        "at": {
+          "sec": 6.5,
+          "frame": 195
+        },
+        "kind": "phrase_end",
+        "note": "Pose change aligns with the end of a musical phrase"
+      },
+      {
+        "at": {
+          "sec": 7.5,
+          "frame": 225
+        },
+        "kind": "vocal_phrase",
+        "note": "Repetitive hook 'Oh my my my' repeats"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 6,
+      "avgShotDurationSec": 2.42,
+      "cutDensityPerSec": 0.34,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "push_in"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 1,
+        "medium": 0,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "none"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Repetitive vocal hook",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "none",
+      "colorGrade": "Vibrant & Saturated"
+    },
+    "structure": {
+      "hookFormat": "Action in progress",
+      "openingShot": "Close-up of makeup application",
+      "endingShot": "Close-up of the subject posing with the final makeup look",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 6.5,
+        "frame": 195
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 0,
+    "effect": 40,
+    "bgmSync": 60,
+    "overall": 30
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:25:18.778Z"
+  }
+}

@@ -1,0 +1,456 @@
+{
+  "videoId": "tt-7448221850074696977",
+  "durationSec": 30.208,
+  "fps": 29.97,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "this Transition",
+      "durationSec": 1.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.5,
+        "frame": 45
+      },
+      "text": "the",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.1,
+        "frame": 63
+      },
+      "text": "shot",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2.5,
+        "frame": 75
+      },
+      "type": "speed_ramp",
+      "durationFrames": 5
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 2.5,
+        "frame": 75
+      },
+      "type": "zoom_blur",
+      "durationSec": 0.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.6,
+        "frame": 78
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Man standing under a bridge, arms crossed."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Man on a city street corner."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3,
+        "frame": 90
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Man sitting on a metal railing with sun flare behind him."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.2,
+        "frame": 96
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Man in front of a graffiti wall."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.5,
+        "frame": 105
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Fisheye lens shot looking up at the man, with a hand partially covering the lens."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "text": "let's BREAK IT DOWN",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 5.5,
+        "frame": 165
+      },
+      "type": "flash",
+      "durationFrames": 3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.6,
+        "frame": 168
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Return to the initial shot of the man leaning against a wall."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.8,
+        "frame": 174
+      },
+      "text": "in the FIRST clip",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.8,
+        "frame": 204
+      },
+      "text": "after your subject AIMS at the camera",
+      "durationSec": 1.7
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 8.5,
+        "frame": 255
+      },
+      "type": "pull_out",
+      "durationSec": 3,
+      "scaleFrom": 1,
+      "scaleTo": 1.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.6,
+        "frame": 258
+      },
+      "text": "slowly walk backwards",
+      "durationSec": 1.1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.7,
+        "frame": 291
+      },
+      "text": "as you try to keep them centered",
+      "durationSec": 1.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.5,
+        "frame": 345
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Man under a bridge, with a diagram overlay showing camera movement."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 12.2,
+        "frame": 366
+      },
+      "type": "split_screen",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "text": "you then need a COUPLE SEQUENCES",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Split screen showing two different pull-out shots."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13,
+        "frame": 390
+      },
+      "text": "with the SAME MOVEMENT",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.8,
+        "frame": 444
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot of a person holding a camera on a gimbal, filming the subject."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15.1,
+        "frame": 453
+      },
+      "text": "in the SAME DIRECTION",
+      "durationSec": 1.1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.2,
+        "frame": 486
+      },
+      "text": "at a pretty CONSISTENT PACE",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.8,
+        "frame": 503
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Screen recording of an editing software timeline (Adobe Premiere Pro)."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.2,
+        "frame": 515
+      },
+      "text": "in the EDITING phase",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.5,
+        "frame": 554
+      },
+      "text": "Speed Ramps",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.1,
+        "frame": 602
+      },
+      "text": "and to SPICE it up",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.2,
+        "frame": 635
+      },
+      "text": "Sound Effects",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22,
+        "frame": 659
+      },
+      "text": "and a HIT PRESET",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.8,
+        "frame": 683
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Return to the original shot, man pointing at camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23.2,
+        "frame": 695
+      },
+      "text": "AIMS at the CAMERA",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.5,
+        "frame": 734
+      },
+      "text": "to really SELL the TRANSITION",
+      "durationSec": 1.3
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 24.6,
+        "frame": 737
+      },
+      "type": "graphic_overlay",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.8,
+        "frame": 773
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Return to opening shot, man preparing the pose."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26,
+        "frame": 779
+      },
+      "text": "try it out!",
+      "durationSec": 0.8
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat hip-hop track",
+    "trending": false,
+    "bpm": 110,
+    "startsAt": {
+      "sec": 2.5,
+      "frame": 75
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 2.5,
+          "frame": 75
+        },
+        "kind": "drop",
+        "note": "The main transition sequence is synced to this beat drop."
+      },
+      {
+        "at": {
+          "sec": 5.6,
+          "frame": 168
+        },
+        "kind": "vocal_in",
+        "note": "Narration begins, music volume lowers."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 18,
+      "avgShotDurationSec": 1.64,
+      "cutDensityPerSec": 0.61,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": {
+        "sec": 5.5,
+        "frame": 165
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "pull_out",
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.05,
+        "close_up": 0,
+        "medium": 0.45,
+        "wide": 0.45,
+        "extreme_wide": 0.05
+      },
+      "transitionPatterns": [
+        "speed_ramp"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "showcase_and_background",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "bold_sans_serif_glow",
+      "colorGrade": "cinematic_warm_contrast"
+    },
+    "structure": {
+      "hookFormat": "result_first",
+      "openingShot": "Medium shot of the creator leaning against a wall, demonstrating the initial pose.",
+      "endingShot": "A repeat of the full transition sequence to reinforce the tutorial's outcome.",
+      "cta": "try it out!",
+      "payoffAt": {
+        "sec": 5.6,
+        "frame": 168
+      }
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 85,
+    "effect": 65,
+    "bgmSync": 80,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:30:40.484Z"
+  }
+}

@@ -1,0 +1,955 @@
+{
+  "videoId": "tt-7634205861577231636",
+  "durationSec": 66.479,
+  "fps": 29.585739392417775,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman stands in a modern, minimalist hotel lobby with large potted palm trees."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "36 Hours in Tokyo",
+      "durationSec": 1.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.8,
+        "frame": 53
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman stands in a different, bright hotel lounge with floor-to-ceiling windows."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.9,
+        "frame": 56
+      },
+      "text": "Check in at The Edition",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.7,
+        "frame": 80
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A tracking shot moves forward through a very large, grand hotel lobby with traditional Japanese wood design."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.8,
+        "frame": 83
+      },
+      "text": "or The Okura",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.6,
+        "frame": 107
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A shot of a uniquely shaped pine tree in a park, with more trees and city buildings in the background."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.7,
+        "frame": 109
+      },
+      "text": "Walk Imperial Palace",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.5,
+        "frame": 133
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A view of a lush Japanese garden with a traditional house in the background."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.6,
+        "frame": 136
+      },
+      "text": "Nezu Museum",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.4,
+        "frame": 160
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The exterior of a modern concrete building with a '21_21' sign."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.5,
+        "frame": 163
+      },
+      "text": "2121 Design",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.3,
+        "frame": 186
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman, seen from behind, browses items in a museum gift shop."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.2,
+        "frame": 213
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Interior view looking down a modern staircase with concrete walls and large slatted windows."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.1,
+        "frame": 240
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A view of a clean, wooden sushi counter in a restaurant."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.2,
+        "frame": 243
+      },
+      "text": "Lunch at Ginza Tsukasa",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9,
+        "frame": 266
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The woman is shown eating at the restaurant."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.9,
+        "frame": 293
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Selfie shot of the woman smiling while riding an escalator."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10,
+        "frame": 296
+      },
+      "text": "Walk & shop through",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.8,
+        "frame": 320
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Selfie shot of the woman walking down a sunny shopping street."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.9,
+        "frame": 322
+      },
+      "text": "Omotesando",
+      "durationSec": 1.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.6,
+        "frame": 373
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A modern dining table with a built-in grill, set for a meal."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.7,
+        "frame": 376
+      },
+      "text": "Dinner at Rikichan",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.5,
+        "frame": 399
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A dimly lit, stylish bar with red backlighting and many patrons."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.6,
+        "frame": 402
+      },
+      "text": "Tir na Nog Ginza Bar",
+      "durationSec": 1.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.3,
+        "frame": 453
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A fast, shaky, handheld selfie shot of the woman laughing while walking on a city street at night."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 15.3,
+        "frame": 453
+      },
+      "type": "handheld",
+      "durationSec": 1.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15.4,
+        "frame": 456
+      },
+      "text": "Walk through Ginza at night",
+      "durationSec": 1.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.1,
+        "frame": 506
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Selfie shot of the woman in a crowded outdoor market."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.2,
+        "frame": 509
+      },
+      "text": "Tsukiji Fish Market Morning",
+      "durationSec": 6.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18,
+        "frame": 533
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A food stall at the market where a woman is cooking."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.9,
+        "frame": 559
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A display of grilled rice dumplings (dango) on skewers at a market stall."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.8,
+        "frame": 586
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A display of realistic sushi models at a food stall."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.7,
+        "frame": 612
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A display of fresh seafood, including large crab legs, on a bed of ice."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.6,
+        "frame": 639
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Selfie shot of the woman eating a piece of tamagoyaki (Japanese rolled omelette)."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.5,
+        "frame": 666
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A first-person view of a hand holding a cup of sweet potato chips."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.3,
+        "frame": 719
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The exterior of the modern Tsutaya Books building in Daikanyama, with people outside."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.4,
+        "frame": 722
+      },
+      "text": "Walk Through Daikanyama: Tsutaya Books Lurf Gallery",
+      "durationSec": 2.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.2,
+        "frame": 746
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Another angle of the Tsutaya Books complex."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.1,
+        "frame": 772
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The interior of a cafe or gallery with wooden cabinetry and modern lighting."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.9,
+        "frame": 825
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A view of a traditional Japanese building through trees in a garden."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28,
+        "frame": 828
+      },
+      "text": "Visit the Asakusa Residence",
+      "durationSec": 2.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.8,
+        "frame": 852
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A close-up shot of a traditional stone lantern in the garden."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30.6,
+        "frame": 905
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman sits in a restaurant, looking off-camera and smiling."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 30.7,
+        "frame": 908
+      },
+      "text": "Lunch at Ginza Kagari (best ramen!!!)",
+      "durationSec": 3.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.5,
+        "frame": 932
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A bowl of creamy ramen is placed on the table."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 32.4,
+        "frame": 959
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The woman is shown taking a bite of the ramen."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.2,
+        "frame": 1012
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A low-angle shot looking up at the canopy of a large, old tree."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 34.3,
+        "frame": 1015
+      },
+      "text": "Walk to Meiji Jingu Temple",
+      "durationSec": 3.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.1,
+        "frame": 1038
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman walks away from the camera down a path in a forest."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36,
+        "frame": 1065
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A traditional Shinto wedding procession walks through a temple courtyard."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.8,
+        "frame": 1118
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A closer shot of the wedding procession, focusing on the bride and attendants."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.7,
+        "frame": 1145
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman walks on a city sidewalk, taking a picture with a small camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 38.8,
+        "frame": 1148
+      },
+      "text": "Lambert Coffee (must!)",
+      "durationSec": 4.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40.5,
+        "frame": 1198
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman stands in the garden entrance of a traditional Japanese-style building, now a coffee shop."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.4,
+        "frame": 1225
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A close-up of a glass of iced matcha latte."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42.3,
+        "frame": 1251
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman holds up a flower-shaped monaka pastry and smiles."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43.2,
+        "frame": 1278
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A modern hotel bathroom with a glass shower and a bathtub next to a large window with a city view."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 43.3,
+        "frame": 1281
+      },
+      "text": "Okura Hotel Spa",
+      "durationSec": 3.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.1,
+        "frame": 1305
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A mirror selfie of the woman in a one-piece swimsuit in the hotel room."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 45,
+        "frame": 1331
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A shot of an indoor jacuzzi pool in a spa."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 45.9,
+        "frame": 1358
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Another angle of the spa pool with a water feature."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.8,
+        "frame": 1385
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman smiles while sitting at a sushi counter, with a chef in the background."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 46.9,
+        "frame": 1388
+      },
+      "text": "Dinner at Sushi Kyubei",
+      "durationSec": 1.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48.6,
+        "frame": 1438
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A five-storied pagoda illuminated at night."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 48.7,
+        "frame": 1441
+      },
+      "text": "Asakusa Area night stroll",
+      "durationSec": 1.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 49.5,
+        "frame": 1464
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A wide shot of a busy city street in Tokyo at night."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 50.4,
+        "frame": 1491
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The interior of a brightly lit Don Quijote store, showing aisles packed with products."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 50.5,
+        "frame": 1494
+      },
+      "text": "Don Quijote late night shopping",
+      "durationSec": 1.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 51.3,
+        "frame": 1518
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A first-person view walking down an aisle in the Don Quijote store."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52.2,
+        "frame": 1544
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A view of the Nakameguro River lined with cherry blossom trees."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 52.3,
+        "frame": 1547
+      },
+      "text": "Nakameguro River morning stroll & breakfast",
+      "durationSec": 2.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 53.1,
+        "frame": 1571
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A close-up of plates of French toast at a cafe."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 54.9,
+        "frame": 1624
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "An aerial, high-angle view of the bustling Shibuya Crossing."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 55,
+        "frame": 1627
+      },
+      "text": "Shibuya Tower to see Shibuya Crossing & View",
+      "durationSec": 1.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 56.7,
+        "frame": 1678
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman takes a mirror selfie inside the Shibuya Sky observation deck."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 57.6,
+        "frame": 1704
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A sushi chef's hands are shown expertly forming a piece of nigiri sushi."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 57.7,
+        "frame": 1707
+      },
+      "text": "Lunch at Sushi Robayashi",
+      "durationSec": 3.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59.4,
+        "frame": 1757
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "An extreme close-up of a piece of uni (sea urchin) sushi on a small plate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 101.2,
+        "frame": 2994
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A street view of the modern architecture in Roppongi Hills."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 101.3,
+        "frame": 2997
+      },
+      "text": "Walk Roppongi & Azabudai Hills",
+      "durationSec": 1.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 102.1,
+        "frame": 3021
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A shot of a park area with modern buildings in the background."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 103,
+        "frame": 3047
+      },
+      "toShotSize": "wide",
+      "shotDescription": "An immersive art installation room (teamLab) filled with countless sparkling, hanging orbs."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 103.1,
+        "frame": 3050
+      },
+      "text": "Teamlabs Borderless! (Musttt)",
+      "durationSec": 1.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 103.9,
+        "frame": 3074
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A selfie shot of the woman looking amazed inside another teamLab installation with walls of blue lights."
+    }
+  ],
+  "bgm": {
+    "name": "Mayonaka no Door / Stay With Me",
+    "trending": true,
+    "bpm": 108,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 1.2,
+          "frame": 36
+        },
+        "kind": "vocal_in",
+        "note": "First line 'Stay with me' starts"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 57,
+      "avgShotDurationSec": 1.15,
+      "cutDensityPerSec": 0.85,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 1,
+        "close_up": 15,
+        "medium": 16,
+        "wide": 24,
+        "extreme_wide": 1
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "upbeat_city_pop",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "centered_white_sans_serif",
+      "colorGrade": "natural_bright"
+    },
+    "structure": {
+      "hookFormat": "title_card",
+      "openingShot": "wide_shot_creator_in_lobby",
+      "endingShot": "close_up_selfie_in_art_installation",
+      "cta": null,
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 10,
+    "effect": 10,
+    "bgmSync": 65,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:54:23.036Z"
+  }
+}

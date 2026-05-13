@@ -1,0 +1,248 @@
+{
+  "videoId": "tt-7595902010868682014",
+  "durationSec": 62.95,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "comedy",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A Chihuahua wearing a creepy mask approaches a pitbull lying on the floor."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.6,
+        "frame": 228
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A Chihuahua wearing a bloody skull mask approaches a bulldog lying on a dog bed."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A Chihuahua wearing a werewolf mask stands before a husky lying on a couch."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.6,
+        "frame": 588
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A Chihuahua licks a sleeping pitbull's ear."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.9,
+        "frame": 747
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A Chihuahua wearing a green dinosaur mask approaches a sleeping pitbull."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.8,
+        "frame": 954
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A Chihuahua wearing a vampire mask is next to a sleeping pitbull."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36.9,
+        "frame": 1107
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A Chihuahua in a ghost costume faces a pitbull hiding behind a table leg."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43.8,
+        "frame": 1314
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A small dog wearing a Ghostface mask approaches a golden retriever."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 49.6,
+        "frame": 1488
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A Chihuahua wearing a green goblin mask approaches a sleeping labrador."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 50,
+        "frame": 1500
+      },
+      "text": "Chihuahua's pranks",
+      "durationSec": 5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 55.6,
+        "frame": 1668
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A Chihuahua wearing a green mask approaches a sleeping pitbull."
+    }
+  ],
+  "bgm": {
+    "name": "Comedic Sound Effect Montage",
+    "trending": true,
+    "bpm": null,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 2.9,
+          "frame": 87
+        },
+        "kind": "sound_effect",
+        "note": "Startled dog sound and human laughter"
+      },
+      {
+        "at": {
+          "sec": 9.8,
+          "frame": 294
+        },
+        "kind": "sound_effect",
+        "note": "Cartoon running sound effect and laughter"
+      },
+      {
+        "at": {
+          "sec": 15.8,
+          "frame": 474
+        },
+        "kind": "sound_effect",
+        "note": "Startled jump sound and running effects"
+      },
+      {
+        "at": {
+          "sec": 21.6,
+          "frame": 648
+        },
+        "kind": "sound_effect",
+        "note": "Startled jump sound and human laughter"
+      },
+      {
+        "at": {
+          "sec": 28.5,
+          "frame": 855
+        },
+        "kind": "sound_effect",
+        "note": "Startled jump sound and laughter"
+      },
+      {
+        "at": {
+          "sec": 34.5,
+          "frame": 1035
+        },
+        "kind": "sound_effect",
+        "note": "Startled jump sound"
+      },
+      {
+        "at": {
+          "sec": 44.8,
+          "frame": 1344
+        },
+        "kind": "sound_effect",
+        "note": "Startled jump sound and human laughter"
+      },
+      {
+        "at": {
+          "sec": 51.8,
+          "frame": 1554
+        },
+        "kind": "sound_effect",
+        "note": "Dog bark and running sounds"
+      },
+      {
+        "at": {
+          "sec": 58.8,
+          "frame": 1764
+        },
+        "kind": "sound_effect",
+        "note": "Startled jump sound and comedic music"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 10,
+      "avgShotDurationSec": 6.25,
+      "cutDensityPerSec": 0.14,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.1,
+        "medium": 0.9,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "sound_effect_driven",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "simple_overlay",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "action_hook",
+      "openingShot": "A Chihuahua in a creepy mask approaches a pitbull.",
+      "endingShot": "A pitbull, startled by the masked Chihuahua, stands on a couch.",
+      "cta": null,
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 80,
+    "transition": 10,
+    "effect": 5,
+    "bgmSync": 90,
+    "overall": 75
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:41:54.622Z"
+  }
+}

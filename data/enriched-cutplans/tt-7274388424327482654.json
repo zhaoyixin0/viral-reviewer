@@ -1,0 +1,509 @@
+{
+  "videoId": "tt-7274388424327482654",
+  "durationSec": 78.738,
+  "fps": 53.97457627118644,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "listicle",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman stands at the entrance of a brightly lit Tokyo alley (Omoide Yokocho) at night, introducing the video's topic."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 0.1,
+        "frame": 5
+      },
+      "type": "title_card",
+      "durationSec": 2.4,
+      "params": {
+        "text": "WHAT NOT TO DO for your 1st trip IN TOKYO"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.7,
+        "frame": 38
+      },
+      "text": "this is what not to do on your first trip to Tokyo",
+      "durationSec": 1.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.5,
+        "frame": 135
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "A sped-up, 360-degree camera view of the bustling Shibuya Crossing at night."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 2.5,
+        "frame": 135
+      },
+      "type": "360_camera_hyperlapse",
+      "durationSec": 4
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.2,
+        "frame": 173
+      },
+      "text": "not all restaurants are built to accommodate long sessions of eating",
+      "durationSec": 2.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.5,
+        "frame": 351
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A chef's hands in blue gloves slice fresh tuna at a market stall."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.6,
+        "frame": 356
+      },
+      "text": "many small family owned restaurants can only fit a few customers at a time",
+      "durationSec": 4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.4,
+        "frame": 615
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down view of a bowl of tuna donburi (rice bowl)."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.7,
+        "frame": 632
+      },
+      "text": "don't have a three hour dinner date or a lengthy catch up session with your friends",
+      "durationSec": 3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.7,
+        "frame": 793
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A bowl of tsukemen noodles next to a bowl of dipping broth and a soft-boiled egg."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15,
+        "frame": 810
+      },
+      "text": "and while making substitutions to your meal in your country might be more common",
+      "durationSec": 3.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17,
+        "frame": 918
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person lifts tsukemen noodles with chopsticks from a bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.8,
+        "frame": 1015
+      },
+      "text": "it's best in Japan if you just stick to what you're served",
+      "durationSec": 1.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.5,
+        "frame": 1106
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Dipping the noodles into the rich broth."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.8,
+        "frame": 1123
+      },
+      "text": "especially when language barriers make it really difficult to communicate",
+      "durationSec": 2.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.2,
+        "frame": 1198
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Side profile of a man eating the noodles from the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24,
+        "frame": 1295
+      },
+      "text": "so instead find a restaurant that actually caters to your needs",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25,
+        "frame": 1349
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A Shinkansen (bullet train) pulls into a station platform."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 25.1,
+        "frame": 1355
+      },
+      "type": "pan_left",
+      "durationSec": 7.4,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.8,
+        "frame": 1447
+      },
+      "text": "the next biggest thing is talking loudly on public transit",
+      "durationSec": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 32.5,
+        "frame": 1754
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Looking up at the iconic mirrored escalator entrance of Tokyu Plaza in Harajuku."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.2,
+        "frame": 1792
+      },
+      "text": "save your conversations and phone calls for later",
+      "durationSec": 1.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.5,
+        "frame": 1916
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot looking down the kaleidoscopic, mirrored escalator."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35.8,
+        "frame": 1932
+      },
+      "text": "and this next one was so confusing for me as someone coming from Taiwan",
+      "durationSec": 3
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 39.2,
+        "frame": 2116
+      },
+      "text": "the left side on escalators is actually for standing and the right side is for walking",
+      "durationSec": 3.3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42.5,
+        "frame": 2294
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down POV shot of two pairs of feet walking on a paved surface."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 42.8,
+        "frame": 2310
+      },
+      "text": "so do not stop on the right side",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.8,
+        "frame": 2418
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A sunny day on a busy shopping street in Tokyo with pedestrians."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 45,
+        "frame": 2429
+      },
+      "text": "or you'll make it so inconvenient for everyone behind you",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.5,
+        "frame": 2510
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds a freshly made strawberry crepe in a pink paper cone."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 46.8,
+        "frame": 2526
+      },
+      "text": "for the public toilets here",
+      "durationSec": 1.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48.2,
+        "frame": 2602
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Following a person walking through a very crowded street."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 48.5,
+        "frame": 2618
+      },
+      "text": "this was actually a nightmare for me when I first visited Japan",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 50.5,
+        "frame": 2726
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A wide shot of the extremely crowded Takeshita Street in Harajuku."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 50.8,
+        "frame": 2742
+      },
+      "text": "because of their squat toilets",
+      "durationSec": 3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 53.8,
+        "frame": 2904
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Walking through a narrow alley at night, illuminated by a string of yellow paper lanterns."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 54.2,
+        "frame": 2925
+      },
+      "text": "but then again in Taiwan squat toilets are also normal",
+      "durationSec": 2.3
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 56.8,
+        "frame": 3066
+      },
+      "text": "try not to panic when you actually see one because for many reasons... people actually prefer them compared to western toilets",
+      "durationSec": 5.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 102.5,
+        "frame": 5532
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The entrance arch to Takeshita Street on a sunny day, with crowds of people."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 103,
+        "frame": 5559
+      },
+      "text": "And last but not least, PDA is something that you won't find in Japan",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 106.5,
+        "frame": 5748
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "A 360-degree camera shot walking down a neon-lit street at night."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 106.8,
+        "frame": 5764
+      },
+      "text": "cause PDA will actually make people uncomfortable here",
+      "durationSec": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 108.5,
+        "frame": 5856
+      },
+      "text": "the same goes for greeting your new Japanese friends",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 110,
+        "frame": 5937
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Another 360-degree camera shot walking down a street with bright pink and purple neon signs."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 110.3,
+        "frame": 5953
+      },
+      "text": "hugging and kissing as greetings are not part of their culture",
+      "durationSec": 3.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 114.2,
+        "frame": 6164
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "A final 360-degree camera shot walking down a street, looking up at large billboards."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 114.8,
+        "frame": 6196
+      },
+      "text": "so please comment down below if you have any more tips on what not to do in Tokyo!",
+      "durationSec": 3.8
+    }
+  ],
+  "bgm": {
+    "name": "Unknown Lo-fi Hip Hop",
+    "trending": false,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 24,
+      "avgShotDurationSec": 3.25,
+      "cutDensityPerSec": 0.29,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "static",
+        "pan_left"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.25,
+        "medium": 0.2,
+        "wide": 0.35,
+        "extreme_wide": 0.2
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_lofi_loop",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "white_sans_serif_with_outline",
+      "colorGrade": "natural_saturated"
+    },
+    "structure": {
+      "hookFormat": "text_on_screen_and_direct_address",
+      "openingShot": "presenter_on_location",
+      "endingShot": "pov_walk_through_neon_street",
+      "cta": "direct_question",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 50,
+    "bgmSync": 20,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:52:13.214Z"
+  }
+}

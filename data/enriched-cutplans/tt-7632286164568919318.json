@@ -1,0 +1,828 @@
+{
+  "videoId": "tt-7632286164568919318",
+  "durationSec": 81.548,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand sprinkles freshly chopped parsley over a pot of finished Beef Bourguignon."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "This is BEEF BOURGUIGNON",
+      "durationSec": 1.5,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.2,
+        "frame": 36
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Steam rises from the rich, dark stew in the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2,
+        "frame": 60
+      },
+      "text": "slow-cooked",
+      "durationSec": 1.2,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.2,
+        "frame": 96
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Red wine is poured from a bottle into a pot of seared beef chunks."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.4,
+        "frame": 102
+      },
+      "text": "and loaded with RED WINE",
+      "durationSec": 1.2,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.6,
+        "frame": 138
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A chef's hands use a large knife to cut raw beef into chunks on a wooden board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "text": "Start by cutting 1 kilo of beef into 4 to 5 centimetre chunks,",
+      "durationSec": 3,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.8,
+        "frame": 204
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man in an apron cuts beef chunks on a wooden board in a kitchen."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.4,
+        "frame": 252
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The man seasons the beef chunks with salt."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.6,
+        "frame": 258
+      },
+      "text": "then season generously with salt and black pepper",
+      "durationSec": 2.2,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10,
+        "frame": 300
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A pepper mill grinds black pepper over the salted beef chunks."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11,
+        "frame": 330
+      },
+      "text": "and set aside.",
+      "durationSec": 0.8,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand places a large pot onto a gas stove burner."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12,
+        "frame": 360
+      },
+      "text": "Heat a large heavy pot over medium-high heat,",
+      "durationSec": 1.8,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.6,
+        "frame": 408
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Olive oil is poured into the hot pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.4,
+        "frame": 432
+      },
+      "text": "add 30 millilitres of olive oil,",
+      "durationSec": 1.4,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 474
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Diced bacon lardons are added to the hot oil in the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.4,
+        "frame": 492
+      },
+      "text": "then cook 300 grams of bacon lardons",
+      "durationSec": 1.6,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.6,
+        "frame": 528
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The bacon is stirred with a wooden spoon as it cooks and renders fat."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.2,
+        "frame": 546
+      },
+      "text": "until the fat renders and they're golden and crisp.",
+      "durationSec": 2,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20,
+        "frame": 600
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A slotted spoon removes the crispy bacon from the pot onto a plate."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.6,
+        "frame": 618
+      },
+      "text": "Remove and set aside.",
+      "durationSec": 1.2,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.8,
+        "frame": 654
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Tongs place seasoned beef chunks into the hot bacon fat in the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.2,
+        "frame": 666
+      },
+      "text": "In the same pot, sear the beef in batches",
+      "durationSec": 2,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.8,
+        "frame": 744
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The beef chunks are turned with tongs as they sear and brown in the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.8,
+        "frame": 744
+      },
+      "text": "until deeply browned on all sides.",
+      "durationSec": 1.6,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.4,
+        "frame": 792
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand adds cubes of butter to the searing beef."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.6,
+        "frame": 798
+      },
+      "text": "Partway through, add 20 grams of butter to build even more flavour.",
+      "durationSec": 2.8,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.2,
+        "frame": 876
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Tongs remove the seared beef from the pot and place it on the plate with the bacon."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.8,
+        "frame": 894
+      },
+      "text": "Remove the beef and set aside.",
+      "durationSec": 1.4,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.6,
+        "frame": 948
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Sliced onions are added to the pot from a wooden board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.8,
+        "frame": 954
+      },
+      "text": "Now add 2 sliced onions,",
+      "durationSec": 1.2,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33,
+        "frame": 990
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Chopped carrots are added to the onions in the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.4,
+        "frame": 1002
+      },
+      "text": "4 carrots chopped on the diagonal,",
+      "durationSec": 1.4,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.8,
+        "frame": 1044
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Two crushed garlic cloves are added to the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35.2,
+        "frame": 1056
+      },
+      "text": "and 2 crushed garlic cloves into the pot.",
+      "durationSec": 1.6,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36.8,
+        "frame": 1104
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The onions and carrots are sautéed with a wooden spoon."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 37.6,
+        "frame": 1128
+      },
+      "text": "Sauté until the onions start to colour.",
+      "durationSec": 1.8,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.6,
+        "frame": 1188
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Tomato paste is added to the sautéed vegetables."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 39.8,
+        "frame": 1194
+      },
+      "text": "Stir in 40 grams of tomato paste and cook for 1 to 2 minutes,",
+      "durationSec": 3,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43,
+        "frame": 1290
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Flour is sprinkled over the vegetables in the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 43.4,
+        "frame": 1302
+      },
+      "text": "then add 30 grams of flour, stirring to coat everything, and cook for another 1 to 2 minutes.",
+      "durationSec": 4.6,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48,
+        "frame": 1440
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The cooked beef and bacon are returned to the pot with the vegetables."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 48.6,
+        "frame": 1458
+      },
+      "text": "Return the beef and bacon to the pot,",
+      "durationSec": 1.4,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 50,
+        "frame": 1500
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Red wine is poured from a bottle into the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 50.6,
+        "frame": 1518
+      },
+      "text": "then pour in a full bottle of red wine",
+      "durationSec": 1.6,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52.2,
+        "frame": 1566
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Beef stock is poured from a measuring cup into the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 52.8,
+        "frame": 1584
+      },
+      "text": "and 300 millilitres of beef stock.",
+      "durationSec": 1.8,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 54.6,
+        "frame": 1638
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Fresh thyme sprigs and bay leaves are added to the stew."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 54.8,
+        "frame": 1644
+      },
+      "text": "Add a few sprigs of thyme and 2 bay leaves,",
+      "durationSec": 2,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 56.8,
+        "frame": 1704
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The stew is stirred with a wooden spoon as it comes to a simmer."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 57.4,
+        "frame": 1722
+      },
+      "text": "then bring everything to a gentle simmer.",
+      "durationSec": 1.8,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59,
+        "frame": 1770
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand places a glass lid on the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 59.4,
+        "frame": 1782
+      },
+      "text": "Cover and cook for 2 to 3 hours until the beef is tender.",
+      "durationSec": 2.6,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 102,
+        "frame": 3060
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Olive oil and a cube of butter are added to a separate frying pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 102.4,
+        "frame": 3072
+      },
+      "text": "Near the end, heat a frying pan with a drizzle of olive oil and 20 grams of butter.",
+      "durationSec": 3.6,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 106,
+        "frame": 3180
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Whole and halved mushrooms are added to the hot butter and oil."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 106.4,
+        "frame": 3192
+      },
+      "text": "Cook 200 grams of mushrooms",
+      "durationSec": 1.2,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 107.4,
+        "frame": 3222
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Tongs hold up a perfectly browned mushroom half."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 107.8,
+        "frame": 3234
+      },
+      "text": "until browned, then remove.",
+      "durationSec": 1.6,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 109.6,
+        "frame": 3288
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Halved shallots are placed cut-side down in the hot pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 110,
+        "frame": 3300
+      },
+      "text": "and in the same pan add 6 halved shallots or a handful of silver skin onions and cook until caramelised,",
+      "durationSec": 4.4,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 114.2,
+        "frame": 3426
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The caramelized shallots are added to the plate of cooked mushrooms."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 115.6,
+        "frame": 3468
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The cooked mushrooms and shallots are added to the main stew pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 116,
+        "frame": 3480
+      },
+      "text": "Add the mushrooms and shallots into the stew and let it simmer for a final 20 minutes.",
+      "durationSec": 3,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 119,
+        "frame": 3570
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A chef rapidly chops fresh parsley on a wooden board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 119.6,
+        "frame": 3588
+      },
+      "text": "then finish with freshly chopped parsley.",
+      "durationSec": 1.8,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 120.2,
+        "frame": 3606
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand sprinkles freshly chopped parsley over the finished Beef Bourguignon, looping the video."
+    }
+  ],
+  "bgm": {
+    "name": "Gentle, cinematic instrumental",
+    "trending": false,
+    "bpm": 110,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 37,
+      "avgShotDurationSec": 2.21,
+      "cutDensityPerSec": 0.45,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.2,
+        "close_up": 0.7,
+        "medium": 0.1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_instrumental",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "White sans-serif with drop shadow",
+      "colorGrade": "Warm and rich"
+    },
+    "structure": {
+      "hookFormat": "finished_product",
+      "openingShot": "Close-up of the finished Beef Bourguignon being garnished.",
+      "endingShot": "Close-up of the finished Beef Bourguignon being garnished, creating a loop.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 0,
+        "frame": 0
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 5,
+    "bgmSync": 60,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:58:05.521Z"
+  }
+}

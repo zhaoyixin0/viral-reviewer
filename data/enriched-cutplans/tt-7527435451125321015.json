@@ -1,0 +1,761 @@
+{
+  "videoId": "tt-7527435451125321015",
+  "durationSec": 76.044,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "POV: coffee chat with the summer intern",
+      "durationSec": 75.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A young man in a green polo shirt and sunglasses (the intern) sits down at an outdoor cafe table, speaking to the camera."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 4.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "yo what's good",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.1,
+        "frame": 33
+      },
+      "text": "sorry I'm late",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "speed_change",
+      "at": {
+        "sec": 2.6,
+        "frame": 78
+      },
+      "multiplier": 0.7,
+      "durationSec": 2.2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.4,
+        "frame": 102
+      },
+      "text": "there's so many baddies in our building",
+      "durationSec": 1.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A different young man in a beige t-shirt (the employee) sits at the table, looking at the camera with a concerned expression."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "type": "static",
+      "durationSec": 3.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6,
+        "frame": 180
+      },
+      "text": "I don't think you should talk about our coworkers like that",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.6,
+        "frame": 258
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Back to the intern, who is now leaning back in his chair."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 8.6,
+        "frame": 258
+      },
+      "type": "static",
+      "durationSec": 4,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.2,
+        "frame": 276
+      },
+      "text": "bro I just be doing laps in our building man",
+      "durationSec": 1.6
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.3,
+        "frame": 339
+      },
+      "text": "there's like a lot of talent at this company",
+      "durationSec": 1.3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.6,
+        "frame": 378
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Back to the employee, looking uncomfortable."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 12.6,
+        "frame": 378
+      },
+      "type": "static",
+      "durationSec": 3.1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.2,
+        "frame": 396
+      },
+      "text": "okay",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.1,
+        "frame": 423
+      },
+      "text": "um well",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.9,
+        "frame": 447
+      },
+      "text": "how's work going?",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.7,
+        "frame": 471
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Back to the intern, leaning forward on the table."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 15.7,
+        "frame": 471
+      },
+      "type": "static",
+      "durationSec": 7.1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.5,
+        "frame": 495
+      },
+      "text": "dude actually super chill",
+      "durationSec": 1
+    },
+    {
+      "kind": "speed_change",
+      "at": {
+        "sec": 17.7,
+        "frame": 531
+      },
+      "multiplier": 0.7,
+      "durationSec": 3.1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.5,
+        "frame": 555
+      },
+      "text": "I put the entire company codebase into chatGPT",
+      "durationSec": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.2,
+        "frame": 636
+      },
+      "text": "I get 90% of the work done for me",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.8,
+        "frame": 684
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Back to the employee, looking shocked."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 22.8,
+        "frame": 684
+      },
+      "type": "static",
+      "durationSec": 8,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23.5,
+        "frame": 705
+      },
+      "text": "wait you",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.1,
+        "frame": 723
+      },
+      "text": "you put the entire code base in there?",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.1,
+        "frame": 783
+      },
+      "text": "okay",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 27,
+        "frame": 810
+      },
+      "text": "well you said you wanted career advice",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28.8,
+        "frame": 864
+      },
+      "text": "so do you have any specific questions or anything?",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30.8,
+        "frame": 924
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Back to the intern, looking thoughtful."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 30.8,
+        "frame": 924
+      },
+      "type": "static",
+      "durationSec": 7,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.5,
+        "frame": 945
+      },
+      "text": "yeah actually I do man",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.1,
+        "frame": 993
+      },
+      "text": "how do I bag Priya from marketing?",
+      "durationSec": 1.4
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 34.9,
+        "frame": 1047
+      },
+      "text": "bro she does not want me",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 36.3,
+        "frame": 1089
+      },
+      "text": "I'm literally hot and attractive",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.8,
+        "frame": 1134
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Back to the employee, looking exasperated."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 37.8,
+        "frame": 1134
+      },
+      "type": "static",
+      "durationSec": 3,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 39.2,
+        "frame": 1176
+      },
+      "text": "that's not a career question dude",
+      "durationSec": 1.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40.8,
+        "frame": 1224
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Back to the intern, leaning back with arms crossed."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 40.8,
+        "frame": 1224
+      },
+      "type": "static",
+      "durationSec": 3.3,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 41.4,
+        "frame": 1242
+      },
+      "text": "okay I guess",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 42.6,
+        "frame": 1278
+      },
+      "text": "what do you like to do on the weekends?",
+      "durationSec": 1.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.1,
+        "frame": 1323
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Back to the employee, looking more relaxed."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 44.1,
+        "frame": 1323
+      },
+      "type": "static",
+      "durationSec": 6.7,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 45.1,
+        "frame": 1353
+      },
+      "text": "yeah maybe I'll like go to a workout class",
+      "durationSec": 1.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 47.6,
+        "frame": 1428
+      },
+      "text": "hang out with my friends at the park or something",
+      "durationSec": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 50.1,
+        "frame": 1503
+      },
+      "text": "what about you?",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 50.8,
+        "frame": 1524
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Back to the intern, leaning forward intently."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 50.8,
+        "frame": 1524
+      },
+      "type": "static",
+      "durationSec": 8.7,
+      "easing": "linear"
+    },
+    {
+      "kind": "speed_change",
+      "at": {
+        "sec": 51.1,
+        "frame": 1533
+      },
+      "multiplier": 0.7,
+      "durationSec": 4.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 51.5,
+        "frame": 1545
+      },
+      "text": "Mr Purple",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 52.4,
+        "frame": 1572
+      },
+      "text": "5 of my frat bros",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 54.2,
+        "frame": 1626
+      },
+      "text": "$10 tequila shots",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 56.4,
+        "frame": 1692
+      },
+      "text": "yo we be getting blackout drunk",
+      "durationSec": 1.4
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 58.2,
+        "frame": 1746
+      },
+      "text": "that shi is a movie",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59.5,
+        "frame": 1785
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Back to the employee, looking defeated and rubbing his face."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 59.5,
+        "frame": 1785
+      },
+      "type": "static",
+      "durationSec": 4.7,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 100.4,
+        "frame": 3012
+      },
+      "text": "okay well",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 101,
+        "frame": 3030
+      },
+      "text": "we're out of time",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 102.1,
+        "frame": 3063
+      },
+      "text": "but anyway",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 102.6,
+        "frame": 3078
+      },
+      "text": "good luck I hope you get that return offer dude",
+      "durationSec": 1.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 104.2,
+        "frame": 3126
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Back to the intern, looking nonchalant."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 104.2,
+        "frame": 3126
+      },
+      "type": "static",
+      "durationSec": 11.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 105.2,
+        "frame": 3156
+      },
+      "text": "I'm fine it's okay",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 106.4,
+        "frame": 3192
+      },
+      "text": "my startup already got funded for YC F25",
+      "durationSec": 1.1
+    },
+    {
+      "kind": "speed_change",
+      "at": {
+        "sec": 107.7,
+        "frame": 3231
+      },
+      "multiplier": 0.7,
+      "durationSec": 3.3
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 109.1,
+        "frame": 3273
+      },
+      "text": "we have like $10 million in funding",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 111.4,
+        "frame": 3342
+      },
+      "text": "oh um",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 112.1,
+        "frame": 3363
+      },
+      "text": "yeah I'm like practically a millionaire",
+      "durationSec": 1.1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 113.6,
+        "frame": 3408
+      },
+      "text": "do you want a job by the way?",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 114.6,
+        "frame": 3438
+      },
+      "text": "I'm good",
+      "durationSec": 0.6
+    }
+  ],
+  "bgm": {
+    "name": "Unknown chill piano track",
+    "trending": false,
+    "bpm": 70,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 13,
+      "avgShotDurationSec": 5.85,
+      "cutDensityPerSec": 0.16,
+      "rhythmProfile": "dialogue_driven",
+      "keyTwistAt": {
+        "sec": 106.3,
+        "frame": 3189
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "shot_reverse_shot"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_loop",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "White sans-serif text with black outline, centered. Title at top, dialogue at bottom.",
+      "colorGrade": "natural_daylight"
+    },
+    "structure": {
+      "hookFormat": "text_on_screen",
+      "openingShot": "Medium shot of the 'intern' character arriving and starting the conversation.",
+      "endingShot": "Medium shot of the 'intern' revealing his success and offering the other character a job.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 106.3,
+        "frame": 3189
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 5,
+    "effect": 25,
+    "bgmSync": 5,
+    "overall": 20
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:08:33.050Z"
+  }
+}

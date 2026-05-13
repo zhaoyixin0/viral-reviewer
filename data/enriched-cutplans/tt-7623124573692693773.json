@@ -1,0 +1,533 @@
+{
+  "videoId": "tt-7623124573692693773",
+  "durationSec": 35.433,
+  "fps": 50.83590566037736,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "interview",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A young woman in a blue top stands in front of a shop window, surrounded by several hands reaching towards her."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 5
+      },
+      "text": "intern intern",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.6,
+        "frame": 31
+      },
+      "text": "where you gonna intern?",
+      "durationSec": 1.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.8,
+        "frame": 92
+      },
+      "text": "I'm a JP Morgan Investment Banking Summer analyst",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 2.2,
+        "frame": 112
+      },
+      "type": "graphic_overlay",
+      "durationSec": 2.1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.6,
+        "frame": 234
+      },
+      "text": "how much money do you make?",
+      "durationSec": 1.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.1,
+        "frame": 310
+      },
+      "text": "I make $50 an hour",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.8,
+        "frame": 397
+      },
+      "text": "How'd you get this job?",
+      "durationSec": 1.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9,
+        "frame": 458
+      },
+      "text": "networking and simplify",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 9.2,
+        "frame": 468
+      },
+      "type": "graphic_overlay",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 10.1,
+        "frame": 513
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.1,
+        "frame": 513
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A second young woman in a yellow shirt stands in the same location, also surrounded by hands."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.2,
+        "frame": 519
+      },
+      "text": "intern intern",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11,
+        "frame": 559
+      },
+      "text": "where you gonna intern?",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.1,
+        "frame": 615
+      },
+      "text": "I'm a law clerk at a law firm",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 12.4,
+        "frame": 630
+      },
+      "type": "picture_in_picture",
+      "durationSec": 1.3
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.4,
+        "frame": 732
+      },
+      "text": "How much money do you make?",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15.5,
+        "frame": 788
+      },
+      "text": "I make 24 an hour",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.3,
+        "frame": 829
+      },
+      "text": "That's pretty good.",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 17,
+        "frame": 864
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17,
+        "frame": 864
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A third young woman in a black top stands in the same location, surrounded by hands."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.1,
+        "frame": 869
+      },
+      "text": "Intern intern",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.6,
+        "frame": 895
+      },
+      "text": "where are you gonna intern?",
+      "durationSec": 1.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.8,
+        "frame": 956
+      },
+      "text": "Um, I don't have an internship.",
+      "durationSec": 1.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20,
+        "frame": 1017
+      },
+      "text": "I'm a stay at home daughter",
+      "durationSec": 1.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.2,
+        "frame": 1078
+      },
+      "text": "Oh. How much do you make?",
+      "durationSec": 1.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.8,
+        "frame": 1159
+      },
+      "text": "so im the CEO",
+      "durationSec": 1.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 23.8,
+        "frame": 1210
+      },
+      "type": "picture_in_picture",
+      "durationSec": 1
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 25.6,
+        "frame": 1301
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.6,
+        "frame": 1301
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A fourth young woman in a black top stands in the same location, surrounded by hands."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 25.7,
+        "frame": 1306
+      },
+      "text": "intern intern",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.4,
+        "frame": 1342
+      },
+      "text": "where are you gonna intern?",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 27.5,
+        "frame": 1398
+      },
+      "text": "I'm a Google data science intern",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 28,
+        "frame": 1423
+      },
+      "type": "graphic_overlay",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 30.8,
+        "frame": 1566
+      },
+      "text": "I make $50 an hour",
+      "durationSec": 0.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.8,
+        "frame": 1617
+      },
+      "text": "DAMNNNNN",
+      "durationSec": 0.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 32.1,
+        "frame": 1632
+      },
+      "type": "picture_in_picture",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 32.8,
+        "frame": 1667
+      },
+      "text": "Where'd you get this internship?",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.8,
+        "frame": 1718
+      },
+      "text": "Through connections and simplify!!!",
+      "durationSec": 1.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 34.1,
+        "frame": 1734
+      },
+      "type": "graphic_overlay",
+      "durationSec": 0.9
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 4,
+      "avgShotDurationSec": 8.75,
+      "cutDensityPerSec": 0.08,
+      "rhythmProfile": "medium",
+      "keyTwistAt": {
+        "sec": 20,
+        "frame": 1017
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "dialogue_driven",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "White text with a blue outline, centered at the bottom.",
+      "colorGrade": "Natural with slight saturation."
+    },
+    "structure": {
+      "hookFormat": "Repetitive chant and direct question ('Intern intern, where you gonna intern?').",
+      "openingShot": "Medium shot of the first interviewee being surrounded by hands and asked the main question.",
+      "endingShot": "Medium shot of the final interviewee revealing how she got her job, with brand logos appearing.",
+      "cta": "Implicit CTA to use the 'Simplify' app for job searching, mentioned twice.",
+      "payoffAt": {
+        "sec": 20,
+        "frame": 1017
+      }
+    }
+  },
+  "density": {
+    "editing": 70,
+    "transition": 15,
+    "effect": 85,
+    "bgmSync": 0,
+    "overall": 75
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:06:01.731Z"
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "videoId": "tt-7633876635095207182",
+  "durationSec": 11.539,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Two women in casual clothes are standing in a bedroom, looking at the camera and lip-syncing."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "push_in",
+      "durationSec": 4.9,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 4.9,
+        "frame": 147
+      },
+      "type": "other",
+      "durationFrames": 5,
+      "note": "The woman on the left covers the camera lens with her arm, creating a wipe transition."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.1,
+        "frame": 153
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The scene cuts to the same two women in the same location, now wearing formal prom dresses and posing."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 5.1,
+        "frame": 153
+      },
+      "type": "push_in",
+      "durationSec": 6.4,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "linear"
+    }
+  ],
+  "bgm": {
+    "name": "See You Again (Sped Up Remix) - Tyler, The Creator",
+    "trending": true,
+    "bpm": 135,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 5,
+          "frame": 150
+        },
+        "kind": "drop",
+        "note": "The beat drops, perfectly timed with the clothing transformation reveal."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 2,
+      "avgShotDurationSec": 5.75,
+      "cutDensityPerSec": 0.08,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": {
+        "sec": 5.1,
+        "frame": 153
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "push_in",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "wipe_by_object"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Anticipatory build-up followed by an energetic beat drop for the reveal.",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "none",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "before_after",
+      "openingShot": "Two women in casual clothes, creating anticipation for a change.",
+      "endingShot": "The same two women revealed in formal dresses, fulfilling the video's premise.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 5.1,
+        "frame": 153
+      }
+    }
+  },
+  "density": {
+    "editing": 15,
+    "transition": 40,
+    "effect": 5,
+    "bgmSync": 90,
+    "overall": 35
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:31:47.913Z"
+  }
+}

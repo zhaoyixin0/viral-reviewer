@@ -1,0 +1,960 @@
+{
+  "videoId": "tt-7589763529754856718",
+  "durationSec": 77.567,
+  "fps": 59.987107864202834,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A close-up, static shot of a digital drawing tablet. On the screen are two sketches of a female torso, one labeled with a red 'X' (left) and the other with a green 'thumbs up' (right). A hand holding a stylus demonstrates drawing techniques on the sketches throughout the video."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 77.5,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 12
+      },
+      "text": "I HATE TO",
+      "durationSec": 0.7,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.9,
+        "frame": 54
+      },
+      "text": "YOU GUYS,",
+      "durationSec": 0.9,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.8,
+        "frame": 108
+      },
+      "text": "BUT YOU NEVER,",
+      "durationSec": 1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.8,
+        "frame": 168
+      },
+      "text": "EVER WANNA DRAW",
+      "durationSec": 1.1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.9,
+        "frame": 234
+      },
+      "text": "THE WAIST OF",
+      "durationSec": 1.2,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.1,
+        "frame": 306
+      },
+      "text": "A WOMAN AS",
+      "durationSec": 1.3,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.4,
+        "frame": 384
+      },
+      "text": "THESE TWO CURVED",
+      "durationSec": 1.3,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.7,
+        "frame": 462
+      },
+      "text": "LINES.",
+      "durationSec": 1.1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.8,
+        "frame": 528
+      },
+      "text": "THIS LOOKS SUPER",
+      "durationSec": 1.1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.9,
+        "frame": 594
+      },
+      "text": "ODD, AND YOU",
+      "durationSec": 1.1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11,
+        "frame": 660
+      },
+      "text": "WORK ON YOUR",
+      "durationSec": 0.7,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.7,
+        "frame": 702
+      },
+      "text": "ANATOMY SOME MORE.",
+      "durationSec": 1.3,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13,
+        "frame": 780
+      },
+      "text": "INSTEAD, I RECOMMEND",
+      "durationSec": 1.6,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.6,
+        "frame": 876
+      },
+      "text": "DRAWING OUT A",
+      "durationSec": 1.3,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15.9,
+        "frame": 954
+      },
+      "text": "CIRCLE THAT CONNECTS",
+      "durationSec": 1.8,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.7,
+        "frame": 1062
+      },
+      "text": "LIKE THIS.",
+      "durationSec": 1.1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.8,
+        "frame": 1128
+      },
+      "text": "AND THEN ONCE",
+      "durationSec": 1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.8,
+        "frame": 1188
+      },
+      "text": "YOU'RE DONE WITH",
+      "durationSec": 0.9,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.7,
+        "frame": 1242
+      },
+      "text": "THAT,",
+      "durationSec": 0.8,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.5,
+        "frame": 1290
+      },
+      "text": "DRAW ANOTHER CIRCLE",
+      "durationSec": 2,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23.5,
+        "frame": 1410
+      },
+      "text": "LIKE SO.",
+      "durationSec": 1.4,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.9,
+        "frame": 1494
+      },
+      "text": "THESE OVERLAPPING CIRCLES",
+      "durationSec": 1.8,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.7,
+        "frame": 1602
+      },
+      "text": "CREATE AN 8,",
+      "durationSec": 1.3,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28,
+        "frame": 1680
+      },
+      "text": "OR THE NUMBER",
+      "durationSec": 0.9,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28.9,
+        "frame": 1734
+      },
+      "text": "EIGHT.",
+      "durationSec": 0.8,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.7,
+        "frame": 1782
+      },
+      "text": "AND THEN YOU",
+      "durationSec": 1.3,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31,
+        "frame": 1860
+      },
+      "text": "CAN USE THIS",
+      "durationSec": 0.9,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.9,
+        "frame": 1914
+      },
+      "text": "AS A GUIDE",
+      "durationSec": 1.2,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.1,
+        "frame": 1986
+      },
+      "text": "TO DRAW IN",
+      "durationSec": 1.3,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 34.4,
+        "frame": 2064
+      },
+      "text": "THE BODY.",
+      "durationSec": 1.4,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35.8,
+        "frame": 2148
+      },
+      "text": "REALISTIC ART STYLES,",
+      "durationSec": 2,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 37.8,
+        "frame": 2268
+      },
+      "text": "TO GO FOR",
+      "durationSec": 1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 38.8,
+        "frame": 2327
+      },
+      "text": "THIS METHOD.",
+      "durationSec": 1.1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 39.9,
+        "frame": 2393
+      },
+      "text": "BECAUSE LIKE I",
+      "durationSec": 1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 40.9,
+        "frame": 2453
+      },
+      "text": "SAID, UNLESS YOU'RE",
+      "durationSec": 1.2,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 42.1,
+        "frame": 2525
+      },
+      "text": "DRAWING A CARTOON",
+      "durationSec": 1.5,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 43.6,
+        "frame": 2615
+      },
+      "text": "VERY,",
+      "durationSec": 1.1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 44.7,
+        "frame": 2681
+      },
+      "text": "EXTREMELY EXAGGERATED, THEN",
+      "durationSec": 2.1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 46.8,
+        "frame": 2807
+      },
+      "text": "DRAWING THE WAIST",
+      "durationSec": 1.1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 47.9,
+        "frame": 2873
+      },
+      "text": "ON THE LEFT",
+      "durationSec": 1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 48.9,
+        "frame": 2933
+      },
+      "text": "IS GOING TO",
+      "durationSec": 0.9,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 49.8,
+        "frame": 2987
+      },
+      "text": "MAKE EVERYONE THINK",
+      "durationSec": 1.1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 50.9,
+        "frame": 3053
+      },
+      "text": "KNOW WHAT YOU'RE",
+      "durationSec": 0.6,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 51.5,
+        "frame": 3089
+      },
+      "text": "DOING.",
+      "durationSec": 1.1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 52.6,
+        "frame": 3155
+      },
+      "text": "YOU GUYS KNOW",
+      "durationSec": 1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 53.6,
+        "frame": 3215
+      },
+      "text": "HOW TO DRAW",
+      "durationSec": 1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 54.6,
+        "frame": 3275
+      },
+      "text": "THE WAIST,",
+      "durationSec": 0.9,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 55.5,
+        "frame": 3329
+      },
+      "text": "BE MUCH EASIER",
+      "durationSec": 1.8,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 57.3,
+        "frame": 3437
+      },
+      "text": "TO CONSTRUCT THE",
+      "durationSec": 1.4,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 58.7,
+        "frame": 3521
+      },
+      "text": "ANATOMY OF THE",
+      "durationSec": 1.8,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 60.5,
+        "frame": 3629
+      },
+      "text": "FEMALE TORSO.",
+      "durationSec": 1.5,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 62,
+        "frame": 3719
+      },
+      "text": "SO KEEP THIS",
+      "durationSec": 0.8,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 62.8,
+        "frame": 3767
+      },
+      "text": "IN MIND WHENEVER",
+      "durationSec": 0.9,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 63.7,
+        "frame": 3821
+      },
+      "text": "NEVER DRAW JUST",
+      "durationSec": 1.2,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 64.9,
+        "frame": 3893
+      },
+      "text": "TWO CURVED LINES",
+      "durationSec": 1.2,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 66.1,
+        "frame": 3965
+      },
+      "text": "HOURGLASS SHAPE.",
+      "durationSec": 1.4,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 67.5,
+        "frame": 4049
+      },
+      "text": "SURE YOU ACTUALLY",
+      "durationSec": 1.2,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 68.7,
+        "frame": 4121
+      },
+      "text": "USE A NO.",
+      "durationSec": 0.9,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 69.6,
+        "frame": 4175
+      },
+      "text": "THAT 8 NUMBER",
+      "durationSec": 1.3,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 70.9,
+        "frame": 4253
+      },
+      "text": "TO GUIDE YOUR",
+      "durationSec": 1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 71.9,
+        "frame": 4313
+      },
+      "text": "LINES TO CREATE",
+      "durationSec": 1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 72.9,
+        "frame": 4373
+      },
+      "text": "THE ENTIRE BODY.",
+      "durationSec": 1.3,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 74.2,
+        "frame": 4451
+      },
+      "text": "AND WITH THAT,",
+      "durationSec": 0.7,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 74.9,
+        "frame": 4493
+      },
+      "text": "GUYS NEXT TIME.",
+      "durationSec": 1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 75.9,
+        "frame": 4553
+      },
+      "text": "TAKE CARE AND",
+      "durationSec": 1.1,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 77,
+        "frame": 4619
+      },
+      "text": "PEACE.",
+      "durationSec": 0.5,
+      "style": {
+        "font": "The Bold Font (or similar sans-serif)",
+        "color": "#FFFFFF"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Chill Lo-fi Hip Hop Beat",
+    "trending": false,
+    "bpm": 75,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.2,
+          "frame": 12
+        },
+        "kind": "vocal_in",
+        "note": "Narration starts"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 77.5,
+      "cutDensityPerSec": 0.01,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 100,
+        "medium": 0,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "Continuous instrumental loop",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "Large, sans-serif, all-caps font with a black outline and a turquoise drop shadow, appearing phrase-by-phrase at the top of the screen.",
+      "colorGrade": "Natural/Flat"
+    },
+    "structure": {
+      "hookFormat": "Problem/Solution",
+      "openingShot": "Close-up on a digital tablet showing a 'wrong' vs 'right' comparison of a drawing.",
+      "endingShot": "The final comparison is shown, with the 'wrong' version crossed out and the 'right' version checked, followed by a thumbs-up.",
+      "cta": "Implicit CTA to use the technique and a verbal sign-off.",
+      "payoffAt": {
+        "sec": 35,
+        "frame": 2100
+      }
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 0,
+    "effect": 15,
+    "bgmSync": 20,
+    "overall": 15
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:04:25.196Z"
+  }
+}

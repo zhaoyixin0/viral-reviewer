@@ -1,0 +1,362 @@
+{
+  "videoId": "tt-7537734160731868430",
+  "durationSec": 181.014,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand pours Nutella from a jar into a black pot filled with white rice, placed on a stove."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.5,
+        "frame": 210
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A yellow spatula stirs the Nutella and rice mixture in the pot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8,
+        "frame": 480
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The chocolate rice mixture is shown boiling in the pot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 528
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A yellow spoon transfers the cooked chocolate rice mixture into a blender."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.5,
+        "frame": 870
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Vegetable oil is poured into the blender with the rice mixture."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16,
+        "frame": 960
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Three eggs are added to the blender."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17,
+        "frame": 1020
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Sweetened condensed milk is poured into the blender."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19,
+        "frame": 1140
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A hand places the lid on the blender and starts blending the ingredients."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24,
+        "frame": 1440
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The mixture in the blender is now a smooth, light brown liquid."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26,
+        "frame": 1560
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "An empty white-lined pot is shown on the stove."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27,
+        "frame": 1620
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Cornstarch is added to the pot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.5,
+        "frame": 1710
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Refined sugar is added to the pot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30,
+        "frame": 1800
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Spoons are used to add Nutella to the pot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.5,
+        "frame": 2250
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Milk is poured into the pot with the other ingredients."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.5,
+        "frame": 2490
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A yellow whisk stirs the mixture in the pot as it heats up."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.5,
+        "frame": 3510
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Shot of the empty stove burner after the pot is removed."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59,
+        "frame": 3540
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The blended rice mixture is poured from the blender into a large glass bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 102.5,
+        "frame": 6150
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Shredded coconut is added to the mixture in the glass bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 105,
+        "frame": 6300
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A spoonful of baking powder is added on top of the coconut."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 107.5,
+        "frame": 6450
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A yellow spatula mixes the dry ingredients into the wet mixture."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 135,
+        "frame": 8100
+      },
+      "toShotSize": "medium",
+      "shotDescription": "An empty, greased and floured bundt cake pan is shown on the wooden surface."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 136,
+        "frame": 8160
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The final cake batter is poured from the glass bowl into the bundt pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 156,
+        "frame": 9360
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Hands hold up the filled bundt pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 203,
+        "frame": 12180
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The baked cake is on a white plate, and the prepared chocolate sauce is poured over it."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 223,
+        "frame": 13380
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Static shot of the finished cake, fully covered in glossy chocolate sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 225,
+        "frame": 13500
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A knife cuts a slice of the cake."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 237,
+        "frame": 14220
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A cake server lifts the cut slice from the cake."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 243.5,
+        "frame": 14610
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The slice of cake is placed on a white plate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 244.5,
+        "frame": 14670
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A fork is inserted into the slice of cake."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 248,
+        "frame": 14880
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The fork lifts a piece of the cake, showing its texture."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 250.5,
+        "frame": 15030
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A fork is inserted into the cake slice again."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 258.5,
+        "frame": 15510
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The fork lifts another piece of the cake."
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Acoustic Pop",
+    "trending": false,
+    "bpm": 120,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 32,
+      "avgShotDurationSec": 5.63,
+      "cutDensityPerSec": 0.18,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.8,
+        "medium": 0.2,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_instrumental",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "none",
+      "colorGrade": "natural_warm"
+    },
+    "structure": {
+      "hookFormat": "pattern_interrupt",
+      "openingShot": "Close-up of Nutella being poured into a pot of rice.",
+      "endingShot": "Close-up of a fork taking a bite from a slice of the finished cake.",
+      "cta": "Share, comment, and download our app.",
+      "payoffAt": {
+        "sec": 203,
+        "frame": 12180
+      }
+    }
+  },
+  "density": {
+    "editing": 60,
+    "transition": 10,
+    "effect": 0,
+    "bgmSync": 20,
+    "overall": 55
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:02:10.774Z"
+  }
+}

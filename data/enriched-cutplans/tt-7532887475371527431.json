@@ -1,0 +1,100 @@
+{
+  "videoId": "tt-7532887475371527431",
+  "durationSec": 8.381,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "俯瞰视角，一名女子在无边泳池中，背景是巴厘岛标志性的绿色梯田和椰子树。"
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "pan_left",
+      "durationSec": 8.1,
+      "easing": "ease_in_out"
+    }
+  ],
+  "bgm": {
+    "name": "Summertime Sadness (Cover)",
+    "trending": true,
+    "bpm": 65,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.5,
+          "frame": 15
+        },
+        "kind": "vocal_in",
+        "note": "女声开始演唱 'Hot summer nights'"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 8.1,
+      "cutDensityPerSec": 0,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "pan_left"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "dreamy_pop_cover",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "none",
+      "colorGrade": "vibrant_natural"
+    },
+    "structure": {
+      "hookFormat": "scenic_reveal",
+      "openingShot": "展示无边泳池和壮观梯田景色的广角镜头，营造出强烈的度假氛围。",
+      "endingShot": "镜头平移至左侧，最终揭示了地点名称“ALAS HARUM BALI”，作为信息的 payoff。",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 6.5,
+        "frame": 195
+      }
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 0,
+    "effect": 0,
+    "bgmSync": 20,
+    "overall": 15
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:45:59.316Z"
+  }
+}

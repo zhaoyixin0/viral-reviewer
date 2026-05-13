@@ -1,0 +1,337 @@
+{
+  "videoId": "tt-7634139745899007246",
+  "durationSec": 63.3,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "listicle",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A small, light-brown puppy stands on a tiled floor, facing a larger, darker dog."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 2,
+        "frame": 60
+      },
+      "type": "handheld",
+      "durationSec": 4.6,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 6.6,
+        "frame": 198
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.6,
+        "frame": 198
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "POV shot of a person's finger near a golden retriever puppy's nose as the owner says 'No'."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 13.4,
+        "frame": 402
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.4,
+        "frame": 402
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A black German Shepherd puppy with its paws on a bed barks back at its owner."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 18,
+        "frame": 540
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18,
+        "frame": 540
+      },
+      "toShotSize": "high_angle",
+      "shotDescription": "A small grey and white pitbull puppy on a rug looks up and barks."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 21.8,
+        "frame": 654
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.8,
+        "frame": 654
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A tiny French bulldog puppy in a large black plastic bin barks at a person with a gloved hand."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 27.9,
+        "frame": 837
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.9,
+        "frame": 837
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A black and white puppy on a carpet looks at the camera and then bites at a person's finger."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28.2,
+        "frame": 846
+      },
+      "text": "Lmao, sound up. Little bitch 😂",
+      "durationSec": 3.3,
+      "style": {
+        "font": "Snapchat Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 31.8,
+        "frame": 954
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.8,
+        "frame": 954
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man lying on a bed talks to a brown puppy that is growling at him."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 38.5,
+        "frame": 1155
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.5,
+        "frame": 1155
+      },
+      "toShotSize": "high_angle",
+      "shotDescription": "A husky puppy with bright blue eyes sits on a concrete path and howls."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 44,
+        "frame": 1320
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44,
+        "frame": 1320
+      },
+      "toShotSize": "high_angle",
+      "shotDescription": "A brown puppy in a green dog bed barks back at its owner."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 44.2,
+        "frame": 1326
+      },
+      "text": "ignore his food bowl he just devoured everything in it 😂😂😂",
+      "durationSec": 1.6,
+      "style": {
+        "font": "Instagram Sans",
+        "color": "white",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 45.9,
+        "frame": 1377
+      },
+      "text": "ik yall heard him cuss me tf out 😭😭",
+      "durationSec": 3.9,
+      "style": {
+        "font": "Instagram Sans",
+        "color": "white",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 49.8,
+        "frame": 1494
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 49.8,
+        "frame": 1494
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A small merle puppy in a doorway barks and throws a tantrum."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 50.2,
+        "frame": 1506
+      },
+      "text": "Who has the most attitude in the house",
+      "durationSec": 1.8,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 53.6,
+        "frame": 1608
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 53.6,
+        "frame": 1608
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A brindle puppy with long ears sits in a car and howls back at its owner."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 58.7,
+        "frame": 1761
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.7,
+        "frame": 1761
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A tiny white French bulldog puppy in a blue vest barks on a grey couch."
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 12,
+      "avgShotDurationSec": 5.27,
+      "cutDensityPerSec": 0.17,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.17,
+        "medium": 0.33,
+        "wide": 0.25,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "in-app_text_overlay",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "compilation_preview",
+      "openingShot": "Wide shot of a tiny puppy confronting a larger dog and howling.",
+      "endingShot": "Close-up of a tiny French Bulldog puppy barking.",
+      "cta": "none",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 70,
+    "transition": 10,
+    "effect": 20,
+    "bgmSync": 0,
+    "overall": 65
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:38:56.531Z"
+  }
+}

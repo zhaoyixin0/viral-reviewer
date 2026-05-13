@@ -1,0 +1,167 @@
+{
+  "videoId": "tt-7617957590588312845",
+  "durationSec": 26.539,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman with sunburn lines is shown from the chest up, blowing air as if creating a bubble."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 0.8,
+        "frame": 48
+      },
+      "type": "overlay",
+      "durationSec": 7.9
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 528
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A different woman in a hoodie is shown in a bathroom, also blowing a bubble from her mouth."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.2,
+        "frame": 552
+      },
+      "text": "“Limpa sua boca com água e sabão menina”",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.2,
+        "frame": 612
+      },
+      "text": "Pode deixar 😂😂😂",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 13.6,
+        "frame": 816
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.6,
+        "frame": 816
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A screen recording of a smartphone showing a TikTok video of the bubble trend. A stylus enters the frame to interact with the screen."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.8,
+        "frame": 1488
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "The screen recording shows the CapCut app interface with a progress bar labeled 'Applying AI effects...'"
+    }
+  ],
+  "bgm": {
+    "name": "Original sound - edits",
+    "trending": true,
+    "bpm": 135,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 8.7,
+          "frame": 522
+        },
+        "kind": "drop",
+        "note": "The main beat and bassline enter, transitioning from the intro."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 4,
+      "avgShotDurationSec": 6.6,
+      "cutDensityPerSec": 0.15,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": {
+        "sec": 13.6,
+        "frame": 816
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.5,
+        "close_up": 0,
+        "medium": 0.5,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "looping_beat",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "standard_sans_serif_white",
+      "colorGrade": "natural_vibrant"
+    },
+    "structure": {
+      "hookFormat": "result_first",
+      "openingShot": "A medium shot of a person demonstrating the 'bubble from mouth' video trend.",
+      "endingShot": "A screen recording showing the CapCut template processing the user's photos to create the video.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 21,
+        "frame": 1260
+      }
+    }
+  },
+  "density": {
+    "editing": 40,
+    "transition": 10,
+    "effect": 65,
+    "bgmSync": 20,
+    "overall": 55
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:05:14.801Z"
+  }
+}

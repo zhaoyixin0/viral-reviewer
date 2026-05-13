@@ -1,0 +1,1029 @@
+{
+  "videoId": "tt-7633996997933944084",
+  "durationSec": 59.883,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "this is everything I did in Tokyo for under $40 USD",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A couple eats at a restaurant counter."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A couple sits on a couch in a hotel lobby, waving."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman in a leather jacket walks across a crosswalk in a busy city."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.1,
+        "frame": 93
+      },
+      "text": "to start we had lunch at a yakitori restaurant in Shinjuku",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman walks towards the entrance of a traditional Japanese restaurant."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Interior shot of the busy yakitori restaurant."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.8,
+        "frame": 174
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A chef wearing a mask grills skewers in the kitchen."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.1,
+        "frame": 183
+      },
+      "text": "that grills all of their skewers over the traditional",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.8,
+        "frame": 204
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Skewers of meat and cherry tomatoes cooking over a charcoal grill."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Three finished skewers resting on the grill."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 8.5,
+        "frame": 255
+      },
+      "type": "text_overlay",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.8,
+        "frame": 294
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand lifts the lid off a red lacquer bowl of rice."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.1,
+        "frame": 303
+      },
+      "text": "a lot of places use electric or gas grills",
+      "durationSec": 2.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.8,
+        "frame": 324
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman smiles, holding the open bowl of food."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down shot of a full meal set with skewers, rice bowls, and soup."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds up a skewer of grilled chicken."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.1,
+        "frame": 393
+      },
+      "text": "but Binchotan is what keeps the chicken juicy",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.8,
+        "frame": 444
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds up a tsukune (meatball) skewer."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15.1,
+        "frame": 453
+      },
+      "text": "with a crisp and smoky outer layer",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 474
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The couple at the counter gives a thumbs up to the camera."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.8,
+        "frame": 504
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down shot of the meal set again."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.1,
+        "frame": 513
+      },
+      "text": "this whole lunch including one drink",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.8,
+        "frame": 534
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman smiles and holds up her drink."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.8,
+        "frame": 564
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The man takes a bite of food."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.1,
+        "frame": 573
+      },
+      "text": "was 3000 yen per person",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.8,
+        "frame": 594
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Selfie shot of the couple walking down a city street."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.8,
+        "frame": 624
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman walks towards a Bic Camera store."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.9,
+        "frame": 627
+      },
+      "text": "after lunch we headed to Bic Camera",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.1,
+        "frame": 663
+      },
+      "text": "where we picked up our two thousand yen vouchers",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.8,
+        "frame": 684
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A store clerk hands vouchers to the woman at a counter."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.8,
+        "frame": 714
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman smiles, fanning out the vouchers."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.3,
+        "frame": 729
+      },
+      "text": "and went straight to shopping",
+      "durationSec": 1.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.8,
+        "frame": 744
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman picks up a cosmetic product from a shelf."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.8,
+        "frame": 774
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman walks down a brightly lit store aisle."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.1,
+        "frame": 783
+      },
+      "text": "this is a great place to pick up souvenirs",
+      "durationSec": 1.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.8,
+        "frame": 804
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The couple looks at products on a shelf."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.8,
+        "frame": 834
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman kneels down to look at a display of face masks."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28.1,
+        "frame": 843
+      },
+      "text": "but I just ended up using mine",
+      "durationSec": 1.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.3,
+        "frame": 879
+      },
+      "text": "to stock up on things I needed",
+      "durationSec": 1.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.8,
+        "frame": 894
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman stands outside the store, happily holding up her purchases."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 30.2,
+        "frame": 906
+      },
+      "type": "text_overlay",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30.8,
+        "frame": 924
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman walks along a bridge towards the Spa LaQua building."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.1,
+        "frame": 933
+      },
+      "text": "and to end the day we headed to Spa Laqua",
+      "durationSec": 1.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.8,
+        "frame": 954
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman relaxes on an outdoor lounge chair, wrapped in a blanket, in front of the spa sign."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 32.8,
+        "frame": 984
+      },
+      "toShotSize": "wide",
+      "shotDescription": "High-angle shot of the woman walking up a modern staircase."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.1,
+        "frame": 993
+      },
+      "text": "which is an onsen facility right in front of Tokyo Dome",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33.8,
+        "frame": 1014
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman looks out a large window, pointing at the view."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.8,
+        "frame": 1044
+      },
+      "toShotSize": "wide",
+      "shotDescription": "View of the Tokyo Dome and a roller coaster from the window."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.8,
+        "frame": 1074
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Selfie shot of the woman holding up a mesh spa bag."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 36.2,
+        "frame": 1086
+      },
+      "type": "text_overlay",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 36.1,
+        "frame": 1083
+      },
+      "text": "here you can change into lounge clothes",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36.8,
+        "frame": 1104
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The man opens a large window overlooking the Tokyo Dome."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.8,
+        "frame": 1134
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Selfie shot of the couple in matching blue lounge wear."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 38.1,
+        "frame": 1143
+      },
+      "text": "and just spend hours relaxing",
+      "durationSec": 1.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.8,
+        "frame": 1164
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A panning shot of the spa's relaxation lounge with reclining chairs."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 39.1,
+        "frame": 1173
+      },
+      "text": "they've got several public baths",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.8,
+        "frame": 1194
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A directory sign for the spa, showing men's and women's sections."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40.8,
+        "frame": 1224
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Selfie shot of the woman smiling in a lounge chair."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 41.1,
+        "frame": 1233
+      },
+      "text": "some lounge areas where you can watch TV",
+      "durationSec": 1.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.8,
+        "frame": 1254
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot of a personal TV screen attached to a lounge chair."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42.8,
+        "frame": 1284
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Two bowls of Vietnamese noodle soup on a table."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 43.1,
+        "frame": 1293
+      },
+      "text": "and a couple restaurants to enjoy",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43.8,
+        "frame": 1314
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman eats noodles from a bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.8,
+        "frame": 1344
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The interior of the restaurant inside the spa."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 45.1,
+        "frame": 1353
+      },
+      "text": "after a nice sauna session",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.5,
+        "frame": 1395
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Repeat shot of the couple eating at the yakitori restaurant."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 47,
+        "frame": 1410
+      },
+      "type": "text_overlay",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 46.8,
+        "frame": 1404
+      },
+      "text": "the total cost of eating",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 47.5,
+        "frame": 1425
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Repeat shot of the woman holding her purchases outside Bic Camera."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 48,
+        "frame": 1440
+      },
+      "type": "text_overlay",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 47.8,
+        "frame": 1434
+      },
+      "text": "shopping and going to the spa",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48.5,
+        "frame": 1455
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Repeat shot of the woman relaxing in a lounge chair at the spa."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 49,
+        "frame": 1470
+      },
+      "type": "text_overlay",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 49.3,
+        "frame": 1479
+      },
+      "text": "would have cost $53 USD",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 50.5,
+        "frame": 1515
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Repeat shot of the woman at the crosswalk."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 51,
+        "frame": 1530
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The woman holds up a phone displaying the 'Have Fun in Tokyo Pass' from Klook."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 51.1,
+        "frame": 1533
+      },
+      "text": "but with Klook's 'Have Fun in Tokyo Pass'",
+      "durationSec": 1.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52.5,
+        "frame": 1575
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman pays at the restaurant counter using her phone."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 52.8,
+        "frame": 1584
+      },
+      "text": "we did all of these for just $39 USD",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 53.5,
+        "frame": 1605
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman pays at the Bic Camera checkout counter."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 54.5,
+        "frame": 1635
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Repeat shot of the woman relaxing at the spa."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 55.1,
+        "frame": 1653
+      },
+      "text": "the pass also has other options you can choose from",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 55.3,
+        "frame": 1659
+      },
+      "type": "text_overlay",
+      "durationSec": 4.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 56,
+        "frame": 1680
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman sits on a rooftop lounge, looking at a large Ferris wheel in the distance."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 57,
+        "frame": 1710
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The man holds up the shopping vouchers."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58,
+        "frame": 1740
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The couple takes a mirror selfie in an elevator."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 58.1,
+        "frame": 1743
+      },
+      "text": "you'll definitely get your money's worth",
+      "durationSec": 1.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Lo-fi Hip Hop",
+    "trending": false,
+    "bpm": 105,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.8,
+          "frame": 24
+        },
+        "kind": "beat"
+      },
+      {
+        "at": {
+          "sec": 2.8,
+          "frame": 84
+        },
+        "kind": "beat"
+      },
+      {
+        "at": {
+          "sec": 4.8,
+          "frame": 144
+        },
+        "kind": "beat"
+      },
+      {
+        "at": {
+          "sec": 16.8,
+          "frame": 504
+        },
+        "kind": "beat"
+      },
+      {
+        "at": {
+          "sec": 30.8,
+          "frame": 924
+        },
+        "kind": "beat"
+      },
+      {
+        "at": {
+          "sec": 46.5,
+          "frame": 1395
+        },
+        "kind": "beat"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 40,
+      "avgShotDurationSec": 1.5,
+      "cutDensityPerSec": 0.67,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 51,
+        "frame": 1530
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.3,
+        "medium": 0.5,
+        "wide": 0.2,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "constant_loop",
+      "bgmSyncTightness": "moderate",
+      "subtitleStyle": "standard_tiktok_outline",
+      "colorGrade": "bright_natural"
+    },
+    "structure": {
+      "hookFormat": "value_proposition",
+      "openingShot": "close_up_food",
+      "endingShot": "selfie_summary",
+      "cta": "discount_code",
+      "payoffAt": {
+        "sec": 52.8,
+        "frame": 1584
+      }
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 10,
+    "effect": 65,
+    "bgmSync": 80,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:51:17.684Z"
+  }
+}

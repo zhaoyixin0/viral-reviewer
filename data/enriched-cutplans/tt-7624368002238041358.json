@@ -1,0 +1,1056 @@
+{
+  "videoId": "tt-7624368002238041358",
+  "durationSec": 61.052,
+  "fps": 38.9672406551869,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "A young man with reddish-brown hair and a backwards cap speaks directly to the camera, sitting on a couch in a room. A comment bubble is overlaid on the screen."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 61,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "Interns = actual employee",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 19
+      },
+      "text": "COMPANIES DO NOT GO",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 0.9,
+        "frame": 35
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.1,
+        "frame": 43
+      },
+      "text": "EASY ON YOU AS",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.9,
+        "frame": 74
+      },
+      "text": "WHEN YOU ARE AN",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.4,
+        "frame": 94
+      },
+      "text": "INTERN. YOU ARE TREATED",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.1,
+        "frame": 121
+      },
+      "text": "JUST LIKE EVERY OTHER EMPLOYEE.",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 3.8,
+        "frame": 148
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.5,
+        "frame": 175
+      },
+      "text": "SAME JOBS THAT YOU WOULD",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 5.5,
+        "frame": 214
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.8,
+        "frame": 226
+      },
+      "text": "IF YOU WORK THERE",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 6.5,
+        "frame": 253
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7,
+        "frame": 273
+      },
+      "text": "FULL TIME.",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 7.2,
+        "frame": 281
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8,
+        "frame": 312
+      },
+      "text": "THE WHOLE REASON A",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 8.5,
+        "frame": 331
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.4,
+        "frame": 366
+      },
+      "text": "AN INTERNSHIP",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.3,
+        "frame": 401
+      },
+      "text": "TO WORK THERE",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 10.5,
+        "frame": 409
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11,
+        "frame": 429
+      },
+      "text": "FULL TIME.",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.2,
+        "frame": 475
+      },
+      "text": "GIVE YOU THE EXACT",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.7,
+        "frame": 534
+      },
+      "text": "THERE FULL TIME NOW?",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 14.5,
+        "frame": 565
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15.3,
+        "frame": 596
+      },
+      "text": "THEY WILL TRAIN YOU",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.5,
+        "frame": 643
+      },
+      "text": "THEY WILL HELP YOU",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.3,
+        "frame": 674
+      },
+      "text": "BUT THAT'S THE SAME",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.8,
+        "frame": 733
+      },
+      "text": "ON FULL TIME.",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 19.2,
+        "frame": 748
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.8,
+        "frame": 772
+      },
+      "text": "THERE ARE TWO REASONS COMPANIES",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21,
+        "frame": 818
+      },
+      "text": "THE FIRST ONE IS ENJOYMENT",
+      "durationSec": 1.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.2,
+        "frame": 865
+      },
+      "text": "AND FULFILLMENT.",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23.5,
+        "frame": 916
+      },
+      "text": "BOTTOM OF THE BARREL",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 23.8,
+        "frame": 927
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.1,
+        "frame": 939
+      },
+      "text": "CRAP THAT NOBODY WANTS",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 25.1,
+        "frame": 978
+      },
+      "text": "YOU'RE PROBABLY NOT GOING",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 25.5,
+        "frame": 994
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.3,
+        "frame": 1025
+      },
+      "text": "AND YOU'RE NOT GOING",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 27.1,
+        "frame": 1056
+      },
+      "text": "FULL TIME.",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 27.3,
+        "frame": 1064
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28.2,
+        "frame": 1099
+      },
+      "text": "THE SAME PROJECTS EVERYBODY ELSE",
+      "durationSec": 1.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.6,
+        "frame": 1153
+      },
+      "text": "YOU DON'T FEEL LIKE",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 30.5,
+        "frame": 1189
+      },
+      "text": "YOU FEEL LIKE PART OF",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 30.5,
+        "frame": 1189
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.3,
+        "frame": 1220
+      },
+      "text": "AND THAT IS THE",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 32.8,
+        "frame": 1278
+      },
+      "text": "PART OF THE TEAM.",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 33.2,
+        "frame": 1294
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.9,
+        "frame": 1321
+      },
+      "text": "TO COME BACK FULL TIME.",
+      "durationSec": 0.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 34.5,
+        "frame": 1344
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35.2,
+        "frame": 1372
+      },
+      "text": "THE SECOND REASON COMPANIES",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 35.5,
+        "frame": 1383
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 36.5,
+        "frame": 1422
+      },
+      "text": "DO THIS IS TO",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 37.2,
+        "frame": 1450
+      },
+      "text": "BECAUSE THEY NEED TO",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 37.2,
+        "frame": 1450
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 39,
+        "frame": 1520
+      },
+      "text": "AS A FULL TIME EMPLOYEE.",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 39.5,
+        "frame": 1539
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 40.5,
+        "frame": 1578
+      },
+      "text": "A CHANCE,",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 41.6,
+        "frame": 1621
+      },
+      "text": "PROVE YOURSELF AS A FULL",
+      "durationSec": 1.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 42.5,
+        "frame": 1656
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 43.5,
+        "frame": 1695
+      },
+      "text": "AND IF THEY GIVE",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 44,
+        "frame": 1715
+      },
+      "text": "YOU EASIER JOBS THE",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 44.5,
+        "frame": 1734
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 45.2,
+        "frame": 1761
+      },
+      "text": "YOU COULD ABSOLUTELY KILL IT",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 45.5,
+        "frame": 1773
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 46.4,
+        "frame": 1808
+      },
+      "text": "AND THEN COME BACK",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 47.3,
+        "frame": 1843
+      },
+      "text": "AND NOT BE VERY",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 47.5,
+        "frame": 1851
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 48.2,
+        "frame": 1878
+      },
+      "text": "GOOD AT.",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 49.3,
+        "frame": 1921
+      },
+      "text": "INTO ONE OF YOUR",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 50,
+        "frame": 1948
+      },
+      "text": "FIRST INTERNSHIPS,",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 51.5,
+        "frame": 2007
+      },
+      "text": "LOT AND EXPECT TO",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 52.2,
+        "frame": 2034
+      },
+      "text": "ACTUALLY GET A LOT DONE.",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 53.5,
+        "frame": 2085
+      },
+      "text": "DELIVERING COFFEE.",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 54.2,
+        "frame": 2112
+      },
+      "text": "YOU'RE NOT GONNA BE",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 54.5,
+        "frame": 2124
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 55,
+        "frame": 2143
+      },
+      "text": "FILING PAPERS",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 55.5,
+        "frame": 2163
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 56.2,
+        "frame": 2190
+      },
+      "text": "ABOVE YOU.",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 56.3,
+        "frame": 2194
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 57.3,
+        "frame": 2233
+      },
+      "text": "BE DOING THE SAME",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 58.4,
+        "frame": 2276
+      },
+      "text": "IS DOING.",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 59.6,
+        "frame": 2322
+      },
+      "text": "BE A LOT MORE",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 100.1,
+        "frame": 3901
+      },
+      "text": "ENJOYABLE THAT WAY, I PROMISE.",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 100.8,
+        "frame": 3928
+      },
+      "type": "emoji_popup",
+      "durationSec": 0.5
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 61,
+      "cutDensityPerSec": 0,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "none",
+      "subtitleStyle": "bold_sans_serif_with_color_pop_and_emojis",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "bold_statement",
+      "openingShot": "Medium close-up of the speaker talking to the camera, with a text overlay stating the video's thesis.",
+      "endingShot": "The speaker concludes his advice with a promise and a smile.",
+      "cta": "none",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 0,
+    "effect": 75,
+    "bgmSync": 0,
+    "overall": 35
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:08:16.055Z"
+  }
+}

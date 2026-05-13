@@ -1,0 +1,343 @@
+{
+  "videoId": "tt-7631145591241772301",
+  "durationSec": 110.11,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "listicle",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman sits on a couch with her pitbull and barks at it, the dog gets startled and then excited."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.9,
+        "frame": 207
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A small dog with a wig-like haircut stares blankly at the camera after its owner roars."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.2,
+        "frame": 216
+      },
+      "text": "I scared the 💩 out of my dog doing the “Rawr” challenge",
+      "durationSec": 3.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.6,
+        "frame": 348
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A man tries to scare his dog by lunging forward; the dog slips on the floor while running away."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.9,
+        "frame": 357
+      },
+      "text": "😂 I tried to scare my dog and this happened...",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.7,
+        "frame": 471
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A golden retriever lying on a bed looks up with a sad, judgmental expression after hearing a fake fart sound."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.1,
+        "frame": 483
+      },
+      "text": "Getting my dog's reaction to me fake farting...",
+      "durationSec": 6.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.6,
+        "frame": 708
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person reveals a tiny toy burger to a small white dog, which looks betrayed and growls."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30.8,
+        "frame": 924
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A merle-colored bulldog sits up on concrete steps and makes a loud, funny noise."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33.7,
+        "frame": 1011
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A German Shepherd lies on its back, playing peek-a-boo with its paws, then looks at the camera with wide eyes."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 35.9,
+        "frame": 1077
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.1,
+        "frame": 1143
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A dog snarls at a piece of lettuce but then happily eats a piece of chicken."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.6,
+        "frame": 1338
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A Doberman watches a person put on slap bracelets, then gets one slapped onto its nose and sits stoically."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 54.8,
+        "frame": 1644
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A man performs the disappearing blanket trick, and his dog on the bed gets up to look for him."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 60.9,
+        "frame": 1827
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A beagle in a green dinosaur costume howls loudly instead of taking a treat from a hand."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 65.7,
+        "frame": 1971
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A small fluffy dog looks at a bowl with only a few kibbles and runs away in apparent disgust."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 70.8,
+        "frame": 2124
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A dog in the back seat of a car gives its owner a look of betrayal after she eats a treat."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 71.1,
+        "frame": 2133
+      },
+      "text": "The expression of a traitor",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 76,
+        "frame": 2280
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A dog barks at another, chases it down a street, and squeezes through a small opening in a gate."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 76.3,
+        "frame": 2289
+      },
+      "text": "Bro is fluent in Barking 😭",
+      "durationSec": 5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 86,
+        "frame": 2580
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man tricks his dachshund into a kiss by pretending to have a treat."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 86.3,
+        "frame": 2589
+      },
+      "text": "Tricking my dog into a kiss to get his reaction",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 92,
+        "frame": 2760
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man screams to scare his dog, but the dog jumps on him and licks his face as if to comfort him."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 92.3,
+        "frame": 2769
+      },
+      "text": "Scare your dog to see their reaction...",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 97.3,
+        "frame": 2919
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A jealous dog jumps on its owner's hand when she tries to pet another dog."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 101.1,
+        "frame": 3033
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A person in a pink monster costume jumps out from a doorway, scaring a dog which runs away."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 106.9,
+        "frame": 3207
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A dog snatches a bone from its owner's mouth, leaving her shocked."
+    }
+  ],
+  "bgm": {
+    "name": "Various comedic tracks and original clip audio",
+    "trending": false,
+    "bpm": null,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 19,
+      "avgShotDurationSec": 5.78,
+      "cutDensityPerSec": 0.17,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.26,
+        "medium": 0.58,
+        "wide": 0.16,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "mixed_audio",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "simple_white_sans_serif_with_shadow",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "direct_action",
+      "openingShot": "Medium shot of a woman barking at her pitbull, eliciting a funny reaction.",
+      "endingShot": "Close-up of a woman's shocked face after her dog snatches a bone from her mouth.",
+      "cta": null,
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 10,
+    "effect": 15,
+    "bgmSync": 5,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:41:42.674Z"
+  }
+}

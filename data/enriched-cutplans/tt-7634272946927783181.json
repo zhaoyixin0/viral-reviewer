@@ -1,0 +1,237 @@
+{
+  "videoId": "tt-7634272946927783181",
+  "durationSec": 101.767,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman stands behind a wooden board with three empty glass jars, introducing the recipe."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 101.8,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "Healthy meal prep for Lazy b!tche$",
+      "durationSec": 4.5,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.9,
+        "frame": 177
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman starts pouring rolled oats from a measuring cup into the three glass jars."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 32.8,
+        "frame": 984
+      },
+      "toShotSize": "medium",
+      "shotDescription": "With the oats in the jars, she now spoons chia seeds from a larger container into each jar."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43.5,
+        "frame": 1305
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She holds a large tub of vanilla protein powder and adds a scoop to each jar."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 50.8,
+        "frame": 1524
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She sprinkles cinnamon from a large shaker into each jar."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52,
+        "frame": 1560
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She opens a container of coconut yogurt and adds a spoonful to each jar."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 60.2,
+        "frame": 1806
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She drizzles honey from a bear-shaped bottle into the jars."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 62,
+        "frame": 1860
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She pours almond milk from a measuring cup over the ingredients in the jars."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 65,
+        "frame": 1950
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The scene changes to her at a cutting board, slicing a whole fresh mango."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 68.8,
+        "frame": 2064
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She demonstrates a hack, using the rim of a glass to scoop the mango flesh away from the skin."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 75,
+        "frame": 2250
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The jars now contain the mixed oat base. She adds the freshly diced mango into them."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 80,
+        "frame": 2400
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She puts the wooden lids on the three finished jars of overnight oats."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 85.5,
+        "frame": 2565
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Time jump to the next day. The woman, in a different outfit, opens one of the prepared jars."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 96,
+        "frame": 2880
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "She takes a large, satisfying bite of the overnight oats directly from the jar."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 98,
+        "frame": 2940
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A wider shot shows her enjoying the taste of the breakfast she prepared."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 99.5,
+        "frame": 2985
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Another angle of her eating and savoring the meal."
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 18,
+      "avgShotDurationSec": 5.65,
+      "cutDensityPerSec": 0.17,
+      "rhythmProfile": "medium",
+      "keyTwistAt": {
+        "sec": 85.5,
+        "frame": 2565
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.1,
+        "medium": 0.9,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "standard_tiktok_white_bold_black_stroke",
+      "colorGrade": "natural_warm"
+    },
+    "structure": {
+      "hookFormat": "direct_address_problem_solution",
+      "openingShot": "Creator presents empty jars, ready to demonstrate a meal prep recipe.",
+      "endingShot": "Creator enjoys the finished product on the following day, showing the payoff.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 96,
+        "frame": 2880
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 10,
+    "effect": 10,
+    "bgmSync": 0,
+    "overall": 15
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:17:43.871Z"
+  }
+}

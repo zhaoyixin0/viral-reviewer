@@ -1,0 +1,584 @@
+{
+  "videoId": "tt-7214775496842759442",
+  "durationSec": 59.535,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "Ep. 5 Cooking with Déjà Tacos",
+      "durationSec": 3,
+      "style": {
+        "font": "sans-serif",
+        "color": "black",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.7,
+        "frame": 111
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The daughter, wearing swimming goggles, starts peeling an onion at the kitchen counter."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 3.7,
+        "frame": 111
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5,
+        "frame": 150
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A quick close-up on the daughter's face, looking down while wearing the goggles."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 5,
+        "frame": 150
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6,
+        "frame": 180
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The daughter is chopping the onion on a cutting board."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 6,
+        "frame": 180
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.9,
+        "frame": 237
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The mother scrapes the chopped onions from the cutting board into a hot pan on the stove."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 7.9,
+        "frame": 237
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.7,
+        "frame": 321
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The daughter stirs the onions in the pan while her mother chops tomatoes beside her."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 10.7,
+        "frame": 321
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The daughter stirs ground beef into the pan while her mother chops cucumbers."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 13.5,
+        "frame": 405
+      },
+      "type": "sound_effect",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 14.5,
+        "frame": 435
+      },
+      "type": "push_in",
+      "durationSec": 0.3,
+      "scaleFrom": 1,
+      "scaleTo": 1.2,
+      "easing": "ease_out"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.9,
+        "frame": 507
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Profile shot of the daughter's face as she looks off-camera."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 16.9,
+        "frame": 507
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.7,
+        "frame": 531
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down view of the ground beef and onions sizzling in the pan as seasoning is added."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 17.7,
+        "frame": 531
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.5,
+        "frame": 615
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The daughter vigorously stirs the meat mixture in the pan."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 20.5,
+        "frame": 615
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.6,
+        "frame": 678
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up on the daughter's hands as she chops lettuce on a wooden board."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 22.6,
+        "frame": 678
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.9,
+        "frame": 807
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The daughter cuts an avocado in half."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 26.9,
+        "frame": 807
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28,
+        "frame": 840
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The daughter demonstrates a life hack by squeezing the avocado out of its skin into a bowl."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 28,
+        "frame": 840
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 33.5,
+        "frame": 1005
+      },
+      "type": "sound_effect",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34,
+        "frame": 1020
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Mashing the avocado in the bowl with a potato masher."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 34,
+        "frame": 1020
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36,
+        "frame": 1080
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The daughter cuts a lemon on the cutting board."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 36,
+        "frame": 1080
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.4,
+        "frame": 1152
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Squeezing the lemon juice into the mashed avocado."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 38.4,
+        "frame": 1152
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.8,
+        "frame": 1194
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The daughter holds up the masher covered in guacamole and makes an 'OK' hand gesture to the camera."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 39.8,
+        "frame": 1194
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.5,
+        "frame": 1245
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Refried beans are being scooped out of a can into a clean pan."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 41.5,
+        "frame": 1245
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.8,
+        "frame": 1344
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The mother stirs the refried beans as they heat up in a pan on the stove."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 44.8,
+        "frame": 1344
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.7,
+        "frame": 1401
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The mother picks up a plate of soft tortillas."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 46.7,
+        "frame": 1401
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48.5,
+        "frame": 1455
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The mother gives a cheeky, smiling look to the camera."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 48.5,
+        "frame": 1455
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 50.5,
+        "frame": 1515
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The mother places the plate of tortillas into the microwave."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 50.5,
+        "frame": 1515
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52,
+        "frame": 1560
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The mother does a little dance while waiting for the microwave."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 52,
+        "frame": 1560
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 54.8,
+        "frame": 1644
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The daughter sprinkles cheese onto a soft tortilla to begin assembling her taco."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 54.8,
+        "frame": 1644
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 56,
+        "frame": 1680
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The daughter places a hard taco shell inside the soft tortilla."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 56,
+        "frame": 1680
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 57,
+        "frame": 1710
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The daughter takes a large bite of her finished taco."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 57,
+        "frame": 1710
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58,
+        "frame": 1740
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The daughter and mother are both eating their tacos and dancing happily in the kitchen."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 58,
+        "frame": 1740
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    }
+  ],
+  "bgm": {
+    "name": "None (Voice-over only)",
+    "trending": false,
+    "bpm": null,
+    "startsAt": null,
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 24,
+      "avgShotDurationSec": 2.46,
+      "cutDensityPerSec": 0.41,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.05,
+        "close_up": 0.4,
+        "medium": 0.4,
+        "wide": 0.15,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "voice_over_driven",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "yellow_box_black_text",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "direct_address_title_card",
+      "openingShot": "Medium shot of mother and daughter introducing the cooking show concept.",
+      "endingShot": "Medium shot of both characters enjoying the tacos they made and dancing.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 57,
+        "frame": 1710
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 20,
+    "bgmSync": 0,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:20:54.289Z"
+  }
+}

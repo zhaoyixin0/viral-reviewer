@@ -1,0 +1,671 @@
+{
+  "videoId": "tt-7594438908549664014",
+  "durationSec": 71.284,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "comedy",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A greyhound wearing bright blue boots stands awkwardly on a carpeted floor, looking at the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 30
+      },
+      "text": "First time wearing shoes",
+      "durationSec": 4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "sfesfeswfef",
+      "durationSec": 71,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 4.8,
+        "frame": 288
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.9,
+        "frame": 294
+      },
+      "toShotSize": "text_only",
+      "shotDescription": "Black screen with white text."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5,
+        "frame": 300
+      },
+      "text": "Dogs wearing shoes",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 5.7,
+        "frame": 342
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.7,
+        "frame": 342
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A man lies on a wooden floor, laughing at a small chihuahua wearing tiny sneakers, with a Christmas tree in the background."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.2,
+        "frame": 372
+      },
+      "text": "Cuando te compran zapatos por primera vez.",
+      "durationSec": 4.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "red"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 11,
+        "frame": 660
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.1,
+        "frame": 666
+      },
+      "toShotSize": "text_only",
+      "shotDescription": "Black screen with white text."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.2,
+        "frame": 672
+      },
+      "text": "Dogs wearing shoes",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 11.9,
+        "frame": 714
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.9,
+        "frame": 714
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A small puppy in yellow duck-shaped shoes walks towards a larger Labrador lying on the floor. The Labrador gets up, picks up the puppy, and drops it in a trash can."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.5,
+        "frame": 750
+      },
+      "text": "When the puppy put on shoes",
+      "durationSec": 4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 17,
+        "frame": 1020
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.1,
+        "frame": 1026
+      },
+      "toShotSize": "text_only",
+      "shotDescription": "Black screen with white text."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 17.8,
+        "frame": 1068
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.8,
+        "frame": 1068
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A greyhound in pink boots walks awkwardly before suddenly kicking its hind legs up into a handstand."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.5,
+        "frame": 1110
+      },
+      "text": "I bought him new shoes.",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 22,
+        "frame": 1320
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.1,
+        "frame": 1326
+      },
+      "toShotSize": "text_only",
+      "shotDescription": "Black screen with white text."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 22.8,
+        "frame": 1368
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.8,
+        "frame": 1368
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A black dog in white booties chases a smaller brown dog across a paved backyard, running with high, prancing steps."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23.2,
+        "frame": 1392
+      },
+      "text": "He's jealous of my high heels.",
+      "durationSec": 4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 23.5,
+        "frame": 1410
+      },
+      "type": "pan_left",
+      "durationSec": 2,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 27.8,
+        "frame": 1668
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28,
+        "frame": 1680
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A small white fluffy dog in a Christmas sweater runs into a living room and jumps onto a couch next to a laughing woman."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 32.8,
+        "frame": 1968
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 32.9,
+        "frame": 1974
+      },
+      "toShotSize": "text_only",
+      "shotDescription": "Black screen with white text."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 33.2,
+        "frame": 1992
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33.2,
+        "frame": 1992
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A small white dog in a blue shirt walks with its legs splayed out on a tiled floor, then collapses."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.4,
+        "frame": 2004
+      },
+      "text": "First time wearing shoes",
+      "durationSec": 4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 37.8,
+        "frame": 2268
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.9,
+        "frame": 2274
+      },
+      "toShotSize": "text_only",
+      "shotDescription": "Black screen with white text."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 38.2,
+        "frame": 2292
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.2,
+        "frame": 2292
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A dog in a red winter coat runs excitedly on an icy surface, and its booties fly off its feet as it runs away."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 38.8,
+        "frame": 2328
+      },
+      "text": "He was so excited.",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 41.5,
+        "frame": 2490
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.6,
+        "frame": 2496
+      },
+      "toShotSize": "text_only",
+      "shotDescription": "Black screen with white text."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 41.9,
+        "frame": 2514
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.9,
+        "frame": 2514
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A brown poodle in yellow booties walks away from the camera with a high-stepping, prancing gait."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 47,
+        "frame": 2820
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 47,
+        "frame": 2820
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A French bulldog wearing red Crocs-style shoes walks awkwardly towards the camera with a wide stance."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 47.5,
+        "frame": 2850
+      },
+      "text": "Learning to walk in crocs be like...",
+      "durationSec": 3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 50.8,
+        "frame": 3048
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 50.9,
+        "frame": 3054
+      },
+      "toShotSize": "text_only",
+      "shotDescription": "Black screen with white text."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 51.1,
+        "frame": 3066
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 51.1,
+        "frame": 3066
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A Doberman wearing large white sneakers and a hoodie lifts its legs extremely high while walking in a kitchen."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 55,
+        "frame": 3300
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 55.1,
+        "frame": 3306
+      },
+      "toShotSize": "text_only",
+      "shotDescription": "Black screen with white text."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 55.5,
+        "frame": 3330
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 55.5,
+        "frame": 3330
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A white poodle in small booties walks with a stiff, awkward gait, turning around in a circle."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 59.8,
+        "frame": 3588
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59.9,
+        "frame": 3594
+      },
+      "toShotSize": "text_only",
+      "shotDescription": "Black screen with white text."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 100.1,
+        "frame": 6006
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 100.1,
+        "frame": 6006
+      },
+      "toShotSize": "wide",
+      "shotDescription": "From a high angle, a Shiba Inu in a yellow raincoat and neon booties walks stiffly on pavement, led by a woman."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 105.8,
+        "frame": 6348
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 105.9,
+        "frame": 6354
+      },
+      "toShotSize": "text_only",
+      "shotDescription": "Black screen with white text."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 106.1,
+        "frame": 6366
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 106.1,
+        "frame": 6366
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A golden retriever in green Crocs-style shoes stands frozen in a hallway, holding one hind leg up in the air."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 106.3,
+        "frame": 6378
+      },
+      "text": "He stood there for five minutes.",
+      "durationSec": 4.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 12,
+      "avgShotDurationSec": 5.9,
+      "cutDensityPerSec": 0.32,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.1,
+        "medium": 0.5,
+        "wide": 0.4,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut_to_interlude"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "original_audio_only",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "centered_white_text",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "cold_open_action",
+      "openingShot": "Medium shot of a greyhound in blue boots reacting strangely.",
+      "endingShot": "Medium shot of a golden retriever frozen in place while wearing shoes.",
+      "cta": "none",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 50,
+    "transition": 20,
+    "effect": 5,
+    "bgmSync": 80,
+    "overall": 45
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:40:32.015Z"
+  }
+}

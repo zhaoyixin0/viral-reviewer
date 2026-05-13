@@ -1,0 +1,477 @@
+{
+  "videoId": "tt-7602847157560937758",
+  "durationSec": 8.01,
+  "fps": 59.94,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Low-angle shot in an airport baggage claim area, focusing on two suitcases with two people's legs resting on them."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 6
+      },
+      "text": "\"where is your next destination?\"",
+      "durationSec": 2.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2.7,
+        "frame": 162
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.7,
+        "frame": 162
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot from a pool, with two pairs of feet in the water, looking out towards a tropical beach."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.8,
+        "frame": 168
+      },
+      "text": "Cancun, Mexico 🌴✨",
+      "durationSec": 4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 5.5,
+        "frame": 330
+      },
+      "type": "pan_right",
+      "durationSec": 1.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 7,
+        "frame": 420
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7,
+        "frame": 420
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Wide shot of a sunny beach with turquoise water and people swimming."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 8,
+        "frame": 480
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8,
+        "frame": 480
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Two cocktails clinking together with the beach in the blurred background."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 8.8,
+        "frame": 527
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 527
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot walking along a wooden pier over the ocean."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 9.7,
+        "frame": 581
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.7,
+        "frame": 581
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "High-angle shot of the resort's pools and palm trees."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 10.6,
+        "frame": 635
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.6,
+        "frame": 635
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person in a pool holding a drink served in a coconut."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 11.5,
+        "frame": 689
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.5,
+        "frame": 689
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Close-up of tacos on a plate."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 12.3,
+        "frame": 737
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.3,
+        "frame": 737
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A person walking on the beach during golden hour."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 13.2,
+        "frame": 791
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.2,
+        "frame": 791
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot from a moving boat on the water."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 14.1,
+        "frame": 845
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.1,
+        "frame": 845
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Underwater shot of colorful fish swimming near coral."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 15,
+        "frame": 899
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15,
+        "frame": 899
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Shot of a cenote or water-filled cave."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 15.8,
+        "frame": 947
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 947
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person on a rope swing over water."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 16.7,
+        "frame": 1001
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.7,
+        "frame": 1001
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A busy beach scene with umbrellas and people."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 17.6,
+        "frame": 1055
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.6,
+        "frame": 1055
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "POV shot looking down at feet in the sand with waves washing over them."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 18.4,
+        "frame": 1103
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.4,
+        "frame": 1103
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The resort pool area lit up at night."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 19.3,
+        "frame": 1157
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.3,
+        "frame": 1157
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person sitting by a fire pit at night."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 20.2,
+        "frame": 1211
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.2,
+        "frame": 1211
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A flaming dessert (flambé) being prepared."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 21,
+        "frame": 1259
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21,
+        "frame": 1259
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A wide shot of the beach and ocean at sunset."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 21.9,
+        "frame": 1313
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.9,
+        "frame": 1313
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Final POV shot from the pool, looking at the ocean, bookending the reveal shot."
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Tropical Vibe",
+    "trending": false,
+    "bpm": 120,
+    "startsAt": {
+      "sec": 2.7,
+      "frame": 162
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 2.7,
+          "frame": 162
+        },
+        "kind": "drop",
+        "note": "Music drops with the reveal of the destination, and subsequent cuts are synced to the beat."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 20,
+      "avgShotDurationSec": 1.12,
+      "cutDensityPerSec": 0.84,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 2.7,
+        "frame": 162
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld",
+        "pan_right"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.05,
+        "close_up": 0.15,
+        "medium": 0.2,
+        "wide": 0.55,
+        "extreme_wide": 0.05
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "build_and_drop",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "centered_white_sans-serif",
+      "colorGrade": "vibrant_and_saturated"
+    },
+    "structure": {
+      "hookFormat": "question_and_answer",
+      "openingShot": "Static shot of luggage in an airport, establishing a travel theme.",
+      "endingShot": "Relaxing POV shot from a pool, providing a satisfying and aspirational conclusion.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 2.7,
+        "frame": 162
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 10,
+    "bgmSync": 95,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:47:40.252Z"
+  }
+}

@@ -1,0 +1,291 @@
+{
+  "videoId": "tt-7082052435174231302",
+  "durationSec": 33.133,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman with glasses sits at a laptop in a well-lit room, looking up as if in thought."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 33.5,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "How do you professionally say...",
+      "durationSec": 1.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "“How Do You Professionally Say?”",
+      "durationSec": 33,
+      "style": {
+        "font": "sans-serif",
+        "color": "black"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "text": "Featuring Work Bestie",
+      "durationSec": 32.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.3,
+        "frame": 39
+      },
+      "text": "How do you professionally say “I am not paid enough to do this”?",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.5,
+        "frame": 105
+      },
+      "text": "This falls outside of my current job description but if the opportunity for a role expansion becomes available I would be happy to discuss reworking my contract to better align with these new responsibilities",
+      "durationSec": 7.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "orange"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "text": "“I totally forgot about your email”?",
+      "durationSec": 1.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.3,
+        "frame": 399
+      },
+      "text": "Thank you for your patience",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "orange"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.6,
+        "frame": 438
+      },
+      "text": "“I’m going to need a lot more detail if you want me to do this”",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.8,
+        "frame": 504
+      },
+      "text": "Please let me know when further details become available as I require more information to successfully complete this task",
+      "durationSec": 4.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "orange"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.2,
+        "frame": 666
+      },
+      "text": "“Stop trying to call me before my work day even starts”?",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.4,
+        "frame": 732
+      },
+      "text": "If you need to contact me, please note that my working hours begin at 8am and communications received prior to this will not be seen",
+      "durationSec": 5.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "orange"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 30,
+        "frame": 900
+      },
+      "text": "Have you tried the lavender lattes?",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.2,
+        "frame": 936
+      },
+      "text": "No",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "orange"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.8,
+        "frame": 954
+      },
+      "text": "You moist, they're delicious",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 32.7,
+        "frame": 981
+      },
+      "text": "Ugh Laura, come on",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "orange"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Lo-fi Hip Hop",
+    "trending": false,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 33.5,
+      "cutDensityPerSec": 0,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": {
+        "sec": 29.8,
+        "frame": 894
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "Continuous ambient loop",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "Centralized text with black background, alternating white and orange text for question/answer.",
+      "colorGrade": "Warm, teal and orange"
+    },
+    "structure": {
+      "hookFormat": "Direct question to audience",
+      "openingShot": "Medium shot of a woman at a laptop, posing a question via text overlay and voice.",
+      "endingShot": "The same shot, ending on a comedic punchline that breaks the established pattern.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 32.5,
+        "frame": 975
+      }
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 0,
+    "effect": 15,
+    "bgmSync": 5,
+    "overall": 20
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:11:52.936Z"
+  }
+}

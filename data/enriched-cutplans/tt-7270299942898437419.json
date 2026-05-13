@@ -1,0 +1,178 @@
+{
+  "videoId": "tt-7270299942898437419",
+  "durationSec": 32.6,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman stands outdoors on rocks by the sea, holding a green outfit and wearing a white t-shirt."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 32.8,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "Bikini to set outfit change 👙",
+      "durationSec": 1.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.2,
+        "frame": 126
+      },
+      "text": "always keeping an eye out👀",
+      "durationSec": 1.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15,
+        "frame": 450
+      },
+      "text": "waiting for cars to pass",
+      "durationSec": 3.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.2,
+        "frame": 876
+      },
+      "text": "Perfecto 👍",
+      "durationSec": 3.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Quirky instrumental with pizzicato strings",
+    "trending": false,
+    "bpm": 125,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in",
+        "note": "Main pizzicato string melody begins, setting a sneaky/comedic tone."
+      },
+      {
+        "at": {
+          "sec": 9.5,
+          "frame": 285
+        },
+        "kind": "vocal_phrase",
+        "note": "Melody repeats with slight variation."
+      },
+      {
+        "at": {
+          "sec": 17,
+          "frame": 510
+        },
+        "kind": "vocal_phrase",
+        "note": "Melody shifts to a new phrase."
+      },
+      {
+        "at": {
+          "sec": 28,
+          "frame": 840
+        },
+        "kind": "vocal_phrase",
+        "note": "Final melodic phrase begins, leading to the reveal."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 32.8,
+      "cutDensityPerSec": 0,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "Continuous comedic/sneaky background music matching the theme of changing clothes in public.",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "Standard white sans-serif text with a black outline/shadow.",
+      "colorGrade": "Natural, outdoor lighting, likely during golden hour."
+    },
+    "structure": {
+      "hookFormat": "Text overlay stating the video's premise.",
+      "openingShot": "Wide shot of the creator holding the outfit she will change into.",
+      "endingShot": "The creator, in her new outfit, gives a thumbs up and then leans into the camera to stop recording.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 29,
+        "frame": 870
+      }
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 0,
+    "effect": 0,
+    "bgmSync": 20,
+    "overall": 15
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:26:27.602Z"
+  }
+}

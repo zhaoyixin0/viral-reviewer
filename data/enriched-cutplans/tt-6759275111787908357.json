@@ -1,0 +1,177 @@
+{
+  "videoId": "tt-6759275111787908357",
+  "durationSec": 32.267,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Over-the-shoulder shot of a man in a black t-shirt and cap walking through an office towards a colleague's desk."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "tracking",
+      "durationSec": 0.8,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A male colleague sits at his desk, looking at his computer screen. The main character asks him to lunch."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6,
+        "frame": 180
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The main character smiles awkwardly after being rejected and turns to walk away."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 6.1,
+        "frame": 183
+      },
+      "type": "tracking",
+      "durationSec": 2.4,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.5,
+        "frame": 255
+      },
+      "toShotSize": "medium_wide",
+      "shotDescription": "Over-the-shoulder shot of the main character approaching a group of three male colleagues in a hallway."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18,
+        "frame": 540
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The main character turns away from the group after being rejected again, smiling and waving goodbye."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.5,
+        "frame": 585
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Reveal shot from down the hallway. The colleagues who just rejected the main character are all walking away with food, laughing."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.8,
+        "frame": 744
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Over-the-shoulder shot as the main character confronts the group who lied to him."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.5,
+        "frame": 855
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "The main character stands alone in the hallway, looking dejected as the group walks past him."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 28.8,
+        "frame": 864
+      },
+      "type": "push_in",
+      "durationSec": 3.2,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_in"
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 8,
+      "avgShotDurationSec": 4,
+      "cutDensityPerSec": 0.25,
+      "rhythmProfile": "medium",
+      "keyTwistAt": {
+        "sec": 19.5,
+        "frame": 585
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "tracking"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0.7,
+        "wide": 0.3,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "dialogue_driven",
+      "bgmSyncTightness": null,
+      "subtitleStyle": null,
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "direct_question",
+      "openingShot": "tracking_shot_protagonist",
+      "endingShot": "zoom_on_reaction",
+      "cta": null,
+      "payoffAt": {
+        "sec": 19.5,
+        "frame": 585
+      }
+    }
+  },
+  "density": {
+    "editing": 40,
+    "transition": 10,
+    "effect": 0,
+    "bgmSync": 0,
+    "overall": 30
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:11:40.613Z"
+  }
+}

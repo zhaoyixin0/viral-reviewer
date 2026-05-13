@@ -1,0 +1,583 @@
+{
+  "videoId": "tt-7632687249993288990",
+  "durationSec": 46.734,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "high protein, low carb\nHEALTHY GIRL BREAKFAST ✨",
+      "durationSec": 2.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.2,
+        "frame": 66
+      },
+      "text": "-55 lbs pp eating meals I enjoy",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds up two finished breakfast sandwiches on a white plate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman stands in front of a bedroom mirror, showing her 'before' body."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.5,
+        "frame": 105
+      },
+      "text": "\"nothing to wear, go without me\"",
+      "durationSec": 1.3,
+      "style": {
+        "font": "serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The same woman stands in front of a closet mirror, showing her 'after' toned body."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.5,
+        "frame": 165
+      },
+      "text": "\"let me get ready real quick\"",
+      "durationSec": 1.3,
+      "style": {
+        "font": "serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.8,
+        "frame": 204
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand places a parchment paper liner into an air fryer basket."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7,
+        "frame": 210
+      },
+      "text": "foil or parchment paper works ✨",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8,
+        "frame": 240
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Spraying cooking oil onto the parchment paper."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.9,
+        "frame": 267
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands crack eggs into the air fryer basket."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.5,
+        "frame": 315
+      },
+      "text": "6 eggs",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Adding toppings like bacon, sausage, and tomatoes to the eggs."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.2,
+        "frame": 366
+      },
+      "text": "toppings of choice",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Sprinkling seasoning over the eggs and toppings."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15,
+        "frame": 450
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Adding shredded cheese on top."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16,
+        "frame": 480
+      },
+      "text": "cheese",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17,
+        "frame": 510
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Pushing the basket into the air fryer."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18,
+        "frame": 540
+      },
+      "text": "350 for 15-18 min",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.8,
+        "frame": 594
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Pulling the air fryer basket out to reveal the cooked egg bake."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20,
+        "frame": 600
+      },
+      "text": "perfect every time",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21,
+        "frame": 630
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Lifting the cooked egg bake out of the basket using the parchment paper."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22,
+        "frame": 660
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The finished egg bake on the counter."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.8,
+        "frame": 684
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Cutting the egg bake into squares with a pizza cutter."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23.2,
+        "frame": 696
+      },
+      "text": "eat like this or...",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.8,
+        "frame": 744
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Lifting a square piece with a spatula."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.8,
+        "frame": 804
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A hand puts away a slow cooker and closes a cabinet door."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28,
+        "frame": 840
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A hand places an English muffin into a toaster."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29,
+        "frame": 870
+      },
+      "text": "low cal English\nmuffin or toast",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30,
+        "frame": 900
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A toasted English muffin half on a plate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30.8,
+        "frame": 924
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Spreading cream cheese on the muffin."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.2,
+        "frame": 936
+      },
+      "text": "light cream cheese",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 32.8,
+        "frame": 984
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The muffins are topped with cream cheese and sliced avocado."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33.8,
+        "frame": 1014
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Sprinkling 'Everything Bagel' seasoning on the avocado."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.8,
+        "frame": 1074
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Placing a square of the egg bake on top of the muffin."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37,
+        "frame": 1110
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds the plate with the two finished breakfast sandwiches."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 37.5,
+        "frame": 1125
+      },
+      "text": "so filling + flavorful 🤌🏼",
+      "durationSec": 1.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.8,
+        "frame": 1164
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Drizzling a sauce over the sandwiches from a squeeze bottle."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.8,
+        "frame": 1254
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Opening a kitchen drawer filled with glass meal prep containers."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 42.2,
+        "frame": 1266
+      },
+      "text": "easiest breakfast prep 🤌🏼\nready to go",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43.8,
+        "frame": 1314
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Stacking the egg bake squares into a glass container for meal prep."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.8,
+        "frame": 1344
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A hand gives a thumbs-up next to a digital cookbook page showing the recipe."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 45,
+        "frame": 1350
+      },
+      "text": "crush your goals with\nmy digital cookbooks",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.5,
+        "frame": 1395
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A blurred shot of the food with a title card overlay."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 46.6,
+        "frame": 1398
+      },
+      "text": "Good Food Mood",
+      "durationSec": 1,
+      "style": {
+        "font": "script",
+        "color": "white"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Piece by Piece (Soulful Female Vocal)",
+    "trending": true,
+    "bpm": 65,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in",
+        "note": "Music and vocals start immediately."
+      },
+      {
+        "at": {
+          "sec": 2.8,
+          "frame": 84
+        },
+        "kind": "beat",
+        "note": "Cut to 'before' body shot on beat."
+      },
+      {
+        "at": {
+          "sec": 4.8,
+          "frame": 144
+        },
+        "kind": "beat",
+        "note": "Cut to 'after' body shot on beat."
+      },
+      {
+        "at": {
+          "sec": 6.8,
+          "frame": 204
+        },
+        "kind": "beat",
+        "note": "Cut to recipe start on beat."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 26,
+      "avgShotDurationSec": 1.8,
+      "cutDensityPerSec": 0.55,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 2.8,
+        "frame": 84
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.7,
+        "medium": 0.3,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_vocal_track",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "centered_white_sans_serif",
+      "colorGrade": "warm_and_bright"
+    },
+    "structure": {
+      "hookFormat": "transformation",
+      "openingShot": "close_up_finished_dish",
+      "endingShot": "title_card_cta",
+      "cta": "explicit_product_promo",
+      "payoffAt": {
+        "sec": 37,
+        "frame": 1110
+      }
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 10,
+    "effect": 20,
+    "bgmSync": 95,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:18:05.272Z"
+  }
+}

@@ -1,0 +1,283 @@
+{
+  "videoId": "tt-7587423214519848214",
+  "durationSec": 21.454,
+  "fps": 30.303975058456743,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A bulldog stands inside a house looking through a glass door at a person in a Grinch costume standing in the backyard."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 3.8,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.4,
+        "frame": 12
+      },
+      "text": "The Grinch came back. That was his mistake...",
+      "durationSec": 1.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.2,
+        "frame": 67
+      },
+      "text": "Go on then... come get some!",
+      "durationSec": 1.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 115
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The Grinch walks into the house, and the bulldog confronts him."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4,
+        "frame": 121
+      },
+      "text": "Oh for GOD'S sake!",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.9,
+        "frame": 148
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The Grinch kneels by a Christmas tree to steal presents as the bulldog approaches from behind."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.1,
+        "frame": 185
+      },
+      "text": "What do you think you're doing, mate!!!",
+      "durationSec": 1.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.4,
+        "frame": 224
+      },
+      "text": "You want presents?",
+      "durationSec": 1.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.8,
+        "frame": 267
+      },
+      "text": "I'll give you past, present AND a future you've never even heard of!",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.1,
+        "frame": 306
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The bulldog has pulled off the Grinch's mask and is shaking it vigorously in its mouth."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.4,
+        "frame": 315
+      },
+      "text": "That'll learn ya!",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.5,
+        "frame": 348
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The unmasked person in the Grinch costume stands up, facing the bulldog. The mask lies on the floor."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12,
+        "frame": 364
+      },
+      "text": "Excuse your FACE??",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.5,
+        "frame": 439
+      },
+      "text": "Now you're TAKING THE PISS.",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 479
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The person in the Grinch costume bends over near a TV stand, seemingly trying to steal something else."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.8,
+        "frame": 509
+      },
+      "text": "I can't believe you came back for my bloody treats!!! 🤩",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "You're a Mean One, Mr. Grinch",
+    "trending": true,
+    "bpm": 90,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in",
+        "note": "Song starts with the iconic opening line."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 6,
+      "avgShotDurationSec": 3.4,
+      "cutDensityPerSec": 0.29,
+      "rhythmProfile": "medium",
+      "keyTwistAt": {
+        "sec": 10.1,
+        "frame": 306
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.17,
+        "medium": 0.66,
+        "wide": 0.17,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_thematic_song",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "White sans-serif text on a solid green or outlined background, representing the dog's inner monologue.",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "problem_setup",
+      "openingShot": "Wide shot establishing the confrontation between the bulldog (protagonist) and the Grinch (antagonist).",
+      "endingShot": "The Grinch is chased out of the house, providing a comedic resolution.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 10.1,
+        "frame": 306
+      }
+    }
+  },
+  "density": {
+    "editing": 60,
+    "transition": 10,
+    "effect": 25,
+    "bgmSync": 90,
+    "overall": 65
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:39:31.229Z"
+  }
+}

@@ -1,0 +1,737 @@
+{
+  "videoId": "tt-7625672162195639565",
+  "durationSec": 124.024024,
+  "fps": 59.94,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Selfie shot of the creator outdoors, introducing the video."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 12
+      },
+      "text": "solo trip",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1,
+        "frame": 60
+      },
+      "text": "solo trip hotel room tour",
+      "durationSec": 13.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.1,
+        "frame": 186
+      },
+      "text": "Bali, Indonesia",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "below_main_title"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 14.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 14.8,
+        "frame": 887
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.8,
+        "frame": 887
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot walking towards the villa entrance from a garden path."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 14.8,
+        "frame": 887
+      },
+      "type": "handheld",
+      "durationSec": 4,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 18.8,
+        "frame": 1127
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.8,
+        "frame": 1127
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot walking along a stone path towards the open-air living area."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 20.1,
+        "frame": 1205
+      },
+      "type": "location_tag",
+      "durationSec": 4.4
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 18.8,
+        "frame": 1127
+      },
+      "type": "handheld",
+      "durationSec": 5.7,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 24.5,
+        "frame": 1469
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.5,
+        "frame": 1469
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator's hand points towards the view, then the camera pans right to show the living area."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 24.5,
+        "frame": 1469
+      },
+      "type": "pan_right",
+      "durationSec": 2,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 26.5,
+        "frame": 1588
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.5,
+        "frame": 1588
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Panning shot across the living room sofa."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 26.5,
+        "frame": 1588
+      },
+      "type": "pan_right",
+      "durationSec": 3.3,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 29.8,
+        "frame": 1786
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.8,
+        "frame": 1786
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Shot of the outdoor bar/counter area."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 31.8,
+        "frame": 1906
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.8,
+        "frame": 1906
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Static shot looking out from the living area towards the pool and ocean view."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 34.8,
+        "frame": 2086
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.8,
+        "frame": 2086
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Panning shot from towels on a rack to the outdoor patio area."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 34.8,
+        "frame": 2086
+      },
+      "type": "pan_left",
+      "durationSec": 3,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 37.8,
+        "frame": 2266
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.8,
+        "frame": 2266
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Panning shot across the poolside lounge chairs and umbrella."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 37.8,
+        "frame": 2266
+      },
+      "type": "pan_left",
+      "durationSec": 3.7,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 41.5,
+        "frame": 2488
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.5,
+        "frame": 2488
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot walking around the lounge chairs towards the infinity pool."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 41.5,
+        "frame": 2488
+      },
+      "type": "handheld",
+      "durationSec": 5,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 46.5,
+        "frame": 2787
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.5,
+        "frame": 2787
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Panning shot from the infinity pool edge across the ocean view."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 46.5,
+        "frame": 2787
+      },
+      "type": "pan_right",
+      "durationSec": 3,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 49.5,
+        "frame": 2967
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 49.5,
+        "frame": 2967
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot walking along the wooden deck towards the bedroom entrance."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 49.5,
+        "frame": 2967
+      },
+      "type": "handheld",
+      "durationSec": 4,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 53.5,
+        "frame": 3207
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 53.5,
+        "frame": 3207
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Push-in shot of a desk area inside the villa."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 53.5,
+        "frame": 3207
+      },
+      "type": "push_in",
+      "durationSec": 5.3,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 58.8,
+        "frame": 3524
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.8,
+        "frame": 3524
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot walking down a hallway towards an area with open luggage."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 58.8,
+        "frame": 3524
+      },
+      "type": "handheld",
+      "durationSec": 5.7,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 104.5,
+        "frame": 6264
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 64.5,
+        "frame": 3866
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot walking from the hallway into the main bedroom area, panning right."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 64.5,
+        "frame": 3866
+      },
+      "type": "handheld",
+      "durationSec": 6,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 70.5,
+        "frame": 4226
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 70.5,
+        "frame": 4226
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Panning shot across the bedroom, showing the bed and high ceiling."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 70.5,
+        "frame": 4226
+      },
+      "type": "pan_right",
+      "durationSec": 4,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 74.5,
+        "frame": 4466
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 74.5,
+        "frame": 4466
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Panning shot across the bedroom sitting area and TV."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 74.5,
+        "frame": 4466
+      },
+      "type": "pan_right",
+      "durationSec": 7,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 81.5,
+        "frame": 4885
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 81.5,
+        "frame": 4885
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot walking from the bedroom into the bathroom."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 81.5,
+        "frame": 4885
+      },
+      "type": "handheld",
+      "durationSec": 3,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 84.5,
+        "frame": 5065
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 84.5,
+        "frame": 5065
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Panning shot of the large bathroom, focusing on the central bathtub."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 84.5,
+        "frame": 5065
+      },
+      "type": "pan_left",
+      "durationSec": 5,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 89.5,
+        "frame": 5365
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 89.5,
+        "frame": 5365
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot opening a glass door to reveal an outdoor shower."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 89.5,
+        "frame": 5365
+      },
+      "type": "handheld",
+      "durationSec": 4,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 93.5,
+        "frame": 5604
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 93.5,
+        "frame": 5604
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Push-in shot towards the bathtub and indoor shower area."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 93.5,
+        "frame": 5604
+      },
+      "type": "push_in",
+      "durationSec": 4.3,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 97.8,
+        "frame": 5862
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 97.8,
+        "frame": 5862
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Selfie shot of the creator in the bathroom, giving her final thoughts."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 97.8,
+        "frame": 5862
+      },
+      "type": "handheld",
+      "durationSec": 25.7,
+      "easing": "linear"
+    }
+  ],
+  "bgm": {
+    "name": "Get You - Daniel Caesar (Instrumental Cover)",
+    "trending": true,
+    "bpm": 74,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 14.8,
+          "frame": 887
+        },
+        "kind": "vocal_phrase",
+        "note": "Cut from intro to tour aligns with a new musical phrase."
+      },
+      {
+        "at": {
+          "sec": 37.8,
+          "frame": 2266
+        },
+        "kind": "beat",
+        "note": "Cut to the poolside chairs aligns with a beat."
+      },
+      {
+        "at": {
+          "sec": 97.8,
+          "frame": 5862
+        },
+        "kind": "vocal_phrase",
+        "note": "Cut to the outro aligns with a change in the musical arrangement."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 23,
+      "avgShotDurationSec": 5.37,
+      "cutDensityPerSec": 0.18,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "pan_right",
+        "pan_left"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.1,
+        "medium": 0.3,
+        "wide": 0.6,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Continuous chill R&B instrumental track setting a luxurious and relaxed mood.",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "Clean, white, centered sans-serif font for the main titles; native platform style for location tag.",
+      "colorGrade": "Natural and bright with a warm tone to enhance the tropical, sunny atmosphere."
+    },
+    "structure": {
+      "hookFormat": "Direct address to camera, stating the video's purpose (room tour).",
+      "openingShot": "Close-up selfie shot of the creator introducing the video.",
+      "endingShot": "Close-up selfie shot of the creator giving her final thoughts from the bathroom.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 37.8,
+        "frame": 2266
+      }
+    }
+  },
+  "density": {
+    "editing": 60,
+    "transition": 10,
+    "effect": 20,
+    "bgmSync": 55,
+    "overall": 45
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:50:21.290Z"
+  }
+}

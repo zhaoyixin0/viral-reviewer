@@ -1,0 +1,385 @@
+{
+  "videoId": "tt-7633917107712937224",
+  "durationSec": 82.453,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.4,
+        "frame": 12
+      },
+      "text": "Healthiest Egg Salad",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator takes a bite of the egg salad toast."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.2,
+        "frame": 66
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "Creator holds the toast towards the camera and begins his introduction."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.8,
+        "frame": 174
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator is in the kitchen by the stove, explaining how to boil eggs."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.9,
+        "frame": 417
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down view of eggs being placed into a pot of simmering water with a ladle."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.3,
+        "frame": 459
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator is at a cutting board, introducing the vegetable prep."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18,
+        "frame": 540
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator holds up celery stalks to the camera."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19,
+        "frame": 570
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator chops celery on the cutting board."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22,
+        "frame": 660
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator holds up a carrot, then a quick cut shows him chopping it."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.9,
+        "frame": 717
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator holds up a green onion."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25,
+        "frame": 750
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator holds up fresh dill."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26,
+        "frame": 780
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator explains making an ice bath and pours ice cubes from a tray into a metal bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.5,
+        "frame": 885
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator shows two bowls and explains his method of separating ingredients."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.5,
+        "frame": 1065
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "Creator peels a hard-boiled egg."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.2,
+        "frame": 1176
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator separates egg yolks into a glass bowl and chops the egg whites on the board."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.2,
+        "frame": 1326
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator shows the separated bowls of ingredients: egg whites/veggies and egg yolks."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 47.8,
+        "frame": 1434
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "Creator adds cottage cheese to the bowl of egg yolks."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 48.8,
+        "frame": 1464
+      },
+      "text": "Cottage Cheese",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 55.8,
+        "frame": 1674
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Adding a spoonful of Dijon mustard to the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 56.2,
+        "frame": 1686
+      },
+      "text": "Dijon Mustard",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 57,
+        "frame": 1710
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Shaking garlic powder into the bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.2,
+        "frame": 1746
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "Grinding salt and pepper into the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 59.2,
+        "frame": 1776
+      },
+      "text": "Pepper",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59.8,
+        "frame": 1794
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "Creator mashes the yolks and sauce ingredients, then folds in the egg whites and vegetables."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 102,
+        "frame": 3060
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator shows the finished egg salad in the bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 103.5,
+        "frame": 3105
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds up a bag of protein bread."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 107,
+        "frame": 3210
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "POV shot of placing bread slices into a toaster oven."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 108.8,
+        "frame": 3264
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The toaster oven beeps, signaling it's done."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 108.9,
+        "frame": 3267
+      },
+      "type": "sound_effect",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 109.2,
+        "frame": 3276
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator spreads the egg salad onto the toasted bread."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 110.5,
+        "frame": 3315
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds up a container of pickles."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 112.8,
+        "frame": 3384
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "Back in the original setting, creator takes a large bite of the finished sandwich."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 115,
+        "frame": 3450
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "Creator eats a slice of pickle."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 117.8,
+        "frame": 3534
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "Creator gives his final review of the sandwich and takes another bite."
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Lo-fi Hip Hop",
+    "trending": false,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 27,
+      "avgShotDurationSec": 3.04,
+      "cutDensityPerSec": 0.33,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 40,
+        "medium": 60,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "consistent_lofi_beat",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "centered_white_sans_serif_with_black_stroke",
+      "colorGrade": "natural_warm"
+    },
+    "structure": {
+      "hookFormat": "product_demonstration",
+      "openingShot": "Creator holds and eats the finished egg salad sandwich.",
+      "endingShot": "Creator eats the sandwich and gives a positive review.",
+      "cta": "soft_recommendation",
+      "payoffAt": {
+        "sec": 112.8,
+        "frame": 3384
+      }
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 10,
+    "effect": 20,
+    "bgmSync": 15,
+    "overall": 75
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:27:05.846Z"
+  }
+}

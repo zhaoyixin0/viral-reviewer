@@ -1,0 +1,286 @@
+{
+  "videoId": "tt-7614243422974545166",
+  "durationSec": 56.667,
+  "fps": 24,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "comedy",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person holds a knife over a Dalmatian-shaped cake. A real black and white dog sits behind it, watching with a concerned expression."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.5,
+        "frame": 132
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The real dog, startled, runs away from the table towards a doorway."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.8,
+        "frame": 163
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The dog lies on its back on the floor, feigning death or showing submission."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 9.5,
+        "frame": 228
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.7,
+        "frame": 233
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A Rottweiler and a Poodle watch as a person prepares to cut a cake shaped like a sleeping pug."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 12.8,
+        "frame": 307
+      },
+      "type": "dramatic_zoom",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.2,
+        "frame": 317
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The Rottweiler places its paw on the knife, stopping the person from cutting the cake, its eyes wide with shock."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 19.8,
+        "frame": 475
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20,
+        "frame": 480
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Two Golden Retrievers watch a woman about to cut a cake shaped like a sleeping dog."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.8,
+        "frame": 547
+      },
+      "toShotSize": "medium",
+      "shotDescription": "As the woman cuts the cake, the retriever on the right lunges and bites at her arm to stop her."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 27.2,
+        "frame": 653
+      },
+      "text": "See? Just chocolate cake inside.",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 29.2,
+        "frame": 701
+      },
+      "type": "cross_dissolve",
+      "durationFrames": 10
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.6,
+        "frame": 710
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A Chocolate Labrador with wide, shocked eyes watches as a woman prepares to cut a cake shaped like a chocolate lab."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.8,
+        "frame": 955
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Extreme close-up on the Chocolate Labrador's horrified face as it watches the cake being cut."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 44,
+        "frame": 1056
+      },
+      "type": "cross_dissolve",
+      "durationFrames": 10
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.4,
+        "frame": 1066
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman prepares to cut a cake shaped like a sleeping Border Collie, while a real Border Collie sits on the counter watching intently."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48,
+        "frame": 1152
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The Border Collie suddenly leaps onto the woman, knocking her and her chair over in a protective/playful attack."
+    }
+  ],
+  "bgm": {
+    "name": "Viral Funny Laughing Sound Effect Compilation",
+    "trending": true,
+    "bpm": null,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.5,
+          "frame": 12
+        },
+        "kind": "sfx_in",
+        "note": "Wheezing laugh sound starts"
+      },
+      {
+        "at": {
+          "sec": 5.5,
+          "frame": 132
+        },
+        "kind": "sfx_accent",
+        "note": "Sound effect emphasizes dog running away"
+      },
+      {
+        "at": {
+          "sec": 13.2,
+          "frame": 317
+        },
+        "kind": "sfx_accent",
+        "note": "Sound effect emphasizes Rottweiler stopping the knife"
+      },
+      {
+        "at": {
+          "sec": 22.8,
+          "frame": 547
+        },
+        "kind": "sfx_accent",
+        "note": "Sound effect emphasizes Golden Retriever biting arm"
+      },
+      {
+        "at": {
+          "sec": 31,
+          "frame": 744
+        },
+        "kind": "sfx_accent",
+        "note": "Sound effect emphasizes Chocolate Lab's shocked face"
+      },
+      {
+        "at": {
+          "sec": 48,
+          "frame": 1152
+        },
+        "kind": "sfx_accent",
+        "note": "Sound effect emphasizes Border Collie's attack"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 9,
+      "avgShotDurationSec": 6.22,
+      "cutDensityPerSec": 0.16,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 48,
+        "frame": 1152
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 10,
+        "medium": 60,
+        "wide": 30,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut",
+        "cross_dissolve"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Sound effect driven",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "In-video captions from original clips",
+      "colorGrade": "Natural"
+    },
+    "structure": {
+      "hookFormat": "Action-in-progress",
+      "openingShot": "Medium shot of a person about to cut a Dalmatian cake with a real dog watching.",
+      "endingShot": "Wide shot of a Border Collie playfully attacking its owner on the floor.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 48,
+        "frame": 1152
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 30,
+    "effect": 15,
+    "bgmSync": 95,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:43:28.271Z"
+  }
+}

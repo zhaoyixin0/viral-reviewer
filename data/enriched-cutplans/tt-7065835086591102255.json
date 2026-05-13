@@ -1,0 +1,167 @@
+{
+  "videoId": "tt-7065835086591102255",
+  "durationSec": 10.841,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "When people ask me how I stay motivated all the time",
+      "durationSec": 4.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 4.9,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.9,
+        "frame": 147
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A low-angle shot of a less muscular man struggling to do a push-up on a carpeted floor at home."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 4.9,
+        "frame": 147
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.1,
+        "frame": 153
+      },
+      "text": "I don't ever wanna feel...",
+      "durationSec": 3.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 4.9,
+        "frame": 147
+      },
+      "type": "handheld",
+      "durationSec": 5.6,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.9,
+        "frame": 267
+      },
+      "text": "Like I did that day",
+      "durationSec": 1.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "top_center"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "State of My Head - Shinedown",
+    "trending": true,
+    "bpm": 128,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 5.1,
+          "frame": 153
+        },
+        "kind": "vocal_in",
+        "note": "The first line of the verse aligns perfectly with the cut to the 'before' shot and the corresponding subtitle."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 2,
+      "avgShotDurationSec": 5.25,
+      "cutDensityPerSec": 0.095,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": {
+        "sec": 4.9,
+        "frame": 147
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Instrumental intro builds to a powerful vocal line that drives the narrative reveal.",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "Standard white sans-serif text with a black stroke for readability.",
+      "colorGrade": "The opening gym shot is slightly cool and desaturated, while the 'before' shot has warmer, natural indoor lighting."
+    },
+    "structure": {
+      "hookFormat": "Text-based question setting up a premise.",
+      "openingShot": "A medium static shot of the creator in his current muscular state, sitting in a gym.",
+      "endingShot": "A medium handheld shot of the creator's past self, failing a push-up, conveying vulnerability.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 4.9,
+        "frame": 147
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 10,
+    "effect": 10,
+    "bgmSync": 90,
+    "overall": 35
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:15:01.999Z"
+  }
+}

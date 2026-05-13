@@ -1,0 +1,316 @@
+{
+  "videoId": "tt-7632322849960889623",
+  "durationSec": 119.141,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "listicle",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman sits on a wooden porch, speaking directly to the camera, introducing the topic."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 8.5,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "5 Common mistakes people make going to Finns Beach Club",
+      "durationSec": 3.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.5,
+        "frame": 255
+      },
+      "text": "1",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.5,
+        "frame": 345
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A screenshot of the Finns Beach Club booking website map is shown."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 12.2,
+        "frame": 366
+      },
+      "type": "drawing_annotation",
+      "durationSec": 3.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 474
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Cut back to the woman on the porch explaining the reasoning."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.8,
+        "frame": 624
+      },
+      "toShotSize": "wide",
+      "shotDescription": "B-roll footage of the beach club's daybeds, with performers in silver outfits playing drums."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 20.8,
+        "frame": 624
+      },
+      "type": "pan_left",
+      "durationSec": 4,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.8,
+        "frame": 744
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Cut back to the woman on the porch summarizing the first point."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.7,
+        "frame": 831
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A screenshot of the booking package details for a 'Party Lagoon Bed'."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30.8,
+        "frame": 924
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Cut back to the woman on the porch explaining the value of the package."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 36.5,
+        "frame": 1095
+      },
+      "type": "text_overlay",
+      "durationSec": 8.2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 44.7,
+        "frame": 1341
+      },
+      "text": "3",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 47.9,
+        "frame": 1437
+      },
+      "toShotSize": "wide",
+      "shotDescription": "B-roll footage showing the seating area with many white couches and turquoise umbrellas."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 47.9,
+        "frame": 1437
+      },
+      "type": "pan_left",
+      "durationSec": 3.1,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 51,
+        "frame": 1530
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Cut back to the woman on the porch explaining the need for sun cream and securing valuables."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 105.6,
+        "frame": 3168
+      },
+      "text": "4",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 122.5,
+        "frame": 3675
+      },
+      "toShotSize": "wide",
+      "shotDescription": "B-roll footage of the main pool area with people swimming and the 'FINN'S' sign on the DJ booth."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 122.5,
+        "frame": 3675
+      },
+      "type": "pan_left",
+      "durationSec": 3.3,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 125.8,
+        "frame": 3774
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Cut back to the woman on the porch advising viewers to pace themselves."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 129.8,
+        "frame": 3894
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "The woman switches to a selfie-style shot, standing up to talk about what to wear."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 129.8,
+        "frame": 3894
+      },
+      "type": "handheld",
+      "durationSec": 29.5,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear",
+      "note": "The camera moves as she stands, turns, and shows her outfit."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 130.5,
+        "frame": 3915
+      },
+      "text": "5",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 13,
+      "avgShotDurationSec": 9.18,
+      "cutDensityPerSec": 0.1,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "pan_left",
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.15,
+        "close_up": 0,
+        "medium": 0.6,
+        "wide": 0.25,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "Word-by-word reveal, white text with black outline/background, sans-serif font.",
+      "colorGrade": "Natural, bright daylight"
+    },
+    "structure": {
+      "hookFormat": "Numbered list ('5 Common mistakes...')",
+      "openingShot": "Medium shot of creator talking to camera.",
+      "endingShot": "Selfie-style medium shot of creator giving a CTA.",
+      "cta": "Asks viewers to follow for a future vlog.",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 45,
+    "transition": 10,
+    "effect": 25,
+    "bgmSync": 0,
+    "overall": 35
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:45:38.377Z"
+  }
+}

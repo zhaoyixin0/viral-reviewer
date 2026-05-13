@@ -1,0 +1,138 @@
+{
+  "videoId": "tt-7633932775485099294",
+  "durationSec": 9.542,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman in a camo tank top and jeans stands holding a bouquet of white flowers, smiling at the camera."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 2.5,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2.5,
+        "frame": 75
+      },
+      "type": "other",
+      "durationFrames": 10,
+      "note": "The woman throws the flowers towards the camera, which fill the screen and create a wipe/blur effect to transition to the next shot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman is revealed in the same spot, now wearing a sparkly, iridescent formal gown, still holding the flowers."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "type": "static",
+      "durationSec": 6.2,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    }
+  ],
+  "bgm": {
+    "name": "My Love Must Be A Kind Of Blind Love",
+    "trending": false,
+    "bpm": 65,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 6.2,
+          "frame": 186
+        },
+        "kind": "vocal_in",
+        "note": "Lyrics 'My love must be a kind of...' begin"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 2,
+      "avgShotDurationSec": 4.5,
+      "cutDensityPerSec": 0.11,
+      "rhythmProfile": "slow",
+      "keyTwistAt": {
+        "sec": 2.8,
+        "frame": 84
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0.5,
+        "wide": 0.5,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "object_wipe"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "mood_setting_continuous",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "none",
+      "colorGrade": "natural_warm"
+    },
+    "structure": {
+      "hookFormat": "before_after_setup",
+      "openingShot": "Medium shot of woman in casual clothes holding flowers.",
+      "endingShot": "Wide shot of woman in a formal gown posing and turning around.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 2.8,
+        "frame": 84
+      }
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 30,
+    "effect": 5,
+    "bgmSync": 20,
+    "overall": 20
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:28:23.914Z"
+  }
+}

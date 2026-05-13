@@ -1,0 +1,305 @@
+{
+  "videoId": "tt-7523152472265772295",
+  "durationSec": 52.084,
+  "fps": 44.7168,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "listicle",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A man in a red shirt and cap speaks directly to the camera outdoors, with green foliage in the background."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 8.7,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.4,
+        "frame": 18
+      },
+      "text": "Top 3 Mistakes by first timers in Bali",
+      "durationSec": 8.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "black",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.4,
+        "frame": 18
+      },
+      "text": "Got a Bali question? Hit me up! www.heyrick.com.au",
+      "durationSec": 51.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "black",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 8.7,
+        "frame": 389
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.7,
+        "frame": 389
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The man is now walking down a street with palm trees, still talking to the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.2,
+        "frame": 456
+      },
+      "text": "#1- Not bringing shoes",
+      "durationSec": 9.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "black",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 11.8,
+        "frame": 528
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.8,
+        "frame": 528
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A point-of-view shot looking down at a dirty, tiled sidewalk."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 11.8,
+        "frame": 528
+      },
+      "type": "tilt_down",
+      "durationSec": 4.7,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 16.5,
+        "frame": 738
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.5,
+        "frame": 738
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Return to the shot of the man talking on the street."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 20,
+        "frame": 894
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20,
+        "frame": 894
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The man is in a different urban street setting, with power lines and signs visible."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.1,
+        "frame": 944
+      },
+      "text": "#2 - using the wrong money changers",
+      "durationSec": 13.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "black",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 24.8,
+        "frame": 1109
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.8,
+        "frame": 1109
+      },
+      "toShotSize": "wide",
+      "shotDescription": "B-roll shot of a legitimate money changer storefront ('Central Kuta')."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 27.6,
+        "frame": 1234
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.6,
+        "frame": 1234
+      },
+      "toShotSize": "medium",
+      "shotDescription": "B-roll shot of an exchange rate board outside the money changer."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 34.7,
+        "frame": 1552
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.7,
+        "frame": 1552
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The man is now indoors, speaking to the camera against a neutral background."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35.7,
+        "frame": 1596
+      },
+      "text": "#3- Not using Gojek or Grab",
+      "durationSec": 16.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "black",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 39.7,
+        "frame": 1775
+      },
+      "type": "graphic_overlay",
+      "durationSec": 12.3
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 9,
+      "avgShotDurationSec": 5.78,
+      "cutDensityPerSec": 0.15,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "static",
+        "tilt_down"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.6,
+        "medium": 0.1,
+        "wide": 0.3,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "White box with black sans-serif text, used for titles and a persistent CTA.",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "listicle_promise",
+      "openingShot": "Close-up talking head of the creator introducing the topic.",
+      "endingShot": "Close-up talking head of the creator summarizing and giving a CTA.",
+      "cta": "A persistent on-screen text with a website URL, and a verbal CTA to share the video.",
+      "payoffAt": {
+        "sec": 34.7,
+        "frame": 1552
+      }
+    }
+  },
+  "density": {
+    "editing": 70,
+    "transition": 10,
+    "effect": 20,
+    "bgmSync": 0,
+    "overall": 65
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:44:47.058Z"
+  }
+}

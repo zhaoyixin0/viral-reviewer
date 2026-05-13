@@ -1,0 +1,222 @@
+{
+  "videoId": "tt-7609524381554838798",
+  "durationSec": 51.431,
+  "fps": 30.126582278481013,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A young man with curly dark hair, wearing a black sweater, is sitting in the driver's seat of a car with a white interior and a sunroof. He is looking directly at the camera and speaking."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 51.2,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "Internships replaced entry level jobs",
+      "durationSec": 2.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.7,
+        "frame": 21
+      },
+      "text": "THE JUNIOR YEAR INTERNSHIP IS THE NEW ENTRY LEVEL JOB.",
+      "durationSec": 2.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.1,
+        "frame": 93
+      },
+      "text": "GETTING AN INTERNSHIP YOUR JUNIOR YEAR IS NOT JUST ABOUT BUILDING YOUR RESUME OR GETTING EXPERIENCE ANYMORE.",
+      "durationSec": 5.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.7,
+        "frame": 262
+      },
+      "text": "IT IS THE ENTRY LEVEL JOB",
+      "durationSec": 1.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.2,
+        "frame": 307
+      },
+      "text": "BECAUSE IF YOU DO WELL DURING THAT SUMMER INTERNSHIP, YOU'LL GET A RETURN OFFER TO COME BACK AFTER GRADUATION.",
+      "durationSec": 5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15.3,
+        "frame": 461
+      },
+      "text": "IF YOU CAN SECURE THAT THEN YOUR JOB HUNT IS OVER BEFORE YOU EVEN GRADUATE.",
+      "durationSec": 3.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19,
+        "frame": 572
+      },
+      "text": "BUT IF YOU MISS THE WINDOW FOR THAT JUNIOR YEAR INTERNSHIP, THEN YOU MIGHT GRADUATE WITH NOTHING LINED UP AND NOW YOU'RE JUST IN THE REGULAR LABOUR POOL.",
+      "durationSec": 7.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.2,
+        "frame": 789
+      },
+      "text": "SO THAT'S WHY IF YOU'RE A FRESHMAN OR A SOPHOMORE, YOU REALLY HAVE TO FOCUS ON SETTING YOURSELF UP FOR SUCCESS TO GET A GOOD INTERNSHIP YOUR JUNIOR YEAR",
+      "durationSec": 7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.3,
+        "frame": 1003
+      },
+      "text": "BECAUSE MISSING THAT WINDOW DOESN'T JUST MEAN THAT YOU MISSED OUT ON SOME EXPERIENCE, IT MIGHT MEAN THAT YOU COMPLETELY MISSED OUT ON THE ENTRY LEVEL HIRING BATCH",
+      "durationSec": 8.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 41.8,
+        "frame": 1259
+      },
+      "text": "AND ARE NOW IN A MUCH POORER POSITION TO TRY AND GET A JOB AFTER YOU GRADUATE.",
+      "durationSec": 4.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 46.6,
+        "frame": 1404
+      },
+      "text": "SO IF YOU WANNA WORK AT A BIG COMPANY, THE INTERNSHIP PIPELINE MIGHT BE THE ONLY WAY IN.",
+      "durationSec": 4.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 51.2,
+      "cutDensityPerSec": 0,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 1,
+        "medium": 0,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "Dynamic word-by-word reveal, all-caps sans-serif font, white text with red background highlight on the active word.",
+      "colorGrade": "Naturalistic, warm tones from sunset lighting."
+    },
+    "structure": {
+      "hookFormat": "Bold statement text overlay",
+      "openingShot": "Close-up of the speaker in a car, addressing the camera directly.",
+      "endingShot": "Close-up of the speaker in a car, finishing his statement.",
+      "cta": "none",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 0,
+    "effect": 20,
+    "bgmSync": 0,
+    "overall": 15
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:09:24.881Z"
+  }
+}

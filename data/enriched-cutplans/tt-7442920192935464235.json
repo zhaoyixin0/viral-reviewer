@@ -1,0 +1,131 @@
+{
+  "videoId": "tt-7442920192935464235",
+  "durationSec": 9.234,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1198
+  },
+  "videoFormat": "comedy",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman stands in the center of a messy room, holding a pile of clothes and shoes, looking at the camera."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 8.6,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "The smoothest transition I've EVER done",
+      "durationSec": 4,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "type": "other",
+      "durationFrames": 0,
+      "note": "This is an anti-transition. The music builds to a drop, but instead of a cut or effect, the subject simply steps on the clothes and walks away, subverting the viewer's expectation."
+    }
+  ],
+  "bgm": {
+    "name": "River - Bishop Briggs (Sped Up Remix)",
+    "trending": true,
+    "bpm": 140,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 4.8,
+          "frame": 144
+        },
+        "kind": "drop",
+        "note": "The beat drops, which is the expected moment for the visual transition to occur."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 8.6,
+      "cutDensityPerSec": 0.11,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": {
+        "sec": 4.8,
+        "frame": 144
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "anti_transition_joke"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "build_up_to_drop",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "Standard white text with black outline, centered on screen.",
+      "colorGrade": "Natural"
+    },
+    "structure": {
+      "hookFormat": "Text hook setting up a false expectation ('The smoothest transition').",
+      "openingShot": "Static wide shot of the subject in a messy room, establishing the 'before' state.",
+      "endingShot": "Subject walks out of frame, leaving the unchanged scene as the punchline.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 4.8,
+        "frame": 144
+      }
+    }
+  },
+  "density": {
+    "editing": 5,
+    "transition": 0,
+    "effect": 10,
+    "bgmSync": 95,
+    "overall": 25
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:26:58.983Z"
+  }
+}

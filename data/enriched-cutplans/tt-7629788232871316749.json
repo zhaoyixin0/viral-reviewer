@@ -1,0 +1,313 @@
+{
+  "videoId": "tt-7629788232871316749",
+  "durationSec": 127.434,
+  "fps": 29.945069317290088,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "review",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "THIS IS THE BEST HOTEL IN TOKYO IN TERMS OF LOCATION & ACCESS",
+      "durationSec": 3,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FFFF00"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "type": "pan_right",
+      "durationSec": 3,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "type": "graphic_overlay",
+      "durationSec": 9
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.5,
+        "frame": 434
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "A low-angle shot of the Shibuya Excel Hotel skyscraper from the street level of Shibuya Crossing."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 16.5,
+        "frame": 494
+      },
+      "type": "shape_animation",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.5,
+        "frame": 554
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A shot of the Shibuya Crossing intersection, panning right."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 21.8,
+        "frame": 653
+      },
+      "type": "shape_animation",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23,
+        "frame": 689
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Another shot of Shibuya Crossing, focusing on the Tsutaya and Starbucks building."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 25,
+        "frame": 749
+      },
+      "type": "graphic_overlay",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.5,
+        "frame": 823
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot walking through the hotel's ground floor entrance towards the elevators."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 32.6,
+        "frame": 976
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up of the elevator button panel."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 33,
+        "frame": 988
+      },
+      "type": "highlight",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.4,
+        "frame": 1030
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "High-angle panoramic view of Shibuya Crossing from a hotel window during the day."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42,
+        "frame": 1258
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot walking down the hotel room hallway."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 43.5,
+        "frame": 1303
+      },
+      "type": "pan_left",
+      "durationSec": 5.5,
+      "easing": "linear",
+      "note": "Camera pans from the hallway into the bathroom, showing the toilet, sink, and shower area."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 49,
+        "frame": 1467
+      },
+      "type": "pan_right",
+      "durationSec": 9,
+      "easing": "linear",
+      "note": "Camera pans out of the bathroom and across the hotel room, showing the bed, seating area, and TV console."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 113.5,
+        "frame": 3399
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person pulls a suitcase out of the hotel lobby through glass doors."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 116.6,
+        "frame": 3492
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A shot of the airport bus stop sign outside the hotel."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 117.8,
+        "frame": 3528
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Exterior shot of the hotel's vehicle entrance."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 121.6,
+        "frame": 3641
+      },
+      "type": "picture_in_picture",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 125,
+        "frame": 3743
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot boarding the airport bus."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 147.6,
+        "frame": 4420
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "High-angle panoramic view of Shibuya Crossing from the hotel at night."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 150.5,
+        "frame": 4507
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Low-angle shot of the hotel from the street, with people walking by."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 152.5,
+        "frame": 4567
+      },
+      "type": "graphic_overlay",
+      "durationSec": 6
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 158.5,
+        "frame": 4746
+      },
+      "type": "graphic_overlay",
+      "durationSec": 8.5
+    }
+  ],
+  "bgm": {
+    "name": "Unknown Lo-fi Instrumental",
+    "trending": false,
+    "bpm": 80,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 33,
+      "avgShotDurationSec": 3.85,
+      "cutDensityPerSec": 0.26,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": {
+        "sec": 113.5,
+        "frame": 3399
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "pan_right",
+        "pan_left"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 5,
+        "medium": 45,
+        "wide": 40,
+        "extreme_wide": 10
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_loop",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "Yellow text with heavy black stroke/outline",
+      "colorGrade": "Natural"
+    },
+    "structure": {
+      "hookFormat": "bold_claim",
+      "openingShot": "POV shot entering the hotel room, panning to the city view.",
+      "endingShot": "High-angle shot of Shibuya Crossing with a text overlay about rising taxi fares, reinforcing the video's main point.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 113.5,
+        "frame": 3399
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 90,
+    "bgmSync": 5,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:51:45.250Z"
+  }
+}

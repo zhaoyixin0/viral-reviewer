@@ -1,0 +1,286 @@
+{
+  "videoId": "tt-7264988229307272490",
+  "durationSec": 60.092,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman in pink striped pajamas stands in a room, adjusting her shirt."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 0.5,
+        "frame": 30
+      },
+      "type": "text_overlay",
+      "durationSec": 3.5
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 1.2,
+        "frame": 72
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.2,
+        "frame": 72
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She is now wearing a black top and black jeans, demonstrating the 'after' state of the transition."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2.2,
+        "frame": 132
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.2,
+        "frame": 132
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Back to the 'before' outfit (pajamas)."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 3.5,
+        "frame": 210
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.5,
+        "frame": 210
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Back to the 'after' outfit (black clothes)."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 4.5,
+        "frame": 270
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.5,
+        "frame": 270
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She is in her pajamas and begins the tutorial by squatting to place tape on the floor to mark her foot position."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.2,
+        "frame": 312
+      },
+      "text": "with this particular transition,",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.5,
+        "frame": 690
+      },
+      "text": "CLIP 1",
+      "durationSec": 1
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 12.5,
+        "frame": 750
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.5,
+        "frame": 750
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She is in her 'after' outfit, demonstrating the second part of the transition action."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16,
+        "frame": 960
+      },
+      "text": "CLIP 2",
+      "durationSec": 1
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 17.5,
+        "frame": 1050
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.5,
+        "frame": 1050
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Screen recording of a phone. The creator opens the InShot video editing app."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.8,
+        "frame": 1128
+      },
+      "text": "InShot",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.5,
+        "frame": 2010
+      },
+      "text": "right before my foot touches the ground.",
+      "durationSec": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 50,
+        "frame": 3000
+      },
+      "text": "right as my foot is touching the ground.",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 56.5,
+        "frame": 3390
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 56.5,
+        "frame": 3390
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Back to the main camera view. She is in her pajamas, about to perform the transition."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 58.5,
+        "frame": 3510
+      },
+      "type": "match_cut",
+      "durationFrames": 2,
+      "note": "The transition happens as her foot stomps the ground, changing her from pajamas to the black outfit."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.5,
+        "frame": 3510
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The final result of the transition is shown. She is now in the black outfit, posing."
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 9,
+      "avgShotDurationSec": 6.72,
+      "cutDensityPerSec": 0.13,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": {
+        "sec": 58.5,
+        "frame": 3510
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.1,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 0.9,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut",
+        "match_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "voice_over_only",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "White sans-serif text with black outline, bottom-centered",
+      "colorGrade": "Natural with warm tones"
+    },
+    "structure": {
+      "hookFormat": "show_result_first",
+      "openingShot": "Wide shot of creator in 'before' outfit, with a title card.",
+      "endingShot": "Wide shot of creator in 'after' outfit after the final successful transition.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 58.5,
+        "frame": 3510
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 60,
+    "effect": 20,
+    "bgmSync": 0,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:26:50.312Z"
+  }
+}

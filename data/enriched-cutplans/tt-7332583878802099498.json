@@ -1,0 +1,346 @@
+{
+  "videoId": "tt-7332583878802099498",
+  "durationSec": 50.967,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "listicle",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Wide shot of a water villa resort at sunset, with a water slide in the foreground."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "pan_right",
+      "durationSec": 4.6,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "VIDEO CONTENT IDEAS FOR TRAVEL CREATORS",
+      "durationSec": 4.4,
+      "style": {
+        "font": "serif",
+        "color": "black",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 4.6,
+        "frame": 138
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.6,
+        "frame": 138
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Low-angle shot from a white sand beach with a palm tree, looking out at turquoise water under a bright blue sky."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 4.6,
+        "frame": 138
+      },
+      "type": "tilt_up",
+      "durationSec": 7,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.1,
+        "frame": 153
+      },
+      "text": "START A SERIES AROUND CONTENT YOU HAVE THAT MAKES SENSE TOGETHER",
+      "durationSec": 6.5,
+      "style": {
+        "font": "serif",
+        "color": "black",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.1,
+        "frame": 153
+      },
+      "text": "YOU CAN ALSO HAVE MORE THAN ONE!",
+      "durationSec": 6.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 11.6,
+        "frame": 348
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.6,
+        "frame": 348
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Static screenshot of an Instagram Reel example about 'ALL-INCLUSIVE TRIPS', with red annotations pointing to the title and engagement metrics."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 17.1,
+        "frame": 513
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.1,
+        "frame": 513
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Static shot of two lounge chairs on a white sand beach, with palm fronds framing the top of the shot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.6,
+        "frame": 528
+      },
+      "text": "CREATE AN ITINERARY!",
+      "durationSec": 4.9,
+      "style": {
+        "font": "serif",
+        "color": "black",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.6,
+        "frame": 528
+      },
+      "text": "MAKE SURE TO INCLUDE LODGING, ACTIVITIES + FOOD",
+      "durationSec": 4.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 22.5,
+        "frame": 675
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.5,
+        "frame": 675
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Static screenshot of an Instagram Reel example about a 'FLORIDA KEYS ITINERARY', with red annotations."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 27.5,
+        "frame": 825
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.5,
+        "frame": 825
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Static shot of a calm ocean reflecting a golden sunset."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28,
+        "frame": 840
+      },
+      "text": "TELL A STORY ABOUT A TRIP YOU LOVED BUT WITH REVERSE PSYCHOLOGY.",
+      "durationSec": 7.9,
+      "style": {
+        "font": "serif",
+        "color": "black",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 35.9,
+        "frame": 1077
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.9,
+        "frame": 1077
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Static screenshot of an Instagram Reel example titled 'WORST VACATION EVER', with red annotations."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 40,
+        "frame": 1200
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40,
+        "frame": 1200
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Aerial drone shot flying over a turquoise coral reef."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 40,
+        "frame": 1200
+      },
+      "type": "tracking",
+      "durationSec": 5.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 40.5,
+        "frame": 1215
+      },
+      "text": "PICK A DISTANCE OF REFERENCE TO SHOWCASE HOW CLOSE SOMETHING IS",
+      "durationSec": 5,
+      "style": {
+        "font": "serif",
+        "color": "black",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 45.5,
+        "frame": 1365
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 45.5,
+        "frame": 1365
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Static screenshot of an Instagram Reel example showing a resort with text about proximity ('2.5 hours from Miami'), with red annotations."
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 9,
+      "avgShotDurationSec": 5.61,
+      "cutDensityPerSec": 0.16,
+      "rhythmProfile": "slow",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "pan_right",
+        "tilt_up",
+        "tracking",
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 0.55,
+        "extreme_wide": 0.45
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "voiceover_driven",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "layered_text_box",
+      "colorGrade": "vibrant_travel"
+    },
+    "structure": {
+      "hookFormat": "title_card",
+      "openingShot": "establishing_shot",
+      "endingShot": "example_screenshot",
+      "cta": "none",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 10,
+    "effect": 20,
+    "bgmSync": 0,
+    "overall": 15
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:49:54.078Z"
+  }
+}

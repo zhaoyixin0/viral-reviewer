@@ -1,0 +1,748 @@
+{
+  "videoId": "tt-7632466262010154243",
+  "durationSec": 62.855,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "listicle",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "type": "sticker_overlay",
+      "durationSec": 1.7
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "THINGS ABOUT BABY CATS THAT NO ONE TALKS ABOUT",
+      "durationSec": 1.9,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "toShotSize": "wide",
+      "shotDescription": "High-angle shot of a white kitten jumping on a wooden floor."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 1.9,
+        "frame": 57
+      },
+      "type": "sticker_overlay",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.2,
+        "frame": 66
+      },
+      "text": "AND NUMBER THREE IS THE REASON YOUR KITTEN WON'T STOP BITING YOU",
+      "durationSec": 2.5,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A tiny kitten lies on its back while a hand pets its belly."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 4.9,
+        "frame": 147
+      },
+      "type": "graphic_overlay",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.2,
+        "frame": 156
+      },
+      "text": "NUMBER ONE : THEY'RE BORN COMPLETELY USELESS.",
+      "durationSec": 2.2,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.5,
+        "frame": 225
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds a newborn ginger kitten."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.9,
+        "frame": 237
+      },
+      "text": "KITTENS ARE BORN BLIND, DEAF",
+      "durationSec": 1,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9,
+        "frame": 270
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A different angle of a newborn ginger kitten in a hand."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.4,
+        "frame": 282
+      },
+      "text": "AND WITH ZERO SMELL.",
+      "durationSec": 1.2,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.7,
+        "frame": 321
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A tiny black and white kitten sleeping in a blue blanket."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11,
+        "frame": 330
+      },
+      "text": "AND THAT'S NOT RANDOM",
+      "durationSec": 0.8,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A fluffy kitten with large eyes looks directly at the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.2,
+        "frame": 366
+      },
+      "text": "BECAUSE IN THE WILD, SMELLING LIKE SOMETHING GETS YOU EATEN.",
+      "durationSec": 1.9,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.2,
+        "frame": 426
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A cat lies upside down among stuffed animals."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.6,
+        "frame": 438
+      },
+      "text": "SO NATURE MADE THEM TINY LITTLE NINJAS FROM DAY ONE.",
+      "durationSec": 1.9,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.6,
+        "frame": 498
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A small white kitten stands on a large pile of cat food."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 16.8,
+        "frame": 504
+      },
+      "type": "graphic_overlay",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.1,
+        "frame": 513
+      },
+      "text": "NUMBER TWO : KITTENS EAT UP TO 10 MEALS A DAY.",
+      "durationSec": 2.4,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.6,
+        "frame": 588
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A ginger kitten stands on its hind legs to eat from a tube held by a person."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20,
+        "frame": 600
+      },
+      "text": "IF YOU ATE LIKE A KITTEN, YOU'D BE EATING 10 BURGERS A DAY",
+      "durationSec": 1.9,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22,
+        "frame": 660
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A black kitten holds and bites a corn on the cob."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.6,
+        "frame": 678
+      },
+      "text": "AND ASKING IF THERE'S DESSERT.",
+      "durationSec": 1,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.6,
+        "frame": 708
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person holds a kitten with a very round belly."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.2,
+        "frame": 726
+      },
+      "text": "THEIR LITTLE BELLIES ARE BASICALLY BOTTOMLESS PITS WITH FUR.",
+      "durationSec": 1.9,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.2,
+        "frame": 786
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A person's hands with decorated nails gently open a kitten's mouth."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 26.5,
+        "frame": 795
+      },
+      "type": "graphic_overlay",
+      "durationSec": 3
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.8,
+        "frame": 804
+      },
+      "text": "NUMBER THREE : THEY START GROWING BABY TEETH",
+      "durationSec": 1.5,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 27.9,
+        "frame": 837
+      },
+      "type": "push_in",
+      "durationSec": 1.5,
+      "scaleFrom": 1,
+      "scaleTo": 1.3,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28.4,
+        "frame": 852
+      },
+      "text": "AT JUST TWO WEEKS OLD.",
+      "durationSec": 1.3,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.8,
+        "frame": 894
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Macro shot of a cat's mouth, showing its small front teeth."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 30.3,
+        "frame": 909
+      },
+      "text": "AND JUST LIKE HUMAN BABIES,",
+      "durationSec": 0.7,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31,
+        "frame": 930
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A person checks the teeth of a calico cat."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.4,
+        "frame": 942
+      },
+      "text": "THEY LOSE THEM LATER AND GROW ADULT ONES.",
+      "durationSec": 1.4,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 32.9,
+        "frame": 987
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A black and white kitten bites and plays with a person's finger."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.4,
+        "frame": 1002
+      },
+      "text": "SO, IF YOUR KITTEN IS BITING EVERYTHING IN SIGHT,",
+      "durationSec": 2.2,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.7,
+        "frame": 1071
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A tabby kitten sleeps on a person's neck, nuzzling their ear."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 36.2,
+        "frame": 1086
+      },
+      "text": "DON'T WORRY. THIS IS EXACTLY WHY YOUR KITTEN CHEWS ON YOUR FINGERS,",
+      "durationSec": 2,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.2,
+        "frame": 1146
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A fluffy grey and white kitten gently bites a person's finger."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39,
+        "frame": 1170
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A calico kitten sits on a person's lap, looking at the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 39.3,
+        "frame": 1179
+      },
+      "text": "YOUR SHOES, AND EVERYTHING THEY FIND.",
+      "durationSec": 0.9,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40.2,
+        "frame": 1206
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A cat with fangs showing bites the edge of a cardboard box."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 40.8,
+        "frame": 1224
+      },
+      "text": "THEY'RE NOT TRYING TO DESTROY YOUR STUFF. THEIR GUMS ARE JUST ON FIRE.",
+      "durationSec": 2.6,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43.5,
+        "frame": 1305
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A ginger and white kitten sleeps on its back on a green couch."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 43.7,
+        "frame": 1311
+      },
+      "type": "graphic_overlay",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 44.1,
+        "frame": 1323
+      },
+      "text": "NUMBER FOUR : KITTENS CAN DREAM.",
+      "durationSec": 0.9,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 45,
+        "frame": 1350
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A tabby kitten sleeps on its back, its paws twitching."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 45.6,
+        "frame": 1368
+      },
+      "text": "WHEN YOU SEE THOSE TINY PAWS MOVING DURING A NAP, THAT'S THEM HUNTING IN THEIR SLEEP.",
+      "durationSec": 2.9,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48.6,
+        "frame": 1458
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A ginger kitten sleeps on a green blanket."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 49.2,
+        "frame": 1476
+      },
+      "text": "THEY HAVEN'T EVEN SEEN A BIRD YET AND THEY'RE ALREADY CHASING ONE.",
+      "durationSec": 1.8,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 51.1,
+        "frame": 1533
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Two tiny kittens stand on their hind legs in and next to a litter box."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 51.5,
+        "frame": 1545
+      },
+      "type": "graphic_overlay",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 51.9,
+        "frame": 1557
+      },
+      "text": "NUMBER FIVE : THEY LEARN TO USE THE LITTER BOX ALL BY THEMSELVES.",
+      "durationSec": 2.6,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 54.6,
+        "frame": 1638
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A black and white kitten sits in a litter box."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 55.1,
+        "frame": 1653
+      },
+      "text": "NOBODY SHOWS THEM HOW.",
+      "durationSec": 0.8,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 56,
+        "frame": 1680
+      },
+      "text": "AND BY 3 OR 4 WEEKS OLD, THEY JUST FIGURE IT OUT ON THEIR OWN.",
+      "durationSec": 2.5,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.6,
+        "frame": 1758
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A white and tabby kitten poses in a pink litter box."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 59.3,
+        "frame": 1779
+      },
+      "text": "MEANWHILE, IT TAKES US YEARS TO TEACH A TODDLER THE SAME THING.",
+      "durationSec": 2.2,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 101.6,
+        "frame": 3048
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A person brushes a fluffy grey kitten lying on a pink blanket."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 102.1,
+        "frame": 3063
+      },
+      "text": "HOW OLD IS YOUR KITTEN?",
+      "durationSec": 0.9,
+      "style": {
+        "font": "Impact",
+        "color": "white"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat, playful instrumental",
+    "trending": false,
+    "bpm": 125,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 25,
+      "avgShotDurationSec": 2.52,
+      "cutDensityPerSec": 0.4,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.05,
+        "close_up": 0.5,
+        "medium": 0.35,
+        "wide": 0.1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_mood_setting",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "white_text_black_outline",
+      "colorGrade": "natural_ugc"
+    },
+    "structure": {
+      "hookFormat": "curiosity_gap",
+      "openingShot": "POV shot of a person holding a tiny kitten's paws.",
+      "endingShot": "Close-up of a person brushing a fluffy kitten.",
+      "cta": "engagement_question",
+      "payoffAt": {
+        "sec": 26.2,
+        "frame": 786
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 50,
+    "bgmSync": 60,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:33:33.711Z"
+  }
+}

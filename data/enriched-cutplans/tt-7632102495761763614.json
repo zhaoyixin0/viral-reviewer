@@ -1,0 +1,402 @@
+{
+  "videoId": "tt-7632102495761763614",
+  "durationSec": 60.4,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "ugc_native",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A yellow Labrador dog is in a swimming pool, splashing water."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "POV: I say 'let's go inside' and he hears 'let the games begin'",
+      "durationSec": 3.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "type": "text_animation",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.9,
+        "frame": 57
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman in workout clothes stands by the pool, facing her wet dog on the patio."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.1,
+        "frame": 63
+      },
+      "text": "He thinks I'm playing tag...",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The dog leaps into the pool to evade the woman."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.2,
+        "frame": 156
+      },
+      "text": "...I'm not",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7,
+        "frame": 210
+      },
+      "toShotSize": "wide",
+      "shotDescription": "From a different angle, the dog leaps into the pool again."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 8.2,
+        "frame": 246
+      },
+      "type": "text_animation",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.3,
+        "frame": 309
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The dog gets out of the pool and walks towards the back door of the house, with the woman following."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.5,
+        "frame": 315
+      },
+      "text": "and there he goes...",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman chases the dog as it runs around the pool deck."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15,
+        "frame": 450
+      },
+      "text": "cardio I didn't ask for",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21,
+        "frame": 630
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman tries to grab the dog at the edge of the pool, but it evades her."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.3,
+        "frame": 639
+      },
+      "text": "I'm being outplayed by my dog",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25,
+        "frame": 750
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman is now in the shallow end of the pool, trying to hold the dog still."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 25.8,
+        "frame": 774
+      },
+      "text": "new strategy: become immovable",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.7,
+        "frame": 1131
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "POV shot of using a pool skimmer net to try and guide the dog in the water."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 38,
+        "frame": 1140
+      },
+      "text": "I'm out here fishing for my dog",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42,
+        "frame": 1260
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot from the patio as the dog finally gets out of the pool."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 42.5,
+        "frame": 1275
+      },
+      "text": "I almost won...",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43.7,
+        "frame": 1311
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The dog immediately turns around and jumps back into the pool."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.7,
+        "frame": 1401
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "POV shot of trying to dry the dog with a towel, but it is looking back at the pool."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 48.8,
+        "frame": 1464
+      },
+      "text": "he made eye contact first...",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 51.9,
+        "frame": 1557
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The dog leaps into the pool one last time."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 52.5,
+        "frame": 1575
+      },
+      "type": "text_animation",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 54.2,
+        "frame": 1626
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Final shot of the dog swimming happily in the pool near a small waterfall feature."
+    }
+  ],
+  "bgm": {
+    "name": "What's Luv? (feat. Ja-Rule & Ashanti)",
+    "trending": true,
+    "bpm": 94,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 1.9,
+          "frame": 57
+        },
+        "kind": "beat",
+        "note": "Cut to woman on deck"
+      },
+      {
+        "at": {
+          "sec": 4.8,
+          "frame": 144
+        },
+        "kind": "beat",
+        "note": "Dog jumps into pool"
+      },
+      {
+        "at": {
+          "sec": 13.8,
+          "frame": 414
+        },
+        "kind": "vocal_in",
+        "note": "Main verse starts, chase sequence begins"
+      },
+      {
+        "at": {
+          "sec": 43.7,
+          "frame": 1311
+        },
+        "kind": "beat",
+        "note": "Dog jumps back in after almost being caught"
+      },
+      {
+        "at": {
+          "sec": 51.9,
+          "frame": 1557
+        },
+        "kind": "beat",
+        "note": "Final jump into the pool"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 23,
+      "avgShotDurationSec": 2.56,
+      "cutDensityPerSec": 0.39,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 43.7,
+        "frame": 1311
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 15,
+        "medium": 25,
+        "wide": 60,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_upbeat_track",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "mixed_narrative_and_emphatic",
+      "colorGrade": "natural_bright_daylight"
+    },
+    "structure": {
+      "hookFormat": "pov_text_overlay",
+      "openingShot": "Medium shot of the dog in the pool, establishing the central conflict.",
+      "endingShot": "Medium shot of the dog back in the pool, signifying the dog has 'won'.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 54.2,
+        "frame": 1626
+      }
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 10,
+    "effect": 85,
+    "bgmSync": 90,
+    "overall": 88
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:34:14.174Z"
+  }
+}

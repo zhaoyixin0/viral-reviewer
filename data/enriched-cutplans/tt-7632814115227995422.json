@@ -1,0 +1,546 @@
+{
+  "videoId": "tt-7632814115227995422",
+  "durationSec": 39.734,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 7.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "Cats are super curious animals.",
+      "durationSec": 1.7
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "text": "there are still parts of my house that my fluffy daughter hasn't discovered.",
+      "durationSec": 2.7
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5,
+        "frame": 150
+      },
+      "text": "So, being the loving cat father I am,",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.5,
+        "frame": 195
+      },
+      "text": "I'm gonna show her those places.",
+      "durationSec": 1.3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man holds a cat up to a chandelier in a dining room."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.2,
+        "frame": 246
+      },
+      "text": "You wanna see a chandelier?",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.3,
+        "frame": 279
+      },
+      "text": "Look at that. Why do you look amazed?",
+      "durationSec": 1.9
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.5,
+        "frame": 345
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "Closer shot of the man holding the cat, who is looking up at the chandelier. He gently swings the cat."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 11.5,
+        "frame": 345
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12,
+        "frame": 360
+      },
+      "text": "It swings.",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.3,
+        "frame": 429
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "The man holds the cat, which is now licking a treat, while talking to the camera."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 14.3,
+        "frame": 429
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.5,
+        "frame": 435
+      },
+      "text": "Oh, you don't like the swinging?",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15.4,
+        "frame": 462
+      },
+      "text": "I kinda hope she forgets that swings.",
+      "durationSec": 1.7
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.2,
+        "frame": 516
+      },
+      "text": "I feel like she might use it as a toy.",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.5,
+        "frame": 555
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The man lifts the cat and places it on top of a tall wooden wardrobe."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 18.5,
+        "frame": 555
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.8,
+        "frame": 564
+      },
+      "text": "What about this way? You've never been up here.",
+      "durationSec": 1.3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.2,
+        "frame": 606
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The man stands in front of the wardrobe, talking to the camera with a thumbs up, while the cat sits on top."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 20.2,
+        "frame": 606
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.6,
+        "frame": 618
+      },
+      "text": "I feel like this is the best day of her life.",
+      "durationSec": 1.1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.8,
+        "frame": 654
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Low-angle shot of the cat sitting on top of the wardrobe."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 21.8,
+        "frame": 654
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.3,
+        "frame": 669
+      },
+      "text": "What's up there, little lady?",
+      "durationSec": 1.1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.5,
+        "frame": 705
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Low-angle shot of the cat investigating a wicker basket on the wardrobe."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 23.5,
+        "frame": 705
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.5,
+        "frame": 735
+      },
+      "text": "Oh, you found a basket.",
+      "durationSec": 0.9
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.7,
+        "frame": 771
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Extreme low-angle shot looking up at the cat from below the wardrobe."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 25.7,
+        "frame": 771
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26,
+        "frame": 780
+      },
+      "text": "Look at you, lay.",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.8,
+        "frame": 804
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The man talks to the camera while the cat walks around on the wardrobe behind him."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 26.8,
+        "frame": 804
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 27.3,
+        "frame": 819
+      },
+      "text": "I feel like she's just loving being taller than me.",
+      "durationSec": 1.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.8,
+        "frame": 864
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Shot from behind the man as he reaches up towards the cat on the wardrobe."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 28.8,
+        "frame": 864
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.2,
+        "frame": 876
+      },
+      "text": "You wanna get down, lay?",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30.8,
+        "frame": 924
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The man talks to the camera, explaining he can't get the cat down."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 30.8,
+        "frame": 924
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.5,
+        "frame": 945
+      },
+      "text": "I'm just now realising, unless she wants to get down,",
+      "durationSec": 1.4
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33,
+        "frame": 990
+      },
+      "text": "I don't think I can get her down.",
+      "durationSec": 0.9
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34,
+        "frame": 1020
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Shot from behind as the man successfully lifts the cat off the wardrobe."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 34,
+        "frame": 1020
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 34.6,
+        "frame": 1038
+      },
+      "text": "Come here. Oh,",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.8,
+        "frame": 1074
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The man holds the cat and talks to the camera, concluding the 'exploring'."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 35.8,
+        "frame": 1074
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 36.3,
+        "frame": 1089
+      },
+      "text": "that was a slight scare. That's gonna end our exploring for the day.",
+      "durationSec": 1.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38,
+        "frame": 1140
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The man holds the cat upside down close to the camera for the call to action."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 38,
+        "frame": 1140
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 38.2,
+        "frame": 1146
+      },
+      "text": "Now, girly,",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 38.8,
+        "frame": 1164
+      },
+      "text": "tell him. Follow for more.",
+      "durationSec": 0.9
+    }
+  ],
+  "bgm": {
+    "name": "Unknown Lo-fi Instrumental",
+    "trending": false,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 15,
+      "avgShotDurationSec": 2.63,
+      "cutDensityPerSec": 0.35,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 31.5,
+        "frame": 945
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 20,
+        "medium": 60,
+        "wide": 20,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_ambient",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "Standard white text with black outline, bottom-center aligned.",
+      "colorGrade": "Natural"
+    },
+    "structure": {
+      "hookFormat": "direct_address_with_premise",
+      "openingShot": "Medium close-up of the creator holding his cat while explaining the video's premise.",
+      "endingShot": "Close-up of the cat held upside down with a verbal call to action.",
+      "cta": "explicit_verbal",
+      "payoffAt": {
+        "sec": 31.5,
+        "frame": 945
+      }
+    }
+  },
+  "density": {
+    "editing": 80,
+    "transition": 10,
+    "effect": 0,
+    "bgmSync": 15,
+    "overall": 70
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:37:17.012Z"
+  }
+}

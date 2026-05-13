@@ -1,0 +1,167 @@
+{
+  "videoId": "tt-7629691375944174866",
+  "durationSec": 15.022,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman in a black loungewear set stands in the center of a bright, modern room."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 6.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "text": "Wait for the transition....",
+      "durationSec": 13.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 6.5,
+        "frame": 195
+      },
+      "type": "hard_cut",
+      "durationFrames": 2,
+      "note": "The cut is disguised by the creator's fast spinning motion."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.6,
+        "frame": 198
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman is now wearing a stylish outfit: a white blazer, red top, and red pants. She continues to dance and pose."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 11,
+        "frame": 330
+      },
+      "type": "push_in",
+      "durationSec": 3.5,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_in_out"
+    }
+  ],
+  "bgm": {
+    "name": "Vogue (Remix)",
+    "trending": true,
+    "bpm": 118,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 2,
+          "frame": 60
+        },
+        "kind": "vocal_phrase",
+        "note": "Lyrics: 'Strike the pose'"
+      },
+      {
+        "at": {
+          "sec": 6.5,
+          "frame": 195
+        },
+        "kind": "beat",
+        "note": "The transition cut happens exactly on this beat."
+      },
+      {
+        "at": {
+          "sec": 8.8,
+          "frame": 264
+        },
+        "kind": "vocal_phrase",
+        "note": "Lyrics: 'Vogue'"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 2,
+      "avgShotDurationSec": 7.25,
+      "cutDensityPerSec": 0.07,
+      "rhythmProfile": "slow",
+      "keyTwistAt": {
+        "sec": 6.6,
+        "frame": 198
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "push_in"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "motion_disguised_hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_dance_track",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "white_sans_serif_top_center",
+      "colorGrade": "natural_bright"
+    },
+    "structure": {
+      "hookFormat": "on_screen_text_promise",
+      "openingShot": "wide_shot_before_outfit",
+      "endingShot": "medium_wide_shot_after_outfit",
+      "cta": null,
+      "payoffAt": {
+        "sec": 6.6,
+        "frame": 198
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 10,
+    "effect": 5,
+    "bgmSync": 90,
+    "overall": 45
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:28:06.184Z"
+  }
+}

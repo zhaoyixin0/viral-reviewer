@@ -1,0 +1,139 @@
+{
+  "videoId": "tt-7633677350328110356",
+  "durationSec": 10.3,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman with blonde hair wearing a beige jacket and glasses on her head stands in a bathroom, dancing slightly to the music."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 9.9,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.7,
+        "frame": 21
+      },
+      "text": "transition inspo",
+      "durationSec": 9.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 5.5,
+        "frame": 165
+      },
+      "type": "match_cut",
+      "durationFrames": 1,
+      "note": "The cut is hidden by the creator's hand covering the camera lens, timed to a beat in the music."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.5,
+        "frame": 165
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman is now revealed in a new outfit (white top, jeans) with her hair in a ponytail. She smiles and poses for the camera."
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat electronic/hip-hop track",
+    "trending": true,
+    "bpm": 125,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 5.5,
+          "frame": 165
+        },
+        "kind": "beat",
+        "note": "The beat drop and vocal cue 'clap' align perfectly with the outfit transformation."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 2,
+      "avgShotDurationSec": 4.95,
+      "cutDensityPerSec": 0.1,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": {
+        "sec": 5.5,
+        "frame": 165
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "match_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Build-up to a synchronized beat drop",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "Minimalist, centered, white sans-serif text",
+      "colorGrade": "Natural, clean with neutral tones"
+    },
+    "structure": {
+      "hookFormat": "Before-state reveal with text overlay promising a transition",
+      "openingShot": "Medium shot of the subject in a casual 'before' outfit.",
+      "endingShot": "Medium shot of the subject in the 'after' outfit, posing and introducing a new prop (champagne glass).",
+      "cta": null,
+      "payoffAt": {
+        "sec": 5.5,
+        "frame": 165
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 60,
+    "effect": 10,
+    "bgmSync": 95,
+    "overall": 45
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:31:17.711Z"
+  }
+}

@@ -1,0 +1,236 @@
+{
+  "videoId": "tt-7598603264179047702",
+  "durationSec": 12.979,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Aerial view of unique pod-like hotel rooms over a river at dusk."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "pull_out",
+      "durationSec": 1.7,
+      "scaleFrom": 1.1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "Il 2026 è l'anno di Bali",
+      "durationSec": 12,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.7,
+        "frame": 51
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "POV shot of a hand holding a coconut drink with a pool in the background."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2.2,
+        "frame": 66
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.7,
+        "frame": 81
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Wide shot of a uniquely designed building with a multi-layered, petal-like roof."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.7,
+        "frame": 111
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Top-down drone shot of the entire resort complex, showing the pod buildings along a river."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.8,
+        "frame": 174
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Low-angle shot looking up at palm trees against a blue sky."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.8,
+        "frame": 204
+      },
+      "toShotSize": "wide",
+      "shotDescription": "View of a resort pool area from a covered patio, with lush greenery and treehouse-like structures."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A seating area on a wooden deck next to a small waterfall and stream in a lush jungle setting."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman in a bikini getting into an indoor grotto-style pool with a skylight."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.8,
+        "frame": 294
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A floating breakfast tray in a pool, with lush green foliage in the background."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 9.8,
+        "frame": 294
+      },
+      "type": "pan_right",
+      "durationSec": 1.1,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.9,
+        "frame": 327
+      },
+      "toShotSize": "wide",
+      "shotDescription": "High-angle shot of one of the pod-like balconies with a net hammock over the water."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 10.9,
+        "frame": 327
+      },
+      "type": "pull_out",
+      "durationSec": 1.6,
+      "scaleFrom": 1.1,
+      "scaleTo": 1,
+      "easing": "ease_out"
+    }
+  ],
+  "bgm": {
+    "name": "Papaoutai - Stromae",
+    "trending": true,
+    "bpm": 116,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in",
+        "note": "Intro vocal line"
+      },
+      {
+        "at": {
+          "sec": 2.2,
+          "frame": 66
+        },
+        "kind": "drop",
+        "note": "Main chorus and beat drop"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 11,
+      "avgShotDurationSec": 1.14,
+      "cutDensityPerSec": 0.8,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "pull_out"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.1,
+        "medium": 0.1,
+        "wide": 0.7,
+        "extreme_wide": 0.1
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Upbeat pop song with a strong, rhythmic chorus used for a montage.",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "Centered, white, sans-serif font, static.",
+      "colorGrade": "Warm and saturated, enhancing natural greens and wood tones."
+    },
+    "structure": {
+      "hookFormat": "Visual hook",
+      "openingShot": "Aerial wide shot of unique pod-like hotel rooms at dusk.",
+      "endingShot": "High-angle pull-out shot of a pod balcony with a net hammock.",
+      "cta": null,
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 15,
+    "bgmSync": 90,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:43:56.942Z"
+  }
+}

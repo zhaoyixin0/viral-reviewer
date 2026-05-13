@@ -1,0 +1,689 @@
+{
+  "videoId": "tt-7634171226679823629",
+  "durationSec": 151,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Interior of a Sanrio store with a large My Melody display."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "Come",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.9,
+        "frame": 27
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds a cup of matcha latte against a plain wall with 'THE MATCHA TOKYO' text."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1,
+        "frame": 30
+      },
+      "text": "A Day In Tokyo",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.7,
+        "frame": 51
+      },
+      "text": "Gyukatsu, Sanrio, Matcha, Studio Ghibli",
+      "durationSec": 1.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.9,
+        "frame": 57
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Selfie shot of the vlogger walking down a covered street, holding a matcha drink and talking."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.9,
+        "frame": 117
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A matcha drink with strawberry puree at the bottom, topped with whipped cream and strawberry bits."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5,
+        "frame": 150
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds the strawberry matcha drink."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.9,
+        "frame": 177
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Exterior of the 'Matcha House' take-out counter."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.9,
+        "frame": 237
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Selfie shot of the vlogger walking and talking."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.9,
+        "frame": 267
+      },
+      "toShotSize": "wide",
+      "shotDescription": "An A-frame sign for 'GYUKATSU Kyoto Katsugyu' on a sidewalk."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.9,
+        "frame": 297
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The exterior of the Gyukatsu restaurant."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.9,
+        "frame": 327
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot of a full Gyukatsu meal set on a wooden tray."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.9,
+        "frame": 357
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A piece of katsu is placed on a personal stone grill with chopsticks."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.9,
+        "frame": 447
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The vlogger is sitting at the table, eating and reacting to the food."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.9,
+        "frame": 477
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Selfie shot of the vlogger standing on a street corner, talking to the camera."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.9,
+        "frame": 627
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Low-angle shot of the exterior of a Sanrio store, shaped like a giant Hello Kitty head."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.9,
+        "frame": 657
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A quick pan across shelves filled with Sanrio plush toys."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 22,
+        "frame": 660
+      },
+      "type": "pan_right",
+      "durationSec": 3,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25,
+        "frame": 750
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "POV shot of a hand touching a wall display of numerous Sanrio character keychains."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26,
+        "frame": 780
+      },
+      "text": "STAY TUNED FOR\n*MY IN DEPTH VIDEO+HAUL!*",
+      "durationSec": 18
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.9,
+        "frame": 837
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A corner of the store decorated with Sanrio character wall art."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.9,
+        "frame": 897
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot walking through the upstairs section of the Sanrio store."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.9,
+        "frame": 957
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The vlogger stands outside on the sidewalk, holding up a Sanrio shopping bag."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.9,
+        "frame": 1047
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A pig wearing a vest sits in a pet stroller on the sidewalk."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35.5,
+        "frame": 1065
+      },
+      "text": "Yes, this is a pig in a stroller...",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36.9,
+        "frame": 1107
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Selfie shot of the vlogger walking through a covered shopping arcade, holding her Sanrio bag and talking."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.9,
+        "frame": 1347
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Selfie shot of the vlogger walking through a modern indoor hallway."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 48.2,
+        "frame": 1446
+      },
+      "type": "picture_in_picture",
+      "durationSec": 3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 53.9,
+        "frame": 1617
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A bustling Nakamise-dori street with cherry blossoms in bloom and traditional lanterns."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.9,
+        "frame": 1767
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds a large, round, breaded pastry (melon pan) in a paper bag."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 59.2,
+        "frame": 1776
+      },
+      "text": "Stay tuned for the everything I ate video!",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59.9,
+        "frame": 1797
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The vlogger holds up the melon pan to the camera."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 100.9,
+        "frame": 3027
+      },
+      "toShotSize": "wide",
+      "shotDescription": "View of the Sumida River with the Asahi Beer Hall building in the background."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 102.9,
+        "frame": 3087
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Selfie shot of the vlogger talking while walking on a bridge or street."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 104.9,
+        "frame": 3147
+      },
+      "toShotSize": "wide",
+      "shotDescription": "View of the entrance to the Tokyo Solamachi mall with the Tokyo Skytree towering behind it."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 106.9,
+        "frame": 3207
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot walking through an indoor corridor of the mall."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 108,
+        "frame": 3240
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Selfie shot of the vlogger talking outside with buildings in the background."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 111.9,
+        "frame": 3357
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot walking through a very crowded mall hallway."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 115.9,
+        "frame": 3477
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Low-angle selfie shot of the vlogger talking in the mall, holding a Uniqlo shopping bag."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 120.9,
+        "frame": 3627
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The entrance to a clothing store called 'earth music & ecology'."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 122.9,
+        "frame": 3687
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A pan across the interior of the clothing store, showing mannequins and racks."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 123,
+        "frame": 3690
+      },
+      "type": "pan_right",
+      "durationSec": 2.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 125.9,
+        "frame": 3777
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot looking in a mirror as the vlogger holds up a black skirt."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 130,
+        "frame": 3900
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A large, plush Catbus from 'My Neighbor Totoro' in the Studio Ghibli store."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 131.9,
+        "frame": 3957
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A display of various Studio Ghibli merchandise, including stationery and pencil cases."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 135.9,
+        "frame": 4077
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A display of a large, sleeping Totoro plush in a mossy nook."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 137.9,
+        "frame": 4137
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A pan across a shelf of Ghibli figurines and paper theater kits."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 138,
+        "frame": 4140
+      },
+      "type": "pan_right",
+      "durationSec": 4,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 142.9,
+        "frame": 4287
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The interior of a crowded Onitsuka Tiger shoe store."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 146,
+        "frame": 4380
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Selfie shot of the vlogger walking through the mall and talking about being unable to find her shoe size."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 147.2,
+        "frame": 4416
+      },
+      "type": "doodle_text",
+      "durationSec": 3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 154,
+        "frame": 4620
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The entrance to the Pokémon Center store, with people queuing."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 156,
+        "frame": 4680
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A large statue of Rayquaza with Pikachu on its back inside the store, camera tilts up."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 156.1,
+        "frame": 4683
+      },
+      "type": "tilt_up",
+      "durationSec": 2.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 158.9,
+        "frame": 4767
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A wall display filled with plush keychains of various Pokémon."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 200.9,
+        "frame": 6027
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Selfie shot of the vlogger walking towards 'The Matcha Tokyo' cafe."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 202.9,
+        "frame": 6087
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds a cup of 100% Organic Matcha."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 204,
+        "frame": 6120
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A different angle of the matcha drink with a straw in it."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 207.9,
+        "frame": 6237
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A slice of matcha castella cake on a paper plate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 210.9,
+        "frame": 6327
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The vlogger takes a bite of the castella cake and reacts."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 213.9,
+        "frame": 6417
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The vlogger is inside an anime merchandise store, looking around and talking."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 217.9,
+        "frame": 6537
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "POV shot of a hand selecting a Himiko Toga keychain from a display."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 220.9,
+        "frame": 6627
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Selfie shot of the vlogger talking outside, at the base of the Skytree."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 223.9,
+        "frame": 6717
+      },
+      "text": "Come back for\nthe Tokyo Skytree Vlog!",
+      "durationSec": 7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 227.9,
+        "frame": 6837
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Low-angle shot from an escalator looking up at the Tokyo Skytree."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 228.9,
+        "frame": 6867
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A silhouetted shot of people posing for a photo inside the Skytree observatory."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 229.9,
+        "frame": 6897
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Top-down view of two bowls of food, likely bibimbap or a similar rice bowl."
+    }
+  ],
+  "bgm": {
+    "name": "Unknown Chillhop Instrumental",
+    "trending": false,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 51,
+      "avgShotDurationSec": 3,
+      "cutDensityPerSec": 0.33,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "static",
+        "pan_right"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.05,
+        "close_up": 0.3,
+        "medium": 0.35,
+        "wide": 0.3,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_loop",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "White sans-serif with occasional drop shadow or colored text",
+      "colorGrade": "Natural and bright"
+    },
+    "structure": {
+      "hookFormat": "rapid_montage_voiceover",
+      "openingShot": "Interior of Sanrio store",
+      "endingShot": "Montage of Skytree and food with a text CTA",
+      "cta": "Come back for the Tokyo Skytree Vlog!",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 20,
+    "bgmSync": 25,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:51:13.917Z"
+  }
+}

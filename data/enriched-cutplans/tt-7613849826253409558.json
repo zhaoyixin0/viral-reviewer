@@ -1,0 +1,412 @@
+{
+  "videoId": "tt-7613849826253409558",
+  "durationSec": 134.516667,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 134.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds a finished mini pink tulip in a tiny white pot against a wooden background. Other finished pipe cleaner flowers are in the background."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 12
+      },
+      "text": "MINI TULIP",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.8,
+        "frame": 48
+      },
+      "text": "tutorial",
+      "durationSec": 1.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.8,
+        "frame": 168
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Top-down view of two hands preparing to wrap a pink pipe cleaner around a black marker."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.9,
+        "frame": 294
+      },
+      "text": "wrap 5 loops",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 8.9,
+        "frame": 534
+      },
+      "type": "heart_animation",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11,
+        "frame": 660
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Hands hold the coiled pink pipe cleaner after removing it from the marker."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.8,
+        "frame": 708
+      },
+      "text": "put the tail through the loops",
+      "durationSec": 3
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 18.1,
+        "frame": 1086
+      },
+      "type": "icon_overlay",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.2,
+        "frame": 1212
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Hands begin to spread out the loops of the pipe cleaner to form petals."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.8,
+        "frame": 1248
+      },
+      "text": "spread the petals",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23.8,
+        "frame": 1428
+      },
+      "text": "press each petal",
+      "durationSec": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 32.9,
+        "frame": 1974
+      },
+      "text": "twist each petal",
+      "durationSec": 2.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 40.8,
+        "frame": 2448
+      },
+      "text": "I shape them by pinching the tip",
+      "durationSec": 2.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 48.8,
+        "frame": 2928
+      },
+      "text": "♡ One like a day keeps ♡\nyour sorrow away",
+      "durationSec": 3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52.2,
+        "frame": 3132
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "The finished pink flower head is placed on the wooden table. A hand brings a green pipe cleaner into the frame."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 59,
+        "frame": 3540
+      },
+      "text": "we're making the stem now",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 102.5,
+        "frame": 6150
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Hands insert the green pipe cleaner (stem) into the center of the pink flower head."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 105,
+        "frame": 6300
+      },
+      "type": "heart_animation",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 110,
+        "frame": 6600
+      },
+      "text": "my favorite part",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 118,
+        "frame": 7080
+      },
+      "text": "if you like my work\nyou can follow me !",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 121,
+        "frame": 7260
+      },
+      "text": "I'd be very grateful\nfor your support !",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 130,
+        "frame": 7800
+      },
+      "text": "looking almost\nlike a tulip !",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 137,
+        "frame": 8220
+      },
+      "text": "the leaves !",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 144,
+        "frame": 8640
+      },
+      "text": "*twisty twisty*",
+      "durationSec": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 153,
+        "frame": 9180
+      },
+      "text": "*twisty twisty*",
+      "durationSec": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 181.8,
+        "frame": 10908
+      },
+      "text": "you can cut the stem at the\nlenght you want",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 186,
+        "frame": 11160
+      },
+      "text": "to make ...",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 187.5,
+        "frame": 11250
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hand holds the finished tulip in a tiny vase."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 188.2,
+        "frame": 11292
+      },
+      "text": "tiny flower vase",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 190,
+        "frame": 11400
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hand holds two finished tulips in a tiny planter."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 190.5,
+        "frame": 11430
+      },
+      "text": "tiny planter",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 192,
+        "frame": 11520
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hand holds the finished tulip as a keychain."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 192.5,
+        "frame": 11550
+      },
+      "text": "cute keychain",
+      "durationSec": 2
+    }
+  ],
+  "bgm": {
+    "name": "Calm Lo-fi Instrumental",
+    "trending": false,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.5,
+          "frame": 30
+        },
+        "kind": "vocal_phrase",
+        "note": "Main melody starts"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 9,
+      "avgShotDurationSec": 14.94,
+      "cutDensityPerSec": 0.067,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.67,
+        "close_up": 0.33,
+        "medium": 0,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_loop",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "mixed_instructional",
+      "colorGrade": "natural_saturated"
+    },
+    "structure": {
+      "hookFormat": "product_reveal",
+      "openingShot": "Close-up of a hand holding the finished mini tulip in a pot, with other finished examples in the background.",
+      "endingShot": "A sequence showing various applications of the finished product: in a vase, in a planter, and as a keychain.",
+      "cta": "explicit",
+      "payoffAt": {
+        "sec": 133.5,
+        "frame": 8010
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 10,
+    "effect": 25,
+    "bgmSync": 10,
+    "overall": 20
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:04:52.446Z"
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "videoId": "tt-7530112674860977421",
+  "durationSec": 195.266667,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A young man in a red t-shirt and a cap sits in his room, speaking directly to the camera."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 194.5,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "if you think you're doing bad in you're internship know IM DOING WORSE!!",
+      "durationSec": 194.5,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white",
+        "position": "upper_center"
+      }
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 194.5,
+      "cutDensityPerSec": 0.005,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "n/a",
+      "subtitleStyle": "standard_tiktok_sans_serif_white",
+      "colorGrade": "natural_indoor"
+    },
+    "structure": {
+      "hookFormat": "text_on_screen",
+      "openingShot": "Medium shot of the creator speaking directly to the camera, establishing a personal story.",
+      "endingShot": "The creator finishes his long anecdote with a laugh, maintaining the same static medium shot.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 180,
+        "frame": 5400
+      }
+    }
+  },
+  "density": {
+    "editing": 5,
+    "transition": 0,
+    "effect": 0,
+    "bgmSync": 0,
+    "overall": 5
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:07:40.606Z"
+  }
+}

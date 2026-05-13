@@ -1,0 +1,93 @@
+{
+  "videoId": "tt-6775837990242585857",
+  "durationSec": 20.155,
+  "fps": 30,
+  "resolution": {
+    "width": 576,
+    "height": 1024
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man in a suit places a white box on a sheet of wrapping paper on a wooden table."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 19.5,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "speed_change",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "multiplier": 4,
+      "durationSec": 19.5
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 19.5,
+      "cutDensityPerSec": 0,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "none",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "action_in_progress",
+      "openingShot": "Medium shot of a man starting to wrap a gift box.",
+      "endingShot": "The man holds up the finished, perfectly wrapped gift box.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 19,
+        "frame": 570
+      }
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 0,
+    "effect": 20,
+    "bgmSync": 0,
+    "overall": 15
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:10:32.251Z"
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "videoId": "tt-7610014192711503125",
+  "durationSec": 8.467,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "When you've been at the hostel for 3 weeks and a New guest arrives",
+      "durationSec": 8.3,
+      "style": {
+        "font": "Helvetica",
+        "color": "white",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 2.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "toShotSize": "medium",
+      "shotDescription": "View from inside the room as the door opens."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "type": "static",
+      "durationSec": 4.2,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.5,
+        "frame": 135
+      },
+      "text": "Who are you?",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.5,
+        "frame": 165
+      },
+      "text": "I'm Pam.",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.3,
+        "frame": 189
+      },
+      "text": "Who are you?",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7,
+        "frame": 210
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The two original residents stand together, posing confidently."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 7,
+        "frame": 210
+      },
+      "type": "static",
+      "durationSec": 1.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "text": "I'm the owner of this house.",
+      "durationSec": 0.7
+    }
+  ],
+  "bgm": {
+    "name": "Unknown - Suspenseful Intro + Hip Hop Beat",
+    "trending": false,
+    "bpm": null,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.2,
+          "frame": 6
+        },
+        "kind": "sfx",
+        "note": "Knocking sound effect"
+      },
+      {
+        "at": {
+          "sec": 4.5,
+          "frame": 135
+        },
+        "kind": "vocal_in",
+        "note": "Dialogue begins"
+      },
+      {
+        "at": {
+          "sec": 7,
+          "frame": 210
+        },
+        "kind": "drop",
+        "note": "Music changes to a hip-hop beat, synchronized with the cut"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 3,
+      "avgShotDurationSec": 2.83,
+      "cutDensityPerSec": 0.24,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": {
+        "sec": 7,
+        "frame": 210
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0.67,
+        "wide": 0.33,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Build-up to beat drop",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "Default in-app generated subtitles",
+      "colorGrade": "Naturalistic"
+    },
+    "structure": {
+      "hookFormat": "On-screen text premise",
+      "openingShot": "Medium-wide shot of three residents in a hostel room looking expectantly towards the door.",
+      "endingShot": "Medium shot of two residents posing confidently after delivering the punchline.",
+      "cta": "None",
+      "payoffAt": {
+        "sec": 7.8,
+        "frame": 234
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 10,
+    "effect": 15,
+    "bgmSync": 90,
+    "overall": 35
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:49:18.147Z"
+  }
+}

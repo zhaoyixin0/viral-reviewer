@@ -1,0 +1,215 @@
+{
+  "videoId": "tt-6778965287950748934",
+  "durationSec": 15.185,
+  "fps": 60,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A projector displays a line drawing of a large bird onto a tall, blank canvas mounted on a wall in a room."
+    },
+    {
+      "kind": "speed_change",
+      "at": {
+        "sec": 0.8,
+        "frame": 48
+      },
+      "multiplier": 50,
+      "durationSec": 11
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.8,
+        "frame": 48
+      },
+      "toShotSize": "medium",
+      "shotDescription": "An artist on a ladder begins tracing the projected image onto the canvas."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.8,
+        "frame": 108
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Timelapse shot of the artist applying the first layers of brown and red paint to the bird."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.8,
+        "frame": 168
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Timelapse shot showing progress on the sky and clouds at the top of the painting."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 228
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Timelapse shot showing progress on the bird's white-tipped wings."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 288
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Timelapse shot of the artist working on the lower section of the painting."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.8,
+        "frame": 348
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The artist briefly bends down to the floor, then returns to the ladder."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.8,
+        "frame": 408
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Timelapse shot of the artist painting details on the bird's head."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 528
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Timelapse shot showing the painting becoming more detailed and darker in tone."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.8,
+        "frame": 588
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Timelapse shot from further back, showing the artist and canvas within the larger office environment."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.8,
+        "frame": 708
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The finished painting is revealed, with the ladder removed and potted plants placed in front."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 11.8,
+        "frame": 708
+      },
+      "type": "pull_out",
+      "durationSec": 1.7,
+      "scaleFrom": 1,
+      "scaleTo": 0.9,
+      "easing": "ease_out"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.5,
+        "frame": 810
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Final static shot of the completed painting displayed in the office space."
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Folk/Country Fiddle Music",
+    "trending": false,
+    "bpm": 145,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 12.5,
+          "frame": 750
+        },
+        "kind": "vocal_in",
+        "note": "Male vocals begin: 'Turkey buzzard sitting on the roof...'"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 12,
+      "avgShotDurationSec": 1.25,
+      "cutDensityPerSec": 0.8,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 11.8,
+        "frame": 708
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 10,
+        "wide": 70,
+        "extreme_wide": 20
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_instrumental_folk",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": null,
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "process_start",
+      "openingShot": "Projector displaying sketch on blank canvas",
+      "endingShot": "Extreme wide shot of finished painting in office",
+      "cta": null,
+      "payoffAt": {
+        "sec": 11.8,
+        "frame": 708
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 60,
+    "bgmSync": 20,
+    "overall": 75
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:09:44.777Z"
+  }
+}

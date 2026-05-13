@@ -1,0 +1,198 @@
+{
+  "videoId": "tt-6702027909126688005",
+  "durationSec": 11.332,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "ugc_native",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A pink mini-fridge sits on a white desk next to a jar of makeup brushes."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "push_in",
+      "durationSec": 1.9,
+      "scaleFrom": 1,
+      "scaleTo": 1.2,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.9,
+        "frame": 57
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand opens the fridge door, revealing skincare products inside."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.3,
+        "frame": 99
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand takes a green 'ALOE' face mask packet from the bottom shelf of the fridge."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand takes a pink lip mask packet from the fridge."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.9,
+        "frame": 177
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand takes a green jade roller from the fridge."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7,
+        "frame": 210
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand takes a small tub of Drunk Elephant Protini Polypeptide Cream from the fridge."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8,
+        "frame": 240
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand takes several Laneige sample packets from the fridge."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.2,
+        "frame": 276
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The shot returns to the open fridge, fully stocked as it was at the beginning."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.6,
+        "frame": 318
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A hand closes the fridge door."
+    }
+  ],
+  "bgm": {
+    "name": "Johnny - Sofi Tukker",
+    "trending": false,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in",
+        "note": "Johnny don't leave me"
+      },
+      {
+        "at": {
+          "sec": 3.3,
+          "frame": 99
+        },
+        "kind": "vocal_phrase",
+        "note": "You said you'd love me forever"
+      },
+      {
+        "at": {
+          "sec": 6.5,
+          "frame": 195
+        },
+        "kind": "vocal_phrase",
+        "note": "Honey believe me"
+      },
+      {
+        "at": {
+          "sec": 8.8,
+          "frame": 264
+        },
+        "kind": "vocal_phrase",
+        "note": "I'll have your heart on a platter"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 9,
+      "avgShotDurationSec": 1.22,
+      "cutDensityPerSec": 0.82,
+      "rhythmProfile": "medium",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "push_in",
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.7,
+        "medium": 0.3,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Continuous vocal-led song setting a chill, aesthetic mood.",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "none",
+      "colorGrade": "Bright & Clean"
+    },
+    "structure": {
+      "hookFormat": "Visual curiosity (what's inside the cute fridge?).",
+      "openingShot": "Medium shot of a pink mini-fridge on a desk.",
+      "endingShot": "Medium shot of the closed pink mini-fridge.",
+      "cta": "none",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 80,
+    "transition": 10,
+    "effect": 5,
+    "bgmSync": 90,
+    "overall": 75
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:25:35.412Z"
+  }
+}

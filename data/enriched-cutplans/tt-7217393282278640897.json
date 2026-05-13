@@ -1,0 +1,392 @@
+{
+  "videoId": "tt-7217393282278640897",
+  "durationSec": 89.976,
+  "fps": 29.93330863282697,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "Simple and Easy Meal Prep",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator catches a falling cutting board in a modern kitchen."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.1,
+        "frame": 33
+      },
+      "text": "Low Calorie & High Protein",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "red"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3,
+        "frame": 90
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands cutting a sweet potato into fry shapes on a wooden board."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4,
+        "frame": 120
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "An empty baking tray with parchment paper."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The baking tray is now full of cut sweet potato fries."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.9,
+        "frame": 177
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A hand holds up a Himalayan pink salt grinder."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.8,
+        "frame": 204
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A hand holds up a black peppercorn grinder."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 233
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A hand places the tray of sweet potatoes into a hot oven."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.2,
+        "frame": 305
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator stands at the counter as a package of beef appears via a jump cut."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.2,
+        "frame": 335
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A pan is placed onto a gas stove burner."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12,
+        "frame": 359
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Diced beef is poured from a plastic container into the hot pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13,
+        "frame": 389
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds a jar of 'MasterFoods Seasoning All Purpose Blend'."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.8,
+        "frame": 503
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator catches a bag of frozen brussels sprouts."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.2,
+        "frame": 605
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Frozen brussels sprouts in a green bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.5,
+        "frame": 703
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands opening the basket of a Ninja air fryer."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.8,
+        "frame": 772
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Hands taking the tray of cooked sweet potato fries out of the oven."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.8,
+        "frame": 862
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Four empty glass meal prep containers on the counter."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 32.8,
+        "frame": 982
+      },
+      "type": "whip_pan",
+      "durationFrames": 6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33.5,
+        "frame": 1003
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator at the counter, placing down egg cartons."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.8,
+        "frame": 1072
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands cracking eggs into a metal bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.5,
+        "frame": 1242
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A bag of 'Hi-Fibre White Sandwich' bread."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 49.8,
+        "frame": 1491
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Taking the finished french toast bake out of the oven."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 56.5,
+        "frame": 1691
+      },
+      "type": "whip_pan",
+      "durationFrames": 6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 57,
+        "frame": 1706
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator juggling zucchinis."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59.8,
+        "frame": 1790
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A zucchini being fed into an electric spiralizer."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 108.5,
+        "frame": 3248
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Dicing raw chicken breast on a red cutting board."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 110.5,
+        "frame": 3308
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Making a sauce in a small white bowl by mixing soy sauce, garlic, and syrup."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 120,
+        "frame": 3592
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Adding defrosted broccoli and cauliflower to the cooking chicken in the pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 128,
+        "frame": 3831
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator sits behind the counter, which is now filled with 12 completed meal prep containers, and gives a thumbs up."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 129,
+        "frame": 3861
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Top-down shot of all the meal prep containers arranged neatly."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 129.2,
+        "frame": 3867
+      },
+      "text": "Like & follow for more",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "red"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Funky Electronic Track",
+    "trending": false,
+    "bpm": 125,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "beat",
+        "note": "Song starts with the video"
+      },
+      {
+        "at": {
+          "sec": 4,
+          "frame": 120
+        },
+        "kind": "beat",
+        "note": "Consistent beat throughout"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 68,
+      "avgShotDurationSec": 1.32,
+      "cutDensityPerSec": 0.75,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.1,
+        "close_up": 0.5,
+        "medium": 0.35,
+        "wide": 0.05,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut",
+        "whip_pan"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_upbeat",
+      "bgmSyncTightness": "moderate",
+      "subtitleStyle": "White and red sans-serif text with slight shadow, typical of social media platforms.",
+      "colorGrade": "Natural and bright with high saturation."
+    },
+    "structure": {
+      "hookFormat": "value_proposition",
+      "openingShot": "Creator catches a cutting board in a clean, modern kitchen, establishing the cooking theme.",
+      "endingShot": "A top-down shot displaying all the finished meal prep containers, showing the final result.",
+      "cta": "Like & follow for more",
+      "payoffAt": {
+        "sec": 128,
+        "frame": 3831
+      }
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 20,
+    "effect": 15,
+    "bgmSync": 60,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:21:57.312Z"
+  }
+}

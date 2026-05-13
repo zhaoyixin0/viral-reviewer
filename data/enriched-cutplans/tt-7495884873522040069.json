@@ -1,0 +1,400 @@
+{
+  "videoId": "tt-7495884873522040069",
+  "durationSec": 23.265,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand dips a piece of bread into a pan of creamy chickpea stew on an induction cooktop."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 12
+      },
+      "text": "welcome back",
+      "durationSec": 1.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.5,
+        "frame": 90
+      },
+      "text": "to recession recipes",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.5,
+        "frame": 150
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator, wearing a red apron, stands in her kitchen, smiling and gesturing towards the finished dish in the foreground."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.2,
+        "frame": 192
+      },
+      "text": "marry me chickpeas",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4,
+        "frame": 240
+      },
+      "text": ">$2.00/serve",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 288
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Olive oil is poured into a grey pan on an induction cooktop."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5,
+        "frame": 300
+      },
+      "text": "olive oil $0.20",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6,
+        "frame": 360
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Minced garlic is added to chopped onions in the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.2,
+        "frame": 372
+      },
+      "text": "garlic $0.15",
+      "durationSec": 1.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 468
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Sun-dried tomatoes are added to the pan with onions and garlic."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8,
+        "frame": 480
+      },
+      "text": "sun dried tomatoes $2.75",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 528
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Dried seasonings are poured into the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9,
+        "frame": 540
+      },
+      "text": "seasonings: $0.15",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.8,
+        "frame": 588
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoonful of tomato paste is added to the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10,
+        "frame": 600
+      },
+      "text": "tomato paste: $0.18",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.8,
+        "frame": 648
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A white spatula stirs the ingredients in the pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.8,
+        "frame": 708
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Broth is poured into the pan from a measuring cup."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12,
+        "frame": 720
+      },
+      "text": "broth: $0.30",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.5,
+        "frame": 810
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Coconut milk is poured into the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.8,
+        "frame": 828
+      },
+      "text": "coconut milk $0.75",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.8,
+        "frame": 888
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A white spatula stirs the coconut milk into the sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 948
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Chickpeas are poured into the pan from a strainer."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16,
+        "frame": 960
+      },
+      "text": "chickpeas: $2.50",
+      "durationSec": 1.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.8,
+        "frame": 1068
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A white spatula stirs the chickpeas into the sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.8,
+        "frame": 1128
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Chopped spinach is sprinkled into the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19,
+        "frame": 1140
+      },
+      "text": "handful spinach: $0.50",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.8,
+        "frame": 1188
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A white spatula stirs the spinach into the stew."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.8,
+        "frame": 1248
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A different angle of the stew being stirred, showing it thickening."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22,
+        "frame": 1320
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A final shot of the finished, steaming chickpea stew in the pan."
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 17,
+      "avgShotDurationSec": 1.35,
+      "cutDensityPerSec": 0.7,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.94,
+        "medium": 0.06,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "voiceover_driven",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "simple_white_sans_serif_center",
+      "colorGrade": "natural_bright"
+    },
+    "structure": {
+      "hookFormat": "satisfying_action_with_text",
+      "openingShot": "Close-up of the finished dish being eaten.",
+      "endingShot": "Close-up of the finished dish simmering in the pan.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 22,
+        "frame": 1320
+      }
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 10,
+    "effect": 20,
+    "bgmSync": 60,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:02:16.096Z"
+  }
+}

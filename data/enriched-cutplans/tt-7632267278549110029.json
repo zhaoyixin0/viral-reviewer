@@ -1,0 +1,384 @@
+{
+  "videoId": "tt-7632267278549110029",
+  "durationSec": 71.913,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "comedy",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "Playing hungry hungry hippos like:",
+      "durationSec": 3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "POV shot of a person's hand touching a golden retriever's nose. The dog is lying down and looks sleepy."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 4,
+        "frame": 120
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4,
+        "frame": 120
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot from a person holding a leash. A golden retriever is sitting stubbornly in a carpeted hallway, refusing to move."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 8.1,
+        "frame": 243
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.1,
+        "frame": 243
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Low-angle shot of a golden retriever on a white metal staircase outdoors. It looks down, seemingly confused or stuck."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 13.5,
+        "frame": 405
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.5,
+        "frame": 405
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Low-angle, selfie-style shot of a golden retriever's face looking down at the camera with a judgmental expression."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 17.6,
+        "frame": 528
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.6,
+        "frame": 528
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A golden retriever lies on a tiled floor, gnawing on a bone next to a wall corner."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 23.8,
+        "frame": 714
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.8,
+        "frame": 714
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman sits on a couch eating a slice of apple. A golden retriever peeks out from behind the fireplace, then walks towards her."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 31.8,
+        "frame": 954
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 32,
+        "frame": 960
+      },
+      "text": "I just watched her do the most golden retriever thing of all time 😂",
+      "durationSec": 3.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.8,
+        "frame": 954
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A golden retriever sits on the back of an outdoor sofa, then awkwardly jumps off into a large bush."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 36.6,
+        "frame": 1098
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 36.8,
+        "frame": 1104
+      },
+      "text": "Minding my own business getting groomed when all of a sudden this happened...",
+      "durationSec": 4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36.6,
+        "frame": 1098
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman grooms a golden retriever standing on two chairs. The dog suddenly tries to eat the grooming tool."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 42,
+        "frame": 1260
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 42.2,
+        "frame": 1266
+      },
+      "text": "QUANDO HAI UNA GIORNATA PIENA DI RIUNIONI MA IL TUO CANE È UN GOLDEN RETRIEVER",
+      "durationSec": 4.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42,
+        "frame": 1260
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Screen recording of a video call. A woman is in the call, and her golden retriever licks her face."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 47,
+        "frame": 1410
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 47,
+        "frame": 1410
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A golden retriever runs excitedly around a living room. A second golden retriever appears."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 51.7,
+        "frame": 1551
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 52,
+        "frame": 1560
+      },
+      "text": "I don't think he realized I was home",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 51.7,
+        "frame": 1551
+      },
+      "toShotSize": "medium",
+      "shotDescription": "High-angle shot of a golden retriever sitting by a door, howling. It stops and looks up when it realizes someone is home."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 58.7,
+        "frame": 1761
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 59.2,
+        "frame": 1776
+      },
+      "text": "Call your dog's name when they're right next to you",
+      "durationSec": 3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.7,
+        "frame": 1761
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man on a couch calls for his dog, who is sitting right next to him. The dog looks around confused."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 105.5,
+        "frame": 3165
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 105.5,
+        "frame": 3165
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A golden retriever is gently chewing on a strand of a woman's blonde hair."
+    }
+  ],
+  "bgm": {
+    "name": "Sneaky Snitch",
+    "trending": false,
+    "bpm": 120,
+    "startsAt": {
+      "sec": 24.5,
+      "frame": 735
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 24.5,
+          "frame": 735
+        },
+        "kind": "vocal_in",
+        "note": "Pizzicato strings start, creating a sneaky, comedic mood."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 13,
+      "avgShotDurationSec": 5.46,
+      "cutDensityPerSec": 0.17,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.15,
+        "close_up": 0.08,
+        "medium": 0.62,
+        "wide": 0.15,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "clip_specific_comedic",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "white_text_black_background",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "comedic_premise",
+      "openingShot": "extreme_close_up_dog",
+      "endingShot": "close_up_dog_chewing_hair",
+      "cta": "none",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 0,
+    "bgmSync": 20,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:33:55.682Z"
+  }
+}

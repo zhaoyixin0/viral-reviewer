@@ -1,0 +1,132 @@
+{
+  "videoId": "tt-7062056437106707759",
+  "durationSec": 9.471,
+  "fps": 23.976,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.7,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Two muscular men are running on treadmills in a gym while performing football throwing and catching drills."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "glitch_sound",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 9.1,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    }
+  ],
+  "bgm": {
+    "name": "Unknown electronic track with high-pitched vocal sample",
+    "trending": false,
+    "bpm": 145,
+    "startsAt": {
+      "sec": 0.8,
+      "frame": 19
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 2,
+          "frame": 48
+        },
+        "kind": "vocal_in",
+        "note": "High-pitched vocal sample begins"
+      },
+      {
+        "at": {
+          "sec": 2.2,
+          "frame": 53
+        },
+        "kind": "beat",
+        "note": "Syncs with the left man throwing the ball upwards"
+      },
+      {
+        "at": {
+          "sec": 4.8,
+          "frame": 115
+        },
+        "kind": "beat",
+        "note": "Syncs with the left man throwing the ball upwards for the second time"
+      },
+      {
+        "at": {
+          "sec": 6.2,
+          "frame": 149
+        },
+        "kind": "beat",
+        "note": "Syncs with the right man throwing the ball upwards"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 9.1,
+      "cutDensityPerSec": 0.11,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "Repetitive beat with looped vocal sample",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "none",
+      "colorGrade": "Saturated with high contrast, emphasizing reds"
+    },
+    "structure": {
+      "hookFormat": "Action-driven",
+      "openingShot": "Medium shot of two men performing an intense and unusual workout on treadmills.",
+      "endingShot": "The action continues and loops, showing the repetitive nature of the drill.",
+      "cta": "none",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 0,
+    "effect": 15,
+    "bgmSync": 90,
+    "overall": 45
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:15:01.834Z"
+  }
+}

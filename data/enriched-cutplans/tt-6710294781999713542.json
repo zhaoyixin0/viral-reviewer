@@ -1,0 +1,384 @@
+{
+  "videoId": "tt-6710294781999713542",
+  "durationSec": 15.767,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A man touches his cheek, looking at the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "Here's how to get a skin-like finish",
+      "durationSec": 1.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.9,
+        "frame": 57
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Foundation is pumped from a bottle onto the back of a hand."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.4,
+        "frame": 72
+      },
+      "text": "while applying your foundation.",
+      "durationSec": 1.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.1,
+        "frame": 93
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A makeup brush is dabbed into the foundation on the hand."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.6,
+        "frame": 108
+      },
+      "text": "Take your brush",
+      "durationSec": 0.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.2,
+        "frame": 126
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The man points to his temples with both index fingers."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.6,
+        "frame": 138
+      },
+      "text": "and apply your foundation to the center of your face.",
+      "durationSec": 1.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.2,
+        "frame": 156
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "He begins applying foundation to his cheek with the brush."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.4,
+        "frame": 192
+      },
+      "text": "This is where you want the most coverage.",
+      "durationSec": 1.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7,
+        "frame": 210
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "He points to his jawline where he has applied a line of foundation."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.6,
+        "frame": 228
+      },
+      "text": "And then start blending out",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8,
+        "frame": 240
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "He blends the foundation on his cheek in circular motions."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.6,
+        "frame": 258
+      },
+      "text": "to the rest of the areas of your face.",
+      "durationSec": 1.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.2,
+        "frame": 276
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "He blends the foundation outwards towards his ear."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10,
+        "frame": 300
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "He blends foundation on his other cheek."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.5,
+        "frame": 315
+      },
+      "text": "Remember, don't swipe your foundation.",
+      "durationSec": 1.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.2,
+        "frame": 336
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "He holds the brush up to the camera to emphasize the next point."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.9,
+        "frame": 357
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "He demonstrates patting the foundation onto his skin with the brush."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.2,
+        "frame": 366
+      },
+      "text": "Pat to get the most coverage.",
+      "durationSec": 1.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.2,
+        "frame": 396
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "He blends the foundation down his neck."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "text": "Blend down to your neck",
+      "durationSec": 0.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.4,
+        "frame": 432
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "He points to his hairline with both index fingers, showing the blended result."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.8,
+        "frame": 444
+      },
+      "text": "and voila.",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.2,
+        "frame": 456
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He poses with his hands under his chin, showing the final makeup look."
+    }
+  ],
+  "bgm": {
+    "name": "Calm Lo-fi Instrumental with Piano",
+    "trending": false,
+    "bpm": 75,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.1,
+          "frame": 3
+        },
+        "kind": "vocal_in",
+        "note": "Voiceover begins"
+      },
+      {
+        "at": {
+          "sec": 1.9,
+          "frame": 57
+        },
+        "kind": "beat",
+        "note": "Cut aligns with chord change"
+      },
+      {
+        "at": {
+          "sec": 5.2,
+          "frame": 156
+        },
+        "kind": "beat",
+        "note": "Cut aligns with chord change"
+      },
+      {
+        "at": {
+          "sec": 11.2,
+          "frame": 336
+        },
+        "kind": "beat",
+        "note": "Cut aligns with chord change"
+      },
+      {
+        "at": {
+          "sec": 15.2,
+          "frame": 456
+        },
+        "kind": "beat",
+        "note": "Final pose aligns with musical resolution"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 15,
+      "avgShotDurationSec": 1.05,
+      "cutDensityPerSec": 0.88,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.07,
+        "close_up": 0.86,
+        "medium": 0.07,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Continuous loop, supportive",
+      "bgmSyncTightness": "moderate",
+      "subtitleStyle": "Default sans-serif white text with semi-transparent black background",
+      "colorGrade": "Natural with warm tones"
+    },
+    "structure": {
+      "hookFormat": "Direct promise",
+      "openingShot": "Close-up of the creator touching their face, establishing the topic of skin.",
+      "endingShot": "Medium shot reveal of the final, completed look.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 15.2,
+        "frame": 456
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 0,
+    "bgmSync": 70,
+    "overall": 75
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:29:51.424Z"
+  }
+}

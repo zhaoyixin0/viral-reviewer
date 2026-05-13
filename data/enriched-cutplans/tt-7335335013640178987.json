@@ -1,0 +1,657 @@
+{
+  "videoId": "tt-7335335013640178987",
+  "durationSec": 70.629,
+  "fps": 29.917,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium_wide",
+      "shotDescription": "A woman stands on a street corner in Tokyo, smiling and pointing upwards."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "how to SPEND TWO DAYS in TOKYO, 🇯🇵 Japan",
+      "durationSec": 2.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.7,
+        "frame": 21
+      },
+      "text": "this is how to spend two days in Tokyo",
+      "durationSec": 1.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot walking through a crowded market street."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up of a chef's hands preparing tuna nigiri sushi."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.4,
+        "frame": 102
+      },
+      "text": "so day one start off with Tsukiji Market",
+      "durationSec": 1.3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.7,
+        "frame": 141
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "The woman holds a plate of tuna donburi and smiles at the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.2,
+        "frame": 156
+      },
+      "text": "you'll find the freshest sushi and ramen here",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6,
+        "frame": 180
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A long queue of people waiting outside a restaurant under an awning."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.5,
+        "frame": 224
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Wide shot of a city street in Ginza with cars and a crosswalk."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.2,
+        "frame": 215
+      },
+      "text": "go early because there will be long lines",
+      "durationSec": 1.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.6,
+        "frame": 287
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Night shot of a modern building with 'EDITION' signage, a taxi drives by."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.9,
+        "frame": 296
+      },
+      "text": "after that walk about seven minutes to Ginza",
+      "durationSec": 1.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.5,
+        "frame": 344
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Interior of a dimly lit, luxurious hotel bar with white armchairs."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.8,
+        "frame": 353
+      },
+      "text": "it's also the place I'd recommend finding accommodation in",
+      "durationSec": 1.9
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.7,
+        "frame": 410
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Daytime wide shot of a Ginza street with a Coach store."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.5,
+        "frame": 434
+      },
+      "text": "this is such a relaxing and clean place",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.7,
+        "frame": 470
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Interior of a luxury store with red walls and Christmas-themed displays."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.4,
+        "frame": 491
+      },
+      "text": "it's known for their luxury shopping",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.2,
+        "frame": 515
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Wide shot of the iconic entrance arch to Takeshita Street in Harajuku."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.7,
+        "frame": 559
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "A display case filled with various colorful crepe models."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.7,
+        "frame": 530
+      },
+      "text": "after that head to Harajuku and explore Takashita Street for trendy fashion and snacks",
+      "durationSec": 3.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.8,
+        "frame": 622
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up of a hand holding a strawberry and cream crepe."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.7,
+        "frame": 649
+      },
+      "text": "like this crepe I'm holding",
+      "durationSec": 0.9
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.6,
+        "frame": 676
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot walking through a very crowded street in Harajuku."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.9,
+        "frame": 715
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Wide shot of a tree-lined shopping street in Harajuku."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23,
+        "frame": 688
+      },
+      "text": "if Ginza is not to your liking you can also shop here as well",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.5,
+        "frame": 763
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Night shot of a busy, neon-lit street crossing in Shinjuku."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 25.4,
+        "frame": 760
+      },
+      "text": "there are tons of stores",
+      "durationSec": 0.9
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.4,
+        "frame": 820
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV walking down a narrow, crowded street in Shinjuku with many vertical neon signs."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28.3,
+        "frame": 847
+      },
+      "text": "you're gonna wanna explore Kabukicho",
+      "durationSec": 1.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30.1,
+        "frame": 901
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Low-angle shot looking up at a string of glowing orange lanterns in a narrow alley."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 30.3,
+        "frame": 906
+      },
+      "text": "this is Tokyo's entertainment and red light district",
+      "durationSec": 1.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 32.4,
+        "frame": 969
+      },
+      "toShotSize": "medium_wide",
+      "shotDescription": "The woman walks away from the camera down a narrow, beautifully lit alley."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 32.6,
+        "frame": 975
+      },
+      "text": "it's also one of the greatest places to end your night with dinner and drinks",
+      "durationSec": 2.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.8,
+        "frame": 1041
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand inserts money into a ramen ticket vending machine."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36.5,
+        "frame": 1092
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up of chopsticks dipping ramen noodles into a thick broth."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 37.2,
+        "frame": 1113
+      },
+      "text": "now for day two",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.6,
+        "frame": 1125
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "A scenic wide shot of the Imperial Palace East Gardens with a bridge over the water."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 38.2,
+        "frame": 1143
+      },
+      "text": "take a tour or stroll around Imperial Palace East gardens",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40.5,
+        "frame": 1212
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A wide shot of a grassy area with manicured trees, with modern buildings in the background."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42.2,
+        "frame": 1262
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A low-angle shot of the red Tokyo Tower framed between two modern buildings."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 42.2,
+        "frame": 1262
+      },
+      "type": "tilt_up",
+      "durationSec": 1.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 42.4,
+        "frame": 1268
+      },
+      "text": "we actually found this really cool spot to take pictures from",
+      "durationSec": 1.9
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.5,
+        "frame": 1331
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A very low-angle shot of Tokyo Tower against a clear sky."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.7,
+        "frame": 1397
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man leans down to look at snacks on a shelf in a Japanese convenience store."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 47.1,
+        "frame": 1409
+      },
+      "text": "but do make sure to visit a Family Mart or 7-11 if you're coming from the states",
+      "durationSec": 2.9
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 49.6,
+        "frame": 1484
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "The man examines pre-packaged meals in the refrigerated section of the convenience store."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 50.6,
+        "frame": 1514
+      },
+      "text": "it will blow your mind",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 51.6,
+        "frame": 1544
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Night shot of an elevated highway with a large 'ROPPONGI' sign."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 51.7,
+        "frame": 1547
+      },
+      "text": "after that explore Roppongi hills for shopping and dining",
+      "durationSec": 2.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 54.9,
+        "frame": 1642
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "A distorted, wide-angle, sped-up shot of Shibuya Crossing at night."
+    },
+    {
+      "kind": "speed_change",
+      "at": {
+        "sec": 54.9,
+        "frame": 1642
+      },
+      "multiplier": 4,
+      "durationSec": 2.8
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 54.9,
+        "frame": 1642
+      },
+      "type": "fisheye_lens",
+      "durationSec": 2.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 54.4,
+        "frame": 1627
+      },
+      "text": "and end the night experiencing the iconic Shibuya Crossing and center streets",
+      "durationSec": 3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 57.7,
+        "frame": 1726
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot walking through a crowded street in Shibuya at night."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59.2,
+        "frame": 1771
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A close-up shot of a bowl of dipping noodles (tsukemen)."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 59.3,
+        "frame": 1774
+      },
+      "text": "another dipping noodle meal",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 100.8,
+        "frame": 3016
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "A man in a red cap slurps noodles from a bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 100.8,
+        "frame": 3016
+      },
+      "text": "that's what I would recommend for a two day trip to Tokyo",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 104.3,
+        "frame": 3120
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Wide shot of the famous 3D calico cat billboard in Shinjuku at night."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 104.5,
+        "frame": 3126
+      },
+      "text": "so if you guys want a longer itinerary comment down below",
+      "durationSec": 2.1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 106.7,
+        "frame": 3192
+      },
+      "text": "if you have any other questions or comments feel free to leave them down below as well!",
+      "durationSec": 4
+    }
+  ],
+  "bgm": {
+    "name": "Gentle Orchestral Travel Music",
+    "trending": false,
+    "bpm": 120,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in",
+        "note": "Music starts with narration"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 28,
+      "avgShotDurationSec": 2.5,
+      "cutDensityPerSec": 0.4,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.2,
+        "medium": 0.2,
+        "wide": 0.5,
+        "extreme_wide": 0.1
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_background",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "White sans-serif text with black outline or semi-transparent background box.",
+      "colorGrade": "Bright and vibrant with natural colors."
+    },
+    "structure": {
+      "hookFormat": "Text on screen",
+      "openingShot": "Creator on a Tokyo street introducing the topic.",
+      "endingShot": "Iconic 3D cat billboard in Shinjuku.",
+      "cta": "Comment for a longer itinerary or with questions.",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 20,
+    "bgmSync": 30,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:53:30.418Z"
+  }
+}

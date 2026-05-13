@@ -1,0 +1,401 @@
+{
+  "videoId": "tt-7632637332079906070",
+  "durationSec": 41.9,
+  "fps": 30,
+  "resolution": {
+    "width": 576,
+    "height": 1002
+  },
+  "videoFormat": "listicle",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A yellow lab sits on a rug, looking dazed, in a home interior."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "Ranking Funniest Dog Moments",
+      "durationSec": 37.8,
+      "style": {
+        "font": "Bold",
+        "color": "white_red_yellow",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "2. Drunk dog 😭",
+      "durationSec": 10.6,
+      "style": {
+        "font": "Default",
+        "color": "white",
+        "position": "middle_left"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "text": "this",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.6,
+        "frame": 48
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "POV shot of a hand holding an empty bottle of Bailey's Irish Cream."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.2,
+        "frame": 36
+      },
+      "text": "to...",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.2,
+        "frame": 66
+      },
+      "text": "empty",
+      "durationSec": 0.3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.5,
+        "frame": 75
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The dazed dog is now standing, looking unsteady."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3,
+        "frame": 90
+      },
+      "text": "follow and like for more funny videos like this !!",
+      "durationSec": 2.8,
+      "style": {
+        "font": "Default",
+        "color": "cyan",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 4.6,
+        "frame": 138
+      },
+      "type": "sound_effect",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 5.5,
+        "frame": 165
+      },
+      "type": "sound_effect",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.9,
+        "frame": 237
+      },
+      "text": "funny",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.6,
+        "frame": 318
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A golden retriever stands on a basketball court, looking up at the camera."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 10.6,
+        "frame": 318
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.6,
+        "frame": 318
+      },
+      "text": "3. He didn't listen 😂",
+      "durationSec": 11,
+      "style": {
+        "font": "Default",
+        "color": "white",
+        "position": "middle_left"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.1,
+        "frame": 483
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The golden retriever runs across the empty basketball court."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 16.3,
+        "frame": 489
+      },
+      "type": "emoji_overlay",
+      "durationSec": 4
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.3,
+        "frame": 489
+      },
+      "text": "*running*",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 20.5,
+        "frame": 615
+      },
+      "type": "sound_effect",
+      "durationSec": 0.3
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.8,
+        "frame": 624
+      },
+      "text": "*hits wall* 🤕",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.6,
+        "frame": 648
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A husky stares intently at the camera with wide eyes."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 21.6,
+        "frame": 648
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.6,
+        "frame": 648
+      },
+      "text": "4. Zoomies 🚗",
+      "durationSec": 7.6,
+      "style": {
+        "font": "Default",
+        "color": "white",
+        "position": "middle_left"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 24.5,
+        "frame": 735
+      },
+      "type": "zoom_blur",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.6,
+        "frame": 738
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The husky runs frantically around a living room. The camera is handheld and shaky, following the action."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 24.6,
+        "frame": 738
+      },
+      "type": "handheld",
+      "durationSec": 4.6,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.2,
+        "frame": 876
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A Belgian Malinois lies on its side on a couch, looking extremely relaxed and high."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 29.2,
+        "frame": 876
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.2,
+        "frame": 876
+      },
+      "text": "1. High AF",
+      "durationSec": 8.6,
+      "style": {
+        "font": "Default",
+        "color": "white",
+        "position": "middle_left"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 33.6,
+        "frame": 1008
+      },
+      "type": "sound_effect",
+      "durationSec": 0.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.9,
+        "frame": 1077
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The same dog is now standing, biting a person's sleeve and making a strange growling/screaming noise."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 36.1,
+        "frame": 1083
+      },
+      "text": "AEAEAEAAAAEA",
+      "durationSec": 1.5,
+      "style": {
+        "font": "Bold",
+        "color": "red",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 36.8,
+        "frame": 1104
+      },
+      "text": "comment your favorite!",
+      "durationSec": 1,
+      "style": {
+        "font": "Default",
+        "color": "yellow",
+        "position": "center"
+      }
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 9,
+      "avgShotDurationSec": 4.2,
+      "cutDensityPerSec": 0.24,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 2,
+        "medium": 6,
+        "wide": 1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Diegetic audio with sound effects",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "Standard sans-serif font with black outline, multiple colors used for emphasis and CTAs.",
+      "colorGrade": "Natural"
+    },
+    "structure": {
+      "hookFormat": "Title Card",
+      "openingShot": "Medium shot of a dazed-looking dog.",
+      "endingShot": "Medium shot of a dog making a strange screaming sound.",
+      "cta": "Text overlays asking to 'follow and like' and 'comment your favorite'.",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 20,
+    "effect": 60,
+    "bgmSync": 70,
+    "overall": 75
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:38:35.587Z"
+  }
+}

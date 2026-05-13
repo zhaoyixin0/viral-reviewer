@@ -1,0 +1,555 @@
+{
+  "videoId": "tt-7633525163694378258",
+  "durationSec": 29.513,
+  "fps": 29.97,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator stands behind a pot on a portable stove, introducing the recipe."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.3,
+        "frame": 9
+      },
+      "text": "what to cook when you don't feel like cooking",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up of cooked pork belly simmering in broth inside the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.2,
+        "frame": 66
+      },
+      "text": "By the way,",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Tongs lift a large piece of cooked pork belly out of the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.2,
+        "frame": 96
+      },
+      "text": "single drop",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds the pork belly with tongs over the pot, looking at the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.4,
+        "frame": 132
+      },
+      "text": "to this",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.9,
+        "frame": 147
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator places the lid on the pot on the stove."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.3,
+        "frame": 159
+      },
+      "text": "by layering",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.8,
+        "frame": 174
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Top-down view of the inside of an empty stainless steel pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.3,
+        "frame": 189
+      },
+      "text": "garlic,",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.8,
+        "frame": 204
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A gloved hand layers sliced onions at the bottom of the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.6,
+        "frame": 228
+      },
+      "text": "and some",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8,
+        "frame": 240
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A gloved hand adds green onions and ginger slices into the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.5,
+        "frame": 255
+      },
+      "text": "like apples",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.9,
+        "frame": 267
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A gloved hand adds sliced apples and pears into the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.4,
+        "frame": 282
+      },
+      "text": "in a deep,",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10,
+        "frame": 300
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoon spreads a dark paste onto a raw slab of pork belly."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.5,
+        "frame": 315
+      },
+      "text": "bottom pot",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.9,
+        "frame": 327
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds up the seasoned slab of pork belly, smiling."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.4,
+        "frame": 342
+      },
+      "text": "fatty",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.9,
+        "frame": 357
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator places the pork belly into the pot on top of the vegetables and fruits."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.3,
+        "frame": 369
+      },
+      "text": "on top",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.9,
+        "frame": 387
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Extreme close-up of the portable stove burner, out of focus."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.3,
+        "frame": 399
+      },
+      "text": "the lid on",
+      "durationSec": 0.3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.6,
+        "frame": 408
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator stands behind the lidded pot on the stove, explaining the next step."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.3,
+        "frame": 429
+      },
+      "text": "low heat",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15.1,
+        "frame": 453
+      },
+      "text": "an hour",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.7,
+        "frame": 471
+      },
+      "toShotSize": "medium",
+      "shotDescription": "After cooking, the creator lifts the tender pork belly out of the pot with tongs."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.3,
+        "frame": 489
+      },
+      "text": "veggies",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17,
+        "frame": 509
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A ladle scoops the rich, reddish-brown broth from the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.5,
+        "frame": 524
+      },
+      "text": "leaches out",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18,
+        "frame": 539
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands use a large knife to slice the cooked pork belly on a decorative wooden cutting board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.4,
+        "frame": 551
+      },
+      "text": "and gently",
+      "durationSec": 0.9
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.3,
+        "frame": 578
+      },
+      "text": "belly,",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20,
+        "frame": 599
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Chopsticks hold and stretch a slice of pork belly, showing its juicy and tender texture."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.5,
+        "frame": 614
+      },
+      "text": "in juicy",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.3,
+        "frame": 638
+      },
+      "text": "unctuous",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.9,
+        "frame": 656
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands use chopsticks to arrange slices of pork belly on a white plate next to kimchi and cabbage."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.5,
+        "frame": 674
+      },
+      "text": "you have",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.9,
+        "frame": 686
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A ladle pours the finished broth into a small metal serving bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23.4,
+        "frame": 701
+      },
+      "text": "couple",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24,
+        "frame": 719
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand picks up a large leaf of napa cabbage from the serving plate."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.5,
+        "frame": 734
+      },
+      "text": "plus",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.9,
+        "frame": 746
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator assembles a wrap (ssam) using a cabbage leaf, a slice of pork, and kimchi."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 25.5,
+        "frame": 764
+      },
+      "text": "broth",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26,
+        "frame": 779
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up of hands folding the cabbage leaf to create a wrap."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.5,
+        "frame": 794
+      },
+      "text": "took me",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.9,
+        "frame": 806
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator takes a large, satisfying bite of the pork belly wrap."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 27.5,
+        "frame": 824
+      },
+      "text": "minutes of",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28.2,
+        "frame": 845
+      },
+      "text": "time",
+      "durationSec": 0.5
+    }
+  ],
+  "bgm": {
+    "name": "Unknown Jazzy Lo-fi",
+    "trending": false,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "start"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 25,
+      "avgShotDurationSec": 1.16,
+      "cutDensityPerSec": 0.83,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.12,
+        "close_up": 0.48,
+        "medium": 0.4,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_instrumental",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "minimalist_center_sans_serif",
+      "colorGrade": "warm_natural"
+    },
+    "structure": {
+      "hookFormat": "problem_solution",
+      "openingShot": "presenter_to_camera",
+      "endingShot": "reaction_shot",
+      "cta": "implicit",
+      "payoffAt": {
+        "sec": 26.9,
+        "frame": 806
+      }
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 10,
+    "effect": 5,
+    "bgmSync": 20,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:55:49.575Z"
+  }
+}

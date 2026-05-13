@@ -1,0 +1,249 @@
+{
+  "videoId": "tt-6781549056414993669",
+  "durationSec": 15.162,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman walks through a doorway into a hallway. A man covered in stickers appears next to her. She is also covered in stickers. They point at each other."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 2.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man and a woman, both covered in stickers, sit on a couch eating cake. The woman makes a surprised face."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "type": "static",
+      "durationSec": 3.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 6.6,
+        "frame": 198
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.6,
+        "frame": 198
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man covered in stickers stands and plays a game resembling charades with two seated women."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 6.6,
+        "frame": 198
+      },
+      "type": "static",
+      "durationSec": 3.2,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 9.8,
+        "frame": 294
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.8,
+        "frame": 294
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person off-screen hits a colorful horse-shaped piñata with a stick, causing it to swing wildly."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 9.8,
+        "frame": 294
+      },
+      "type": "handheld",
+      "durationSec": 1.6,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 11.4,
+        "frame": 342
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.4,
+        "frame": 342
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A high-angle shot shows hundreds of stickers scattered on a wooden floor."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 11.4,
+        "frame": 342
+      },
+      "type": "tilt_down",
+      "durationSec": 1.2,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 12.6,
+        "frame": 378
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.6,
+        "frame": 378
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A top-down shot shows multiple hands scrambling to pick up the stickers from the floor."
+    }
+  ],
+  "bgm": {
+    "name": "Memories - Maroon 5",
+    "trending": true,
+    "bpm": 91,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in"
+      },
+      {
+        "at": {
+          "sec": 2.8,
+          "frame": 84
+        },
+        "kind": "vocal_phrase"
+      },
+      {
+        "at": {
+          "sec": 6.6,
+          "frame": 198
+        },
+        "kind": "vocal_phrase"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 6,
+      "avgShotDurationSec": 2.4,
+      "cutDensityPerSec": 0.42,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 9.8,
+        "frame": 294
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.17,
+        "medium": 0.5,
+        "wide": 0.33,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Continuous pop song",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "none",
+      "colorGrade": "Natural"
+    },
+    "structure": {
+      "hookFormat": "Pattern Interrupt",
+      "openingShot": "Two people covered in stickers appear at a doorway, creating immediate visual intrigue.",
+      "endingShot": "Multiple hands grabbing stickers from the floor, showing a collective activity.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 9.8,
+        "frame": 294
+      }
+    }
+  },
+  "density": {
+    "editing": 80,
+    "transition": 20,
+    "effect": 5,
+    "bgmSync": 65,
+    "overall": 75
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:10:12.430Z"
+  }
+}

@@ -1,0 +1,240 @@
+{
+  "videoId": "tt-6768899523008859398",
+  "durationSec": 13.188,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A person's hand is next to a red and white 'Find Your Thing' bag on a wooden table."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "Just got my boss's Christmas present",
+      "durationSec": 1.7,
+      "style": {
+        "font": "default",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A hand places a white package into a green Santa Claus gift bag on a desk in an office."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.2,
+        "frame": 66
+      },
+      "text": "I think he's really gonna like it",
+      "durationSec": 1.5,
+      "style": {
+        "font": "default",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 3.7,
+        "frame": 111
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.7,
+        "frame": 111
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot of a hand carrying the gift bag through an office space."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 4,
+        "frame": 120
+      },
+      "type": "handheld",
+      "durationSec": 2,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 6,
+        "frame": 180
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6,
+        "frame": 180
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A man wearing glasses and a green shirt walks to his office desk where the gift bag is waiting."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 7.5,
+        "frame": 225
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.5,
+        "frame": 225
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The man picks up the gift bag from his desk."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The man stands and takes the gift out of the bag."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 10,
+        "frame": 300
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10,
+        "frame": 300
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The man unfolds the gift, revealing it to be a pair of white pants with text printed all over them."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "toShotSize": "medium_wide",
+      "shotDescription": "The man holds up the 'WORLD'S BEST BOSS' pants and stares at the camera with a deadpan expression."
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 8,
+      "avgShotDurationSec": 1.63,
+      "cutDensityPerSec": 0.54,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 11.8,
+        "frame": 354
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 1,
+        "medium": 4,
+        "wide": 3,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "none",
+      "subtitleStyle": "standard_white_text_black_shadow",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "voiceover_statement",
+      "openingShot": "Close-up on the initial gift bag, setting up the premise of gift-giving.",
+      "endingShot": "Medium-wide shot of the boss's deadpan reaction holding the ridiculous gift, serving as the punchline.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 11.8,
+        "frame": 354
+      }
+    }
+  },
+  "density": {
+    "editing": 75,
+    "transition": 10,
+    "effect": 0,
+    "bgmSync": 0,
+    "overall": 60
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:11:12.765Z"
+  }
+}

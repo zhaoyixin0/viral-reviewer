@@ -1,0 +1,312 @@
+{
+  "videoId": "tt-7633921752648731935",
+  "durationSec": 26.1,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man with curly hair holds a black and white cat upside down. The cat is wearing a small purple dress."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 10.4,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "I am 100% positive that my cat is broken.",
+      "durationSec": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.7,
+        "frame": 81
+      },
+      "text": "This thing right here lacks any and all survival skills.",
+      "durationSec": 2.2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.2,
+        "frame": 156
+      },
+      "text": "I just don't think she's aware that danger is even possible.",
+      "durationSec": 2.6
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8,
+        "frame": 240
+      },
+      "text": "She's moving like a liquid,",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.3,
+        "frame": 279
+      },
+      "text": "and she's purring the whole time.",
+      "durationSec": 1.1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.4,
+        "frame": 312
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The man leans closer to the camera, holding the cat which is now licking a treat from a tube."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 10.4,
+        "frame": 312
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.8,
+        "frame": 324
+      },
+      "text": "When I look at my girly, I don't see a cat or an APEX predator.",
+      "durationSec": 2.9
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.5,
+        "frame": 405
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The man holds the cat's face with both hands, looking at the camera. The cat licks its lips."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 13.5,
+        "frame": 405
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.2,
+        "frame": 426
+      },
+      "text": "All I can see is just a fluffy baby. Mwah!",
+      "durationSec": 1.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 474
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The man holds the cat horizontally in his arms, like a baby, standing by a wooden table."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 15.8,
+        "frame": 474
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.4,
+        "frame": 492
+      },
+      "text": "This is not a cat. This is my blood related daughter.",
+      "durationSec": 2.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.6,
+        "frame": 558
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The man holds the cat while it licks a treat from a tube, similar to the previous treat shot."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 18.6,
+        "frame": 558
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.9,
+        "frame": 567
+      },
+      "text": "Now that I'm thinking about it,",
+      "durationSec": 0.9
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.9,
+        "frame": 597
+      },
+      "text": "I probably parented the survival instincts out of her.",
+      "durationSec": 2.1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.2,
+        "frame": 666
+      },
+      "text": "But that's okay, Layla doesn't need him anyway.",
+      "durationSec": 1.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.8,
+        "frame": 714
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The man holds the cat upside down again, very close to the camera."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 23.8,
+        "frame": 714
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.5,
+        "frame": 735
+      },
+      "text": "tell them follow for more.",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.1,
+        "frame": 753
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Extreme close-up of the cat hissing with its mouth wide open, showing its teeth."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 25.1,
+        "frame": 753
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    }
+  ],
+  "bgm": {
+    "name": "Playful Lo-fi BGM",
+    "trending": false,
+    "bpm": 90,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 7,
+      "avgShotDurationSec": 3.71,
+      "cutDensityPerSec": 0.23,
+      "rhythmProfile": "medium",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 1,
+        "close_up": 3,
+        "medium": 3,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_ambient",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "standard_tiktok_sans_serif_white_black_outline",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "direct_statement",
+      "openingShot": "Creator holds his cat upside down while directly addressing the camera about the cat being 'broken'.",
+      "endingShot": "An extreme close-up of the cat hissing aggressively, providing a comedic punchline.",
+      "cta": "explicit_verbal",
+      "payoffAt": {
+        "sec": 25.1,
+        "frame": 753
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 10,
+    "effect": 0,
+    "bgmSync": 10,
+    "overall": 20
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:32:29.209Z"
+  }
+}

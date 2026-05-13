@@ -1,0 +1,369 @@
+{
+  "videoId": "tt-7620166385724919072",
+  "durationSec": 59.001,
+  "fps": 59.88135593220339,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand squeezes a finished white stress ball (the 'Needoh')."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 12
+      },
+      "text": "~Needoh tutorial~",
+      "durationSec": 2.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "#2ddcc5"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3,
+        "frame": 180
+      },
+      "text": "Add potato flour(4 tablespoons)",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "black"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 228
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down view of a pile of white powder on a table, with a bottle of Nivea shower gel entering the frame."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 287
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Top-down view of shower gel being squeezed onto the pile of powder."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.2,
+        "frame": 311
+      },
+      "text": "Add add some cleansing gel (on the eye)",
+      "durationSec": 3.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "black"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.9,
+        "frame": 533
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A blue tool begins to mix the gel and powder together."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.8,
+        "frame": 647
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A wider shot of the mixing process on a white desk."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.5,
+        "frame": 689
+      },
+      "text": "then mix until the consistency is perfect",
+      "durationSec": 17,
+      "style": {
+        "font": "sans-serif",
+        "color": "black"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.8,
+        "frame": 1066
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Hands begin to knead the mixture directly on the table."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.5,
+        "frame": 1707
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Hands knead the now smoother, dough-like substance."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28.8,
+        "frame": 1725
+      },
+      "text": "After a few minutes of mixing, wash your hands and continue mixing (the consistency will be better)",
+      "durationSec": 3,
+      "style": {
+        "font": "sans-serif",
+        "color": "black"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.8,
+        "frame": 1904
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up shot of hands squeezing and folding the smooth white dough."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 32.2,
+        "frame": 1928
+      },
+      "text": "mix until you get this consistency",
+      "durationSec": 2.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "black"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.5,
+        "frame": 2066
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Hands roll the dough into a smooth ball."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35,
+        "frame": 2096
+      },
+      "text": "make a ball out of it",
+      "durationSec": 3,
+      "style": {
+        "font": "sans-serif",
+        "color": "black"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38,
+        "frame": 2275
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The finished dough ball sits on a sheet of cling film on the desk."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.5,
+        "frame": 2305
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Hands begin to wrap the dough ball in the cling film."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 38.8,
+        "frame": 2323
+      },
+      "text": "then place the ball in the middle of the cling film and wrap it so that there is no air inside",
+      "durationSec": 3,
+      "style": {
+        "font": "sans-serif",
+        "color": "black"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.8,
+        "frame": 2503
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Hands hold the wrapped ball, then show a green rubber band, and proceed to tie the cling film."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 42.5,
+        "frame": 2545
+      },
+      "text": "wrap tightly and tie with a rubber band",
+      "durationSec": 9,
+      "style": {
+        "font": "sans-serif",
+        "color": "black"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 51.5,
+        "frame": 3084
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Scissors are used to cut the excess cling film off the tied ball."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 52,
+        "frame": 3114
+      },
+      "text": "and cut off what sticks out",
+      "durationSec": 4.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "black"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 56.5,
+        "frame": 3383
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The final product, a white stress ball, is held and squeezed by two hands."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 56.8,
+        "frame": 3401
+      },
+      "text": "~That's all thanks yall!~",
+      "durationSec": 2.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "#2ddcc5"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "The Way I Are - Sped Up",
+    "trending": true,
+    "bpm": 135,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 1.5,
+          "frame": 90
+        },
+        "kind": "vocal_in",
+        "note": "Main vocal melody begins"
+      },
+      {
+        "at": {
+          "sec": 15,
+          "frame": 898
+        },
+        "kind": "beat",
+        "note": "Synth melody and beat become more prominent"
+      },
+      {
+        "at": {
+          "sec": 29,
+          "frame": 1737
+        },
+        "kind": "drop",
+        "note": "Main instrumental section begins"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 14,
+      "avgShotDurationSec": 4.21,
+      "cutDensityPerSec": 0.22,
+      "rhythmProfile": "medium",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.2,
+        "close_up": 0.4,
+        "medium": 0.4,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_upbeat_loop",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "simple_sans_serif_overlay",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "show_result_first",
+      "openingShot": "Close-up of the final product being squeezed.",
+      "endingShot": "Close-up of the final product being squeezed.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 56.5,
+        "frame": 3383
+      }
+    }
+  },
+  "density": {
+    "editing": 50,
+    "transition": 10,
+    "effect": 15,
+    "bgmSync": 20,
+    "overall": 40
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:03:11.943Z"
+  }
+}

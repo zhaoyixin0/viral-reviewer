@@ -1,0 +1,142 @@
+{
+  "videoId": "tt-7633997007773895967",
+  "durationSec": 18.018,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A woman with no makeup and hair clips in lip-syncs to the camera, making funny and 'ugly' faces."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 8.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "type": "whip_pan",
+      "durationFrames": 3,
+      "note": "The transition is masked by a fast arm swipe across the camera lens."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The woman is now revealed with full glamorous makeup, a different outfit, and styled hair, continuing to lip-sync and pose."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "type": "static",
+      "durationSec": 8.7,
+      "easing": "linear"
+    }
+  ],
+  "bgm": {
+    "name": "Pretty Girl Get Ugly (Remix)",
+    "trending": true,
+    "bpm": 145,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 8.8,
+          "frame": 264
+        },
+        "kind": "drop",
+        "note": "The beat drops as the chorus repeats, perfectly timed with the visual transformation reveal."
+      },
+      {
+        "at": {
+          "sec": 17,
+          "frame": 510
+        },
+        "kind": "vocal_out",
+        "note": "The main vocal track ends, leading into a short instrumental outro."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 2,
+      "avgShotDurationSec": 8.75,
+      "cutDensityPerSec": 0.057,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": {
+        "sec": 8.8,
+        "frame": 264
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 1,
+        "medium": 0,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "whip_pan"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Repetitive high-energy vocal loop",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "none",
+      "colorGrade": "Naturalistic before, enhanced glam/saturated after"
+    },
+    "structure": {
+      "hookFormat": "Before/After setup",
+      "openingShot": "Close-up of the creator with no makeup, performing the 'ugly' part of the audio.",
+      "endingShot": "Close-up of the creator in full glam, confidently posing.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 8.8,
+        "frame": 264
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 50,
+    "effect": 0,
+    "bgmSync": 95,
+    "overall": 41
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:30:37.964Z"
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "videoId": "tt-6710555374958677254",
+  "durationSec": 13.327,
+  "fps": 30,
+  "resolution": {
+    "width": 540,
+    "height": 960
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A woman with messy blonde hair smiles at the camera, representing the 'before' state."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.9,
+        "frame": 27
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman, with her hair in a bun, applies foundation with a sponge, making a funny face."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.9,
+        "frame": 57
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Extreme close-up on the woman's eye as she applies eyeshadow with a brush."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.9,
+        "frame": 87
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Extreme close-up on the woman's eye as she applies eyeliner with a pen."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.9,
+        "frame": 177
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman applies powder to her cheek with a large brush, looking at the camera."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.9,
+        "frame": 207
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman applies eyebrow gel."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 7.9,
+        "frame": 237
+      },
+      "type": "other",
+      "durationFrames": 27
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 7.9,
+        "frame": 237
+      },
+      "type": "spin_blur",
+      "durationSec": 0.9
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "The 'after' reveal. The woman is fully made up, wearing a t-shirt and cap, smiling."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.8,
+        "frame": 294
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "The woman makes a funny cross-eyed, pouty face."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.8,
+        "frame": 324
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A mirror selfie showing the woman's full outfit. She poses with a peace sign."
+    }
+  ],
+  "bgm": {
+    "name": "Can't Stop The Feeling! (Remix)",
+    "trending": true,
+    "bpm": 120,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.9,
+          "frame": 27
+        },
+        "kind": "beat",
+        "note": "Cut to foundation application"
+      },
+      {
+        "at": {
+          "sec": 1.9,
+          "frame": 57
+        },
+        "kind": "beat",
+        "note": "Cut to eyeshadow application"
+      },
+      {
+        "at": {
+          "sec": 7.9,
+          "frame": 237
+        },
+        "kind": "drop",
+        "note": "Transition to final look"
+      },
+      {
+        "at": {
+          "sec": 8.8,
+          "frame": 264
+        },
+        "kind": "beat",
+        "note": "Reveal of final look"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 9,
+      "avgShotDurationSec": 1.44,
+      "cutDensityPerSec": 0.69,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 8.8,
+        "frame": 264
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 2,
+        "close_up": 1,
+        "medium": 5,
+        "wide": 1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut_on_beat",
+        "spin_blur_for_reveal"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "upbeat_pop_loop",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "none",
+      "colorGrade": "natural_warm"
+    },
+    "structure": {
+      "hookFormat": "before_shot",
+      "openingShot": "Close-up of the woman with messy hair, smiling.",
+      "endingShot": "Wide mirror selfie showing the final outfit.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 8.8,
+        "frame": 264
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 60,
+    "effect": 50,
+    "bgmSync": 95,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:28:24.151Z"
+  }
+}

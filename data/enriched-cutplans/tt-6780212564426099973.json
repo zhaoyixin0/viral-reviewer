@@ -1,0 +1,189 @@
+{
+  "videoId": "tt-6780212564426099973",
+  "durationSec": 11.078,
+  "fps": 29.97002997002997,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man dressed as a Starbucks barista with a headset smiles and looks up, ready to take an order."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "“Hi what can I get you this morning?”",
+      "durationSec": 1.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "type": "text_overlay",
+      "durationSec": 10.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The same person, now wearing a red wig and sunglasses to portray a 'Karen' customer, waves energetically at the camera from a low angle."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "text": "*Karen ordering iced coffee with 10 shots of expresso*",
+      "durationSec": 2.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5,
+        "frame": 150
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Cut back to the barista, who now has a strained, unimpressed expression as he listens to the order."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 5,
+        "frame": 150
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    }
+  ],
+  "bgm": {
+    "name": "You Need To Calm Down - Taylor Swift",
+    "trending": true,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_phrase",
+        "note": "Lyrics 'You are somebody that I don't know' start, introducing the customer character."
+      },
+      {
+        "at": {
+          "sec": 3.5,
+          "frame": 105
+        },
+        "kind": "vocal_phrase",
+        "note": "Lyrics 'But you're taking shots at me' syncs with the subtitle about '10 shots of expresso'."
+      },
+      {
+        "at": {
+          "sec": 5.5,
+          "frame": 165
+        },
+        "kind": "vocal_phrase",
+        "note": "Lyrics 'And I'm just like, 'Damn'' syncs with the barista's reaction shot."
+      },
+      {
+        "at": {
+          "sec": 8.2,
+          "frame": 246
+        },
+        "kind": "vocal_phrase",
+        "note": "Lyrics 'It's 7 a.m.' syncs with the on-screen time and provides the punchline for the barista's reaction."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 3,
+      "avgShotDurationSec": 3.5,
+      "cutDensityPerSec": 0.19,
+      "rhythmProfile": "medium",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.33,
+        "medium": 0.67,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Lyrical Storytelling",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "Mixed: TikTok native style and simple white text overlay",
+      "colorGrade": "Natural indoor lighting"
+    },
+    "structure": {
+      "hookFormat": "Relatable Scenario Setup",
+      "openingShot": "Medium shot of a barista character asking for an order.",
+      "endingShot": "Medium shot of the barista's exasperated reaction to the order.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 8.2,
+        "frame": 246
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 10,
+    "effect": 15,
+    "bgmSync": 95,
+    "overall": 45
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:10:23.219Z"
+  }
+}

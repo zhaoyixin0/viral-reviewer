@@ -1,0 +1,269 @@
+{
+  "videoId": "tt-7630129138162044191",
+  "durationSec": 61.243,
+  "fps": 32.98367144977734,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person's hands scoop a large amount of butter from a yellow tub into a black frying pan on a gas stove."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 16
+      },
+      "text": "My grandmother from Italy taught me this.",
+      "durationSec": 6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.8,
+        "frame": 224
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Cooked elbow macaroni is poured from a small pot into the pan with the melting butter."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.2,
+        "frame": 369
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The pasta and butter are stirred together in the pan with a fork."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 521
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Tomato sauce is poured from a can into the pan over the pasta."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19,
+        "frame": 627
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The tomato sauce is stirred into the pasta mixture."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.8,
+        "frame": 686
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person unwraps slices of American cheese over the pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.8,
+        "frame": 785
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Slices of cheese are placed on top of the pasta mixture."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.8,
+        "frame": 950
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The cheese slices are stirred into the sauce until they begin to melt."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30.8,
+        "frame": 1016
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Shredded mozzarella cheese is poured from a bag into the pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33,
+        "frame": 1088
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The shredded cheese is stirred into the mixture."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36.8,
+        "frame": 1214
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A glass lid is placed on the pan to let the dish simmer."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.5,
+        "frame": 1270
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The lid is removed, revealing the bubbling pasta dish."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.8,
+        "frame": 1313
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The dish is stirred with a fork, showing the melted cheese."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 40.8,
+        "frame": 1346
+      },
+      "type": "push_in",
+      "durationSec": 1.5,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43,
+        "frame": 1418
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The dish is stirred with a black spatula."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 47,
+        "frame": 1550
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The finished pasta is scooped from the pan into a small white bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 57,
+        "frame": 1880
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoonful of the cheesy pasta is lifted from the bowl, creating a cheese pull."
+    }
+  ],
+  "bgm": {
+    "name": "Che La Luna - Louis Prima",
+    "trending": true,
+    "bpm": 125,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 4,
+          "frame": 132
+        },
+        "kind": "vocal_in"
+      },
+      {
+        "at": {
+          "sec": 31.5,
+          "frame": 1039
+        },
+        "kind": "vocal_phrase",
+        "note": "Oh Mamma"
+      },
+      {
+        "at": {
+          "sec": 41.5,
+          "frame": 1369
+        },
+        "kind": "vocal_phrase",
+        "note": "Mama dear come over here"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 18,
+      "avgShotDurationSec": 3.39,
+      "cutDensityPerSec": 0.29,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.1,
+        "medium": 0.9,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Upbeat, classic Italian-American swing music",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "Standard white sans-serif text overlay",
+      "colorGrade": "Natural, warm kitchen lighting"
+    },
+    "structure": {
+      "hookFormat": "Text on screen with curiosity gap",
+      "openingShot": "Medium shot of adding an excessive amount of butter to a pan, creating intrigue.",
+      "endingShot": "Close-up 'money shot' of a cheesy spoonful of the final dish.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 57,
+        "frame": 1880
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 5,
+    "bgmSync": 60,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:01:56.201Z"
+  }
+}

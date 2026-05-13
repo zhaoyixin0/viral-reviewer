@@ -1,0 +1,120 @@
+{
+  "videoId": "tt-7091704880150301998",
+  "durationSec": 6.197,
+  "fps": 29.97,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 6.1,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "WHEN YOUR NEW JOB:\n-HAS UNLIMITED PTO\n-IS 100% REMOTE\n-HAS GREAT COMPANY CULTURE\n-I GET TO CHOOSE MY WORKLOAD\n-GREAT BENEFITS\n-YEARLY ALL-EXPENSE PAID TRIPS",
+      "durationSec": 6.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "I'm Never Leaving - Trending Audio",
+    "trending": true,
+    "bpm": 110,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in",
+        "note": "Oh my god!"
+      },
+      {
+        "at": {
+          "sec": 1.5,
+          "frame": 45
+        },
+        "kind": "vocal_phrase",
+        "note": "I'm never leaving!"
+      },
+      {
+        "at": {
+          "sec": 3.5,
+          "frame": 105
+        },
+        "kind": "vocal_phrase",
+        "note": "I'm never leaving!"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 6.1,
+      "cutDensityPerSec": 0,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.2,
+        "medium": 0.8,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "trending_audio_lipsync",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "white_sans_serif_overlay",
+      "colorGrade": "natural_lighting"
+    },
+    "structure": {
+      "hookFormat": "text_overlay_meme",
+      "openingShot": "Medium shot of a woman at her desk lip-syncing to audio with a satisfied expression.",
+      "endingShot": "The woman continues to lip-sync, tilting her head with a smug look.",
+      "cta": null,
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 0,
+    "effect": 5,
+    "bgmSync": 90,
+    "overall": 25
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:14:19.625Z"
+  }
+}

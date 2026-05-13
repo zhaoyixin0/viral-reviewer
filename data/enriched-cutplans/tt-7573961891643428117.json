@@ -1,0 +1,115 @@
+{
+  "videoId": "tt-7573961891643428117",
+  "durationSec": 7.035,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "comedy",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Low-angle close-up of a woman wearing a straw hat, drinking from a coconut on a beach. Palm trees and a blue sky are in the background."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 6.5,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "Holidays in Bali be like:\nBreakfast: $6\nCoconut: $1\nGojek: $0.5\nBeach: Free\n\nTotal: $3000",
+      "durationSec": 6.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Oh Man - M.I.A.",
+    "trending": true,
+    "bpm": 95,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.8,
+          "frame": 24
+        },
+        "kind": "vocal_in",
+        "note": "Lyrics 'Oh man, take a look at my life' begin"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 6.5,
+      "cutDensityPerSec": 0,
+      "rhythmProfile": "slow",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 1,
+        "medium": 0,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "trending_song_clip",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "centered_sans_serif_bold",
+      "colorGrade": "bright_saturated_daylight"
+    },
+    "structure": {
+      "hookFormat": "text_overlay_statement",
+      "openingShot": "Close-up of woman drinking a coconut with a text overlay listing expenses.",
+      "endingShot": "The same single shot holds for the entire duration.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 0,
+        "frame": 0
+      }
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 0,
+    "effect": 15,
+    "bgmSync": 50,
+    "overall": 20
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:48:23.840Z"
+  }
+}

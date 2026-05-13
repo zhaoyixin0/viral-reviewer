@@ -1,0 +1,216 @@
+{
+  "videoId": "tt-6697744589043797254",
+  "durationSec": 14.931,
+  "fps": 30,
+  "resolution": {
+    "width": 480,
+    "height": 854
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Finished pink graphic eyeliner look, with a pink lipstick tube being applied to the lower lash line in reverse."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 14.5,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "reverse_playback",
+      "durationSec": 3.8
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 1.2,
+        "frame": 36
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.2,
+        "frame": 36
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A fast rewind sequence showing the entire makeup application process in reverse, from blending to initial application."
+    },
+    {
+      "kind": "speed_change",
+      "at": {
+        "sec": 1.2,
+        "frame": 36
+      },
+      "multiplier": -8,
+      "durationSec": 2.6
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Focus on the square, gradient pink-to-purple lipstick packaging with the brand name embossed."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 5,
+        "frame": 150
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5,
+        "frame": 150
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Focus on the shimmery pink lipstick bullet itself."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 6,
+        "frame": 180
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6,
+        "frame": 180
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "The lipstick is applied directly onto the eyelid, creating a thick pink line along the crease."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 12,
+        "frame": 360
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12,
+        "frame": 360
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A makeup brush is used to blend the applied lipstick on the eyelid."
+    }
+  ],
+  "bgm": {
+    "name": "I Know You - Post Malone",
+    "trending": true,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.5,
+          "frame": 15
+        },
+        "kind": "vocal_in",
+        "note": "Music starts with vocals"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 6,
+      "avgShotDurationSec": 2.41,
+      "cutDensityPerSec": 0.41,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": {
+        "sec": 1.2,
+        "frame": 36
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 1,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Continuous vocal track",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "none",
+      "colorGrade": "Vibrant/Natural"
+    },
+    "structure": {
+      "hookFormat": "Result first (in reverse)",
+      "openingShot": "Extreme close-up of the final makeup result being 'undone'.",
+      "endingShot": "Mid-process shot of blending the eyeshadow.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 6,
+        "frame": 180
+      }
+    }
+  },
+  "density": {
+    "editing": 75,
+    "transition": 60,
+    "effect": 70,
+    "bgmSync": 25,
+    "overall": 70
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:24:11.459Z"
+  }
+}

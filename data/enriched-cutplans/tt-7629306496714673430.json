@@ -1,0 +1,535 @@
+{
+  "videoId": "tt-7629306496714673430",
+  "durationSec": 55.936,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "comedy",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A baby with a messy face is held close to a ginger cat. The baby is talking to the cat."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "Fluffel",
+      "durationSec": 55.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "black",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 6.7,
+        "frame": 201
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 6.7,
+        "frame": 201
+      },
+      "type": "sound_effect",
+      "durationSec": 0.3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.8,
+        "frame": 204
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman in a hoodie is filming herself with a ginger cat standing on the bathroom counter."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.5,
+        "frame": 315
+      },
+      "text": "\"no\"",
+      "durationSec": 1,
+      "style": {
+        "font": "serif",
+        "color": "white",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 11.7,
+        "frame": 351
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 11.7,
+        "frame": 351
+      },
+      "type": "sound_effect",
+      "durationSec": 0.3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A person's hand is in a soapy bathtub, and a black and white cat is touching the hand with its tail."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16,
+        "frame": 480
+      },
+      "text": "No!",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "middle_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 16.8,
+        "frame": 504
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.9,
+        "frame": 507
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Black screen with white text."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17,
+        "frame": 510
+      },
+      "text": "Understanding Cat",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "middle_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 17.7,
+        "frame": 531
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.8,
+        "frame": 534
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A grey and white cat on a Hello Kitty blanket makes a long, strange meowing sound."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 21.6,
+        "frame": 648
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.7,
+        "frame": 651
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A tabby cat is held next to a person's face, making funny faces and yawning."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 26.6,
+        "frame": 798
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.7,
+        "frame": 801
+      },
+      "toShotSize": "wide",
+      "shotDescription": "High-angle shot of a black and white cat on a wooden deck. It meows in a way that sounds like 'Hello'."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 27,
+        "frame": 810
+      },
+      "text": "When you find out your cat can talk 🤔",
+      "durationSec": 3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 30.9,
+        "frame": 927
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31,
+        "frame": 930
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Black screen with white text."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.1,
+        "frame": 933
+      },
+      "text": "Understanding Cat",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "middle_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 31.6,
+        "frame": 948
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.7,
+        "frame": 951
+      },
+      "toShotSize": "wide",
+      "shotDescription": "High-angle shot of a ginger cat dramatically meowing at its empty food bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 32.3,
+        "frame": 969
+      },
+      "text": "ITS A TRAGEDY",
+      "durationSec": 1.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "middle_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 35,
+        "frame": 1050
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.1,
+        "frame": 1053
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Black screen with white text."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35.2,
+        "frame": 1056
+      },
+      "text": "Understanding Cat",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "middle_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 35.8,
+        "frame": 1074
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.9,
+        "frame": 1077
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A man holds a hissing black and white cat."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 39.8,
+        "frame": 1194
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.9,
+        "frame": 1197
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A calico cat is curled up in a tight ball on a blanket. It makes a strange squeaking noise."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 40,
+        "frame": 1200
+      },
+      "text": "PLEASE VOLUME UP OH MY GOD",
+      "durationSec": 3.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 44.1,
+        "frame": 1323
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.2,
+        "frame": 1326
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Black screen with white text."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 44.3,
+        "frame": 1329
+      },
+      "text": "Understanding Cat",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "middle_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 44.8,
+        "frame": 1344
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.9,
+        "frame": 1347
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A ginger cat's face is very close to the camera. It makes a chattering sound."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 50.7,
+        "frame": 1521
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 50.8,
+        "frame": 1524
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A white cat is sitting in an empty bathtub, staring at the camera."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 51.5,
+        "frame": 1545
+      },
+      "type": "sticker",
+      "durationSec": 3
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 53.5,
+        "frame": 1605
+      },
+      "type": "push_in",
+      "durationSec": 1.5,
+      "scaleFrom": 1,
+      "scaleTo": 1.5,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 55.2,
+        "frame": 1656
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 55.3,
+        "frame": 1659
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Black screen with white text."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 55.4,
+        "frame": 1662
+      },
+      "text": "Understanding Cat",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "middle_center"
+      }
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 15,
+      "avgShotDurationSec": 3.73,
+      "cutDensityPerSec": 0.27,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.2,
+        "close_up": 0.4,
+        "medium": 0.1,
+        "wide": 0.3,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut_with_sfx"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "no_bgm",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "varied_on_screen_text",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "cute_animal_interaction",
+      "openingShot": "Close-up of a baby talking to a cat.",
+      "endingShot": "Black title card with text 'Understanding Cat'.",
+      "cta": "none",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 60,
+    "effect": 20,
+    "bgmSync": 10,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:33:28.278Z"
+  }
+}

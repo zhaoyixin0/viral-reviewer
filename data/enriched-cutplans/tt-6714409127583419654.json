@@ -1,0 +1,208 @@
+{
+  "videoId": "tt-6714409127583419654",
+  "durationSec": 15.4,
+  "fps": 45,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "从背后拍摄，展示了一个人蓬松的棕色卷发。"
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0.1,
+        "frame": 5
+      },
+      "type": "handheld",
+      "durationSec": 1,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1,
+        "frame": 45
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "特写镜头，造型师的手开始将头发分区并编成小辫子。"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.2,
+        "frame": 99
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "另一个角度的特写，展示编发过程。"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.3,
+        "frame": 149
+      },
+      "toShotSize": "medium",
+      "shotDescription": "高角度俯拍，展示已经编好的玉米垄发型基础。"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.5,
+        "frame": 203
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "特写镜头，展示用于接发的“Original Box Braid”产品包装。"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.5,
+        "frame": 293
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "特写镜头，造型师使用钩针将假发辫子接入真发辫中。"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.5,
+        "frame": 428
+      },
+      "toShotSize": "medium",
+      "shotDescription": "从背后拍摄，展示完成后的金色长辫子造型，一只手在整理发型。"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.5,
+        "frame": 518
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "从背后拍摄的特写，展示脖颈处和辫子的细节。"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.5,
+        "frame": 563
+      },
+      "toShotSize": "medium",
+      "shotDescription": "正面镜头，女孩低头然后抬头微笑，展示最终的发型效果。"
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 12.5,
+        "frame": 563
+      },
+      "type": "pull_out",
+      "durationSec": 2,
+      "scaleFrom": 1.1,
+      "scaleTo": 1,
+      "easing": "ease_out"
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Instrumental Swing",
+    "trending": true,
+    "bpm": 145,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in",
+        "note": "Scat singing starts"
+      },
+      {
+        "at": {
+          "sec": 4.5,
+          "frame": 203
+        },
+        "kind": "beat",
+        "note": "Cut to product shot on a beat"
+      },
+      {
+        "at": {
+          "sec": 9.5,
+          "frame": 428
+        },
+        "kind": "drop",
+        "note": "Reveal of the final hairstyle aligns with a musical climax"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 9,
+      "avgShotDurationSec": 1.61,
+      "cutDensityPerSec": 0.55,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 9.5,
+        "frame": 428
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "pull_out"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.6,
+        "medium": 0.4,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Upbeat, rhythmic, driving the pace of the edits.",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "none",
+      "colorGrade": "Natural, bright lighting."
+    },
+    "structure": {
+      "hookFormat": "before_shot",
+      "openingShot": "Medium shot from behind showing messy curly hair.",
+      "endingShot": "Medium shot from the front showing the person smiling with the new hairstyle.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 9.5,
+        "frame": 428
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 0,
+    "bgmSync": 90,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:36:53.458Z"
+  }
+}

@@ -1,0 +1,206 @@
+{
+  "videoId": "tt-7392589138689658142",
+  "durationSec": 13.909,
+  "fps": 30,
+  "resolution": {
+    "width": 576,
+    "height": 1024
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman stands in front of a black door wearing a grey t-shirt, grey sweatpants, and cow-themed slippers. This is the 'before' look."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 13.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2.73,
+        "frame": 82
+      },
+      "type": "match_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.73,
+        "frame": 82
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman is now wearing a floral off-the-shoulder top and a denim skirt, maintaining the same pose and position."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 5.13,
+        "frame": 154
+      },
+      "type": "match_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.13,
+        "frame": 154
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman is now wearing a white tank top and bright pink tie-dye leggings with white sneakers, maintaining the same pose."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 7.83,
+        "frame": 235
+      },
+      "type": "match_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.83,
+        "frame": 235
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman is now wearing a floral corset top and light-wash ripped jeans, maintaining the same pose."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 10.53,
+        "frame": 316
+      },
+      "type": "match_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.53,
+        "frame": 316
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman is now wearing an oversized black t-shirt with the 'Scream' mask on it and white knee-high socks, maintaining the same pose."
+    }
+  ],
+  "bgm": {
+    "name": "Paging Doctor Beat (Remix)",
+    "trending": true,
+    "bpm": 135,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.8,
+          "frame": 24
+        },
+        "kind": "drop",
+        "note": "Main synth beat begins"
+      },
+      {
+        "at": {
+          "sec": 2.73,
+          "frame": 82
+        },
+        "kind": "beat",
+        "note": "Beat syncs with the first outfit change"
+      },
+      {
+        "at": {
+          "sec": 5.13,
+          "frame": 154
+        },
+        "kind": "beat",
+        "note": "Beat syncs with the second outfit change"
+      },
+      {
+        "at": {
+          "sec": 7.83,
+          "frame": 235
+        },
+        "kind": "beat",
+        "note": "Beat syncs with the third outfit change"
+      },
+      {
+        "at": {
+          "sec": 10.53,
+          "frame": 316
+        },
+        "kind": "beat",
+        "note": "Beat syncs with the fourth outfit change"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 5,
+      "avgShotDurationSec": 2.6,
+      "cutDensityPerSec": 0.3,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "match_cut_on_beat"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "high_energy_electronic",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "none",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "before_after",
+      "openingShot": "Wide shot of woman in pajamas, establishing the 'before' state.",
+      "endingShot": "Wide shot of woman in the final outfit (Scream t-shirt).",
+      "cta": null,
+      "payoffAt": {
+        "sec": 2.73,
+        "frame": 82
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 90,
+    "effect": 5,
+    "bgmSync": 95,
+    "overall": 88
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:27:46.356Z"
+  }
+}

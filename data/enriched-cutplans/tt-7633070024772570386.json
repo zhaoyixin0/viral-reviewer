@@ -1,0 +1,285 @@
+{
+  "videoId": "tt-7633070024772570386",
+  "durationSec": 24.234,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "ugc_native",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A grey cat sits in a garden under a bush with pink flowers, looking up."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "This is NOT ai\n(My cat actually does this)",
+      "durationSec": 3.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A slightly closer shot of the cat looking up at the flowers."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.2,
+        "frame": 126
+      },
+      "text": "First she watches and is checking\nher flowers out",
+      "durationSec": 2.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.8,
+        "frame": 204
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Wide shot of the cat walking around the base of the flower bush, among fallen petals."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.2,
+        "frame": 216
+      },
+      "text": "Next is the selection process",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 9.5,
+        "frame": 285
+      },
+      "type": "push_in",
+      "durationSec": 3.5,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.2,
+        "frame": 306
+      },
+      "text": "she is picking the best one",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.5,
+        "frame": 405
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The cat walks across a stone patio towards the camera, carrying a pink flower in its mouth."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 13.5,
+        "frame": 405
+      },
+      "type": "tracking",
+      "durationSec": 4.5,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14,
+        "frame": 420
+      },
+      "text": "Here she comes with her gift",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18,
+        "frame": 540
+      },
+      "toShotSize": "medium",
+      "shotDescription": "View from inside as the cat enters the house and walks across a rug, dropping the flower."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 18,
+        "frame": 540
+      },
+      "type": "pan_right",
+      "durationSec": 3,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.2,
+        "frame": 546
+      },
+      "text": "(Happy tail!)",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 21,
+        "frame": 630
+      },
+      "type": "tilt_down",
+      "durationSec": 1.5,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.8,
+        "frame": 654
+      },
+      "text": "A beautiful camellia",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.5,
+        "frame": 675
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A hand picks up the pink camellia flower from the rug."
+    }
+  ],
+  "bgm": {
+    "name": "Gentle Acoustic Guitar",
+    "trending": false,
+    "bpm": 75,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "melody_in",
+        "note": "Acoustic guitar melody begins"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 6,
+      "avgShotDurationSec": 4,
+      "cutDensityPerSec": 0.21,
+      "rhythmProfile": "slow",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "tracking",
+        "pan_right",
+        "tilt_down"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 1,
+        "close_up": 0,
+        "medium": 3,
+        "wide": 2,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Continuous gentle background music throughout.",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "Simple white sans-serif text with a slight drop shadow, centered on screen.",
+      "colorGrade": "Natural, slightly warm, outdoor lighting."
+    },
+    "structure": {
+      "hookFormat": "Text overlay posing a curiosity ('This is NOT ai') over an intriguing initial shot of the cat.",
+      "openingShot": "Medium shot of a grey cat sitting in a garden, looking up at pink flowers.",
+      "endingShot": "Extreme close-up of a hand holding the pink flower the cat brought inside.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 13.5,
+        "frame": 405
+      }
+    }
+  },
+  "density": {
+    "editing": 25,
+    "transition": 10,
+    "effect": 10,
+    "bgmSync": 20,
+    "overall": 20
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:33:46.417Z"
+  }
+}

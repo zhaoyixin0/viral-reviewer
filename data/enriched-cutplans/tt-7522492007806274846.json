@@ -1,0 +1,210 @@
+{
+  "videoId": "tt-7522492007806274846",
+  "durationSec": 63.877,
+  "fps": 23.976,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "The complete guide to making fake intestines.",
+      "durationSec": 5.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot of a man lying on the ground with fake intestines spilling out of his shirt, looking distressed."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 5.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.8,
+        "frame": 139
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man in a camo tank top holds up a package of 'Hog Sausage Casings' over a kitchen sink."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.5,
+        "frame": 204
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The man pours water from a kettle into a white bowl containing the sausage casings in the sink."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.5,
+        "frame": 324
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The man's hands separate a single strand of the soaked sausage casing."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.8,
+        "frame": 475
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The man uses a faucet sprayer to run water through the casing, inflating it."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.8,
+        "frame": 714
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The man's hands tie a knot at the end of the cleaned casing."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33.5,
+        "frame": 803
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Using a spoon, the man funnels red-dyed oatmeal into the casing via a piece of PVC pipe."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.5,
+        "frame": 1115
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The man squeezes the now-filled red casing, showing its texture."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 49.5,
+        "frame": 1187
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The man holds up a finished 'intestine' over a white bucket filled with more of them."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 51.8,
+        "frame": 1242
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Top-down shot of the man pouring fake blood over the intestines in the bucket."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 54,
+        "frame": 1295
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The man, wearing a plastic glove, mixes the blood and intestines in the bucket by hand."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.8,
+        "frame": 1410
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Top-down shot of the man lying on a cracked concrete floor, smiling, with the finished prop arranged on his stomach."
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Quirky Instrumental",
+    "trending": false,
+    "bpm": 120,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 13,
+      "avgShotDurationSec": 4.8,
+      "cutDensityPerSec": 0.2,
+      "rhythmProfile": "medium",
+      "keyTwistAt": {
+        "sec": 33.5,
+        "frame": 803
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.3,
+        "medium": 0.5,
+        "wide": 0.2,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "consistent_background",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "white_sans_serif_text_on_black_box",
+      "colorGrade": "natural_with_enhanced_contrast"
+    },
+    "structure": {
+      "hookFormat": "result_first",
+      "openingShot": "Handheld POV of the final shocking result.",
+      "endingShot": "Top-down wide shot of the creator smiling with the finished prop.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 58.8,
+        "frame": 1410
+      }
+    }
+  },
+  "density": {
+    "editing": 80,
+    "transition": 10,
+    "effect": 5,
+    "bgmSync": 20,
+    "overall": 75
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:02:48.823Z"
+  }
+}

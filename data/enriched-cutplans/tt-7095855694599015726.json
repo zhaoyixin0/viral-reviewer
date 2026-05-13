@@ -1,0 +1,151 @@
+{
+  "videoId": "tt-7095855694599015726",
+  "durationSec": 30.044,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman with red hair stands in a living room, looking at the camera. A text overlay is at the top of the screen."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "emoji_overlay",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 29.5,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "i told my sales team that i'd learn a new tiktok dance for each day this month we met our goal. this was their request 😂",
+      "durationSec": 29.5,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "#FFFFFF",
+        "position": "top_center"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Jiggle Jiggle - Duke & Jones & Louis Theroux",
+    "trending": true,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in",
+        "note": "Interview dialogue begins."
+      },
+      {
+        "at": {
+          "sec": 6.8,
+          "frame": 204
+        },
+        "kind": "vocal_in",
+        "note": "Rap verse 'My money don't jiggle jiggle' starts."
+      },
+      {
+        "at": {
+          "sec": 7.5,
+          "frame": 225
+        },
+        "kind": "beat",
+        "note": "Main beat drops."
+      },
+      {
+        "at": {
+          "sec": 23.5,
+          "frame": 705
+        },
+        "kind": "vocal_phrase",
+        "note": "Lyrics 'sipping red red wine'."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 29.5,
+      "cutDensityPerSec": 0.03,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "none"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "dialogue_intro_to_rap",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "static_top_text_overlay",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "text_overlay_premise",
+      "openingShot": "Medium shot of the creator standing still, waiting for the music to start.",
+      "endingShot": "Creator holds a final dance pose, looking back at the camera.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 6.8,
+        "frame": 204
+      }
+    }
+  },
+  "density": {
+    "editing": 0,
+    "transition": 0,
+    "effect": 5,
+    "bgmSync": 90,
+    "overall": 20
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:13:18.351Z"
+  }
+}

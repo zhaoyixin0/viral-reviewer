@@ -1,0 +1,928 @@
+{
+  "videoId": "tt-7631375969122651423",
+  "durationSec": 85.367,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman in a green dress leans on a white kitchen counter, looking directly at the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.4,
+        "frame": 12
+      },
+      "text": "Let's make dinner.",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1,
+        "frame": 30
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman holds up a framed menu to the camera, explaining what she will cook."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.9,
+        "frame": 207
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman places a large blue pot on the stovetop."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.3,
+        "frame": 219
+      },
+      "text": "Pot",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She fills the pot with water from a pot-filler faucet."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.3,
+        "frame": 249
+      },
+      "text": "Water",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.9,
+        "frame": 267
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She turns on the gas burner under the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.5,
+        "frame": 285
+      },
+      "text": "Boil",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10,
+        "frame": 300
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Back at the counter, she points down at a checkered cutting board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.3,
+        "frame": 309
+      },
+      "text": "Cutting board",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.1,
+        "frame": 333
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She places a whole onion on the cutting board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.6,
+        "frame": 348
+      },
+      "text": "Onion",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.2,
+        "frame": 366
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She holds up a small knife."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.6,
+        "frame": 378
+      },
+      "text": "Knife",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.3,
+        "frame": 399
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She begins to cut the onion."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "text": "Cut onion",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.6,
+        "frame": 438
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She continues to dice the onion."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15.1,
+        "frame": 453
+      },
+      "text": "Dice onion",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16,
+        "frame": 480
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She wipes her eyes with a tissue, reacting to the onion."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.5,
+        "frame": 495
+      },
+      "text": "Wipe tears",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.2,
+        "frame": 546
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She places garlic cloves on the cutting board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.6,
+        "frame": 558
+      },
+      "text": "Garlic",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.2,
+        "frame": 576
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She begins to mince the garlic."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.7,
+        "frame": 591
+      },
+      "text": "Mince it",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.4,
+        "frame": 612
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She continues mincing the garlic finely."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.1,
+        "frame": 633
+      },
+      "text": "Mince it really good",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.1,
+        "frame": 663
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She holds up a silver frying pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.8,
+        "frame": 684
+      },
+      "text": "Pan",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.3,
+        "frame": 699
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She turns on the burner for the frying pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23.8,
+        "frame": 714
+      },
+      "text": "Turn it on",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.6,
+        "frame": 738
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She pours olive oil into the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 25.1,
+        "frame": 753
+      },
+      "text": "Olive oil",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.9,
+        "frame": 777
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She gestures over the pan to let it heat up."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.3,
+        "frame": 789
+      },
+      "text": "Let it heat up",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.1,
+        "frame": 813
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She scrapes the minced garlic from the cutting board into the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 27.6,
+        "frame": 828
+      },
+      "text": "Garlic in pan",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.4,
+        "frame": 852
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She scrapes the diced onions into the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.1,
+        "frame": 873
+      },
+      "text": "Add onion to pan",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30.1,
+        "frame": 903
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close up on the woman as she explains she doesn't have tomato paste and will improvise."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33.1,
+        "frame": 993
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She pours tomato sauce from a glass jar into the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.7,
+        "frame": 1011
+      },
+      "text": "A little bit of sauce",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.9,
+        "frame": 1047
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She adds a container of cherry tomatoes to the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35.6,
+        "frame": 1068
+      },
+      "text": "Cherry tomatoes",
+      "durationSec": 0.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36.4,
+        "frame": 1092
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She points down at the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 36.9,
+        "frame": 1107
+      },
+      "text": "Let it cook",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.7,
+        "frame": 1131
+      },
+      "toShotSize": "wide",
+      "shotDescription": "High-angle shot of her smashing the softened tomatoes in the pan with a spatula."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.7,
+        "frame": 1251
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She pours heavy whipping cream from a carton into the sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 47.9,
+        "frame": 1437
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She stirs the creamy tomato sauce."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 48.5,
+        "frame": 1455
+      },
+      "text": "Stir it up",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 49.2,
+        "frame": 1476
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She adds grated parmesan cheese to the sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 50.9,
+        "frame": 1527
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She squeezes juice from a lemon wedge into the sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52.9,
+        "frame": 1587
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She stirs the sauce again."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 53.5,
+        "frame": 1605
+      },
+      "text": "Stir",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 54.2,
+        "frame": 1626
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She sprinkles salt into the sauce from a shaker."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 56.9,
+        "frame": 1707
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She grinds black pepper into the sauce."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 57.5,
+        "frame": 1725
+      },
+      "text": "Pepper",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.1,
+        "frame": 1743
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She sprinkles red chili flakes into the sauce."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 58.6,
+        "frame": 1758
+      },
+      "text": "Chili flakes",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59.7,
+        "frame": 1791
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She stirs the sauce one more time."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 100.1,
+        "frame": 3003
+      },
+      "text": "Stir",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 100.7,
+        "frame": 3021
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She gestures over the simmering sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 102.7,
+        "frame": 3081
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Side angle shot of her pouring dry rigatoni pasta from a bag into the pot of boiling water."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 104.9,
+        "frame": 3147
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She stirs the pasta in the pot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 107.9,
+        "frame": 3237
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She holds the pot of cooked pasta with oven mitts, ready to drain it."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 108.8,
+        "frame": 3264
+      },
+      "text": "Drain pasta",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 109.7,
+        "frame": 3291
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She pours the pasta and water into a colander in the sink, steam rising."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 111.7,
+        "frame": 3351
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She adds the drained pasta into the pan with the sauce."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 112.6,
+        "frame": 3378
+      },
+      "text": "Add pasta to sauce",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 113.9,
+        "frame": 3417
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She stirs to combine the pasta and sauce."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 114.6,
+        "frame": 3438
+      },
+      "text": "Stir",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 115.7,
+        "frame": 3471
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She serves the pasta from the pan into a yellow bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 117.2,
+        "frame": 3516
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She places a ball of burrata cheese on top of the pasta."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 117.9,
+        "frame": 3537
+      },
+      "text": "Add burrata",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 118.9,
+        "frame": 3567
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She sprinkles more chili flakes over the dish."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 120.9,
+        "frame": 3627
+      },
+      "toShotSize": "wide",
+      "shotDescription": "She adds fresh basil leaves as a garnish."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 123.4,
+        "frame": 3702
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She holds up the finished bowl of pasta, smiling at the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 124.1,
+        "frame": 3723
+      },
+      "text": "Dinner's ready",
+      "durationSec": 0.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 46,
+      "avgShotDurationSec": 1.85,
+      "cutDensityPerSec": 0.53,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.05,
+        "medium": 0.45,
+        "wide": 0.5,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "simple_sans_serif_center",
+      "colorGrade": "natural_warm"
+    },
+    "structure": {
+      "hookFormat": "direct_address_statement",
+      "openingShot": "Medium shot of the creator addressing the camera and introducing the dish with a menu.",
+      "endingShot": "Medium shot of the creator holding the finished plate of pasta.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 123.4,
+        "frame": 3702
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 0,
+    "bgmSync": 0,
+    "overall": 65
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:00:00.240Z"
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "videoId": "tt-6781192819651382533",
+  "durationSec": 10.634,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man with blond hair is on the phone in an office cubicle, speaking Spanish. The camera is positioned over the cubicle wall."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 10.5,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "When you have no idea your coworker is bilingual 😂",
+      "durationSec": 10.5,
+      "style": {
+        "font": "San Francisco",
+        "color": "#000000",
+        "position": "bottom_center"
+      }
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 10.5,
+      "cutDensityPerSec": 0,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": {
+        "sec": 4.5,
+        "frame": 135
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "push_in"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.4,
+        "medium": 0.6,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "n/a",
+      "subtitleStyle": "Standard social media text overlay with solid background",
+      "colorGrade": "Natural"
+    },
+    "structure": {
+      "hookFormat": "Text overlay setting up a relatable scenario",
+      "openingShot": "Medium shot of a man on the phone, seemingly unaware he's being filmed.",
+      "endingShot": "The camera is still on the man, who continues his phone call, oblivious to the comedic situation.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 4.5,
+        "frame": 135
+      }
+    }
+  },
+  "density": {
+    "editing": 5,
+    "transition": 0,
+    "effect": 10,
+    "bgmSync": 0,
+    "overall": 5
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:09:08.426Z"
+  }
+}

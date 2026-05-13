@@ -1,0 +1,294 @@
+{
+  "videoId": "tt-7493884896725765398",
+  "durationSec": 10.007,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman in a plaid shirt and sunglasses extends her hand towards the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "Me 5 minutes after sending the \"omw\" text:",
+      "durationSec": 9.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "top-center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 1.08,
+        "frame": 32
+      },
+      "type": "match_cut",
+      "durationFrames": 3,
+      "note": "Hand covers the lens and pulls away to reveal a new outfit."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.08,
+        "frame": 32
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She is now wearing a grey blazer over a blue shirt."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2.15,
+        "frame": 65
+      },
+      "type": "match_cut",
+      "durationFrames": 3,
+      "note": "A bag is thrown towards the lens, covering it, and then pulled away."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.15,
+        "frame": 65
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She is now holding a brown purse."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 3.55,
+        "frame": 107
+      },
+      "type": "match_cut",
+      "durationFrames": 3,
+      "note": "Hand covers the lens and pulls away to reveal a new outfit."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.55,
+        "frame": 107
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She is now wearing a blue bomber jacket and beige pants."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 4.85,
+        "frame": 146
+      },
+      "type": "match_cut",
+      "durationFrames": 3,
+      "note": "Two lipstick tubes are brought up to cover the lens."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.85,
+        "frame": 146
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She is now holding a black and white patterned bag."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 5.83,
+        "frame": 175
+      },
+      "type": "match_cut",
+      "durationFrames": 4,
+      "note": "A pair of sunglasses is brought towards the lens, transitioning to a POV shot through them."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.83,
+        "frame": 175
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "POV shot looking through the lenses of the sunglasses at the woman."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 6,
+        "frame": 180
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6,
+        "frame": 180
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She is now wearing a beige trench coat and puts on the sunglasses, smiling."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 7.83,
+        "frame": 235
+      },
+      "type": "match_cut",
+      "durationFrames": 3,
+      "note": "Hand covers the lens and pulls away to reveal a new outfit."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.83,
+        "frame": 235
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She is back in the original plaid shirt, now holding a different, patterned bag."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 8.83,
+        "frame": 265
+      },
+      "type": "match_cut",
+      "durationFrames": 3,
+      "note": "Hand covers the lens and pulls away to reveal the final outfit."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.83,
+        "frame": 265
+      },
+      "toShotSize": "medium",
+      "shotDescription": "She is now wearing a grey sweater and beige pants, holding a white bag."
+    }
+  ],
+  "bgm": {
+    "name": "The Next Episode (Instrumental Remix)",
+    "trending": true,
+    "bpm": 95,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 1.08,
+          "frame": 32
+        },
+        "kind": "beat",
+        "note": "Cut to new outfit"
+      },
+      {
+        "at": {
+          "sec": 2.15,
+          "frame": 65
+        },
+        "kind": "beat",
+        "note": "Cut to new accessory"
+      },
+      {
+        "at": {
+          "sec": 3.55,
+          "frame": 107
+        },
+        "kind": "beat",
+        "note": "Cut to new outfit"
+      },
+      {
+        "at": {
+          "sec": 6,
+          "frame": 180
+        },
+        "kind": "beat",
+        "note": "Cut to new outfit"
+      },
+      {
+        "at": {
+          "sec": 7.83,
+          "frame": 235
+        },
+        "kind": "beat",
+        "note": "Cut to new outfit"
+      },
+      {
+        "at": {
+          "sec": 8.83,
+          "frame": 265
+        },
+        "kind": "beat",
+        "note": "Cut to final outfit"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 9,
+      "avgShotDurationSec": 1.09,
+      "cutDensityPerSec": 0.82,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.1,
+        "close_up": 0,
+        "medium": 0.9,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "match_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Driving hip-hop drum beat",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "Static, white, sans-serif, top-center",
+      "colorGrade": "Naturalistic with warm tones"
+    },
+    "structure": {
+      "hookFormat": "Relatable meme text ('Me 5 minutes after...')",
+      "openingShot": "Creator in first outfit, moving hand to camera to initiate the transition mechanic",
+      "endingShot": "Creator posing in the final outfit",
+      "cta": null,
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 85,
+    "effect": 5,
+    "bgmSync": 95,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:26:01.338Z"
+  }
+}

@@ -1,0 +1,1263 @@
+{
+  "videoId": "tt-7632690933141638423",
+  "durationSec": 178.466667,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A young man in a black leather jacket sits in a room, speaking directly to the camera."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 177.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "Why NOT to apply to IR/political affairs roles",
+      "durationSec": 177.6,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "black",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.1,
+        "frame": 33
+      },
+      "text": "apply",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.1,
+        "frame": 63
+      },
+      "text": "mentioning",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.1,
+        "frame": 93
+      },
+      "text": "affairs",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.1,
+        "frame": 123
+      },
+      "text": "relations.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.1,
+        "frame": 153
+      },
+      "text": "I'm",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.1,
+        "frame": 183
+      },
+      "text": "year",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.1,
+        "frame": 213
+      },
+      "text": "studying",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.1,
+        "frame": 243
+      },
+      "text": "Po",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.1,
+        "frame": 273
+      },
+      "text": "just",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.1,
+        "frame": 303
+      },
+      "text": "internship.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.1,
+        "frame": 333
+      },
+      "text": "to",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.1,
+        "frame": 363
+      },
+      "text": "apply",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.1,
+        "frame": 393
+      },
+      "text": "anyways,",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.1,
+        "frame": 423
+      },
+      "text": "point",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15.1,
+        "frame": 453
+      },
+      "text": "would",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.1,
+        "frame": 483
+      },
+      "text": "that",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.1,
+        "frame": 513
+      },
+      "text": "are",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.1,
+        "frame": 543
+      },
+      "text": "competitive.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.1,
+        "frame": 573
+      },
+      "text": "talking",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.1,
+        "frame": 603
+      },
+      "text": "internships",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.1,
+        "frame": 633
+      },
+      "text": "level",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.1,
+        "frame": 663
+      },
+      "text": "and",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23.1,
+        "frame": 693
+      },
+      "text": "organizations",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.1,
+        "frame": 723
+      },
+      "text": "here.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 25.1,
+        "frame": 753
+      },
+      "text": "mind",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.1,
+        "frame": 783
+      },
+      "text": "mentions",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 27.1,
+        "frame": 813
+      },
+      "text": "very",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28.1,
+        "frame": 843
+      },
+      "text": "like",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.1,
+        "frame": 873
+      },
+      "text": "political",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 30.1,
+        "frame": 903
+      },
+      "text": "or",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.1,
+        "frame": 933
+      },
+      "text": "external",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 32.1,
+        "frame": 963
+      },
+      "text": "relations",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.1,
+        "frame": 993
+      },
+      "text": "intern,",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 34.1,
+        "frame": 1023
+      },
+      "text": "these",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35.1,
+        "frame": 1053
+      },
+      "text": "something",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 36.1,
+        "frame": 1083
+      },
+      "text": "generic,",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 37.1,
+        "frame": 1113
+      },
+      "text": "know",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 38.1,
+        "frame": 1143
+      },
+      "text": "that",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 39.1,
+        "frame": 1173
+      },
+      "text": "are",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 40.1,
+        "frame": 1203
+      },
+      "text": "people",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 41.1,
+        "frame": 1233
+      },
+      "text": "And",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 42.1,
+        "frame": 1263
+      },
+      "text": "thinking",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 43.1,
+        "frame": 1293
+      },
+      "text": "this",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 44.1,
+        "frame": 1323
+      },
+      "text": "studied,",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 46.1,
+        "frame": 1383
+      },
+      "text": "Well,",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 47.1,
+        "frame": 1413
+      },
+      "text": "you",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 48.1,
+        "frame": 1443
+      },
+      "text": "of",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 49.1,
+        "frame": 1473
+      },
+      "text": "people.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 50.1,
+        "frame": 1503
+      },
+      "text": "These",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 51.1,
+        "frame": 1533
+      },
+      "text": "titles.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 52.1,
+        "frame": 1563
+      },
+      "text": "often",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 53.1,
+        "frame": 1593
+      },
+      "text": "some",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 54.1,
+        "frame": 1623
+      },
+      "text": "level",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 55.1,
+        "frame": 1653
+      },
+      "text": "politician",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 56.1,
+        "frame": 1683
+      },
+      "text": "policymaker,",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 57.1,
+        "frame": 1713
+      },
+      "text": "someone",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 58.1,
+        "frame": 1743
+      },
+      "text": "cabinet,",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 59.1,
+        "frame": 1773
+      },
+      "text": "attract",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 100.1,
+        "frame": 3003
+      },
+      "text": "applicants.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 101.1,
+        "frame": 3033
+      },
+      "text": "Also,",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 102.1,
+        "frame": 3063
+      },
+      "text": "general",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 103.1,
+        "frame": 3093
+      },
+      "text": "affairs",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 104.1,
+        "frame": 3123
+      },
+      "text": "the",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 105.1,
+        "frame": 3153
+      },
+      "text": "to",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 106.1,
+        "frame": 3183
+      },
+      "text": "low.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 108.1,
+        "frame": 3243
+      },
+      "text": "feel",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 109.1,
+        "frame": 3273
+      },
+      "text": "profile",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 110.1,
+        "frame": 3303
+      },
+      "text": "competitive,",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 111.1,
+        "frame": 3333
+      },
+      "text": "discourage",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 112.1,
+        "frame": 3363
+      },
+      "text": "to",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 113.1,
+        "frame": 3393
+      },
+      "text": "competition",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 114.1,
+        "frame": 3423
+      },
+      "text": "facing",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 115.1,
+        "frame": 3453
+      },
+      "text": "these",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 116.1,
+        "frame": 3483
+      },
+      "text": "positions.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 117.1,
+        "frame": 3513
+      },
+      "text": "Especially",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 118.1,
+        "frame": 3543
+      },
+      "text": "if",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 119.1,
+        "frame": 3573
+      },
+      "text": "criterion",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 120.1,
+        "frame": 3603
+      },
+      "text": "imposed",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 121.1,
+        "frame": 3633
+      },
+      "text": "the",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 122.1,
+        "frame": 3663
+      },
+      "text": "procedure",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 123.1,
+        "frame": 3693
+      },
+      "text": "apply",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 124.1,
+        "frame": 3723
+      },
+      "text": "limited",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 125.1,
+        "frame": 3753
+      },
+      "text": "positions.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 126.1,
+        "frame": 3783
+      },
+      "text": "wouldn't",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 127.1,
+        "frame": 3813
+      },
+      "text": "no",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 128.1,
+        "frame": 3843
+      },
+      "text": "experience",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 129.1,
+        "frame": 3873
+      },
+      "text": "overshoot",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 130.1,
+        "frame": 3903
+      },
+      "text": "lose",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 131.1,
+        "frame": 3933
+      },
+      "text": "of",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 132.1,
+        "frame": 3963
+      },
+      "text": "somewhere.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 133.1,
+        "frame": 3993
+      },
+      "text": "again",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 134.1,
+        "frame": 4023
+      },
+      "text": "obviously",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 135.1,
+        "frame": 4053
+      },
+      "text": "lucky.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 137.1,
+        "frame": 4113
+      },
+      "text": "myself",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 138.1,
+        "frame": 4143
+      },
+      "text": "would",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 139.1,
+        "frame": 4173
+      },
+      "text": "if",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 140.1,
+        "frame": 4203
+      },
+      "text": "situation.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 142.1,
+        "frame": 4263
+      },
+      "text": "recommendation",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 143.1,
+        "frame": 4293
+      },
+      "text": "someone",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 144.1,
+        "frame": 4323
+      },
+      "text": "official",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 145.1,
+        "frame": 4353
+      },
+      "text": "credentials",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 146.1,
+        "frame": 4383
+      },
+      "text": "except",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 147.1,
+        "frame": 4413
+      },
+      "text": "having",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 148.1,
+        "frame": 4443
+      },
+      "text": "and",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 149.1,
+        "frame": 4473
+      },
+      "text": "application",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 150.1,
+        "frame": 4503
+      },
+      "text": "in",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 151.1,
+        "frame": 4533
+      },
+      "text": "past",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 152.1,
+        "frame": 4563
+      },
+      "text": "international",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 153.1,
+        "frame": 4593
+      },
+      "text": "organisations",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 154.1,
+        "frame": 4623
+      },
+      "text": "people",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 155.1,
+        "frame": 4653
+      },
+      "text": "same.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 156.1,
+        "frame": 4683
+      },
+      "text": "Um,",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 157.1,
+        "frame": 4713
+      },
+      "text": "would",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 158.1,
+        "frame": 4743
+      },
+      "text": "being",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 159.1,
+        "frame": 4773
+      },
+      "text": "to",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 160.1,
+        "frame": 4803
+      },
+      "text": "titles",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 161.1,
+        "frame": 4833
+      },
+      "text": "That",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 162.1,
+        "frame": 4863
+      },
+      "text": "not",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 163.1,
+        "frame": 4893
+      },
+      "text": "sexy.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 164.1,
+        "frame": 4923
+      },
+      "text": "might",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 165.1,
+        "frame": 4953
+      },
+      "text": "it",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 166.1,
+        "frame": 4983
+      },
+      "text": "Obviously",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 167.1,
+        "frame": 5013
+      },
+      "text": "saying",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 168.1,
+        "frame": 5043
+      },
+      "text": "something",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 169.1,
+        "frame": 5073
+      },
+      "text": "qualified",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 170.1,
+        "frame": 5103
+      },
+      "text": "and",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 171.1,
+        "frame": 5133
+      },
+      "text": "waste",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 173.1,
+        "frame": 5193
+      },
+      "text": "open",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 174.1,
+        "frame": 5223
+      },
+      "text": "other",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 175.1,
+        "frame": 5253
+      },
+      "text": "things.",
+      "durationSec": 0.5
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 177.8,
+      "cutDensityPerSec": 0.0056,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "dynamic_word_by_word",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "text_on_screen_statement",
+      "openingShot": "medium_shot_talking_head",
+      "endingShot": "medium_shot_talking_head",
+      "cta": "implicit",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 0,
+    "effect": 15,
+    "bgmSync": 0,
+    "overall": 10
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:07:33.382Z"
+  }
+}

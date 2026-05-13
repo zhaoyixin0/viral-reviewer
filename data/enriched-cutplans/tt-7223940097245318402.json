@@ -1,0 +1,396 @@
+{
+  "videoId": "tt-7223940097245318402",
+  "durationSec": 26.516,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A ladle pours glistening sauce over a pile of fried prawns on a bed of crispy noodles."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.8,
+        "frame": 48
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator holds the finished plate of prawns and lifts one piece with chopsticks towards the camera, smiling."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.5,
+        "frame": 90
+      },
+      "text": "I'm going to show you how to make",
+      "durationSec": 1.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.8,
+        "frame": 168
+      },
+      "text": "hot honey prawns",
+      "durationSec": 1.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4,
+        "frame": 240
+      },
+      "text": "exactly like takeout.",
+      "durationSec": 1.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.6,
+        "frame": 336
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator presents two metal bowls containing different types of flour."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.9,
+        "frame": 354
+      },
+      "text": "Two parts self-raising, one part cornflour.",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.9,
+        "frame": 474
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Water is poured from one bowl into another bowl containing the flour mixture."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.2,
+        "frame": 492
+      },
+      "text": "Water into the bowl.",
+      "durationSec": 1.3
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.5,
+        "frame": 570
+      },
+      "text": "Mix.",
+      "durationSec": 0.3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.8,
+        "frame": 588
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator holds up a bowl of raw prawns."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.2,
+        "frame": 612
+      },
+      "text": "Prawns into the bowl.",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.8,
+        "frame": 648
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The raw prawns are poured into the batter mixture."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.6,
+        "frame": 696
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand covered in batter drops a prawn into a wok of hot, bubbling oil."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.9,
+        "frame": 714
+      },
+      "text": "Fry them one at a time.",
+      "durationSec": 1.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.7,
+        "frame": 822
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The wok, full of frying prawns, is shown over a powerful gas burner with blue flames."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.2,
+        "frame": 852
+      },
+      "text": "Now the prawns are cooked, strain it.",
+      "durationSec": 1.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.9,
+        "frame": 894
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The golden-brown fried prawns are lifted out of the oil with a large strainer."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 948
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator stands over the now-empty wok, holding a ladle."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.1,
+        "frame": 966
+      },
+      "text": "Homemade chili oil.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.6,
+        "frame": 996
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Chili oil and then butter are added to the hot wok."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.1,
+        "frame": 1026
+      },
+      "text": "Butter.",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.8,
+        "frame": 1068
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Honey is squeezed from a bottle into the sizzling sauce in the wok."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.1,
+        "frame": 1086
+      },
+      "text": "Honey.",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.7,
+        "frame": 1122
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator adds hot sauce to the wok."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.8,
+        "frame": 1128
+      },
+      "text": "Chinsu hot sauce.",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.6,
+        "frame": 1176
+      },
+      "text": "Now we add a little bit of yum yum.",
+      "durationSec": 1.3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.9,
+        "frame": 1254
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A ladle stirs the bubbling orange sauce in the wok."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.7,
+        "frame": 1302
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The cooked prawns are poured from the strainer back into the wok with the sauce."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.8,
+        "frame": 1308
+      },
+      "text": "Prawns into the wok.",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.6,
+        "frame": 1356
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator skillfully tosses the prawns in the wok to coat them in the sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.9,
+        "frame": 1434
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator holds the finished wok of saucy prawns, ready to plate."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.6,
+        "frame": 1476
+      },
+      "text": "Now we serve.",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.8,
+        "frame": 1488
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The finished prawns are spooned from the wok onto the plate with crispy noodles, creating a loop with the opening shot."
+    }
+  ],
+  "bgm": {
+    "name": "Cooking sounds and voiceover",
+    "trending": false,
+    "bpm": null,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 18,
+      "avgShotDurationSec": 1.47,
+      "cutDensityPerSec": 0.68,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.5,
+        "medium": 0.5,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Voiceover and SFX driven",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "White sans-serif text with black outline, bottom-center aligned.",
+      "colorGrade": "Warm and saturated"
+    },
+    "structure": {
+      "hookFormat": "Result first",
+      "openingShot": "Close-up of the finished dish being plated.",
+      "endingShot": "Close-up of the finished dish being plated, creating a loop.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 24.8,
+        "frame": 1488
+      }
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 10,
+    "effect": 15,
+    "bgmSync": 60,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:20:40.107Z"
+  }
+}

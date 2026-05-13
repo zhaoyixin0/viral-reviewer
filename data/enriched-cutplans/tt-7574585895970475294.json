@@ -1,0 +1,441 @@
+{
+  "videoId": "tt-7574585895970475294",
+  "durationSec": 45,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "listicle",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "Things to do in Bali",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.9,
+        "frame": 27
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman in a black swimsuit sits in a pool behind a floating breakfast tray, surrounded by lush green plants."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.9,
+        "frame": 27
+      },
+      "text": "Best girls trips to take in 2026 PART 4",
+      "durationSec": 1.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.1,
+        "frame": 63
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A person with a red backpack walks along a stone path towards a rustic building with a thatched roof, with green hills in the background."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.2,
+        "frame": 66
+      },
+      "text": "Bali",
+      "durationSec": 0.6,
+      "style": {
+        "font": "serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.1,
+        "frame": 93
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A villa's private pool with a pink flamingo inflatable and a floating breakfast tray."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.5,
+        "frame": 105
+      },
+      "text": "BALI FIRST,",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.1,
+        "frame": 123
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A different view of a villa pool with stone steps and a hanging wicker chair."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.1,
+        "frame": 153
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A luxurious bathroom with a modern, white standalone bathtub and marble walls."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.1,
+        "frame": 183
+      },
+      "toShotSize": "medium_wide",
+      "shotDescription": "View from outside a villa, looking through a large window into a bedroom with a neatly made bed. A pool is in the foreground."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.1,
+        "frame": 213
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Interior shot of the villa bedroom, showing the bed with a towel animal on it."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.1,
+        "frame": 243
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "POV shot of a hand holding a white plate with sliced dragon fruit and mangosteen, with the pool in the background."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.1,
+        "frame": 273
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A floating breakfast tray decorated with flowers in a pool, with a pink flamingo inflatable nearby."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10,
+        "frame": 300
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Repeat shot of the woman in the pool with the floating breakfast tray."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Interior of a chic spa with modern pedicure stations."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A wider shot of the spa's lounge area with an orange sofa and stylish decor."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "type": "pan_left",
+      "durationSec": 2,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.8,
+        "frame": 444
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A tranquil massage room with two massage beds and white curtains."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.7,
+        "frame": 501
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A round, lit sign for 'afterglow. nails | beauty' hanging on a street in Bali."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.7,
+        "frame": 561
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Interior of another nail salon, 'Rustic Sun', showing the pedicure area."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.9,
+        "frame": 627
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A woman's hand with an intricate manicure and rings, with the shallow ocean water as the background."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.6,
+        "frame": 708
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV walking through a narrow, curved corridor with high, dark concrete walls."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.6,
+        "frame": 738
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A stunning, modern cafe interior featuring a curved concrete spiral staircase over a water feature."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.8,
+        "frame": 774
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "High-angle shot of a cafe built on a mountainside, overlooking a vast green valley and mountains."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.9,
+        "frame": 837
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Another angle of the mountainside cafe, showing its multi-level balconies and the expansive view."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.7,
+        "frame": 951
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Repeat shot of the person walking towards the rustic building in the hills."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 32.7,
+        "frame": 981
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Aerial drone shot of a massive, twin waterfall cascading into a lush green jungle."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.9,
+        "frame": 1047
+      },
+      "toShotSize": "medium_wide",
+      "shotDescription": "A woman in a white bikini stands on rocks at the base of the powerful waterfall."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 35.8,
+        "frame": 1074
+      },
+      "type": "photo_overlay",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36.9,
+        "frame": 1107
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Aerial drone shot of a beautiful coastline with turquoise water and buildings built on the cliffs."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.1,
+        "frame": 1173
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Another aerial shot panning across the cliffside and a sandy beach cove."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40.2,
+        "frame": 1206
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Ground-level shot of the sandy beach with waves lapping the shore and cliffs in the background."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.2,
+        "frame": 1236
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Interior of a market stall with tables full of colorful, locally made jewelry."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42.2,
+        "frame": 1266
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A cliffside beach club with an infinity pool overlooking the ocean."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43.2,
+        "frame": 1296
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman in a leopard-print swimsuit walks towards the camera along the edge of a villa pool."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 43.4,
+        "frame": 1302
+      },
+      "text": "Would you go on a girls trip to Bali?",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Chill Lofi Hip Hop Beat",
+    "trending": false,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.7,
+          "frame": 21
+        },
+        "kind": "beat"
+      },
+      {
+        "at": {
+          "sec": 1.4,
+          "frame": 42
+        },
+        "kind": "beat"
+      },
+      {
+        "at": {
+          "sec": 2.1,
+          "frame": 63
+        },
+        "kind": "beat"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 28,
+      "avgShotDurationSec": 1.6,
+      "cutDensityPerSec": 0.62,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "tracking"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.05,
+        "close_up": 0.1,
+        "medium": 0.3,
+        "wide": 0.35,
+        "extreme_wide": 0.2
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "consistent_loop",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "white_sans_serif_black_stroke",
+      "colorGrade": "vibrant_saturated"
+    },
+    "structure": {
+      "hookFormat": "title_card_and_fast_montage",
+      "openingShot": "wide_scenic_viewpoint",
+      "endingShot": "medium_shot_with_cta",
+      "cta": "engagement_question",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 10,
+    "effect": 15,
+    "bgmSync": 20,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:45:21.108Z"
+  }
+}

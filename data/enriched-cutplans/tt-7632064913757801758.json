@@ -1,0 +1,374 @@
+{
+  "videoId": "tt-7632064913757801758",
+  "durationSec": 37.167,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man with curly hair holds a black and white cat wearing a pink hoodie upside down, facing the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "Apparently cats don't know their names.",
+      "durationSec": 1.4,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "text": "What they actually recognise is the tone of voice you speak to them in.",
+      "durationSec": 2.4,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.5,
+        "frame": 135
+      },
+      "text": "For example, whenever I call my fluffy daughter,",
+      "durationSec": 1.5,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.1,
+        "frame": 183
+      },
+      "text": "I say Layla. It's a higher pitch voice. Layla.",
+      "durationSec": 2.4,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.8,
+        "frame": 294
+      },
+      "text": "She looks up. In theory,",
+      "durationSec": 1.2,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.1,
+        "frame": 333
+      },
+      "text": "if I was to say Sweatpants.",
+      "durationSec": 1.4,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.5,
+        "frame": 405
+      },
+      "text": "Okay, we didn't get a reaction.",
+      "durationSec": 1,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.6,
+        "frame": 438
+      },
+      "text": "Last time I tried this, it worked with words that sounded like her name.",
+      "durationSec": 2.2,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.2,
+        "frame": 516
+      },
+      "text": "Play-Doh!",
+      "durationSec": 0.6,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.2,
+        "frame": 576
+      },
+      "text": "That's not your name, bagel.",
+      "durationSec": 1.5,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.8,
+        "frame": 624
+      },
+      "text": "Bagel.",
+      "durationSec": 0.5,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.9,
+        "frame": 657
+      },
+      "text": "No. Why are you purring?",
+      "durationSec": 1.2,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.9,
+        "frame": 687
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "High-angle shot of the cat looking up at the camera."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 22.9,
+        "frame": 687
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23.5,
+        "frame": 705
+      },
+      "text": "You're not bagel.",
+      "durationSec": 0.9,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.5,
+        "frame": 735
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Return to the original medium shot of the man standing behind the cat on the table."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 24.5,
+        "frame": 735
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.6,
+        "frame": 738
+      },
+      "text": "What else can I try? Paypal?",
+      "durationSec": 1.4,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 27.8,
+        "frame": 834
+      },
+      "text": "Come on. Your name is Layla.",
+      "durationSec": 1.2,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.2,
+        "frame": 876
+      },
+      "text": "My sweet girl. I wonder if all the nicknames I call her is confusing her, too.",
+      "durationSec": 3,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 32.8,
+        "frame": 984
+      },
+      "text": "At least it's only things that sound like her name now.",
+      "durationSec": 2,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35,
+        "frame": 1050
+      },
+      "text": "Now girly, tell him. Follow for more.",
+      "durationSec": 1,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36,
+        "frame": 1080
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Extreme close-up of the cat's face as it opens its mouth wide, showing its teeth and tongue."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 36,
+        "frame": 1080
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    }
+  ],
+  "bgm": {
+    "name": "Playful Ukulele Background Music",
+    "trending": false,
+    "bpm": 110,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 4,
+      "avgShotDurationSec": 9.25,
+      "cutDensityPerSec": 0.08,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": {
+        "sec": 21,
+        "frame": 630
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 1,
+        "close_up": 1,
+        "medium": 2,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_background",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "Standard TikTok style with white text and a subtle black outline, centered at the bottom.",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "statement_hook",
+      "openingShot": "Medium shot of the creator holding his cat while directly addressing the camera with a surprising statement.",
+      "endingShot": "An extreme close-up of the cat hissing, serving as a comedic punchline.",
+      "cta": "explicit_verbal",
+      "payoffAt": {
+        "sec": 36,
+        "frame": 1080
+      }
+    }
+  },
+  "density": {
+    "editing": 15,
+    "transition": 10,
+    "effect": 0,
+    "bgmSync": 5,
+    "overall": 15
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:32:59.196Z"
+  }
+}

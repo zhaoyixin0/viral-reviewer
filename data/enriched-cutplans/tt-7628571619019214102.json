@@ -1,0 +1,310 @@
+{
+  "videoId": "tt-7628571619019214102",
+  "durationSec": 62.555,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "listicle",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "Top 6 Most Interesting Video",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "#00FF00",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.6,
+        "frame": 198
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up of the real pitbull sniffing the cut cake."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.7,
+        "frame": 381
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Start of a new clip. A different pitbull sits in front of a cake shaped like its head."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "text": "Ready for some cake buddy?",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.9,
+        "frame": 447
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Extreme close-up of a knife cutting into the dog head cake."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.9,
+        "frame": 477
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Quick cut to the dog's face with a shocked, wide-eyed expression."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.1,
+        "frame": 513
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Cut back to the knife cutting the cake."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.2,
+        "frame": 546
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The dog screams and dramatically falls over onto the floor."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.9,
+        "frame": 597
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A slice of the chocolate cake is placed on a white plate."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.5,
+        "frame": 615
+      },
+      "text": "You're okay, it's chocolate cake I promise",
+      "durationSec": 1.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.9,
+        "frame": 627
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Extreme close-up of the dog's face as it lies on the floor, looking up."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.7,
+        "frame": 681
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Start of a new clip. A woman prepares to cut a chihuahua-shaped cake while a real chihuahua watches."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.1,
+        "frame": 783
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The chihuahua panics, jumps off the counter and runs into the background."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 32.7,
+        "frame": 981
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Start of a new clip. A man prepares to cut a white pitbull head cake next to a real white pitbull."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 43.9,
+        "frame": 1317
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 43.9,
+        "frame": 1317
+      },
+      "type": "film_countdown",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.7,
+        "frame": 1341
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Start of a new clip. A woman prepares to cut a chihuahua cake next to a real one."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 52.9,
+        "frame": 1587
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 52.9,
+        "frame": 1587
+      },
+      "type": "film_countdown",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 53.7,
+        "frame": 1611
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Start of a new clip. A person cuts a dalmatian-shaped cake while a real dog watches."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59.5,
+        "frame": 1785
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The real dog walks away from the table and into the hallway."
+    }
+  ],
+  "bgm": {
+    "name": "Hysterical Laughter Sound Effect",
+    "trending": true,
+    "bpm": null,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 8.1,
+          "frame": 243
+        },
+        "kind": "vocal_phrase",
+        "note": "Laughter intensifies with the dog's 'facepalm' reaction."
+      },
+      {
+        "at": {
+          "sec": 18.3,
+          "frame": 549
+        },
+        "kind": "vocal_phrase",
+        "note": "Laughter peaks as the dog screams and falls over."
+      },
+      {
+        "at": {
+          "sec": 25.5,
+          "frame": 765
+        },
+        "kind": "vocal_phrase",
+        "note": "Laughter syncs with the chihuahua's frantic barking and jumping."
+      },
+      {
+        "at": {
+          "sec": 39,
+          "frame": 1170
+        },
+        "kind": "vocal_phrase",
+        "note": "Laughter builds as the white pitbull's eyes widen in shock."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 16,
+      "avgShotDurationSec": 3.9,
+      "cutDensityPerSec": 0.26,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.2,
+        "close_up": 0.4,
+        "medium": 0.3,
+        "wide": 0.1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut",
+        "graphic_interstitial"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "comedic_sound_effect_loop",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "meme_style_text",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "cold_open",
+      "openingShot": "Medium shot of a man about to cut a hyper-realistic dog cake next to a real, concerned-looking dog.",
+      "endingShot": "A dog dramatically plays dead on the floor after witnessing the cake cutting.",
+      "cta": null,
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 60,
+    "effect": 25,
+    "bgmSync": 90,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:43:33.266Z"
+  }
+}

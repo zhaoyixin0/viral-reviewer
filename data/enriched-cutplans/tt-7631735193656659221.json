@@ -1,0 +1,527 @@
+{
+  "videoId": "tt-7631735193656659221",
+  "durationSec": 43.734,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "A woman with dark hair, wearing a black hoodie, speaks directly to the camera in an indoor setting."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 43.5,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "So I worked",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "text": "3\nINTERNSHIPS\nLAST\nSUMMER.",
+      "durationSec": 1.1,
+      "style": {
+        "font": "Bold Sans-Serif",
+        "color": "White"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.1,
+        "frame": 63
+      },
+      "text": "If I had to start",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "text": "over right now in April,",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.9,
+        "frame": 117
+      },
+      "text": "this is exactly what",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.1,
+        "frame": 153
+      },
+      "text": "STEP\nBY\nSTEP.",
+      "durationSec": 0.7,
+      "style": {
+        "font": "Bold Sans-Serif",
+        "color": "White"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.9,
+        "frame": 177
+      },
+      "text": "be mass applying,",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7,
+        "frame": 210
+      },
+      "text": "but instead I'm gonna do these",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.1,
+        "frame": 243
+      },
+      "text": "3\nSTEPS",
+      "durationSec": 0.7,
+      "style": {
+        "font": "Bold Sans-Serif",
+        "color": "White"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.9,
+        "frame": 267
+      },
+      "text": "Step 1, stop applying",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10,
+        "frame": 300
+      },
+      "text": "to dead job postings",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.2,
+        "frame": 336
+      },
+      "text": "and pivot to externships,",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.5,
+        "frame": 375
+      },
+      "text": "which are short remote",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.3,
+        "frame": 399
+      },
+      "text": "projects with real companies,",
+      "durationSec": 1.3
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15,
+        "frame": 450
+      },
+      "text": "WAY\nLESS\nCOMPETITION",
+      "durationSec": 1.1,
+      "style": {
+        "font": "Bold Sans-Serif",
+        "color": "White"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.1,
+        "frame": 483
+      },
+      "text": "and you get the real experience.",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.2,
+        "frame": 516
+      },
+      "text": "Step 2, pick a company",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.2,
+        "frame": 546
+      },
+      "text": "that recruiters will actually",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.2,
+        "frame": 576
+      },
+      "text": "recognise,",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.2,
+        "frame": 606
+      },
+      "text": "like the ones on extern",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 20.8,
+        "frame": 624
+      },
+      "type": "image_overlay",
+      "durationSec": 2.2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.1,
+        "frame": 633
+      },
+      "text": "We have Amazon, Canva,",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.1,
+        "frame": 663
+      },
+      "text": "beats by Dre,",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.9,
+        "frame": 687
+      },
+      "text": "those type of things.",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23.7,
+        "frame": 711
+      },
+      "text": "So when you talk about it",
+      "durationSec": 0.9
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.8,
+        "frame": 744
+      },
+      "text": "it actually means",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 25.5,
+        "frame": 765
+      },
+      "text": "something because",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.6,
+        "frame": 798
+      },
+      "text": "THEY\nKNOW\nTHE\nCOMPANY.",
+      "durationSec": 1.1,
+      "style": {
+        "font": "Bold Sans-Serif",
+        "color": "White"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 27.8,
+        "frame": 834
+      },
+      "text": "And 3, I'd finish by",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28.8,
+        "frame": 864
+      },
+      "text": "July and put it everywhere.",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 30.4,
+        "frame": 912
+      },
+      "text": "RESUME",
+      "durationSec": 0.6,
+      "style": {
+        "font": "Bold Sans-Serif",
+        "color": "White"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31,
+        "frame": 930
+      },
+      "text": "COVER LETTER",
+      "durationSec": 0.8,
+      "style": {
+        "font": "Bold Sans-Serif",
+        "color": "White"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.8,
+        "frame": 954
+      },
+      "text": "literally everything.",
+      "durationSec": 0.9
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.1,
+        "frame": 993
+      },
+      "text": "This is the key",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.7,
+        "frame": 1011
+      },
+      "text": "because instead of saying that you",
+      "durationSec": 0.9
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 34.6,
+        "frame": 1038
+      },
+      "text": "have the skills,",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35.7,
+        "frame": 1071
+      },
+      "text": "you have something",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 36.3,
+        "frame": 1089
+      },
+      "text": "TO\nSHOW\nFOR IT.",
+      "durationSec": 0.8,
+      "style": {
+        "font": "Bold Sans-Serif",
+        "color": "White"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 37.4,
+        "frame": 1122
+      },
+      "text": "If you're stressing",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 38,
+        "frame": 1140
+      },
+      "text": "right now about summer and you",
+      "durationSec": 0.9
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 38.9,
+        "frame": 1167
+      },
+      "text": "don't have an internship",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 39.6,
+        "frame": 1188
+      },
+      "text": "this is the smartest move.",
+      "durationSec": 0.9
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 40.5,
+        "frame": 1215
+      },
+      "text": "So check the link",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 41.1,
+        "frame": 1233
+      },
+      "text": "in my bio for more information.",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 42.2,
+        "frame": 1266
+      },
+      "text": "Thanks for watching.",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 42.9,
+        "frame": 1287
+      },
+      "text": "Follow me for more.",
+      "durationSec": 0.8
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 43.5,
+      "cutDensityPerSec": 0,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "dynamic_text_overlay",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "personal_story_promise",
+      "openingShot": "Medium close-up of the creator speaking directly to the camera.",
+      "endingShot": "The creator blows a kiss to the camera.",
+      "cta": "Check the link in my bio for more information. Follow me for more.",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 0,
+    "effect": 25,
+    "bgmSync": 0,
+    "overall": 20
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:06:45.706Z"
+  }
+}

@@ -1,0 +1,662 @@
+{
+  "videoId": "tt-7616851311111228680",
+  "durationSec": 43.838,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "Fried chicken tenders are arranged on the left side of a white plate on a wooden surface."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "dinners you'll actually make",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.9,
+        "frame": 27
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "Hands place a bowl of dipping sauce, french fries, and a piece of Texas toast onto the plate to complete the meal."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "text": "episode 39:",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2,
+        "frame": 60
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands break a fried chicken tender in half, showing the white meat inside."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands pull apart a fluffy, golden-brown sesame seed bun."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3,
+        "frame": 90
+      },
+      "text": "raising cane's at home",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "A knife cuts into a piece of Texas toast placed over the dipping sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand dips a chicken tender into the orange-colored sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.5,
+        "frame": 195
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand dips a piece of Texas toast into the sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator smiles and takes a bite of a chicken tender."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "A glass bowl contains sliced raw chicken breast."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.2,
+        "frame": 276
+      },
+      "text": "sliced chicken breast",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.8,
+        "frame": 294
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "Buttermilk is poured over the chicken."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.2,
+        "frame": 306
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "A small bowl of spices is added to the buttermilk marinade."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11,
+        "frame": 330
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "Pickle juice is poured into the marinade."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.2,
+        "frame": 336
+      },
+      "text": "pickle juice",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 12,
+        "frame": 360
+      },
+      "type": "whip_pan",
+      "durationFrames": 15
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "Flour is poured into a white bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13,
+        "frame": 390
+      },
+      "text": "flour",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.5,
+        "frame": 405
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "Hand holds a small metal bowl with four sections of different spices: paprika, salt, pepper, and garlic powder, with text labels for each."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.8,
+        "frame": 444
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "A fork mixes the spices into the flour."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 474
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "Hands dredge a piece of marinated chicken in the flour mixture."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.2,
+        "frame": 486
+      },
+      "text": "flip",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.8,
+        "frame": 504
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "Hands place the floured chicken into a pot of hot oil."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.8,
+        "frame": 534
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator stands behind a counter and juggles two cloves of garlic."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.8,
+        "frame": 564
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "Mayonnaise is in a small glass bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19,
+        "frame": 570
+      },
+      "text": "mayonnaise",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.5,
+        "frame": 585
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "A hand holds a small metal bowl with various spices for the sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.5,
+        "frame": 615
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "The spices are added to the mayonnaise."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21,
+        "frame": 630
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Worcestershire sauce is poured into the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.2,
+        "frame": 636
+      },
+      "text": "worcestershire",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22,
+        "frame": 660
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "A spoon mixes the sauce."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.2,
+        "frame": 666
+      },
+      "text": "mix",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.8,
+        "frame": 684
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds the bowl, lifting a spoonful of the thick, creamy sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.8,
+        "frame": 714
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "A brush is dipped into a bowl of egg wash."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24,
+        "frame": 720
+      },
+      "text": "egg wash",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.5,
+        "frame": 735
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "A hand brushes the egg wash over raw bread dough in a baking pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.8,
+        "frame": 774
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "A hand sprinkles sesame seeds over the egg-washed dough."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.2,
+        "frame": 786
+      },
+      "text": "sesame seeds",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27,
+        "frame": 810
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "The pan of dough is moved out of frame."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 27.2,
+        "frame": 816
+      },
+      "text": "then make sure to...",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.8,
+        "frame": 834
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "A hand holds a smartphone, demonstrating how to save the recipe video to the 'osta' app."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28.2,
+        "frame": 846
+      },
+      "text": "never lose a recipe again.",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.8,
+        "frame": 894
+      },
+      "text": "save your recipes to osta!",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.5,
+        "frame": 945
+      },
+      "text": "one place for all your recipes",
+      "durationSec": 1.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.8,
+        "frame": 1014
+      },
+      "text": "save unlimited recipes for free",
+      "durationSec": 1.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35.8,
+        "frame": 1074
+      },
+      "text": "I made the app with friends :)",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36.8,
+        "frame": 1104
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "A pan of freshly baked, golden-brown sesame seed buns is shown."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38,
+        "frame": 1140
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds the pan of baked buns."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.8,
+        "frame": 1164
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands pull apart one of the fluffy buns."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.8,
+        "frame": 1194
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "A brush mixes melted garlic butter in a white bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 40,
+        "frame": 1200
+      },
+      "text": "garlic butter",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40.8,
+        "frame": 1224
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "A piece of the bun is dipped into the garlic butter."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.8,
+        "frame": 1254
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The buttered bread is placed onto a hot stainless steel pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 42.2,
+        "frame": 1266
+      },
+      "text": "flip",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42.5,
+        "frame": 1275
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The bread is flipped in the pan, revealing a golden-brown toasted side."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43.5,
+        "frame": 1305
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spatula lifts the finished Texas toast from the pan."
+    }
+  ],
+  "bgm": {
+    "name": "Jailhouse Rock - Elvis Presley",
+    "trending": false,
+    "bpm": 168,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in"
+      },
+      {
+        "at": {
+          "sec": 0.9,
+          "frame": 27
+        },
+        "kind": "beat",
+        "note": "Cut to full meal"
+      },
+      {
+        "at": {
+          "sec": 4.8,
+          "frame": 144
+        },
+        "kind": "beat",
+        "note": "Start of main cooking sequence"
+      },
+      {
+        "at": {
+          "sec": 8.8,
+          "frame": 264
+        },
+        "kind": "beat",
+        "note": "Cut to raw chicken"
+      },
+      {
+        "at": {
+          "sec": 27.8,
+          "frame": 834
+        },
+        "kind": "vocal_phrase",
+        "note": "Music continues through app promotion"
+      },
+      {
+        "at": {
+          "sec": 36.8,
+          "frame": 1104
+        },
+        "kind": "beat",
+        "note": "Cut back to cooking (baked bread)"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 36,
+      "avgShotDurationSec": 1.22,
+      "cutDensityPerSec": 0.8,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 27.8,
+        "frame": 834
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.1,
+        "close_up": 0.6,
+        "medium": 0.1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "upbeat_classic_rock",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "centered_white_sans_serif",
+      "colorGrade": "warm_saturated"
+    },
+    "structure": {
+      "hookFormat": "result_first",
+      "openingShot": "Top-down shot of the finished meal being assembled.",
+      "endingShot": "Close-up of the finished Texas toast being removed from the pan.",
+      "cta": "Explicit visual demonstration and text overlay prompting users to download the 'osta' app to save recipes.",
+      "payoffAt": {
+        "sec": 0.9,
+        "frame": 27
+      }
+    }
+  },
+  "density": {
+    "editing": 95,
+    "transition": 15,
+    "effect": 10,
+    "bgmSync": 90,
+    "overall": 90
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:57:30.990Z"
+  }
+}

@@ -1,0 +1,791 @@
+{
+  "videoId": "tt-7632393398128790806",
+  "durationSec": 101.216,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "comedy",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A person's hand pets a white dog's face, with very shaky handheld camera movement."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 1.2,
+        "frame": 36
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.3,
+        "frame": 39
+      },
+      "text": "Dog\nTakes Medicine\n😂",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.9,
+        "frame": 87
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A person's hands massage the face and ears of a white dog."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 7.9,
+        "frame": 237
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8,
+        "frame": 240
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person holds a pug up by its front legs. A woman enters and tries to give it medicine, causing the pug to scream dramatically."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.9,
+        "frame": 387
+      },
+      "text": "Dog\nTakes Medicine\n😂",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 13.9,
+        "frame": 417
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14,
+        "frame": 420
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "POV shot of a hand holding a syringe with a piece of meat on the tip towards a Rottweiler, which licks it and then spits it out."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 17.9,
+        "frame": 537
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18,
+        "frame": 540
+      },
+      "text": "Dog\nTakes Medicine\n😂",
+      "durationSec": 0.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 18.9,
+        "frame": 567
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19,
+        "frame": 570
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person tries to give a husky medicine hidden in peanut butter, but the dog resists."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 23.9,
+        "frame": 717
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24,
+        "frame": 720
+      },
+      "text": "Dog\nTakes Medicine\n😂",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 25,
+        "frame": 750
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.1,
+        "frame": 753
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A brown and white dog spits out a pill and shakes its head."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 25.2,
+        "frame": 756
+      },
+      "text": "when you realize mom tricked you & there was a pill in that bite...",
+      "durationSec": 3.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "purple"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 29.8,
+        "frame": 894
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.9,
+        "frame": 897
+      },
+      "text": "Dog\nTakes Medicine\n😂",
+      "durationSec": 0.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 30.8,
+        "frame": 924
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30.9,
+        "frame": 927
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A small fluffy dog pushes a pill on the floor, trying to hide it under a dustpan."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 35,
+        "frame": 1050
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35.1,
+        "frame": 1053
+      },
+      "text": "Dog\nTakes Medicine\n😂",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 35.9,
+        "frame": 1077
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36,
+        "frame": 1080
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot of a hand holding a plate of chicken. A golden retriever suddenly appears from under a cabinet, grabs a piece, and walks away."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 40.8,
+        "frame": 1224
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 40.9,
+        "frame": 1227
+      },
+      "text": "Dog\nTakes Medicine\n😂",
+      "durationSec": 0.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 41.8,
+        "frame": 1254
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.9,
+        "frame": 1257
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A German Shepherd is coaxed to eat a pill on the floor. It hesitates, then eats it and gets praised."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 48.1,
+        "frame": 1443
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 48.2,
+        "frame": 1446
+      },
+      "text": "Dog\nTakes Medicine\n😂",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 49,
+        "frame": 1470
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 49.1,
+        "frame": 1473
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "POV shot of a hand holding a cracker covered in peanut butter and pills, then feeding it to an eager dog."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 54,
+        "frame": 1620
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 54.1,
+        "frame": 1623
+      },
+      "text": "Dog\nTakes Medicine\n😂",
+      "durationSec": 0.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 55,
+        "frame": 1650
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 55.1,
+        "frame": 1653
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A small puppy is held on a person's lap while other people point at it, and it makes funny faces."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 100.9,
+        "frame": 3027
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 101,
+        "frame": 3030
+      },
+      "text": "Dog\nTakes Medicine\n😂",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 101.8,
+        "frame": 3054
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 101.9,
+        "frame": 3057
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A golden retriever sitting on the floor spits out a pill."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 105.9,
+        "frame": 3177
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 106,
+        "frame": 3180
+      },
+      "text": "Dog\nTakes Medicine\n😂",
+      "durationSec": 0.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 106.9,
+        "frame": 3207
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 107,
+        "frame": 3210
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A dog with an orange harness suspiciously sniffs a treat before taking it."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 111.5,
+        "frame": 3345
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 111.6,
+        "frame": 3348
+      },
+      "text": "Dog\nTakes Medicine\n😂",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 112.4,
+        "frame": 3372
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 112.5,
+        "frame": 3375
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A vet in a green shirt gives a tiny puppy medicine with a dropper, and the puppy gives a huge yawn."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 116.2,
+        "frame": 3486
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 116.3,
+        "frame": 3489
+      },
+      "text": "Dog\nTakes Medicine\n😂",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 117.1,
+        "frame": 3513
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 117.2,
+        "frame": 3516
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot of a hand offering a treat with pills to a small dog wearing a flour sack as a costume."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 121.2,
+        "frame": 3636
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 121.3,
+        "frame": 3639
+      },
+      "text": "Dog\nTakes Medicine\n😂",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 122.1,
+        "frame": 3663
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 122.2,
+        "frame": 3666
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot of a hand holding a syringe of medicine as a large black dog runs away in fear."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 122.4,
+        "frame": 3672
+      },
+      "text": "The Reason Why I Have to Trick My Issi Dog into Taking His Medicine",
+      "durationSec": 3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 128.2,
+        "frame": 3846
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 128.3,
+        "frame": 3849
+      },
+      "text": "Dog\nTakes Medicine\n😂",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 129,
+        "frame": 3870
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 129.1,
+        "frame": 3873
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A vet gives a struggling Rottweiler puppy medicine from a syringe."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 134.2,
+        "frame": 4026
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 134.3,
+        "frame": 4029
+      },
+      "text": "Dog\nTakes Medicine\n😂",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 135,
+        "frame": 4050
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 135.1,
+        "frame": 4053
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A hand offers a ball of cream cheese with a pill inside to a dog wearing a cone, who eats it."
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat 8-bit Chiptune",
+    "trending": false,
+    "bpm": 140,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 1.2,
+          "frame": 36
+        },
+        "kind": "beat",
+        "note": "Transition"
+      },
+      {
+        "at": {
+          "sec": 2.8,
+          "frame": 84
+        },
+        "kind": "beat",
+        "note": "Transition"
+      },
+      {
+        "at": {
+          "sec": 7.9,
+          "frame": 237
+        },
+        "kind": "beat",
+        "note": "Transition"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 31,
+      "avgShotDurationSec": 3.25,
+      "cutDensityPerSec": 0.29,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "static",
+        "pov"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.1,
+        "close_up": 0.45,
+        "medium": 0.4,
+        "wide": 0.05,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "alternating_clip_and_title_card"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_upbeat_chiptune",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "bold_sans_serif_on_black_interstitial",
+      "colorGrade": "natural_ugc"
+    },
+    "structure": {
+      "hookFormat": "chaotic_action_to_title",
+      "openingShot": "extreme_close_up_shaky_cam",
+      "endingShot": "medium_shot_of_dog_in_cone",
+      "cta": null,
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 85,
+    "effect": 20,
+    "bgmSync": 80,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:39:36.306Z"
+  }
+}

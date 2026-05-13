@@ -1,0 +1,447 @@
+{
+  "videoId": "tt-7633011034449612045",
+  "durationSec": 63.275,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "ugc_native",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "Funny Puppy. 🥰",
+      "durationSec": 59.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.53,
+        "frame": 76
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "A golden retriever puppy sniffs a small chick held by a person."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.73,
+        "frame": 142
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A small black puppy runs down a long metal slide towards the camera."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 6.03,
+        "frame": 181
+      },
+      "type": "tracking",
+      "durationSec": 1.7,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.03,
+        "frame": 181
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A small brown puppy runs towards the camera down a wooden hallway."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.73,
+        "frame": 232
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A group of dachshund puppies run towards the camera on a carpet."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 9.83,
+        "frame": 295
+      },
+      "type": "pan_right",
+      "durationSec": 2,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.83,
+        "frame": 295
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A small white fluffy puppy runs across a living room floor."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.83,
+        "frame": 355
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A tiny puppy walks on a paved path alongside two people."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.9,
+        "frame": 357
+      },
+      "text": "His little walk 🥹",
+      "durationSec": 1.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "middle_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.73,
+        "frame": 412
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A French bulldog puppy sits upright on a rug, facing away from the camera."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.73,
+        "frame": 472
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "A golden retriever puppy stands with its front paws inside a pair of large boots."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.73,
+        "frame": 532
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A small fluffy puppy runs across a shiny tiled floor."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 19.73,
+        "frame": 592
+      },
+      "type": "tracking",
+      "durationSec": 2.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.73,
+        "frame": 592
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A fluffy husky puppy runs towards the camera on a red brick path."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.53,
+        "frame": 676
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person holds a white fluffy dog that has a backpack resembling a dog's face on its back."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.73,
+        "frame": 742
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "A puppy lies on its back on a bed, wiggling its paws in the air."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.83,
+        "frame": 805
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A poodle puppy spins in circles inside a white playpen."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.73,
+        "frame": 892
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A tiny puppy howls from behind the bars of a cage."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.73,
+        "frame": 952
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A small puppy attacks the head of a mop on the floor."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33.73,
+        "frame": 1012
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A puppy sits on the floor, stuck between the bars of a safety gate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.73,
+        "frame": 1072
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A puppy runs excitedly towards a man who is bending down to greet it."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 36.5,
+        "frame": 1095
+      },
+      "text": "WHEN DAD COMES HOME 🤎",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.83,
+        "frame": 1165
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A tiny Yorkshire terrier puppy plays tug-of-war with a small rope toy held by a hand."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40.03,
+        "frame": 1201
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A corgi watches a red ball roll towards it on a tiled floor."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42.73,
+        "frame": 1282
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "A corgi puppy lies on a pad and chews on a white electrical cord."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.73,
+        "frame": 1342
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A golden retriever puppy looks up towards the camera from a high angle."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.03,
+        "frame": 1381
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A person's hands hold a small, wet puppy just above the surface of the ocean water."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48.53,
+        "frame": 1456
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Several tiny, hairless puppies are on a tiled floor near a person mopping."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 50.53,
+        "frame": 1516
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Three golden retriever puppies play together on a mat inside a playpen."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52.73,
+        "frame": 1582
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A bulldog puppy wearing plaid pajamas struggles to climb up a carpeted staircase."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 54.73,
+        "frame": 1642
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "A German Shepherd puppy sits and curiously tilts its head."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 56.83,
+        "frame": 1705
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A golden retriever puppy rolls around playfully on its back inside a crate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.73,
+        "frame": 1762
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A person's hand gently squeezes the cheeks of a sleeping puppy."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 100.5,
+        "frame": 3015
+      },
+      "toShotSize": "wide",
+      "shotDescription": "End screen with the 'CuddlingPets' logo on a white background."
+    }
+  ],
+  "bgm": {
+    "name": "You're My Little Boo Thang (Remix)",
+    "trending": true,
+    "bpm": 115,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 4.73,
+          "frame": 142
+        },
+        "kind": "beat",
+        "note": "Cut syncs with main vocal phrase start"
+      },
+      {
+        "at": {
+          "sec": 11.83,
+          "frame": 355
+        },
+        "kind": "beat",
+        "note": "Cut syncs with beat"
+      },
+      {
+        "at": {
+          "sec": 22.53,
+          "frame": 676
+        },
+        "kind": "vocal_phrase",
+        "note": "Cut syncs with 'pull a little good in the teeth'"
+      },
+      {
+        "at": {
+          "sec": 38.83,
+          "frame": 1165
+        },
+        "kind": "vocal_phrase",
+        "note": "Cut syncs with 'what's good'"
+      },
+      {
+        "at": {
+          "sec": 46.03,
+          "frame": 1381
+        },
+        "kind": "vocal_phrase",
+        "note": "Cut syncs with 'to the back'"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 31,
+      "avgShotDurationSec": 1.97,
+      "cutDensityPerSec": 0.49,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "tracking",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.1,
+        "close_up": 0.2,
+        "medium": 0.5,
+        "wide": 0.2,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Upbeat funk/hip-hop loop driving the edit",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "Simple white sans-serif text, bottom-center placement",
+      "colorGrade": "Natural / Ungraded"
+    },
+    "structure": {
+      "hookFormat": "visual_hook",
+      "openingShot": "Medium shot of a puppy wiggling its butt on a vet's table.",
+      "endingShot": "Brand logo screen ('CuddlingPets').",
+      "cta": "implied_branding",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 95,
+    "transition": 10,
+    "effect": 5,
+    "bgmSync": 100,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:38:31.376Z"
+  }
+}

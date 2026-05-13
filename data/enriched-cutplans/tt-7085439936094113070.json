@@ -1,0 +1,253 @@
+{
+  "videoId": "tt-7085439936094113070",
+  "durationSec": 22.382,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "POV: Different generations and how they would answer unexpected ✨ work calls",
+      "durationSec": 21.9,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man dressed as a 'Boomer' in a blazer sits at a desk, typing on a laptop in a home office/kitchen setting."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 4.8,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "Boomers ✨",
+      "durationSec": 4.3,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The same man, now dressed as 'Gen X' in a black sweatshirt, sits at the same desk with a skeptical expression."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "type": "static",
+      "durationSec": 5.7,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5,
+        "frame": 150
+      },
+      "text": "Gen X ✨",
+      "durationSec": 5.5,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 10.5,
+        "frame": 315
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.5,
+        "frame": 315
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The same man, now dressed as a 'Millennial' in a large green hoodie, sits at the desk, looking annoyed at his phone."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 10.5,
+        "frame": 315
+      },
+      "type": "static",
+      "durationSec": 7.5,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.8,
+        "frame": 324
+      },
+      "text": "Millennials ✨",
+      "durationSec": 7.2,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 18,
+        "frame": 540
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18,
+        "frame": 540
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The empty chair and desk are shown, implying the 'Gen Z' person is not there to answer the call. The phone continues to ring."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 18,
+        "frame": 540
+      },
+      "type": "static",
+      "durationSec": 4,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.3,
+        "frame": 549
+      },
+      "text": "Gen Z ✨",
+      "durationSec": 3.7,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Unknown Lo-fi Instrumental",
+    "trending": false,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 4,
+      "avgShotDurationSec": 5.5,
+      "cutDensityPerSec": 0.14,
+      "rhythmProfile": "slow",
+      "keyTwistAt": {
+        "sec": 18,
+        "frame": 540
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_loop",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "standard_tiktok_overlay",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "text_overlay_premise",
+      "openingShot": "Medium shot of the 'Boomer' character at a desk, establishing the setting and the first scenario.",
+      "endingShot": "Medium shot of an empty chair, representing the 'Gen Z' response (not answering), which serves as the punchline.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 18,
+        "frame": 540
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 10,
+    "effect": 5,
+    "bgmSync": 10,
+    "overall": 15
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:12:30.260Z"
+  }
+}

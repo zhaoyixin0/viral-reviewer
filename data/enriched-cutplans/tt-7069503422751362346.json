@@ -1,0 +1,192 @@
+{
+  "videoId": "tt-7069503422751362346",
+  "durationSec": 7.451,
+  "fps": 30,
+  "resolution": {
+    "width": 576,
+    "height": 1056
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A young woman in a pink prom dress stands in a bathroom, looking at the camera."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 7,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "my mom doesn't like that I lift because she thinks that muscles aren't feminine...",
+      "durationSec": 3.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.1,
+        "frame": 123
+      },
+      "text": "mom: \"stop doing that\"",
+      "durationSec": 1.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "middle_center"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 5.5,
+        "frame": 165
+      },
+      "type": "text_reveal_flash",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.5,
+        "frame": 165
+      },
+      "text": "define feminine",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "middle_center"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 6,
+        "frame": 180
+      },
+      "type": "text_reveal_flash",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6,
+        "frame": 180
+      },
+      "text": "IM FEMININE",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "#FF69B4",
+        "position": "middle_center"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Mother Earth - sped up",
+    "trending": true,
+    "bpm": 145,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in"
+      },
+      {
+        "at": {
+          "sec": 5.5,
+          "frame": 165
+        },
+        "kind": "beat",
+        "note": "Syncs with 'define feminine' text flash"
+      },
+      {
+        "at": {
+          "sec": 6,
+          "frame": 180
+        },
+        "kind": "beat",
+        "note": "Syncs with 'IM FEMININE' text flash"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 7,
+      "cutDensityPerSec": 0,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": {
+        "sec": 5.5,
+        "frame": 165
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "Upbeat, sped-up trending pop song",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "Multiple styles: standard white text for setup, then flashing, stylized text for punchline.",
+      "colorGrade": "Natural indoor lighting"
+    },
+    "structure": {
+      "hookFormat": "Text overlay stating a conflict or criticism.",
+      "openingShot": "Static wide shot of the creator standing in a dress.",
+      "endingShot": "Static wide shot of the creator posing with a defiant text overlay.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 6,
+        "frame": 180
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 0,
+    "effect": 45,
+    "bgmSync": 85,
+    "overall": 35
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:15:01.488Z"
+  }
+}

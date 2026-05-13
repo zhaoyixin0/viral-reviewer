@@ -1,0 +1,546 @@
+{
+  "videoId": "tt-7632706695457672479",
+  "durationSec": 65.41,
+  "fps": 23.976,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down shot of a bowl of Jollof rice, held by two hands."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.4,
+        "frame": 10
+      },
+      "text": "Episode 97",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.8,
+        "frame": 19
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The host takes a bite of the rice with a fork."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1,
+        "frame": 24
+      },
+      "text": "of cooking",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2,
+        "frame": 48
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The host chews and looks at the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.2,
+        "frame": 53
+      },
+      "text": "top comment is,",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2.8,
+        "frame": 67
+      },
+      "type": "whip_pan",
+      "durationFrames": 6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3,
+        "frame": 72
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Rice is quickly poured out of the bowl, revealing the empty bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.2,
+        "frame": 77
+      },
+      "text": "and today",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.9,
+        "frame": 94
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Macro shot of the Jollof rice texture."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.2,
+        "frame": 101
+      },
+      "text": "the first dish",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6,
+        "frame": 144
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The host holds a spoonful of rice to his mouth."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.2,
+        "frame": 149
+      },
+      "text": "West Africa,",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.7,
+        "frame": 209
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Macro shot of the Jollof rice."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 8.8,
+        "frame": 211
+      },
+      "type": "sticker_overlay",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.8,
+        "frame": 235
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The host inspects a bag of Zatarain's long grain rice."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.8,
+        "frame": 259
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands use a knife to cut the top off a Roma tomato."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.7,
+        "frame": 304
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands chop the tomato into wedges."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.5,
+        "frame": 372
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands cut the top off a red bell pepper."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.8,
+        "frame": 451
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands chop the red bell pepper."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.8,
+        "frame": 475
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands slice an onion in half."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21,
+        "frame": 503
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands chop the onion."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22,
+        "frame": 527
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands hold a small orange habanero pepper."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.8,
+        "frame": 547
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Chopped vegetables are dropped into a blender."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.8,
+        "frame": 571
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Shot from inside the blender as the vegetables are blended into a puree."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26,
+        "frame": 623
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Side view of the blender containing the orange puree."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.8,
+        "frame": 643
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down shot of hands holding an empty metal bowl over a cutting board."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.8,
+        "frame": 667
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Rice is poured from the bag into the metal bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.8,
+        "frame": 691
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down shot of oil being poured into a hot pot on the stove."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.8,
+        "frame": 714
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Rice is poured from the metal bowl into the pot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.8,
+        "frame": 762
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The vegetable puree is poured from the blender into the pot with the rice."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33,
+        "frame": 791
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A wooden spoon stirs the rice and puree together in the pot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.8,
+        "frame": 834
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoonful of tomato paste is added to the pot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.8,
+        "frame": 858
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Various spices (curry powder, thyme, salt) are added to the pot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38,
+        "frame": 911
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The mixture is stirred again."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.2,
+        "frame": 940
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "The Jollof rice simmers in the pot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43.2,
+        "frame": 1036
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The cooked rice is fluffed with a wooden spoon, bay leaves are visible."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46,
+        "frame": 1103
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The pot of cooked rice is placed on a wooden surface."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 47,
+        "frame": 1127
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Macro shot of the cooked rice texture in the pot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48,
+        "frame": 1151
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A wooden spoon scoops up a large portion of the rice."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 51.2,
+        "frame": 1228
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down shot of the rice being poured from the pot onto the blue and white plate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52.8,
+        "frame": 1266
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Macro shot of the finished dish on the plate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 54.5,
+        "frame": 1307
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down shot of a fork scooping up some rice."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 55.5,
+        "frame": 1331
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The host holds the forkful of rice towards the camera, which is in focus while he is blurred in the background."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 56.5,
+        "frame": 1355
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The host eats the rice and reacts."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59.2,
+        "frame": 1419
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The host holds up the fork and smiles."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 61,
+        "frame": 1463
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The host takes another bite."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 62,
+        "frame": 1487
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The host gestures with his hands while describing the flavor."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 63.8,
+        "frame": 1530
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The host brings his hands together in a prayer-like gesture."
+    }
+  ],
+  "bgm": {
+    "name": "Chill Lo-fi Hip Hop Instrumental",
+    "trending": false,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 42,
+      "avgShotDurationSec": 1.55,
+      "cutDensityPerSec": 0.65,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.3,
+        "close_up": 0.5,
+        "medium": 0.2,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut",
+        "whip_pan"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_loop",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "Centered white sans-serif text with a slight drop shadow.",
+      "colorGrade": "Warm and vibrant, enhancing the orange and red tones of the food."
+    },
+    "structure": {
+      "hookFormat": "Result first, then process",
+      "openingShot": "Top-down shot of the finished Jollof rice in a bowl.",
+      "endingShot": "Medium shot of the host giving a final thought on the dish's origins.",
+      "cta": "Implicit (series format)",
+      "payoffAt": {
+        "sec": 56.5,
+        "frame": 1355
+      }
+    }
+  },
+  "density": {
+    "editing": 95,
+    "transition": 20,
+    "effect": 15,
+    "bgmSync": 10,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:55:26.884Z"
+  }
+}

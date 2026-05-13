@@ -1,0 +1,454 @@
+{
+  "videoId": "tt-7610935433660337422",
+  "durationSec": 185.5,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Selfie shot of two women on an airplane, with shaky handheld movement."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "Bali",
+      "durationSec": 0.8,
+      "style": {
+        "font": "serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Selfie shot of a woman on an airport escalator, looking at the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1,
+        "frame": 30
+      },
+      "text": "TRAVEL VLOG\nBali Indonesia",
+      "durationSec": 2,
+      "style": {
+        "font": "serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.6,
+        "frame": 48
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Another selfie shot on the escalator, showing her friend behind her."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.6,
+        "frame": 78
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Fast, blurry whip-pan style shot of the woman on the escalator."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.9,
+        "frame": 117
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Shot of the flight path map on the airplane's seat-back screen."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Shot of a large 'Tree of Life' sculpture in the airport."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.9,
+        "frame": 207
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man holds up a sign that says 'WELCOME TO BALI HAPPY BIRTHDAY BIG MIAH'."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Panning shot of a modern, luxurious living room in a villa."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "type": "pan_right",
+      "durationSec": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Panning shot of the villa's outdoor patio and pool area at night."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.8,
+        "frame": 324
+      },
+      "toShotSize": "wide",
+      "shotDescription": "High-angle shot from a balcony looking down into the patio area."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Panning shot of a modern bedroom."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Panning shot of a modern bathroom with a tub and shower."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Shot from a moving car of a family on a scooter."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.8,
+        "frame": 444
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Shot from a moving car of ornate statues on the roadside."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.8,
+        "frame": 504
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Walking through a clothing store."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.8,
+        "frame": 594
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Two women enter a cosmetics store."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.8,
+        "frame": 654
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Walking through the brightly lit cosmetics store."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.8,
+        "frame": 834
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Selfie shot of the woman sitting in a bamboo restaurant."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.8,
+        "frame": 1074
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman shows a selection of long, colorful dresses on a rack."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43.8,
+        "frame": 1314
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The women are being fitted into long, flowing dresses by staff."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48.8,
+        "frame": 1464
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Establishing shot of the jungle swing area."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52.8,
+        "frame": 1584
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman in a pink dress swings over the jungle."
+    },
+    {
+      "kind": "speed_change",
+      "at": {
+        "sec": 53,
+        "frame": 1590
+      },
+      "multiplier": 0.5,
+      "durationSec": 2.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 55.2,
+        "frame": 1656
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Extreme wide shot of the woman swinging high above the jungle canopy."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 57.8,
+        "frame": 1734
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Woman in a pink dress sits on a circular swing decorated with flowers."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 101.8,
+        "frame": 3054
+      },
+      "toShotSize": "wide",
+      "shotDescription": "People receiving massages on floating beds in a pool at a beach club at sunset."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 117.8,
+        "frame": 3534
+      },
+      "toShotSize": "wide",
+      "shotDescription": "An elephant eating grass in an enclosure."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 132.8,
+        "frame": 3984
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman in a yellow dress walks across a path in a lush green rice paddy."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 142.8,
+        "frame": 4284
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Selfie shot of the women dancing in a dark nightclub with red lights."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 174.8,
+        "frame": 5244
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A shot of a large, powerful waterfall in the jungle."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 191.8,
+        "frame": 5754
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Staff members sprinkle pink flower petals into the villa's pool at night."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 196,
+        "frame": 5880
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The next day, the woman takes a selfie while smoking hookah by the flower-filled pool."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 205,
+        "frame": 6150
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Monkeys climb on the woman as she sits on a bench in the Monkey Forest."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 213.8,
+        "frame": 6414
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A tattoo artist works on the woman's arm."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 215.8,
+        "frame": 6474
+      },
+      "toShotSize": "wide",
+      "shotDescription": "High-angle aerial-style shot of the woman in a boat surrounded by hundreds of koi fish."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 226.8,
+        "frame": 6804
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Mirror selfie of the woman in a bathroom, wearing a pink tracksuit, preparing to leave."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 237,
+        "frame": 7110
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Final selfie shot on the plane, wearing a pink hoodie and giving a thumbs up."
+    }
+  ],
+  "bgm": {
+    "name": "Unknown Chill R&B/Hip-Hop Instrumental",
+    "trending": false,
+    "bpm": 90,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in",
+        "note": "Music starts with the video"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 85,
+      "avgShotDurationSec": 2.18,
+      "cutDensityPerSec": 0.46,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "pan_right",
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.05,
+        "close_up": 0.35,
+        "medium": 0.3,
+        "wide": 0.25,
+        "extreme_wide": 0.05
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_instrumental",
+      "bgmSyncTightness": "moderate",
+      "subtitleStyle": "elegant_serif",
+      "colorGrade": "vibrant_warm"
+    },
+    "structure": {
+      "hookFormat": "rapid_montage",
+      "openingShot": "Selfie on the airplane, establishing the start of a journey.",
+      "endingShot": "Selfie on the airplane home, showing the end of the trip.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 53,
+        "frame": 1590
+      }
+    }
+  },
+  "density": {
+    "editing": 95,
+    "transition": 10,
+    "effect": 20,
+    "bgmSync": 60,
+    "overall": 90
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:47:35.103Z"
+  }
+}

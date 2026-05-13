@@ -1,0 +1,288 @@
+{
+  "videoId": "tt-7600276477468282134",
+  "durationSec": 65.69,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "listicle",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "A large grey pitbull is lying on a wooden floor. A small chihuahua wearing a scary monster mask stands next to it."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 3.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1,
+        "frame": 60
+      },
+      "text": "Top 6 Most Interesting Video",
+      "durationSec": 3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 228
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The pitbull barks and jumps back in fright. The camera pulls back to show the pitbull running away and the chihuahua standing still, its mask having fallen off."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 9.8,
+        "frame": 588
+      },
+      "type": "other",
+      "durationFrames": 30
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 9.8,
+        "frame": 588
+      },
+      "type": "film_countdown",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.8,
+        "frame": 648
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A small dog wearing a mouse mask approaches a ginger cat eating from a bowl in a kitchen."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 20.8,
+        "frame": 1248
+      },
+      "type": "other",
+      "durationFrames": 30
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 20.8,
+        "frame": 1248
+      },
+      "type": "film_countdown",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.8,
+        "frame": 1308
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A small chihuahua in a black costume with a scary face approaches a sleeping husky. A pitbull sits watching in the background."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27,
+        "frame": 1620
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The husky wakes up, screams, and scrambles away across the wooden floor."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 31.8,
+        "frame": 1908
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 32.2,
+        "frame": 1932
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A small dog wearing a red devil mask approaches a sleeping pitbull on a rug."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.8,
+        "frame": 2148
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The pitbull wakes up, barks, and runs away, hiding behind a coffee table."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 42,
+        "frame": 2520
+      },
+      "type": "other",
+      "durationFrames": 24
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 42,
+        "frame": 2520
+      },
+      "type": "film_countdown",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42.8,
+        "frame": 2568
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A small dog in a 'Scream' Ghostface costume approaches a sleeping rottweiler."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 45.8,
+        "frame": 2748
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The rottweiler jumps up and runs away, chased by the small dog around a coffee table."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 46.5,
+        "frame": 2790
+      },
+      "type": "handheld",
+      "durationSec": 6,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 52.8,
+        "frame": 3168
+      },
+      "type": "other",
+      "durationFrames": 21
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 52.8,
+        "frame": 3168
+      },
+      "type": "film_countdown",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 53.5,
+        "frame": 3210
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A small dog dressed as the Chucky doll, holding a fake knife, approaches a sleeping rottweiler. A woman laughs in the background."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.8,
+        "frame": 3528
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The rottweiler jumps up and runs away from the 'Chucky' dog."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 59.5,
+        "frame": 3570
+      },
+      "type": "handheld",
+      "durationSec": 6,
+      "easing": "linear"
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 11,
+      "avgShotDurationSec": 5.9,
+      "cutDensityPerSec": 0.17,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.1,
+        "medium": 0.3,
+        "wide": 0.6,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "countdown_effect",
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "diegetic_sound_and_sfx",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "Bold, sans-serif, blue with white outline, top-centered.",
+      "colorGrade": "Natural"
+    },
+    "structure": {
+      "hookFormat": "compilation_title",
+      "openingShot": "A small dog in a monster mask approaches a large, calm dog, creating suspense.",
+      "endingShot": "A rottweiler is chased by a small dog dressed as Chucky, ending on a high-energy comedic note.",
+      "cta": null,
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 75,
+    "transition": 60,
+    "effect": 25,
+    "bgmSync": 90,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:42:16.531Z"
+  }
+}

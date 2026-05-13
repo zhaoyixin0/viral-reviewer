@@ -1,0 +1,419 @@
+{
+  "videoId": "tt-7632428236516887830",
+  "durationSec": 57.77,
+  "fps": 29.169070975187537,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "comedy",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot of a hand holding a lemon slice in front of a dachshund on a tiled floor."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 9.6,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 140
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A quick cut to a closer shot of the dachshund's face as it reacts with wide eyes to the lemon in its mouth."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 9.6,
+        "frame": 280
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10,
+        "frame": 292
+      },
+      "text": "dogs vs lemons!",
+      "durationSec": 0.6,
+      "style": {
+        "font": "typewriter",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.6,
+        "frame": 309
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A golden retriever sniffs a lemon on a tiled kitchen floor."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.8,
+        "frame": 403
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The golden retriever barks and pounces at the lemon from a distance."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 16,
+        "frame": 467
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.4,
+        "frame": 478
+      },
+      "text": "dogs vs lemons!",
+      "durationSec": 0.4,
+      "style": {
+        "font": "typewriter",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.8,
+        "frame": 490
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "A black labrador sits in a kitchen, chewing and reacting to the taste of lemon."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 25.2,
+        "frame": 735
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 25.6,
+        "frame": 747
+      },
+      "text": "dogs vs lemons!",
+      "durationSec": 0.4,
+      "style": {
+        "font": "typewriter",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26,
+        "frame": 758
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A white golden retriever catches a piece of lemon and looks at the camera with a confused expression."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 32.3,
+        "frame": 942
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 32.7,
+        "frame": 954
+      },
+      "text": "dogs vs lemons!",
+      "durationSec": 0.4,
+      "style": {
+        "font": "typewriter",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33.1,
+        "frame": 965
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A large, fluffy white dog chews on a lemon, looking up at the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35.1,
+        "frame": 1024
+      },
+      "text": "Wait for a close up view of chompies 😂",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "black",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 37.5,
+        "frame": 1094
+      },
+      "type": "push_in",
+      "durationSec": 1.4,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_in"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 38.9,
+        "frame": 1135
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 39.3,
+        "frame": 1146
+      },
+      "text": "dogs vs lemons!",
+      "durationSec": 0.4,
+      "style": {
+        "font": "typewriter",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.7,
+        "frame": 1158
+      },
+      "toShotSize": "medium",
+      "shotDescription": "High-angle shot of a grey pitbull looking up."
+    },
+    {
+      "kind": "speed_change",
+      "at": {
+        "sec": 40.8,
+        "frame": 1190
+      },
+      "multiplier": 0.5,
+      "durationSec": 3
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 45.3,
+        "frame": 1321
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 45.7,
+        "frame": 1333
+      },
+      "text": "dogs vs lemons!",
+      "durationSec": 0.4,
+      "style": {
+        "font": "typewriter",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.1,
+        "frame": 1345
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A boxer is fed a piece of lemon, immediately spits it out, and shakes its head."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48.5,
+        "frame": 1415
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The boxer sits and looks at the camera with a sad, confused expression."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 51.5,
+        "frame": 1502
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 51.9,
+        "frame": 1514
+      },
+      "text": "dogs vs lemons!",
+      "durationSec": 0.4,
+      "style": {
+        "font": "typewriter",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52.3,
+        "frame": 1526
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot of a hand holding a lemon towards a brown dog, which gets scared and jumps back dramatically."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 57,
+        "frame": 1663
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 57.4,
+        "frame": 1674
+      },
+      "text": "dogs vs lemons!",
+      "durationSec": 0.4,
+      "style": {
+        "font": "typewriter",
+        "color": "white",
+        "position": "center"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Quirky Instrumental (Clip 1) & Original Audio",
+    "trending": false,
+    "bpm": 120,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in",
+        "note": "BGM starts with the first clip"
+      },
+      {
+        "at": {
+          "sec": 9.6,
+          "frame": 280
+        },
+        "kind": "vocal_out",
+        "note": "BGM ends and the rest of the video uses original audio from the clips"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 19,
+      "avgShotDurationSec": 3.05,
+      "cutDensityPerSec": 0.33,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.2,
+        "medium": 0.6,
+        "wide": 0.2,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut_to_title_card"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "mixed_bgm_and_original_audio",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "recurring_title_card",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "action_preview",
+      "openingShot": "A dachshund is given a lemon slice and has a funny reaction.",
+      "endingShot": "A black title card with the text 'dogs vs lemons!'",
+      "cta": "none",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 30,
+    "effect": 20,
+    "bgmSync": 25,
+    "overall": 65
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:40:15.344Z"
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "videoId": "tt-7634249360498330894",
+  "durationSec": 6.686,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A young woman with long blonde hair, wearing white pajamas, stands in a living room and starts to dance."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 2.6,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2.6,
+        "frame": 78
+      },
+      "type": "whip_pan",
+      "durationFrames": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman is now wearing a pink formal dress, posing with a young man in a white tuxedo jacket. They are both smiling at the camera."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "type": "static",
+      "durationSec": 3.7,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    }
+  ],
+  "bgm": {
+    "name": "Suit & Tie (Remix)",
+    "trending": true,
+    "bpm": 102,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.2,
+          "frame": 6
+        },
+        "kind": "vocal_in",
+        "note": "Male voice says 'You ready JT?'"
+      },
+      {
+        "at": {
+          "sec": 2.8,
+          "frame": 84
+        },
+        "kind": "drop",
+        "note": "The main beat and chorus vocals begin, perfectly timed with the visual reveal."
+      },
+      {
+        "at": {
+          "sec": 2.8,
+          "frame": 84
+        },
+        "kind": "vocal_phrase",
+        "note": "Lyrics 'I can't wait 'til I get you...'"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 2,
+      "avgShotDurationSec": 3.25,
+      "cutDensityPerSec": 0.15,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": {
+        "sec": 2.8,
+        "frame": 84
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "whip_pan"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "build_up_and_drop",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "none",
+      "colorGrade": "natural_warm"
+    },
+    "structure": {
+      "hookFormat": "before_state_with_audio_cue",
+      "openingShot": "Subject in casual 'before' state, dancing to the music's intro.",
+      "endingShot": "Couple in formal 'after' state, posing happily to the music's drop.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 2.8,
+        "frame": 84
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 55,
+    "effect": 5,
+    "bgmSync": 95,
+    "overall": 45
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:30:32.143Z"
+  }
+}

@@ -1,0 +1,288 @@
+{
+  "videoId": "tt-7231483723932290306",
+  "durationSec": 17.437,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man in a hoodie and cap stands behind a kitchen counter, introducing the dish with his hands over a bowl of chicken."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "Honey soy chicken",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.9,
+        "frame": 27
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Top-down view of soy sauce being poured from a measuring cup into a glass bowl with minced garlic."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Top-down view of honey being poured from a measuring spoon into the soy sauce mixture."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.7,
+        "frame": 81
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Top-down view of another liquid, likely mirin, being poured from a measuring cup into the bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.7,
+        "frame": 111
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Top-down view of hands stirring the marinade mixture with a fork."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.7,
+        "frame": 141
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The prepared marinade is poured from the glass bowl over raw chicken thighs in a metal bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.7,
+        "frame": 171
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Using metal tongs to toss and coat the chicken pieces in the marinade."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.7,
+        "frame": 201
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A cornstarch slurry is poured into the remaining marinade in a small saucepan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.7,
+        "frame": 231
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Marinated chicken pieces are placed into a hot, oiled stainless steel pan with tongs."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.7,
+        "frame": 261
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The remaining marinade from the mixing bowl is poured over the chicken in the pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.7,
+        "frame": 291
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Tongs flip the chicken pieces in the pan, revealing a browned and caramelized side."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.7,
+        "frame": 321
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A static shot of the chicken sizzling and caramelizing in the pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.7,
+        "frame": 351
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoon lifts some of the thickened sauce from the saucepan to show its consistency."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.7,
+        "frame": 381
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A piece of cooked honey soy chicken is placed onto a bed of white rice in a white bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.7,
+        "frame": 411
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoon generously pours the glossy sauce over the chicken and rice."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.7,
+        "frame": 471
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The final plated dish is shown, with tongs adding steamed bok choy next to the saucy chicken and rice."
+    }
+  ],
+  "bgm": {
+    "name": "Unknown Lo-fi Hip Hop Beat",
+    "trending": false,
+    "bpm": 90,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.9,
+          "frame": 27
+        },
+        "kind": "beat",
+        "note": "Cut syncs with beat"
+      },
+      {
+        "at": {
+          "sec": 1.8,
+          "frame": 54
+        },
+        "kind": "beat",
+        "note": "Cut syncs with beat"
+      },
+      {
+        "at": {
+          "sec": 2.7,
+          "frame": 81
+        },
+        "kind": "beat",
+        "note": "Cut syncs with beat"
+      },
+      {
+        "at": {
+          "sec": 3.7,
+          "frame": 111
+        },
+        "kind": "beat",
+        "note": "Cut syncs with beat"
+      },
+      {
+        "at": {
+          "sec": 4.7,
+          "frame": 141
+        },
+        "kind": "beat",
+        "note": "Cut syncs with beat"
+      },
+      {
+        "at": {
+          "sec": 7.7,
+          "frame": 231
+        },
+        "kind": "beat",
+        "note": "Cut syncs with beat"
+      },
+      {
+        "at": {
+          "sec": 13.7,
+          "frame": 411
+        },
+        "kind": "beat",
+        "note": "Cut syncs with beat"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 17,
+      "avgShotDurationSec": 0.98,
+      "cutDensityPerSec": 0.96,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.24,
+        "close_up": 0.64,
+        "medium": 0.12,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "lo-fi_hip_hop_loop",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "sans-serif_white_text_on_box",
+      "colorGrade": "natural_warm"
+    },
+    "structure": {
+      "hookFormat": "title_card_with_creator",
+      "openingShot": "Medium shot of creator introducing the recipe concept.",
+      "endingShot": "Close-up beauty shot of the final plated dish.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 15.7,
+        "frame": 471
+      }
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 10,
+    "effect": 5,
+    "bgmSync": 95,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:21:52.076Z"
+  }
+}

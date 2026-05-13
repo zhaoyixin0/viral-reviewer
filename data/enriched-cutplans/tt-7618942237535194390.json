@@ -1,0 +1,638 @@
+{
+  "videoId": "tt-7618942237535194390",
+  "durationSec": 61.253,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "成品展示：一盘风琴土豆、卡真鸡肉和芦笋。"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "Easy Weeknight Dinner",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "upper_center"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "text": "Hassleback Potatoes & Cajun Chicken",
+      "durationSec": 1.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "upper_center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2.7,
+        "frame": 81
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.7,
+        "frame": 81
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "用刀在砧板上切土豆，制作风琴土豆。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 6.8,
+        "frame": 204
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.8,
+        "frame": 204
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "双手展示切好的风琴土豆。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 8.5,
+        "frame": 255
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.5,
+        "frame": 255
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "在玻璃碗中倒入融化的黄油。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 9.8,
+        "frame": 294
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.8,
+        "frame": 294
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "向碗中挤入蒜蓉酱。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 10.8,
+        "frame": 324
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.8,
+        "frame": 324
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "向碗中撒入蒜粉。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "向碗中撒入辣椒粉。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "向碗中撒入洋葱粉。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "向碗中撒入混合香草。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 14.8,
+        "frame": 444
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.8,
+        "frame": 444
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "向碗中撒入黑胡椒。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 15.8,
+        "frame": 474
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 474
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "向碗中撒入盐。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 16.8,
+        "frame": 504
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.8,
+        "frame": 504
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "向碗中撒入卡真调味料。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 17.8,
+        "frame": 534
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.8,
+        "frame": 534
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "用硅胶刷将调味酱均匀涂抹在风琴土豆上。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 20.8,
+        "frame": 624
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.8,
+        "frame": 624
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "将涂好酱的土豆放入空气炸锅的炸篮中。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 26,
+        "frame": 780
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26,
+        "frame": 780
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "在玻璃碗中对鸡胸肉进行调味。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 34.8,
+        "frame": 1044
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.8,
+        "frame": 1044
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "用夹子将鸡胸肉和调味料混合均匀。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 36,
+        "frame": 1080
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36,
+        "frame": 1080
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "在烧烤盘中倒油。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 37.5,
+        "frame": 1125
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.5,
+        "frame": 1125
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "将腌好的鸡胸肉放入烧烤盘中煎制。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 39.5,
+        "frame": 1185
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.5,
+        "frame": 1185
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "用夹子翻面煎鸡胸肉。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 42.5,
+        "frame": 1275
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42.5,
+        "frame": 1275
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "将煎好的鸡胸肉夹出盛盘。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 44.8,
+        "frame": 1344
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.8,
+        "frame": 1344
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "在平底锅中放入黄油块融化。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 45.8,
+        "frame": 1374
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 45.8,
+        "frame": 1374
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "加入切碎的洋葱和蒜末翻炒。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 47.5,
+        "frame": 1425
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 47.5,
+        "frame": 1425
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "倒入奶油制作酱汁。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 49,
+        "frame": 1470
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 49,
+        "frame": 1470
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "在奶油酱中加入多种调味料。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 54.8,
+        "frame": 1644
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 54.8,
+        "frame": 1644
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "用打蛋器将酱汁搅拌均匀。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 55.8,
+        "frame": 1674
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 55.8,
+        "frame": 1674
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "将煎好的鸡胸肉放回酱汁中。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 58.8,
+        "frame": 1764
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.8,
+        "frame": 1764
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "用勺子将酱汁淋在鸡胸肉上。"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 100.5,
+        "frame": 3015
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 100.5,
+        "frame": 3015
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "最终镜头，鸡肉在酱汁中炖煮。"
+    }
+  ],
+  "bgm": {
+    "name": "Boom Boom Pow - The Black Eyed Peas",
+    "trending": true,
+    "bpm": 130,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 2.7,
+          "frame": 81
+        },
+        "kind": "beat",
+        "note": "Cut to potato slicing"
+      },
+      {
+        "at": {
+          "sec": 8.5,
+          "frame": 255
+        },
+        "kind": "beat",
+        "note": "Start of rapid seasoning cuts"
+      },
+      {
+        "at": {
+          "sec": 16.8,
+          "frame": 504
+        },
+        "kind": "drop",
+        "note": "Chorus starts, cut to Cajun seasoning"
+      },
+      {
+        "at": {
+          "sec": 26.8,
+          "frame": 804
+        },
+        "kind": "beat",
+        "note": "Start of rapid chicken seasoning cuts"
+      },
+      {
+        "at": {
+          "sec": 49,
+          "frame": 1470
+        },
+        "kind": "beat",
+        "note": "Start of rapid sauce seasoning cuts"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 39,
+      "avgShotDurationSec": 1.56,
+      "cutDensityPerSec": 0.64,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.7,
+        "medium": 0.3,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "High-energy hip-hop track used throughout, with cuts synchronized to the beat.",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "Simple, white, sans-serif font, centered on the upper third.",
+      "colorGrade": "Natural and vibrant with warm tones."
+    },
+    "structure": {
+      "hookFormat": "Finished Dish Reveal",
+      "openingShot": "Medium close-up of the plated final dish.",
+      "endingShot": "Medium close-up of the chicken simmering in the creamy sauce.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 0,
+        "frame": 0
+      }
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 20,
+    "effect": 0,
+    "bgmSync": 95,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:01:11.154Z"
+  }
+}

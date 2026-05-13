@@ -1,0 +1,146 @@
+{
+  "videoId": "tt-7632289641164508429",
+  "durationSec": 8.434,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman in pink pajamas with wet hair stands in a bathroom and starts dancing to the beat."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 4.5,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 4.5,
+        "frame": 135
+      },
+      "type": "other",
+      "durationFrames": 3,
+      "note": "Hand covers the camera lens to create a wipe effect."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.5,
+        "frame": 135
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman is now in a living room, wearing a brown dress with styled blonde hair and makeup, posing with her new look."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 4.5,
+        "frame": 135
+      },
+      "type": "static",
+      "durationSec": 3.5,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Hip-Hop Track",
+    "trending": true,
+    "bpm": 98,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "beat",
+        "note": "Music starts with a strong beat."
+      },
+      {
+        "at": {
+          "sec": 4.5,
+          "frame": 135
+        },
+        "kind": "beat",
+        "note": "The transition cut happens on a prominent beat."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 2,
+      "avgShotDurationSec": 4,
+      "cutDensityPerSec": 0.125,
+      "rhythmProfile": "slow",
+      "keyTwistAt": {
+        "sec": 4.5,
+        "frame": 135
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hand_cover_wipe"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Consistent upbeat rhythm driving the action.",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "none",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "before_state",
+      "openingShot": "Medium shot of the subject in pajamas, establishing the 'before' state.",
+      "endingShot": "Medium shot of the subject in her final outfit, revealing the 'after' state.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 4.5,
+        "frame": 135
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 15,
+    "effect": 0,
+    "bgmSync": 85,
+    "overall": 30
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:30:37.604Z"
+  }
+}

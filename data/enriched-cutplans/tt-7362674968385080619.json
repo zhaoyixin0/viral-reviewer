@@ -1,0 +1,91 @@
+{
+  "videoId": "tt-7362674968385080619",
+  "durationSec": 96.137,
+  "fps": 32.702642485549134,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman, in a single continuous take, makes a giant pink slime on her living room floor. She pours two large bottles of glue, adds activator, mixes it by hand, adds pink coloring, kneads it, adds multiple blocks of soft clay, and mixes them in. The video concludes with her stretching the large slime and making bubbles with it."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 96,
+      "easing": "linear"
+    },
+    {
+      "kind": "speed_change",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "multiplier": 2.5,
+      "durationSec": 96
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 96,
+      "cutDensityPerSec": 0.01,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "none",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "action_in_progress",
+      "openingShot": "Woman kneeling on the floor with all the ingredients to make a giant slime.",
+      "endingShot": "Woman stretching and making a large bubble with the finished pink slime.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 88,
+        "frame": 2878
+      }
+    }
+  },
+  "density": {
+    "editing": 5,
+    "transition": 0,
+    "effect": 0,
+    "bgmSync": 0,
+    "overall": 5
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:03:52.705Z"
+  }
+}

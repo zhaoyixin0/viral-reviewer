@@ -1,0 +1,478 @@
+{
+  "videoId": "tt-7604991714616478998",
+  "durationSec": 90.4,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "fisheye_lens",
+      "durationSec": 4.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Creator with exaggerated makeup looks into the camera with a wide-eyed expression."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "DEJA",
+      "durationSec": 0.4,
+      "style": {
+        "font": "Impact",
+        "color": "black",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Creator messily applies eyeliner, looking at the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.6,
+        "frame": 18
+      },
+      "text": "DE",
+      "durationSec": 0.4,
+      "style": {
+        "font": "Impact",
+        "color": "black",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1,
+        "frame": 30
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Return to the initial wide-eyed shot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.1,
+        "frame": 33
+      },
+      "text": "HACERTE",
+      "durationSec": 0.7,
+      "style": {
+        "font": "Impact",
+        "color": "black",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Another angle of applying eyeliner badly."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.2,
+        "frame": 66
+      },
+      "text": "EYELINER",
+      "durationSec": 0.9,
+      "style": {
+        "font": "Impact",
+        "color": "black",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.1,
+        "frame": 93
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Another angle of applying eyeliner badly."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.2,
+        "frame": 96
+      },
+      "text": "ASÍ",
+      "durationSec": 0.5,
+      "style": {
+        "font": "Impact",
+        "color": "black",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Pouring makeup remover onto a cotton pad."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator smiles at the camera, fisheye effect is gone."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.9,
+        "frame": 177
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator wipes off the eyeliner with the cotton pad."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.5,
+        "frame": 255
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator has removed the bad makeup and looks at the camera."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator is now wearing a headband and begins the tutorial."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.8,
+        "frame": 294
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up shot of the eyeliner pen being presented to the camera."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.5,
+        "frame": 375
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator continues explaining, holding the eyeliner pen."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 15,
+        "frame": 450
+      },
+      "type": "black_and_white",
+      "durationSec": 1
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 15,
+        "frame": 450
+      },
+      "type": "push_in",
+      "durationSec": 1,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.2,
+        "frame": 486
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator explains the concept of hooded eyes."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 19.6,
+        "frame": 588
+      },
+      "type": "voice_over_effect",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.3,
+        "frame": 669
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator points to his eye to demonstrate the eyelid fold."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.5,
+        "frame": 855
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds up a small mirror."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.2,
+        "frame": 876
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator explains the eyeliner technique for hooded eyes."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36.2,
+        "frame": 1086
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Side profile shot showing the first eyeliner line being drawn."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40.5,
+        "frame": 1215
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Front view showing the result of the first line."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42.2,
+        "frame": 1266
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Side profile shot showing the second line being drawn to create the wing shape, with the eye open."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 47,
+        "frame": 1410
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator closes his eye to show the disconnected 'bat wing' shape."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 51.2,
+        "frame": 1536
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator fills in the gap in the eyeliner with his eye closed."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 58.2,
+        "frame": 1746
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.5,
+        "frame": 1755
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Both eyes are now done, showing the final eyeliner result."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 100.8,
+        "frame": 3024
+      },
+      "type": "push_in",
+      "durationSec": 1.5,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 103.5,
+        "frame": 3105
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Side profile showing the eyeliner and explaining the 'bat wing' name."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 107.5,
+        "frame": 3225
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator introduces a bonus tip, holding a brush."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 112.8,
+        "frame": 3384
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Showing the concealer bottle."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 114,
+        "frame": 3420
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Showing a flat, precise makeup brush."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 114.8,
+        "frame": 3444
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Applying concealer to the back of the hand."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 117,
+        "frame": 3510
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Using the brush with concealer to clean up and sharpen the edge of the eyeliner wing."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 123.5,
+        "frame": 3705
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Showing the final result after finishing the rest of the makeup."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 129,
+        "frame": 3870
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator waves goodbye to the camera."
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat instrumental pop",
+    "trending": false,
+    "bpm": 120,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 32,
+      "avgShotDurationSec": 2.81,
+      "cutDensityPerSec": 0.35,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 47,
+        "frame": 1410
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "push_in"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.2,
+        "close_up": 0.5,
+        "medium": 0.3,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_background",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "Animated, bold, outlined text in hook",
+      "colorGrade": "natural_bright"
+    },
+    "structure": {
+      "hookFormat": "problem_agitation",
+      "openingShot": "Extreme close-up with fisheye effect and direct address",
+      "endingShot": "Close-up of final look and waving goodbye",
+      "cta": "implied_educational",
+      "payoffAt": {
+        "sec": 123.5,
+        "frame": 3705
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 50,
+    "bgmSync": 20,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:06:05.152Z"
+  }
+}

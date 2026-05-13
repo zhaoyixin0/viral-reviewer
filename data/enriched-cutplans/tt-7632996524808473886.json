@@ -1,0 +1,142 @@
+{
+  "videoId": "tt-7632996524808473886",
+  "durationSec": 14.279,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Wide shot of a man in a pink sequin dress and a woman in a suit and jeans, standing in a basement-like room."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 8.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 8.5,
+        "frame": 255
+      },
+      "type": "whip_pan",
+      "durationFrames": 15,
+      "note": "The woman walks towards the camera, her body covers the lens, and the scene transitions as she moves away, creating a whip-pan-like effect."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9,
+        "frame": 270
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Wide shot of the couple outdoors, now in their 'correct' prom attire. The man is in the suit with a cowboy hat, and the woman is in the pink dress."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 9,
+        "frame": 270
+      },
+      "type": "static",
+      "durationSec": 5,
+      "easing": "linear"
+    }
+  ],
+  "bgm": {
+    "name": "Throw That A$$ In A Circle (Remix)",
+    "trending": true,
+    "bpm": 130,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 2.2,
+          "frame": 66
+        },
+        "kind": "vocal_in",
+        "note": "Music stops and dialogue audio starts: 'You me to what?'"
+      },
+      {
+        "at": {
+          "sec": 9,
+          "frame": 270
+        },
+        "kind": "drop",
+        "note": "The main beat drops exactly as the scene transitions to the couple in their final outfits."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 2,
+      "avgShotDurationSec": 7,
+      "cutDensityPerSec": 0.07,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": {
+        "sec": 9,
+        "frame": 270
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "whip_pan"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Music - Dialogue - Music",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "none",
+      "colorGrade": "Natural with warm tones in the outdoor scene"
+    },
+    "structure": {
+      "hookFormat": "Misdirection",
+      "openingShot": "A couple with swapped gender-normative clothing (man in dress, woman in suit).",
+      "endingShot": "The couple in their expected prom outfits, posing together.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 9,
+        "frame": 270
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 50,
+    "effect": 5,
+    "bgmSync": 90,
+    "overall": 45
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:31:04.392Z"
+  }
+}

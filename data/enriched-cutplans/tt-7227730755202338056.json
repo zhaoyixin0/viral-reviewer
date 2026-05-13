@@ -1,0 +1,458 @@
+{
+  "videoId": "tt-7227730755202338056",
+  "durationSec": 173.967,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds up two vacuum-sealed packs of Osso Buco."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.9,
+        "frame": 87
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds up one pack of meat to the camera."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.8,
+        "frame": 174
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator gestures over the open slow cooker, explaining the process."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.9,
+        "frame": 297
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds up two raw Osso Buco steaks after unwrapping them."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11,
+        "frame": 330
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up on one of the Osso Buco steaks, showing the marrow."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.9,
+        "frame": 387
+      },
+      "toShotSize": "medium_wide",
+      "shotDescription": "Creator places the raw steaks onto a white plate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.5,
+        "frame": 585
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds the plate of raw steaks up to the camera."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.7,
+        "frame": 651
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator seasons the steaks on the plate with salt."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.7,
+        "frame": 771
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator seasons the steaks with a very large pepper grinder."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.8,
+        "frame": 864
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds a slice of butter over the preheated slow cooker."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.9,
+        "frame": 957
+      },
+      "toShotSize": "medium_wide",
+      "shotDescription": "Creator uses tongs to place the seasoned steaks into the slow cooker."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.9,
+        "frame": 1077
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down shot of the steaks searing in the slow cooker."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.5,
+        "frame": 1125
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The steak is flipped with tongs, showing the seared side."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.9,
+        "frame": 1197
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator removes the first batch of seared steaks from the cooker."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44,
+        "frame": 1320
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator places the second batch of steaks into the cooker."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.8,
+        "frame": 1404
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator seasons the top side of the steaks in the cooker with salt."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48.9,
+        "frame": 1467
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator seasons with the large pepper grinder again."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 50.8,
+        "frame": 1524
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator adds the first batch of seared meat back into the slow cooker from a bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 53,
+        "frame": 1590
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator opens a bottle of white wine."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.5,
+        "frame": 1755
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator pours white wine into the slow cooker to deglaze."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 62.5,
+        "frame": 1875
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator chops celery stalks on a wooden cutting board."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 67.5,
+        "frame": 2025
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Jump cut showing the celery being finely diced."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 70,
+        "frame": 2100
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator peels a carrot over the cutting board."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 81.5,
+        "frame": 2445
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator chops the carrot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 86.5,
+        "frame": 2595
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Jump cut showing the carrot finely diced."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 90.5,
+        "frame": 2715
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator chops an onion."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 93,
+        "frame": 2790
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Jump cut showing the onion finely diced."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 94.5,
+        "frame": 2835
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down shot of the diced vegetables being added to the slow cooker."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 96,
+        "frame": 2880
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator opens a can of chopped tomatoes."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 98,
+        "frame": 2940
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator pours the can of tomatoes into the slow cooker."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 101.5,
+        "frame": 3045
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator adds a can of water to the slow cooker."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 105,
+        "frame": 3150
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator shows a container of chicken stock powder."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 109,
+        "frame": 3270
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator adds chicken stock powder to the pot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 116,
+        "frame": 3480
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator shows a container of beef stock powder."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 120,
+        "frame": 3600
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator adds beef stock powder to the pot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 130,
+        "frame": 3900
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds up a plate with various fresh and dried herbs."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 131.5,
+        "frame": 3945
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator adds thyme, rosemary, and sage to the pot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 142,
+        "frame": 4260
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator adds more salt to the pot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 144,
+        "frame": 4320
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator shows a small jar of marjoram."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 145,
+        "frame": 4350
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator sprinkles marjoram into the pot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 147.8,
+        "frame": 4434
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down shot of the ingredients being stirred together in the slow cooker."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 155.8,
+        "frame": 4674
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator adds a final grind of black pepper."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 158.8,
+        "frame": 4764
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator places the lid on the slow cooker."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 168.5,
+        "frame": 5055
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator gives a thumbs up and explains the next steps for Part 2."
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 44,
+      "avgShotDurationSec": 3.93,
+      "cutDensityPerSec": 0.25,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.3,
+        "medium": 0.7,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "n/a",
+      "subtitleStyle": "none",
+      "colorGrade": "Natural Warm"
+    },
+    "structure": {
+      "hookFormat": "Show & Tell",
+      "openingShot": "Close-up of the creator holding packaged Osso Buco.",
+      "endingShot": "Medium shot of the creator giving a thumbs-up and a verbal CTA.",
+      "cta": "Verbal call to action to watch the next part.",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 75,
+    "transition": 10,
+    "effect": 5,
+    "bgmSync": 0,
+    "overall": 60
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:28:41.540Z"
+  }
+}

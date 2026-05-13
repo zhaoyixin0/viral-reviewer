@@ -1,0 +1,171 @@
+{
+  "videoId": "tt-7083247125227654446",
+  "durationSec": 9.309,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "Every time I complete one task at work",
+      "durationSec": 8.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.52,
+        "frame": 46
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Hard cut to a rotoscoped animation of a woman dancing against a solid blue background."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 1.52,
+        "frame": 46
+      },
+      "type": "rotoscope_animation_color_cycle",
+      "durationSec": 7.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.52,
+        "frame": 76
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Animation background flashes to purple."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.53,
+        "frame": 106
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Animation background flashes to blue."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.53,
+        "frame": 136
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Animation background flashes to purple."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.53,
+        "frame": 166
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Animation background flashes to purple as the figure's colors change."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.54,
+        "frame": 196
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Animation background flashes to blue."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.54,
+        "frame": 226
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Animation background flashes to purple."
+    }
+  ],
+  "bgm": {
+    "name": "Gimme! Gimme! Gimme! (A Man After Midnight) - Sped Up Remix",
+    "trending": true,
+    "bpm": 136,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 1.52,
+          "frame": 46
+        },
+        "kind": "drop",
+        "note": "The main beat drops, perfectly synchronized with the cut to the animation sequence."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 8,
+      "avgShotDurationSec": 1.11,
+      "cutDensityPerSec": 0.9,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 1.52,
+        "frame": 46
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "trending_sped_up_remix",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "white_sans_serif_centered",
+      "colorGrade": "natural_then_psychedelic"
+    },
+    "structure": {
+      "hookFormat": "relatable_text_premise",
+      "openingShot": "Static medium shot of a woman with a neutral expression, representing 'before'.",
+      "endingShot": "Energetic, colorful rotoscoped animation of a woman dancing.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 1.52,
+        "frame": 46
+      }
+    }
+  },
+  "density": {
+    "editing": 45,
+    "transition": 20,
+    "effect": 95,
+    "bgmSync": 98,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:13:04.978Z"
+  }
+}

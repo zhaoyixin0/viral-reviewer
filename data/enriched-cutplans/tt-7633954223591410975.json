@@ -1,0 +1,856 @@
+{
+  "videoId": "tt-7633954223591410975",
+  "durationSec": 84.009,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "listicle",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A person pipes matcha-flavored cream onto a matcha latte in a clear plastic cup."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "EVERYWHERE I ATE IN TOKYO",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1,
+        "frame": 30
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Interior of a conveyor belt sushi restaurant, showing the seating and ordering tablets."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.1,
+        "frame": 33
+      },
+      "text": "UOBEI SHIBUYA DOGENZAKA",
+      "durationSec": 4.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A plate of sushi travels along the conveyor belt."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand takes a yellow plate of tuna sushi off the conveyor belt."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.7,
+        "frame": 111
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman uses chopsticks to pick up a large piece of scallop sushi."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand takes a plate of salmon sushi off the conveyor belt."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.8,
+        "frame": 174
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "A sushi chef's hands are forming two pieces of nigiri sushi on a wooden board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.9,
+        "frame": 177
+      },
+      "text": "SUSHI SEN SHIBUYA",
+      "durationSec": 5.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.8,
+        "frame": 204
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The chef uses a small brush to apply sauce to the sushi."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The chef places the finished sushi onto a black slate plate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A piece of silver-skinned fish nigiri with a green topping on the slate plate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.8,
+        "frame": 294
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A piece of squid nigiri on the slate plate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.8,
+        "frame": 324
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Two women eat sushi simultaneously, looking at the camera."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The storefront of 'HATOYA', a matcha cafe, with customers at the counter."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.9,
+        "frame": 357
+      },
+      "text": "HATOYA",
+      "durationSec": 4.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A person whisks bright green matcha in a ceramic bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The freshly whisked matcha is poured over ice and milk in a plastic cup."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.8,
+        "frame": 444
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Matcha cream is piped on top of the drink."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 474
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Two hands hold up the finished matcha lattes against a sunny street backdrop."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.8,
+        "frame": 504
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The exterior of the 'Bánh Mì XIN CHÀO' restaurant."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 16.8,
+        "frame": 504
+      },
+      "type": "tilt_up",
+      "durationSec": 1,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.9,
+        "frame": 507
+      },
+      "text": "Bánh Mì XIN CHÀO",
+      "durationSec": 4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.8,
+        "frame": 534
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A top-down view of a table filled with various Vietnamese dishes like pho, spring rolls, and salads."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.8,
+        "frame": 564
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A slightly different angle of the food spread, focusing on a banh mi sandwich."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.8,
+        "frame": 594
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Another angle of the food spread, focusing on the noodle bowls."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.8,
+        "frame": 624
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A point-of-view shot walking through a crowded, narrow alley in Tsukiji Fish Market."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.9,
+        "frame": 627
+      },
+      "text": "TSUKIJI FISH MARKET",
+      "durationSec": 16.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.8,
+        "frame": 654
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A vendor at a stall is arranging fresh tuna nigiri in trays for sale."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.8,
+        "frame": 684
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The vendor places a slice of tuna onto a block of rice."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.8,
+        "frame": 714
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A top-down shot of two takeaway containers filled with vibrant red tuna sushi."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.8,
+        "frame": 744
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A low-angle shot of a group of friends sharing and eating the tuna sushi."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.3,
+        "frame": 789
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A longer, raw clip of the group eating and reacting to the sushi."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37,
+        "frame": 1110
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The storefront of a wagyu beef skewer stall, decorated with lanterns."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.9,
+        "frame": 1137
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A display case at the stall showing various cuts of meat and menu items."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.9,
+        "frame": 1167
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The stall's kitchen area with staff preparing food."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.8,
+        "frame": 1194
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Two freshly grilled wagyu beef skewers in paper trays."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40.8,
+        "frame": 1224
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Two women hold up the skewers to the camera before eating."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.8,
+        "frame": 1254
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The women take a bite of the wagyu skewers and chew with enjoyment."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 47.8,
+        "frame": 1434
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A woman holds up a cup of iced coffee from Yonemoto Coffee."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 50,
+        "frame": 1500
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Another woman in the group eats a piece of the wagyu beef."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52.8,
+        "frame": 1584
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman with the coffee points to it and talks to the camera."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 55,
+        "frame": 1650
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The storefront of a Tamagoyaki (rolled omelette) stall."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 55.9,
+        "frame": 1677
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The menu and display at the front of the Tamagoyaki stall."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 56.8,
+        "frame": 1704
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Looking through the window at chefs cooking the omelettes in rectangular pans."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 57.8,
+        "frame": 1734
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The storefront of 'Cloud Club Matcha'."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 57.9,
+        "frame": 1737
+      },
+      "text": "CLOUD CLUB MATCHA",
+      "durationSec": 2.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.8,
+        "frame": 1764
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Matcha is poured into two cups of iced milk."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59.8,
+        "frame": 1794
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Three hands hold up the finished matcha lattes."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 60.8,
+        "frame": 1824
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The interior of a 'Guzman y Gomez' Mexican restaurant."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 60.9,
+        "frame": 1827
+      },
+      "text": "GUZMAN Y GOMEZ",
+      "durationSec": 2.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 61.8,
+        "frame": 1854
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A tray with a burrito, quesadilla, burrito bowl, and tacos."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 63.8,
+        "frame": 1914
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The interior of a 'Nonara Pearl' boba tea shop with pink decor."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 63.9,
+        "frame": 1917
+      },
+      "text": "NONARA PEARL",
+      "durationSec": 1.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 64.8,
+        "frame": 1944
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Two hands hold up boba tea drinks."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 65.8,
+        "frame": 1974
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A 'Street Churros' food truck."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 65.9,
+        "frame": 1977
+      },
+      "text": "STREET CHURROS HARAJUKU",
+      "durationSec": 1.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 66.8,
+        "frame": 2004
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Churro bites on skewers arranged over a cup with chocolate dipping sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 67.8,
+        "frame": 2034
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A top-down view of a table set for shabu-shabu with multiple individual copper pots."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 67.9,
+        "frame": 2037
+      },
+      "text": "SHABURAKUTEI SHINJUKU KABUKICHO",
+      "durationSec": 4.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 68.8,
+        "frame": 2064
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A plate of thinly sliced, marbled wagyu beef for shabu-shabu."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 70.8,
+        "frame": 2124
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Another shot of the wagyu beef, panning slowly."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 71.8,
+        "frame": 2154
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A person uses chopsticks to swish a slice of beef in the boiling broth."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 72.8,
+        "frame": 2184
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The storefront of 'Atelier Matcha'."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 72.9,
+        "frame": 2187
+      },
+      "text": "ATELIER MATCHA",
+      "durationSec": 1.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 73.8,
+        "frame": 2214
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Two hands hold up matcha lattes inside the cafe."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 74.8,
+        "frame": 2244
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The neon sign for an 'Ichiran' ramen restaurant at night."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 74.9,
+        "frame": 2247
+      },
+      "text": "ICHIRAN",
+      "durationSec": 4.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 75.8,
+        "frame": 2274
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A server presents a bowl of Ichiran ramen."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 76.8,
+        "frame": 2304
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A top-down view of the ramen bowl with a boiled egg on the side."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 77.8,
+        "frame": 2334
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman slurps a large mouthful of noodles from the bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 79.8,
+        "frame": 2394
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The golden and brown sign for 'SEIKI GINZA' restaurant."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 79.9,
+        "frame": 2397
+      },
+      "text": "SEIKI GINZA",
+      "durationSec": 4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 80.8,
+        "frame": 2424
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A plate of shrimp rice noodle rolls (cheung fun)."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 81.8,
+        "frame": 2454
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A top-down view of a plate of fried rice and a bowl of soup."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 82.8,
+        "frame": 2484
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A bamboo steamer with three shrimp dumplings (har gow)."
+    }
+  ],
+  "bgm": {
+    "name": "Chill Lo-fi Hip-Hop Instrumental",
+    "trending": false,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 1,
+          "frame": 30
+        },
+        "kind": "beat",
+        "note": "Cut to new location on beat"
+      },
+      {
+        "at": {
+          "sec": 5.8,
+          "frame": 174
+        },
+        "kind": "beat",
+        "note": "Cut to new location on beat"
+      },
+      {
+        "at": {
+          "sec": 11.8,
+          "frame": 354
+        },
+        "kind": "beat",
+        "note": "Cut to new location on beat"
+      },
+      {
+        "at": {
+          "sec": 20.8,
+          "frame": 624
+        },
+        "kind": "beat",
+        "note": "Cut to new location on beat"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 63,
+      "avgShotDurationSec": 1.33,
+      "cutDensityPerSec": 0.74,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.5,
+        "medium": 0.4,
+        "wide": 0.1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Continuous chill instrumental",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "White sans-serif text, all caps, with a soft drop shadow, used to label each location.",
+      "colorGrade": "Natural and vibrant with slightly warm tones"
+    },
+    "structure": {
+      "hookFormat": "Text overlay on action",
+      "openingShot": "Close-up of matcha latte preparation",
+      "endingShot": "Close-up of steamed dumplings",
+      "cta": null,
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 10,
+    "effect": 5,
+    "bgmSync": 85,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:53:50.091Z"
+  }
+}

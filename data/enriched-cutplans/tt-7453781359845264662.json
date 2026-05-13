@@ -1,0 +1,307 @@
+{
+  "videoId": "tt-7453781359845264662",
+  "durationSec": 96.037,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Composite shot: Creator's face in close-up overlaid on a wide shot of a woman doing a clothing transformation dance. Text overlay: 'HOW TO DO THIS...'"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "type": "match_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 1.2,
+        "frame": 36
+      },
+      "type": "match_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "type": "match_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.9,
+        "frame": 117
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Screen recording of an iPhone camera interface, showing a room with a chair."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.4,
+        "frame": 132
+      },
+      "text": "Change your phone to the wide angle mode...",
+      "durationSec": 2,
+      "style": {
+        "font": "System",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.6,
+        "frame": 198
+      },
+      "text": "...and then just film yourself jumping straight up in the air in outfit number one.",
+      "durationSec": 3.5,
+      "style": {
+        "font": "System",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.5,
+        "frame": 585
+      },
+      "toShotSize": "n/a",
+      "shotDescription": "Screen recording of the CapCut editing interface, showing four video clips on the timeline."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.6,
+        "frame": 648
+      },
+      "text": "...for the first clip scroll to right when you're in the air. Hit split here and delete the back part.",
+      "durationSec": 3.8,
+      "style": {
+        "font": "System",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 22.8,
+        "frame": 684
+      },
+      "type": "graphic_overlay",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 45.6,
+        "frame": 1368
+      },
+      "text": "Let's change the speed.",
+      "durationSec": 1,
+      "style": {
+        "font": "System",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 59,
+        "frame": 1770
+      },
+      "text": "To make the clothes fly in, select the clip with the black pants and duplicate it.",
+      "durationSec": 3,
+      "style": {
+        "font": "System",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 104,
+        "frame": 3120
+      },
+      "type": "background_removal",
+      "durationSec": 2
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 112.9,
+        "frame": 3387
+      },
+      "type": "keyframe_animation",
+      "durationSec": 3.5
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 90.8,
+        "frame": 2724
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 90.9,
+        "frame": 2727
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Payoff sequence begins. The creator jumps in all-white clothing."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 91.2,
+        "frame": 2736
+      },
+      "type": "match_cut",
+      "durationFrames": 2,
+      "note": "Jump cut to wearing black pants, which fly in from the left."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 91.8,
+        "frame": 2754
+      },
+      "type": "match_cut",
+      "durationFrames": 2,
+      "note": "Jump cut to wearing a black t-shirt, which flies in from the right."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 92.8,
+        "frame": 2784
+      },
+      "type": "match_cut",
+      "durationFrames": 2,
+      "note": "Jump cut to wearing a black jacket, which flies in from the left."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 94.5,
+        "frame": 2835
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The creator lands, now fully changed, and winks at the camera."
+    }
+  ],
+  "bgm": {
+    "name": "Tutorial Lo-fi Beat",
+    "trending": false,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 3.9,
+      "frame": 117
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 3.9,
+          "frame": 117
+        },
+        "kind": "instrumental_in",
+        "note": "Start of the tutorial background music."
+      },
+      {
+        "at": {
+          "sec": 90.9,
+          "frame": 2727
+        },
+        "kind": "track_change",
+        "note": "Music changes to a more energetic hip-hop track for the payoff."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 12,
+      "avgShotDurationSec": 7.9,
+      "cutDensityPerSec": 0.12,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": {
+        "sec": 90.9,
+        "frame": 2727
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 10,
+        "medium": 0,
+        "wide": 90,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut",
+        "match_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "segmented",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "White system font, no background, synchronized with voiceover.",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "how_to",
+      "openingShot": "Composite shot of the creator's face over an example of the final effect.",
+      "endingShot": "The creator, having completed the transformation, winks at the camera.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 90.9,
+        "frame": 2727
+      }
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 60,
+    "effect": 85,
+    "bgmSync": 30,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:37:09.374Z"
+  }
+}

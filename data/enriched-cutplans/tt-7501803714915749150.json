@@ -1,0 +1,494 @@
+{
+  "videoId": "tt-7501803714915749150",
+  "durationSec": 72.936,
+  "fps": 29.917,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "What I Eat in a Day for fat loss following the 90-30-50 Method 118g protein",
+      "durationSec": 5.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "black",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "type": "sparkle",
+      "durationSec": 5.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6,
+        "frame": 180
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Milk is poured into a glass jar on a white kitchen counter."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.7,
+        "frame": 200
+      },
+      "text": "Breakfast: Blueberry Cheesecake Overnight Oats\n33g pro | 14g fiber | 15g fat",
+      "durationSec": 14.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "black",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.2,
+        "frame": 215
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoon adds chia seeds to the jar."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8,
+        "frame": 239
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoon adds protein powder to the jar."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 263
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The ingredients in the jar are mixed."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10,
+        "frame": 299
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoon adds honey or syrup to the jar."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11,
+        "frame": 329
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoon adds yogurt to the jar."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.7,
+        "frame": 380
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Blueberries are added to a hot pan on a stove."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.8,
+        "frame": 413
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoon adds sweetener to the blueberries in the pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 473
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The cooked blueberry compote is poured into the jar of oats."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.7,
+        "frame": 530
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The blueberries are mixed into the top layer of the oats."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.3,
+        "frame": 577
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot holding the finished jar of overnight oats in a kitchen."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.6,
+        "frame": 646
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman holds the jar and tastes the overnight oats with a spoon."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.9,
+        "frame": 835
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A bag of salad mix is poured into a large metal bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28.2,
+        "frame": 844
+      },
+      "text": "Lunch: Cheeseburger Lettuce Wraps\n31g pro | 2g fiber | 21g fat",
+      "durationSec": 12,
+      "style": {
+        "font": "sans-serif",
+        "color": "black",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.9,
+        "frame": 865
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Cooked ground beef is added to the salad bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30.7,
+        "frame": 918
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Shredded cheese is sprinkled over the salad."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.9,
+        "frame": 954
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A vegetable chopper is used to dice pickles."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33.6,
+        "frame": 1005
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman adds diced red onions to the salad bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.9,
+        "frame": 1074
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Dressing is drizzled over the finished cheeseburger salad."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.3,
+        "frame": 1146
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot holding the finished salad bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40.7,
+        "frame": 1218
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman mixes the salad and takes a bite."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.7,
+        "frame": 1397
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds a small white bowl of fresh raspberries in front of a window."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 47.7,
+        "frame": 1427
+      },
+      "text": "Raspberries: 1g pro | 8g fiber | 1g fat",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "black",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 50.6,
+        "frame": 1514
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot holding a large white Hydro Flask tumbler in the kitchen."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 51,
+        "frame": 1526
+      },
+      "text": "3L of water daily!",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "black",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 51.8,
+        "frame": 1550
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Olive oil is drizzled over chopped eggplant and red peppers on a baking sheet."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 53.5,
+        "frame": 1601
+      },
+      "text": "Dinner: Shawarma Spiced Chicken + Eggplant\n32g pro | 10g fiber | 9g fat",
+      "durationSec": 7.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "black",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 54.8,
+        "frame": 1639
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Spices are sprinkled over the vegetables."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 55.9,
+        "frame": 1672
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Yogurt is spread on a grey plate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 57.9,
+        "frame": 1732
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Spices and oil are added to the yogurt."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59.2,
+        "frame": 1771
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Roasted vegetables and chicken are added to the plate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 101.2,
+        "frame": 3028
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot holding the finished dinner plate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 102.7,
+        "frame": 3072
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A glass baking dish of spinach artichoke dip is taken out of the oven."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 104,
+        "frame": 3111
+      },
+      "text": "Snack: High Protein Spinach & Artichoke Dip with celery\n21g pro | 9g fiber | 11g fat",
+      "durationSec": 4.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "black",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 106.2,
+        "frame": 3177
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A celery stick is dipped into the spinach artichoke dip."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 109.6,
+        "frame": 3279
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman eats the dip with celery and talks to the camera."
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Pop Instrumental",
+    "trending": false,
+    "bpm": 125,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 6,
+          "frame": 180
+        },
+        "kind": "beat",
+        "note": "Cut to breakfast prep"
+      },
+      {
+        "at": {
+          "sec": 27.9,
+          "frame": 835
+        },
+        "kind": "beat",
+        "note": "Cut to lunch prep"
+      },
+      {
+        "at": {
+          "sec": 51.8,
+          "frame": 1550
+        },
+        "kind": "beat",
+        "note": "Cut to dinner prep"
+      },
+      {
+        "at": {
+          "sec": 102.7,
+          "frame": 3072
+        },
+        "kind": "beat",
+        "note": "Cut to snack prep"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 28,
+      "avgShotDurationSec": 2.57,
+      "cutDensityPerSec": 0.38,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.7,
+        "medium": 0.3,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_instrumental",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "black_text_white_outline",
+      "colorGrade": "bright_and_clean"
+    },
+    "structure": {
+      "hookFormat": "title_card",
+      "openingShot": "creator_presents_meal",
+      "endingShot": "creator_talks_to_camera_cta",
+      "cta": "direct_prompt",
+      "payoffAt": {
+        "sec": 109.6,
+        "frame": 3279
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 15,
+    "bgmSync": 90,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:27:13.598Z"
+  }
+}

@@ -1,0 +1,192 @@
+{
+  "videoId": "tt-6780063701400669446",
+  "durationSec": 13.834,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds a round, uncut eyeglass lens against a neutral background."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 0.8,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "The uncut lens is placed into a lens edging machine, and an arm lowers to secure it."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.5,
+        "frame": 105
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "An interior view of the machine shows the lens mounted on a spindle."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.8,
+        "frame": 174
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Another interior view shows the lens being positioned against the grinding wheel."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The lens is actively being ground and shaped, with water spraying over it."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.5,
+        "frame": 285
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A slightly different angle of the lens being ground, showing the edge detail."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.8,
+        "frame": 324
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds the newly cut and shaped lens, revealing its final form."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds the teal eyeglass frame that the lens will fit into."
+    }
+  ],
+  "bgm": {
+    "name": "Blue Monday - New Order",
+    "trending": true,
+    "bpm": 130,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.8,
+          "frame": 24
+        },
+        "kind": "beat",
+        "note": "Cut to machine aligns with beat"
+      },
+      {
+        "at": {
+          "sec": 3.5,
+          "frame": 105
+        },
+        "kind": "beat",
+        "note": "Cut to interior view aligns with beat"
+      },
+      {
+        "at": {
+          "sec": 7.8,
+          "frame": 234
+        },
+        "kind": "beat",
+        "note": "Cut to grinding process aligns with beat"
+      },
+      {
+        "at": {
+          "sec": 10.8,
+          "frame": 324
+        },
+        "kind": "vocal_phrase",
+        "note": "Cut to reveal aligns with a major musical phrase change"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 8,
+      "avgShotDurationSec": 1.73,
+      "cutDensityPerSec": 0.51,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.8,
+        "medium": 0.2,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Driving 80s synth-pop track with a strong beat, used to pace the edit.",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": null,
+      "colorGrade": "Naturalistic with cool, industrial tones inside the machine."
+    },
+    "structure": {
+      "hookFormat": "Intriguing object (uncut lens) followed by a satisfying mechanical process.",
+      "openingShot": "Close-up of a hand holding a raw, circular lens.",
+      "endingShot": "Close-up of the matching eyeglass frame, implying the lens is ready to be fitted.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 10.8,
+        "frame": 324
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 0,
+    "bgmSync": 95,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:11:40.404Z"
+  }
+}

@@ -1,0 +1,318 @@
+{
+  "videoId": "tt-7194350296364043522",
+  "durationSec": 28.838,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 28.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Top-down view of a marble cutting board and a turquoise lunchbox with an apple and popcorn."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.4,
+        "frame": 24
+      },
+      "text": "My daughter wanted sushi for school",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.9,
+        "frame": 54
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A plate of sliced vegetables appears, and a hand places two slices of bread on the board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.2,
+        "frame": 132
+      },
+      "text": "I said no",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.3,
+        "frame": 138
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Two small bowls, one with labneh and one with za'atar, are placed on the board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3,
+        "frame": 180
+      },
+      "text": "Room temperature rice is dangerous",
+      "durationSec": 2.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.1,
+        "frame": 246
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A hand uses a knife to cut the crusts off the bread."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.3,
+        "frame": 318
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A red rolling pin flattens the crustless bread slices."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.8,
+        "frame": 348
+      },
+      "text": "Get me the veggies, bread, labneh and za'atar",
+      "durationSec": 3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.2,
+        "frame": 372
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A hand spreads labneh on the flattened bread slices."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.2,
+        "frame": 492
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Vegetable sticks (red pepper, carrot, cucumber) are placed on one slice of bread."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.3,
+        "frame": 558
+      },
+      "text": "I rolled out the bread, covered one side with labneh and filled it with veggie sticks and olives.",
+      "durationSec": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.9,
+        "frame": 594
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The bread with vegetables is rolled up tightly."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.9,
+        "frame": 654
+      },
+      "toShotSize": "medium",
+      "shotDescription": "More labneh is spread on the outside of the roll."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.8,
+        "frame": 708
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The roll is dipped and coated in a bowl of za'atar."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.5,
+        "frame": 810
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The first completed roll is placed on the board, and the second roll is prepared with vegetables and olives."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.7,
+        "frame": 882
+      },
+      "text": "Labneh is just strained yogurt and very spreadable.",
+      "durationSec": 2.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 948
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The second slice of bread is rolled up."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.5,
+        "frame": 1050
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The second roll is coated in za'atar."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18,
+        "frame": 1080
+      },
+      "text": "Rolled it up, coated them with za'atar, which is a herb lemony mix.",
+      "durationSec": 4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.8,
+        "frame": 1128
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Both completed rolls are shown on the cutting board."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.5,
+        "frame": 1230
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A hand uses a knife to slice the rolls into small, sushi-like pieces."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22,
+        "frame": 1320
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The sliced pieces are arranged on the board, revealing the colorful vegetable filling."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.3,
+        "frame": 1338
+      },
+      "text": "Cut them in little rounds and then plopped them in her lunchbox.",
+      "durationSec": 2.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.8,
+        "frame": 1368
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A hand uses chopsticks to place the pieces into the lunchbox."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.2,
+        "frame": 1572
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up of one 'sushi' piece held by chopsticks, showing the details of the filling."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.3,
+        "frame": 1578
+      },
+      "text": "This was better than any sushi at any shop.",
+      "durationSec": 2.2
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 18,
+      "avgShotDurationSec": 1.58,
+      "cutDensityPerSec": 0.6,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.1,
+        "medium": 0.2,
+        "wide": 0.7,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "voiceover_only",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "narration_voiceover",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "problem_solution",
+      "openingShot": "Top-down view of empty workspace and lunchbox, setting up the task.",
+      "endingShot": "Close-up of the final product, emphasizing its appeal.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 21,
+        "frame": 1260
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 0,
+    "bgmSync": 0,
+    "overall": 70
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:20:35.133Z"
+  }
+}

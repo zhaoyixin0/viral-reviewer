@@ -1,0 +1,3930 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-13T07:15:31.461Z",
+  "videoCount": 169,
+  "byTechnique": {
+    "transition:hard-cut": [
+      "tt-7594138825635417357",
+      "tt-7453781359845264662",
+      "tt-7493884896725765398",
+      "tt-7618942237535194390",
+      "ig-DXusTKIkaHw",
+      "tt-6770042602340257030",
+      "tt-7180653911232007430",
+      "tt-7214775496842759442",
+      "tt-7264988229307272490",
+      "tt-7477513671892061462",
+      "tt-7598603264179047702",
+      "tt-7600276477468282134",
+      "tt-7602847157560937758",
+      "tt-7604991714616478998",
+      "tt-7609549831039700238",
+      "tt-7614243422974545166",
+      "tt-7628571619019214102",
+      "tt-7629306496714673430",
+      "tt-7632267278549110029",
+      "tt-7633155390489840916",
+      "tt-7634004087985425684",
+      "tt-6781549056414993669",
+      "tt-7623124573692693773",
+      "tt-7632637332079906070",
+      "tt-6697744589043797254",
+      "tt-7586601665852149006",
+      "tt-7632814115227995422",
+      "tt-7101349140382190853",
+      "tt-7523152472265772295",
+      "tt-7632428236516887830",
+      "tt-7633266114436369694",
+      "tt-7634139745899007246",
+      "tt-6768899523008859398",
+      "tt-7496709640424672530",
+      "tt-7617957590588312845",
+      "tt-7630219189692697887",
+      "tt-6780212564426099973",
+      "tt-7594438908549664014",
+      "tt-7608589996307565854",
+      "tt-7625672162195639565",
+      "tt-7629691375944174866",
+      "tt-7065835086591102255",
+      "tt-7021637822595550465",
+      "tt-7064003812662758703",
+      "tt-7096883311024475438",
+      "tt-7522539721369619768",
+      "tt-7633921752648731935",
+      "tt-7062061484246912303",
+      "tt-7085439936094113070",
+      "tt-7332583878802099498",
+      "tt-7632064913757801758",
+      "tt-6708385297991732485",
+      "tt-6715435960718462214"
+    ],
+    "camera-move:handheld": [
+      "tt-7594138825635417357",
+      "tt-7634205861577231636",
+      "ig-DXusTKIkaHw",
+      "tt-6714409127583419654",
+      "tt-6770042602340257030",
+      "tt-6780063701400669446",
+      "tt-7180653911232007430",
+      "tt-7600276477468282134",
+      "tt-6761496798738599174",
+      "tt-6781549056414993669",
+      "tt-7522492007806274846",
+      "tt-7632628115314855182",
+      "tt-7632637332079906070",
+      "tt-6697744589043797254",
+      "tt-7632814115227995422",
+      "tt-7523152472265772295",
+      "tt-7632428236516887830",
+      "tt-7633266114436369694",
+      "tt-7634139745899007246",
+      "tt-6768899523008859398",
+      "tt-6928536244418776325",
+      "tt-7062056437106707759",
+      "tt-7625672162195639565",
+      "tt-7065835086591102255",
+      "tt-7632322849960889623",
+      "tt-7067294493988474159",
+      "tt-7091704880150301998",
+      "tt-7522539721369619768",
+      "tt-7573961891643428117",
+      "tt-7633921752648731935",
+      "tt-6775837990242585857",
+      "tt-6708385297991732485",
+      "tt-6781192819651382533",
+      "tt-6930078601018608902"
+    ],
+    "audio-sync:beat": [
+      "tt-7222182343480593666",
+      "tt-7616851311111228680",
+      "tt-6713167553973193989",
+      "tt-7392589138689658142",
+      "tt-7632102495761763614",
+      "tt-7064703044331523375",
+      "tt-7217393282278640897",
+      "tt-7231483723932290306",
+      "tt-7493884896725765398",
+      "tt-7574585895970475294",
+      "tt-7604930747517996302",
+      "tt-7618942237535194390",
+      "tt-7628290397378268448",
+      "tt-7631186565003316500",
+      "tt-7632393398128790806",
+      "tt-7632687249993288990",
+      "tt-7633011034449612045",
+      "tt-7633996997933944084",
+      "tt-7634115788558929183",
+      "ig-DXusTKIkaHw",
+      "tt-6710555374958677254",
+      "tt-6714409127583419654",
+      "tt-6770042602340257030",
+      "tt-6780063701400669446",
+      "tt-7180653911232007430",
+      "tt-7218140166739741953",
+      "tt-7218880168419478785",
+      "tt-7477513671892061462",
+      "tt-7501803714915749150",
+      "tt-7598982047964712206",
+      "tt-7633155390489840916",
+      "tt-7633954223591410975",
+      "tt-7633964556783570206",
+      "tt-6710294781999713542",
+      "tt-7631993520496069910",
+      "tt-6928536244418776325",
+      "tt-7496709640424672530",
+      "tt-7062056437106707759",
+      "tt-7625672162195639565",
+      "tt-7629691375944174866",
+      "tt-7633677350328110356",
+      "tt-7620166385724919072",
+      "tt-7069503422751362346",
+      "tt-7021637822595550465",
+      "tt-7067294493988474159",
+      "tt-7632289641164508429",
+      "tt-7095855694599015726",
+      "tt-7062061484246912303"
+    ],
+    "hook:final-product-first": [
+      "ig-DXusTKIkaHw"
+    ],
+    "effect:reverse-playback": [
+      "tt-6697744589043797254"
+    ],
+    "audio-sync:vocal-in": [
+      "tt-7610935433660337422",
+      "tt-7616851311111228680",
+      "tt-7632102495761763614",
+      "tt-7448221850074696977",
+      "tt-7604930747517996302",
+      "tt-7628290397378268448",
+      "tt-7631186565003316500",
+      "tt-7632687249993288990",
+      "tt-7634115788558929183",
+      "tt-7634205861577231636",
+      "tt-6714409127583419654",
+      "tt-6770042602340257030",
+      "tt-7180653911232007430",
+      "tt-7335335013640178987",
+      "tt-7598603264179047702",
+      "tt-7630129138162044191",
+      "tt-7632267278549110029",
+      "tt-7633155390489840916",
+      "tt-7633964556783570206",
+      "tt-6702027909126688005",
+      "tt-6710294781999713542",
+      "tt-6761496798738599174",
+      "tt-6778965287950748934",
+      "tt-6781549056414993669",
+      "tt-6697744589043797254",
+      "tt-6712484611458338053",
+      "tt-7338146580723191070",
+      "tt-7587423214519848214",
+      "tt-7632428236516887830",
+      "tt-7632060030954556703",
+      "tt-7496709640424672530",
+      "tt-7060894412821515567",
+      "tt-7062056437106707759",
+      "tt-7632996524808473886",
+      "tt-7634249360498330894",
+      "tt-7620166385724919072",
+      "tt-7065835086591102255",
+      "tt-7069503422751362346",
+      "tt-7610014192711503125",
+      "tt-7064003812662758703",
+      "tt-7602530246901943570",
+      "tt-7633972727510043925",
+      "tt-7091704880150301998",
+      "tt-7095855694599015726",
+      "tt-7573961891643428117",
+      "tt-7594916354117881119",
+      "tt-7633932775485099294",
+      "tt-7270299942898437419",
+      "tt-7532887475371527431",
+      "tt-7589763529754856718",
+      "tt-6715435960718462214",
+      "tt-7063143123609816367"
+    ],
+    "hook:result-first-(in-reverse)": [
+      "tt-6697744589043797254"
+    ],
+    "camera-move:push-in": [
+      "tt-7594138825635417357",
+      "tt-7064703044331523375",
+      "tt-7628290397378268448",
+      "tt-7180653911232007430",
+      "tt-7214775496842759442",
+      "tt-7225848485906599170",
+      "tt-7604991714616478998",
+      "tt-7609549831039700238",
+      "tt-7629306496714673430",
+      "tt-7630129138162044191",
+      "tt-7631883213002296590",
+      "tt-7632466262010154243",
+      "tt-7633155390489840916",
+      "tt-7634004087985425684",
+      "tt-6702027909126688005",
+      "tt-7101349140382190853",
+      "tt-7632428236516887830",
+      "tt-7625672162195639565",
+      "tt-7629691375944174866",
+      "tt-7633876635095207182",
+      "tt-6700613841622928645",
+      "tt-6759275111787908357",
+      "tt-7594916354117881119",
+      "tt-7633070024772570386"
+    ],
+    "effect:neon-frame": [
+      "tt-6700613841622928645"
+    ],
+    "audio-sync:vocal-phrase": [
+      "tt-7616851311111228680",
+      "tt-7631186565003316500",
+      "tt-7633011034449612045",
+      "tt-6780063701400669446",
+      "tt-7180653911232007430",
+      "tt-7628571619019214102",
+      "tt-7630129138162044191",
+      "tt-6702027909126688005",
+      "tt-6781549056414993669",
+      "tt-6712484611458338053",
+      "tt-7061191331451899138",
+      "tt-7633266114436369694",
+      "tt-6780212564426099973",
+      "tt-7625672162195639565",
+      "tt-7629691375944174866",
+      "tt-7634249360498330894",
+      "tt-6700613841622928645",
+      "tt-7633972727510043925",
+      "tt-7091704880150301998",
+      "tt-7095855694599015726",
+      "tt-7594916354117881119",
+      "tt-7613849826253409558",
+      "tt-7270299942898437419"
+    ],
+    "audio-sync:phrase-end": [
+      "tt-6700613841622928645"
+    ],
+    "hook:action-in-progress": [
+      "tt-7614243422974545166",
+      "tt-7632628115314855182",
+      "tt-7545562790338071863",
+      "tt-6700613841622928645",
+      "tt-6775837990242585857",
+      "tt-7362674968385080619"
+    ],
+    "hook:visual-curiosity-(what's-inside-the-cute-fridge?).": [
+      "tt-6702027909126688005"
+    ],
+    "effect:overlay-sparkles": [
+      "tt-6708385297991732485"
+    ],
+    "hook:misleading-setup": [
+      "tt-6708385297991732485"
+    ],
+    "hook:direct-promise": [
+      "tt-7218140166739741953",
+      "tt-6710294781999713542"
+    ],
+    "effect:spin-blur": [
+      "tt-6710555374958677254"
+    ],
+    "audio-sync:drop": [
+      "tt-7392589138689658142",
+      "tt-7064703044331523375",
+      "tt-7083247125227654446",
+      "tt-7448221850074696977",
+      "tt-7618942237535194390",
+      "tt-6710555374958677254",
+      "tt-6714409127583419654",
+      "tt-7598603264179047702",
+      "tt-7602847157560937758",
+      "tt-7633155390489840916",
+      "tt-7632060030954556703",
+      "tt-7496709640424672530",
+      "tt-7617957590588312845",
+      "tt-7060894412821515567",
+      "tt-7632996524808473886",
+      "tt-7634249360498330894",
+      "tt-7633997007773895967",
+      "tt-7620166385724919072",
+      "tt-7610014192711503125",
+      "tt-7633876635095207182",
+      "tt-7064003812662758703",
+      "tt-7602530246901943570",
+      "tt-7633972727510043925",
+      "tt-7442920192935464235"
+    ],
+    "hook:before-shot": [
+      "tt-6710555374958677254",
+      "tt-6714409127583419654"
+    ],
+    "speed-change:ramp-up": [
+      "tt-7335335013640178987",
+      "tt-7630212428940250382",
+      "tt-7634008038168448264",
+      "tt-6778965287950748934",
+      "tt-6712484611458338053",
+      "tt-7555059743493016840",
+      "tt-6775837990242585857",
+      "tt-7362674968385080619"
+    ],
+    "effect:text-overlay": [
+      "tt-7222182343480593666",
+      "tt-7630553858632109326",
+      "tt-7633618814139174175",
+      "tt-7633996997933944084",
+      "tt-7634115788558929183",
+      "tt-7264988229307272490",
+      "tt-6712484611458338053",
+      "tt-6780212564426099973",
+      "tt-7632322849960889623"
+    ],
+    "hook:intriguing-action": [
+      "tt-6712484611458338053"
+    ],
+    "effect:watermark": [
+      "tt-6713167553973193989"
+    ],
+    "hook:result-first": [
+      "tt-7616851311111228680",
+      "tt-6713167553973193989",
+      "tt-7223940097245318402",
+      "tt-7448221850074696977",
+      "tt-7606766130681728287",
+      "tt-7633964556783570206",
+      "tt-7522492007806274846",
+      "tt-7617957590588312845",
+      "tt-7555059743493016840",
+      "tt-6715435960718462214"
+    ],
+    "camera-move:pull-out": [
+      "tt-7448221850074696977",
+      "tt-6714409127583419654",
+      "tt-7598603264179047702",
+      "tt-6778965287950748934"
+    ],
+    "camera-move:static": [
+      "tt-7392589138689658142",
+      "tt-7064703044331523375",
+      "tt-7477513671892061462",
+      "tt-7598982047964712206",
+      "tt-7600276477468282134",
+      "tt-7633155390489840916",
+      "tt-6781549056414993669",
+      "tt-7061191331451899138",
+      "tt-7194350296364043522",
+      "tt-7586601665852149006",
+      "tt-7587423214519848214",
+      "tt-7632060030954556703",
+      "tt-7496709640424672530",
+      "tt-7060894412821515567",
+      "tt-7608589996307565854",
+      "tt-7629691375944174866",
+      "tt-7632996524808473886",
+      "tt-7633677350328110356",
+      "tt-7634249360498330894",
+      "tt-7633997007773895967",
+      "tt-7065835086591102255",
+      "tt-7069503422751362346",
+      "tt-7610014192711503125",
+      "tt-7624368002238041358",
+      "tt-7021637822595550465",
+      "tt-7064003812662758703",
+      "tt-7096883311024475438",
+      "tt-7632289641164508429",
+      "tt-7442920192935464235",
+      "tt-7522539721369619768",
+      "tt-7082052435174231302",
+      "tt-7095855694599015726",
+      "tt-7527435451125321015",
+      "tt-7613849826253409558",
+      "tt-7631735193656659221",
+      "tt-7633932775485099294",
+      "tt-7062061484246912303",
+      "tt-7085439936094113070",
+      "tt-7270299942898437419",
+      "tt-7589763529754856718",
+      "tt-7609524381554838798",
+      "tt-7633962568343702814",
+      "tt-7634272946927783181",
+      "tt-6715435960718462214",
+      "tt-7063143123609816367",
+      "tt-7632690933141638423",
+      "tt-7362674968385080619",
+      "tt-7530112674860977421",
+      "tt-7594163757257985302"
+    ],
+    "camera-move:tracking": [
+      "tt-7633011034449612045",
+      "tt-7631883213002296590",
+      "tt-6761496798738599174",
+      "tt-6759275111787908357",
+      "tt-7633070024772570386",
+      "tt-7332583878802099498"
+    ],
+    "hook:direct-question": [
+      "tt-6759275111787908357",
+      "tt-7021637822595550465"
+    ],
+    "hook:text-overlay-challenge": [
+      "tt-6761496798738599174"
+    ],
+    "hook:voiceover-statement": [
+      "tt-6768899523008859398"
+    ],
+    "hook:a-mysterious-object-is-introduced-and-then-passed-around-to-different-people,-building-curiosity.": [
+      "tt-6770042602340257030"
+    ],
+    "hook:process-start": [
+      "tt-6778965287950748934"
+    ],
+    "hook:intriguing-object-(uncut-lens)-followed-by-a-satisfying-mechanical-process.": [
+      "tt-6780063701400669446"
+    ],
+    "hook:relatable-scenario-setup": [
+      "tt-6780212564426099973"
+    ],
+    "hook:text-overlay-setting-up-a-relatable-scenario": [
+      "tt-6781192819651382533"
+    ],
+    "camera-move:tilt-down": [
+      "tt-6781549056414993669",
+      "tt-7523152472265772295",
+      "tt-7633070024772570386"
+    ],
+    "hook:pattern-interrupt": [
+      "tt-6781549056414993669",
+      "tt-7537734160731868430"
+    ],
+    "effect:emoji-overlay": [
+      "tt-7632637332079906070",
+      "tt-6928536244418776325",
+      "tt-7095855694599015726"
+    ],
+    "hook:title-card": [
+      "tt-7634205861577231636",
+      "tt-7501803714915749150",
+      "tt-7632637332079906070",
+      "tt-6928536244418776325",
+      "tt-7332583878802099498"
+    ],
+    "hook:curiosity": [
+      "tt-6930078601018608902"
+    ],
+    "transition:whip-pan": [
+      "tt-7616851311111228680",
+      "tt-7217393282278640897",
+      "tt-7628290397378268448",
+      "tt-7631145591241772301",
+      "tt-7632393398128790806",
+      "tt-7632706695457672479",
+      "tt-7634115788558929183",
+      "tt-7594438908549664014",
+      "tt-7632996524808473886",
+      "tt-7634249360498330894",
+      "tt-7633997007773895967",
+      "tt-7021637822595550465"
+    ],
+    "camera-move:pan-right": [
+      "tt-7610935433660337422",
+      "tt-7630553858632109326",
+      "tt-7633011034449612045",
+      "tt-7180653911232007430",
+      "tt-7598603264179047702",
+      "tt-7602847157560937758",
+      "tt-7629788232871316749",
+      "tt-7634171226679823629",
+      "tt-7625672162195639565",
+      "tt-7021637822595550465",
+      "tt-7602530246901943570",
+      "tt-7522539721369619768",
+      "tt-7633070024772570386",
+      "tt-7332583878802099498"
+    ],
+    "effect:green-screen": [
+      "tt-7021637822595550465"
+    ],
+    "hook:text-overlay-promise": [
+      "tt-7633155390489840916",
+      "tt-7060894412821515567"
+    ],
+    "effect:image-overlay": [
+      "tt-7061191331451899138",
+      "tt-7633266114436369694",
+      "tt-7631735193656659221"
+    ],
+    "hook:text-hook": [
+      "tt-7061191331451899138"
+    ],
+    "effect:glitch-sound": [
+      "tt-7062056437106707759"
+    ],
+    "hook:action-driven": [
+      "tt-7062056437106707759"
+    ],
+    "hook:text-overlay-establishing-a-relatable-premise.": [
+      "tt-7062061484246912303"
+    ],
+    "hook:relatable-text-overlay": [
+      "tt-7063143123609816367"
+    ],
+    "hook:before-after-text-overlay": [
+      "tt-7064003812662758703"
+    ],
+    "hook:text-on-screen-setup": [
+      "tt-7064703044331523375"
+    ],
+    "hook:text-based-question-setting-up-a-premise.": [
+      "tt-7065835086591102255"
+    ],
+    "hook:text-overlay-using-the-'pov'-format-to-present-a-relatable-fitness-goal.": [
+      "tt-7067294493988474159"
+    ],
+    "effect:text-reveal-flash": [
+      "tt-7069503422751362346"
+    ],
+    "hook:text-overlay-stating-a-conflict-or-criticism.": [
+      "tt-7069503422751362346"
+    ],
+    "hook:direct-question-to-audience": [
+      "tt-7082052435174231302"
+    ],
+    "effect:rotoscope-animation-color-cycle": [
+      "tt-7083247125227654446"
+    ],
+    "hook:relatable-text-premise": [
+      "tt-7083247125227654446"
+    ],
+    "hook:text-overlay-premise": [
+      "tt-7095855694599015726",
+      "tt-7085439936094113070"
+    ],
+    "hook:text-overlay-meme": [
+      "tt-7091704880150301998"
+    ],
+    "effect:sound-effect": [
+      "tt-7214775496842759442",
+      "tt-7629306496714673430",
+      "tt-7632637332079906070",
+      "tt-7633917107712937224",
+      "tt-7096883311024475438"
+    ],
+    "hook:text-on-screen-promise": [
+      "tt-7622013966125993246",
+      "tt-7096883311024475438"
+    ],
+    "hook:text-on-screen": [
+      "tt-7335335013640178987",
+      "tt-7101349140382190853",
+      "tt-7527435451125321015",
+      "tt-7530112674860977421"
+    ],
+    "hook:expectation-vs.-reality-text-overlay": [
+      "tt-7180653911232007430"
+    ],
+    "hook:problem-solution": [
+      "tt-7633525163694378258",
+      "tt-7634008038168448264",
+      "tt-7194350296364043522"
+    ],
+    "hook:direct-address-title-card": [
+      "tt-7214775496842759442"
+    ],
+    "hook:value-proposition": [
+      "tt-7217393282278640897",
+      "tt-7633996997933944084"
+    ],
+    "hook:finished-product-reveal": [
+      "tt-7218880168419478785"
+    ],
+    "hook:comparison": [
+      "tt-7222182343480593666"
+    ],
+    "hook:storytelling-hook": [
+      "tt-7225848485906599170"
+    ],
+    "hook:show-&-tell": [
+      "tt-7227730755202338056"
+    ],
+    "hook:title-card-with-creator": [
+      "tt-7231483723932290306"
+    ],
+    "transition:match-cut": [
+      "tt-7392589138689658142",
+      "tt-7453781359845264662",
+      "tt-7493884896725765398",
+      "tt-7264988229307272490",
+      "tt-7632060030954556703",
+      "tt-7633677350328110356"
+    ],
+    "hook:show-result-first": [
+      "tt-7264988229307272490",
+      "tt-7620166385724919072"
+    ],
+    "hook:text-overlay-stating-the-video's-premise.": [
+      "tt-7608589996307565854",
+      "tt-7270299942898437419"
+    ],
+    "camera-move:pan-left": [
+      "tt-7574585895970475294",
+      "tt-7274388424327482654",
+      "tt-7629788232871316749",
+      "tt-7630853307766033695",
+      "tt-7338146580723191070",
+      "tt-7594438908549664014",
+      "tt-7625672162195639565",
+      "tt-7632322849960889623",
+      "tt-7532887475371527431"
+    ],
+    "effect:title-card": [
+      "tt-7274388424327482654"
+    ],
+    "effect:360-camera-hyperlapse": [
+      "tt-7274388424327482654"
+    ],
+    "hook:text-on-screen-and-direct-address": [
+      "tt-7274388424327482654"
+    ],
+    "camera-move:tilt-up": [
+      "tt-7335335013640178987",
+      "tt-7633954223591410975",
+      "tt-7634171226679823629",
+      "tt-7332583878802099498"
+    ],
+    "effect:fisheye-lens": [
+      "tt-7335335013640178987",
+      "tt-7604991714616478998"
+    ],
+    "hook:negative-hook": [
+      "tt-7338146580723191070"
+    ],
+    "hook:before-after": [
+      "tt-7392589138689658142",
+      "tt-7633876635095207182"
+    ],
+    "hook:text-hook-setting-up-a-false-expectation-('the-smoothest-transition').": [
+      "tt-7442920192935464235"
+    ],
+    "transition:speed-ramp": [
+      "tt-7448221850074696977"
+    ],
+    "transition:flash": [
+      "tt-7448221850074696977"
+    ],
+    "effect:zoom-blur": [
+      "tt-7448221850074696977"
+    ],
+    "effect:split-screen": [
+      "tt-7448221850074696977"
+    ],
+    "effect:graphic-overlay": [
+      "tt-7448221850074696977",
+      "tt-7453781359845264662",
+      "tt-7629788232871316749",
+      "tt-7632466262010154243",
+      "tt-7623124573692693773",
+      "tt-7523152472265772295"
+    ],
+    "effect:background-removal": [
+      "tt-7453781359845264662"
+    ],
+    "effect:keyframe-animation": [
+      "tt-7453781359845264662"
+    ],
+    "audio-sync:instrumental-in": [
+      "tt-7453781359845264662",
+      "tt-7555059743493016840"
+    ],
+    "audio-sync:track-change": [
+      "tt-7453781359845264662"
+    ],
+    "hook:how-to": [
+      "tt-7453781359845264662"
+    ],
+    "hook:text-overlay-stating-the-video's-premise-('1-skirt,-10-outfits').": [
+      "tt-7477513671892061462"
+    ],
+    "hook:relatable-meme-text-('me-5-minutes-after...')": [
+      "tt-7493884896725765398"
+    ],
+    "hook:satisfying-action-with-text": [
+      "tt-7495884873522040069"
+    ],
+    "hook:visual-question": [
+      "tt-7496709640424672530"
+    ],
+    "effect:sparkle": [
+      "tt-7501803714915749150"
+    ],
+    "effect:lens-flare": [
+      "tt-7522539721369619768"
+    ],
+    "audio-sync:swell": [
+      "tt-7522539721369619768"
+    ],
+    "hook:emotional-reaction-shot-with-a-relatable-text-overlay-(question)": [
+      "tt-7522539721369619768"
+    ],
+    "hook:listicle-promise": [
+      "tt-7523152472265772295"
+    ],
+    "speed-change:slow-mo": [
+      "tt-7610935433660337422",
+      "tt-7632428236516887830",
+      "tt-7630219189692697887",
+      "tt-7602530246901943570",
+      "tt-7527435451125321015"
+    ],
+    "hook:scenic-reveal": [
+      "tt-7532887475371527431"
+    ],
+    "effect:sticker-overlay": [
+      "tt-7632706695457672479",
+      "tt-7632466262010154243",
+      "tt-7555059743493016840"
+    ],
+    "hook:text-overlay-statement": [
+      "tt-7586601665852149006",
+      "tt-7573961891643428117"
+    ],
+    "effect:photo-overlay": [
+      "tt-7574585895970475294"
+    ],
+    "hook:title-card-and-fast-montage": [
+      "tt-7574585895970475294"
+    ],
+    "hook:problem-setup": [
+      "tt-7587423214519848214"
+    ],
+    "hook:problem/solution": [
+      "tt-7589763529754856718"
+    ],
+    "effect:dramatic-sound-sting": [
+      "tt-7594138825635417357"
+    ],
+    "hook:rapid-fire-compilation": [
+      "tt-7594138825635417357"
+    ],
+    "hook:direct-address": [
+      "tt-7594163757257985302"
+    ],
+    "hook:cold-open-action": [
+      "tt-7594438908549664014"
+    ],
+    "transition:cross-dissolve": [
+      "tt-7614243422974545166",
+      "tt-7594916354117881119"
+    ],
+    "hook:philosophical-statement": [
+      "tt-7594916354117881119"
+    ],
+    "audio-sync:sound-effect": [
+      "tt-7595902010868682014"
+    ],
+    "hook:action-hook": [
+      "tt-7595902010868682014"
+    ],
+    "effect:pop-up-text": [
+      "tt-7598506874014534930"
+    ],
+    "hook:text-question-hook": [
+      "tt-7598506874014534930"
+    ],
+    "hook:visual-hook": [
+      "tt-7633011034449612045",
+      "tt-7598603264179047702"
+    ],
+    "hook:title-card-demonstration": [
+      "tt-7598982047964712206"
+    ],
+    "effect:film-countdown": [
+      "tt-7600276477468282134",
+      "tt-7628571619019214102"
+    ],
+    "hook:compilation-title": [
+      "tt-7600276477468282134"
+    ],
+    "hook:scenic-wonder": [
+      "tt-7602530246901943570"
+    ],
+    "hook:question-and-answer": [
+      "tt-7602847157560937758"
+    ],
+    "effect:on-screen-text": [
+      "tt-7604930747517996302"
+    ],
+    "hook:finished-product-montage": [
+      "tt-7604930747517996302"
+    ],
+    "effect:black-and-white": [
+      "tt-7604991714616478998"
+    ],
+    "effect:voice-over-effect": [
+      "tt-7604991714616478998"
+    ],
+    "hook:problem-agitation": [
+      "tt-7604991714616478998"
+    ],
+    "hook:bold-statement-text-overlay": [
+      "tt-7609524381554838798"
+    ],
+    "hook:comedic-reaction": [
+      "tt-7609549831039700238"
+    ],
+    "audio-sync:sfx": [
+      "tt-7610014192711503125"
+    ],
+    "hook:on-screen-text-premise": [
+      "tt-7610014192711503125"
+    ],
+    "hook:rapid-montage": [
+      "tt-7610935433660337422"
+    ],
+    "effect:heart-animation": [
+      "tt-7613849826253409558"
+    ],
+    "effect:icon-overlay": [
+      "tt-7613849826253409558"
+    ],
+    "hook:product-reveal": [
+      "tt-7631186565003316500",
+      "tt-7613849826253409558"
+    ],
+    "effect:dramatic-zoom": [
+      "tt-7614243422974545166"
+    ],
+    "audio-sync:sfx-in": [
+      "tt-7614243422974545166"
+    ],
+    "audio-sync:sfx-accent": [
+      "tt-7614243422974545166"
+    ],
+    "effect:overlay": [
+      "tt-7617957590588312845"
+    ],
+    "hook:finished-dish-reveal": [
+      "tt-7618942237535194390"
+    ],
+    "effect:picture-in-picture": [
+      "tt-7629788232871316749",
+      "tt-7634004087985425684",
+      "tt-7634171226679823629",
+      "tt-7623124573692693773"
+    ],
+    "hook:repetitive-chant-and-direct-question-('intern-intern,-where-you-gonna-intern?').": [
+      "tt-7623124573692693773"
+    ],
+    "effect:emoji-popup": [
+      "tt-7624368002238041358"
+    ],
+    "hook:bold-statement": [
+      "tt-7624368002238041358"
+    ],
+    "effect:location-tag": [
+      "tt-7625672162195639565"
+    ],
+    "hook:direct-address-to-camera,-stating-the-video's-purpose-(room-tour).": [
+      "tt-7625672162195639565"
+    ],
+    "hook:action-oriented-opening": [
+      "tt-7628290397378268448"
+    ],
+    "hook:cold-open": [
+      "tt-7628571619019214102",
+      "tt-7631883213002296590"
+    ],
+    "effect:sticker": [
+      "tt-7629306496714673430"
+    ],
+    "hook:cute-animal-interaction": [
+      "tt-7629306496714673430"
+    ],
+    "hook:on-screen-text-promise": [
+      "tt-7629691375944174866"
+    ],
+    "effect:shape-animation": [
+      "tt-7629788232871316749"
+    ],
+    "effect:highlight": [
+      "tt-7629788232871316749"
+    ],
+    "hook:bold-claim": [
+      "tt-7629788232871316749"
+    ],
+    "hook:text-on-screen-with-curiosity-gap": [
+      "tt-7630129138162044191"
+    ],
+    "transition:fade": [
+      "tt-7630212428940250382"
+    ],
+    "hook:question-and-payoff": [
+      "tt-7630212428940250382"
+    ],
+    "hook:statement-and-demonstration": [
+      "tt-7630219189692697887"
+    ],
+    "effect:light-projection": [
+      "tt-7630553858632109326"
+    ],
+    "hook:in-medias-res-with-direct-address": [
+      "tt-7630553858632109326"
+    ],
+    "hook:visual-and-statement-hook": [
+      "tt-7630853307766033695"
+    ],
+    "hook:direct-action": [
+      "tt-7631145591241772301"
+    ],
+    "effect:comedy-gag": [
+      "tt-7631186565003316500"
+    ],
+    "hook:direct-address-statement": [
+      "tt-7631375969122651423"
+    ],
+    "hook:personal-story-promise": [
+      "tt-7631735193656659221"
+    ],
+    "hook:finished-product-first-&-problem/solution": [
+      "tt-7631993520496069910"
+    ],
+    "hook:before-state": [
+      "tt-7632060030954556703",
+      "tt-7632289641164508429"
+    ],
+    "hook:statement-hook": [
+      "tt-7632064913757801758"
+    ],
+    "effect:text-animation": [
+      "tt-7632102495761763614"
+    ],
+    "hook:pov-text-overlay": [
+      "tt-7632102495761763614"
+    ],
+    "hook:comedic-premise": [
+      "tt-7632267278549110029"
+    ],
+    "hook:finished-product": [
+      "tt-7632286164568919318"
+    ],
+    "effect:drawing-annotation": [
+      "tt-7632322849960889623"
+    ],
+    "hook:numbered-list-('5-common-mistakes...')": [
+      "tt-7632322849960889623"
+    ],
+    "hook:chaotic-action-to-title": [
+      "tt-7632393398128790806"
+    ],
+    "audio-sync:vocal-out": [
+      "tt-7632428236516887830",
+      "tt-7633997007773895967"
+    ],
+    "hook:action-preview": [
+      "tt-7632428236516887830"
+    ],
+    "hook:curiosity-gap": [
+      "tt-7632466262010154243"
+    ],
+    "transition:zoom-blur": [
+      "tt-7632637332079906070"
+    ],
+    "hook:transformation": [
+      "tt-7632687249993288990"
+    ],
+    "hook:text-on-screen-statement": [
+      "tt-7632690933141638423"
+    ],
+    "hook:result-first,-then-process": [
+      "tt-7632706695457672479"
+    ],
+    "hook:direct-address-with-premise": [
+      "tt-7632814115227995422"
+    ],
+    "hook:misdirection": [
+      "tt-7632996524808473886"
+    ],
+    "audio-sync:melody-in": [
+      "tt-7633070024772570386"
+    ],
+    "hook:text-overlay-posing-a-curiosity-('this-is-not-ai')-over-an-intriguing-initial-shot-of-the-cat.": [
+      "tt-7633070024772570386"
+    ],
+    "effect:mirror": [
+      "tt-7633155390489840916"
+    ],
+    "hook:repetitive-audio-trend-and-on-screen-text-question-('our-summer-internships').": [
+      "tt-7633266114436369694"
+    ],
+    "audio-sync:start": [
+      "tt-7633525163694378258"
+    ],
+    "hook:personal-story-hook-with-a-quick-montage-of-the-final-product.": [
+      "tt-7633618814139174175"
+    ],
+    "hook:before-state-reveal-with-text-overlay-promising-a-transition": [
+      "tt-7633677350328110356"
+    ],
+    "hook:product-demonstration": [
+      "tt-7633917107712937224"
+    ],
+    "hook:direct-statement": [
+      "tt-7633921752648731935"
+    ],
+    "hook:before-after-setup": [
+      "tt-7633972727510043925",
+      "tt-7633932775485099294"
+    ],
+    "hook:text-overlay-on-action": [
+      "tt-7633954223591410975"
+    ],
+    "hook:result-preview": [
+      "tt-7633962568343702814"
+    ],
+    "hook:before/after-setup": [
+      "tt-7633997007773895967"
+    ],
+    "hook:reaction-to-viral-video": [
+      "tt-7634004087985425684"
+    ],
+    "effect:animated-overlay": [
+      "tt-7634008038168448264"
+    ],
+    "hook:direct-instruction": [
+      "tt-7634115788558929183"
+    ],
+    "hook:compilation-preview": [
+      "tt-7634139745899007246"
+    ],
+    "effect:doodle-text": [
+      "tt-7634171226679823629"
+    ],
+    "hook:rapid-montage-voiceover": [
+      "tt-7634171226679823629"
+    ],
+    "hook:before-state-with-audio-cue": [
+      "tt-7634249360498330894"
+    ],
+    "hook:direct-address-problem-solution": [
+      "tt-7634272946927783181"
+    ]
+  },
+  "videoTags": {
+    "ig-DXusTKIkaHw": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "final-product-first"
+      ]
+    },
+    "tt-6697744589043797254": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "reverse-playback"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "result-first-(in-reverse)"
+      ]
+    },
+    "tt-6700613841622928645": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "neon-frame"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-phrase",
+        "phrase-end"
+      ],
+      "hookFormats": [
+        "action-in-progress"
+      ]
+    },
+    "tt-6702027909126688005": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "visual-curiosity-(what's-inside-the-cute-fridge?)."
+      ]
+    },
+    "tt-6708385297991732485": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "overlay-sparkles"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "misleading-setup"
+      ]
+    },
+    "tt-6710294781999713542": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "beat"
+      ],
+      "hookFormats": [
+        "direct-promise"
+      ]
+    },
+    "tt-6710555374958677254": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "spin-blur"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat",
+        "drop"
+      ],
+      "hookFormats": [
+        "before-shot"
+      ]
+    },
+    "tt-6712484611458338053": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [
+        "ramp-up"
+      ],
+      "effects": [
+        "text-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "intriguing-action"
+      ]
+    },
+    "tt-6713167553973193989": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "watermark"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "result-first"
+      ]
+    },
+    "tt-6714409127583419654": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "handheld",
+        "pull-out"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "beat",
+        "drop"
+      ],
+      "hookFormats": [
+        "before-shot"
+      ]
+    },
+    "tt-6715435960718462214": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "result-first"
+      ]
+    },
+    "tt-6759275111787908357": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "tracking",
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "direct-question"
+      ]
+    },
+    "tt-6761496798738599174": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "tracking",
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "text-overlay-challenge"
+      ]
+    },
+    "tt-6768899523008859398": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "voiceover-statement"
+      ]
+    },
+    "tt-6770042602340257030": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat",
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "a-mysterious-object-is-introduced-and-then-passed-around-to-different-people,-building-curiosity."
+      ]
+    },
+    "tt-6775837990242585857": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [
+        "ramp-up"
+      ],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "action-in-progress"
+      ]
+    },
+    "tt-6778965287950748934": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "pull-out"
+      ],
+      "speedChanges": [
+        "ramp-up"
+      ],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "process-start"
+      ]
+    },
+    "tt-6780063701400669446": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat",
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "intriguing-object-(uncut-lens)-followed-by-a-satisfying-mechanical-process."
+      ]
+    },
+    "tt-6780212564426099973": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "text-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "relatable-scenario-setup"
+      ]
+    },
+    "tt-6781192819651382533": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "text-overlay-setting-up-a-relatable-scenario"
+      ]
+    },
+    "tt-6781549056414993669": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "static",
+        "handheld",
+        "tilt-down"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "pattern-interrupt"
+      ]
+    },
+    "tt-6928536244418776325": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "emoji-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "title-card"
+      ]
+    },
+    "tt-6930078601018608902": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "curiosity"
+      ]
+    },
+    "tt-7021637822595550465": {
+      "cuts": [],
+      "transitions": [
+        "whip-pan",
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "static",
+        "pan-right"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "green-screen"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "direct-question"
+      ]
+    },
+    "tt-7060894412821515567": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "drop"
+      ],
+      "hookFormats": [
+        "text-overlay-promise"
+      ]
+    },
+    "tt-7061191331451899138": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "image-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "text-hook"
+      ]
+    },
+    "tt-7062056437106707759": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "glitch-sound"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "beat"
+      ],
+      "hookFormats": [
+        "action-driven"
+      ]
+    },
+    "tt-7062061484246912303": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "text-overlay-establishing-a-relatable-premise."
+      ]
+    },
+    "tt-7063143123609816367": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "relatable-text-overlay"
+      ]
+    },
+    "tt-7064003812662758703": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "drop"
+      ],
+      "hookFormats": [
+        "before-after-text-overlay"
+      ]
+    },
+    "tt-7064703044331523375": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static",
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "drop",
+        "beat"
+      ],
+      "hookFormats": [
+        "text-on-screen-setup"
+      ]
+    },
+    "tt-7065835086591102255": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "static",
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "text-based-question-setting-up-a-premise."
+      ]
+    },
+    "tt-7067294493988474159": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "text-overlay-using-the-'pov'-format-to-present-a-relatable-fitness-goal."
+      ]
+    },
+    "tt-7069503422751362346": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "text-reveal-flash"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "beat"
+      ],
+      "hookFormats": [
+        "text-overlay-stating-a-conflict-or-criticism."
+      ]
+    },
+    "tt-7082052435174231302": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "direct-question-to-audience"
+      ]
+    },
+    "tt-7083247125227654446": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "rotoscope-animation-color-cycle"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "drop"
+      ],
+      "hookFormats": [
+        "relatable-text-premise"
+      ]
+    },
+    "tt-7085439936094113070": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "text-overlay-premise"
+      ]
+    },
+    "tt-7091704880150301998": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "text-overlay-meme"
+      ]
+    },
+    "tt-7095855694599015726": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "emoji-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "beat",
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "text-overlay-premise"
+      ]
+    },
+    "tt-7096883311024475438": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "sound-effect"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "text-on-screen-promise"
+      ]
+    },
+    "tt-7101349140382190853": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "text-on-screen"
+      ]
+    },
+    "tt-7180653911232007430": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "push-in",
+        "handheld",
+        "pan-right"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "beat",
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "expectation-vs.-reality-text-overlay"
+      ]
+    },
+    "tt-7194350296364043522": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "problem-solution"
+      ]
+    },
+    "tt-7214775496842759442": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "sound-effect"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "direct-address-title-card"
+      ]
+    },
+    "tt-7217393282278640897": {
+      "cuts": [],
+      "transitions": [
+        "whip-pan"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "value-proposition"
+      ]
+    },
+    "tt-7218140166739741953": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "direct-promise"
+      ]
+    },
+    "tt-7218880168419478785": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "finished-product-reveal"
+      ]
+    },
+    "tt-7222182343480593666": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "text-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "comparison"
+      ]
+    },
+    "tt-7223940097245318402": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "result-first"
+      ]
+    },
+    "tt-7225848485906599170": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "storytelling-hook"
+      ]
+    },
+    "tt-7227730755202338056": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "show-&-tell"
+      ]
+    },
+    "tt-7231483723932290306": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "title-card-with-creator"
+      ]
+    },
+    "tt-7264988229307272490": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut",
+        "match-cut"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "text-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "show-result-first"
+      ]
+    },
+    "tt-7270299942898437419": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "text-overlay-stating-the-video's-premise."
+      ]
+    },
+    "tt-7274388424327482654": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "pan-left"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "title-card",
+        "360-camera-hyperlapse"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "text-on-screen-and-direct-address"
+      ]
+    },
+    "tt-7332583878802099498": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "pan-right",
+        "tilt-up",
+        "tracking"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "title-card"
+      ]
+    },
+    "tt-7335335013640178987": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "tilt-up"
+      ],
+      "speedChanges": [
+        "ramp-up"
+      ],
+      "effects": [
+        "fisheye-lens"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "text-on-screen"
+      ]
+    },
+    "tt-7338146580723191070": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "pan-left"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "negative-hook"
+      ]
+    },
+    "tt-7362674968385080619": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [
+        "ramp-up"
+      ],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "action-in-progress"
+      ]
+    },
+    "tt-7392589138689658142": {
+      "cuts": [],
+      "transitions": [
+        "match-cut"
+      ],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "drop",
+        "beat"
+      ],
+      "hookFormats": [
+        "before-after"
+      ]
+    },
+    "tt-7442920192935464235": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "drop"
+      ],
+      "hookFormats": [
+        "text-hook-setting-up-a-false-expectation-('the-smoothest-transition')."
+      ]
+    },
+    "tt-7448221850074696977": {
+      "cuts": [],
+      "transitions": [
+        "speed-ramp",
+        "flash"
+      ],
+      "cameraMoves": [
+        "pull-out"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "zoom-blur",
+        "split-screen",
+        "graphic-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "drop",
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "result-first"
+      ]
+    },
+    "tt-7453781359845264662": {
+      "cuts": [],
+      "transitions": [
+        "match-cut",
+        "hard-cut"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "graphic-overlay",
+        "background-removal",
+        "keyframe-animation"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "instrumental-in",
+        "track-change"
+      ],
+      "hookFormats": [
+        "how-to"
+      ]
+    },
+    "tt-7477513671892061462": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "text-overlay-stating-the-video's-premise-('1-skirt,-10-outfits')."
+      ]
+    },
+    "tt-7493884896725765398": {
+      "cuts": [],
+      "transitions": [
+        "match-cut",
+        "hard-cut"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "relatable-meme-text-('me-5-minutes-after...')"
+      ]
+    },
+    "tt-7495884873522040069": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "satisfying-action-with-text"
+      ]
+    },
+    "tt-7496709640424672530": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat",
+        "vocal-in",
+        "drop"
+      ],
+      "hookFormats": [
+        "visual-question"
+      ]
+    },
+    "tt-7501803714915749150": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "sparkle"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "title-card"
+      ]
+    },
+    "tt-7522492007806274846": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "result-first"
+      ]
+    },
+    "tt-7522539721369619768": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "handheld",
+        "pan-right",
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "lens-flare"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "swell"
+      ],
+      "hookFormats": [
+        "emotional-reaction-shot-with-a-relatable-text-overlay-(question)"
+      ]
+    },
+    "tt-7523152472265772295": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "handheld",
+        "tilt-down"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "graphic-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "listicle-promise"
+      ]
+    },
+    "tt-7527435451125321015": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [
+        "slow-mo"
+      ],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "text-on-screen"
+      ]
+    },
+    "tt-7530112674860977421": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "text-on-screen"
+      ]
+    },
+    "tt-7532887475371527431": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "pan-left"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "scenic-reveal"
+      ]
+    },
+    "tt-7537734160731868430": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "pattern-interrupt"
+      ]
+    },
+    "tt-7545562790338071863": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "action-in-progress"
+      ]
+    },
+    "tt-7555059743493016840": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [
+        "ramp-up"
+      ],
+      "effects": [
+        "sticker-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "instrumental-in"
+      ],
+      "hookFormats": [
+        "result-first"
+      ]
+    },
+    "tt-7573961891643428117": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "text-overlay-statement"
+      ]
+    },
+    "tt-7574585895970475294": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "pan-left"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "photo-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "title-card-and-fast-montage"
+      ]
+    },
+    "tt-7586601665852149006": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "text-overlay-statement"
+      ]
+    },
+    "tt-7587423214519848214": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "problem-setup"
+      ]
+    },
+    "tt-7589763529754856718": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "problem/solution"
+      ]
+    },
+    "tt-7594138825635417357": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "handheld",
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "dramatic-sound-sting"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "rapid-fire-compilation"
+      ]
+    },
+    "tt-7594163757257985302": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "direct-address"
+      ]
+    },
+    "tt-7594438908549664014": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut",
+        "whip-pan"
+      ],
+      "cameraMoves": [
+        "pan-left"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "cold-open-action"
+      ]
+    },
+    "tt-7594916354117881119": {
+      "cuts": [],
+      "transitions": [
+        "cross-dissolve"
+      ],
+      "cameraMoves": [
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "philosophical-statement"
+      ]
+    },
+    "tt-7595902010868682014": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "sound-effect"
+      ],
+      "hookFormats": [
+        "action-hook"
+      ]
+    },
+    "tt-7598506874014534930": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "pop-up-text"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "text-question-hook"
+      ]
+    },
+    "tt-7598603264179047702": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "pull-out",
+        "pan-right"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "drop"
+      ],
+      "hookFormats": [
+        "visual-hook"
+      ]
+    },
+    "tt-7598982047964712206": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "title-card-demonstration"
+      ]
+    },
+    "tt-7600276477468282134": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "static",
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "film-countdown"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "compilation-title"
+      ]
+    },
+    "tt-7602530246901943570": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "pan-right"
+      ],
+      "speedChanges": [
+        "slow-mo"
+      ],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "drop"
+      ],
+      "hookFormats": [
+        "scenic-wonder"
+      ]
+    },
+    "tt-7602847157560937758": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "pan-right"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "drop"
+      ],
+      "hookFormats": [
+        "question-and-answer"
+      ]
+    },
+    "tt-7604930747517996302": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "on-screen-text"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "beat"
+      ],
+      "hookFormats": [
+        "finished-product-montage"
+      ]
+    },
+    "tt-7604991714616478998": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "fisheye-lens",
+        "black-and-white",
+        "voice-over-effect"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "problem-agitation"
+      ]
+    },
+    "tt-7606766130681728287": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "result-first"
+      ]
+    },
+    "tt-7608589996307565854": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "text-overlay-stating-the-video's-premise."
+      ]
+    },
+    "tt-7609524381554838798": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "bold-statement-text-overlay"
+      ]
+    },
+    "tt-7609549831039700238": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "comedic-reaction"
+      ]
+    },
+    "tt-7610014192711503125": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "sfx",
+        "vocal-in",
+        "drop"
+      ],
+      "hookFormats": [
+        "on-screen-text-premise"
+      ]
+    },
+    "tt-7610935433660337422": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "pan-right"
+      ],
+      "speedChanges": [
+        "slow-mo"
+      ],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "rapid-montage"
+      ]
+    },
+    "tt-7613849826253409558": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "heart-animation",
+        "icon-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "product-reveal"
+      ]
+    },
+    "tt-7614243422974545166": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut",
+        "cross-dissolve"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "dramatic-zoom"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "sfx-in",
+        "sfx-accent"
+      ],
+      "hookFormats": [
+        "action-in-progress"
+      ]
+    },
+    "tt-7616851311111228680": {
+      "cuts": [],
+      "transitions": [
+        "whip-pan"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "beat",
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "result-first"
+      ]
+    },
+    "tt-7617957590588312845": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "drop"
+      ],
+      "hookFormats": [
+        "result-first"
+      ]
+    },
+    "tt-7618942237535194390": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat",
+        "drop"
+      ],
+      "hookFormats": [
+        "finished-dish-reveal"
+      ]
+    },
+    "tt-7620166385724919072": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "beat",
+        "drop"
+      ],
+      "hookFormats": [
+        "show-result-first"
+      ]
+    },
+    "tt-7622013966125993246": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "text-on-screen-promise"
+      ]
+    },
+    "tt-7623124573692693773": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "graphic-overlay",
+        "picture-in-picture"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "repetitive-chant-and-direct-question-('intern-intern,-where-you-gonna-intern?')."
+      ]
+    },
+    "tt-7624368002238041358": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "emoji-popup"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "bold-statement"
+      ]
+    },
+    "tt-7625672162195639565": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "handheld",
+        "pan-right",
+        "pan-left",
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "location-tag"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-phrase",
+        "beat"
+      ],
+      "hookFormats": [
+        "direct-address-to-camera,-stating-the-video's-purpose-(room-tour)."
+      ]
+    },
+    "tt-7628290397378268448": {
+      "cuts": [],
+      "transitions": [
+        "whip-pan"
+      ],
+      "cameraMoves": [
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "beat"
+      ],
+      "hookFormats": [
+        "action-oriented-opening"
+      ]
+    },
+    "tt-7628571619019214102": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "film-countdown"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "cold-open"
+      ]
+    },
+    "tt-7629306496714673430": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "sound-effect",
+        "sticker"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "cute-animal-interaction"
+      ]
+    },
+    "tt-7629691375944174866": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "static",
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-phrase",
+        "beat"
+      ],
+      "hookFormats": [
+        "on-screen-text-promise"
+      ]
+    },
+    "tt-7629788232871316749": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "pan-right",
+        "pan-left"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "graphic-overlay",
+        "shape-animation",
+        "highlight",
+        "picture-in-picture"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "bold-claim"
+      ]
+    },
+    "tt-7630129138162044191": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "text-on-screen-with-curiosity-gap"
+      ]
+    },
+    "tt-7630212428940250382": {
+      "cuts": [],
+      "transitions": [
+        "fade"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [
+        "ramp-up"
+      ],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "question-and-payoff"
+      ]
+    },
+    "tt-7630219189692697887": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [
+        "slow-mo"
+      ],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "statement-and-demonstration"
+      ]
+    },
+    "tt-7630553858632109326": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "pan-right"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "text-overlay",
+        "light-projection"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "in-medias-res-with-direct-address"
+      ]
+    },
+    "tt-7630853307766033695": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "pan-left"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "visual-and-statement-hook"
+      ]
+    },
+    "tt-7631145591241772301": {
+      "cuts": [],
+      "transitions": [
+        "whip-pan"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "direct-action"
+      ]
+    },
+    "tt-7631186565003316500": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "comedy-gag"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat",
+        "vocal-in",
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "product-reveal"
+      ]
+    },
+    "tt-7631375969122651423": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "direct-address-statement"
+      ]
+    },
+    "tt-7631735193656659221": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "image-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "personal-story-promise"
+      ]
+    },
+    "tt-7631883213002296590": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "tracking",
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "cold-open"
+      ]
+    },
+    "tt-7631993520496069910": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "finished-product-first-&-problem/solution"
+      ]
+    },
+    "tt-7632060030954556703": {
+      "cuts": [],
+      "transitions": [
+        "match-cut"
+      ],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "drop",
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "before-state"
+      ]
+    },
+    "tt-7632064913757801758": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "statement-hook"
+      ]
+    },
+    "tt-7632102495761763614": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "text-animation"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat",
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "pov-text-overlay"
+      ]
+    },
+    "tt-7632267278549110029": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "comedic-premise"
+      ]
+    },
+    "tt-7632286164568919318": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "finished-product"
+      ]
+    },
+    "tt-7632289641164508429": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "before-state"
+      ]
+    },
+    "tt-7632322849960889623": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "handheld",
+        "pan-left"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "drawing-annotation",
+        "text-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "numbered-list-('5-common-mistakes...')"
+      ]
+    },
+    "tt-7632393398128790806": {
+      "cuts": [],
+      "transitions": [
+        "whip-pan"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "chaotic-action-to-title"
+      ]
+    },
+    "tt-7632428236516887830": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "handheld",
+        "push-in"
+      ],
+      "speedChanges": [
+        "slow-mo"
+      ],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "vocal-out"
+      ],
+      "hookFormats": [
+        "action-preview"
+      ]
+    },
+    "tt-7632466262010154243": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "sticker-overlay",
+        "graphic-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "curiosity-gap"
+      ]
+    },
+    "tt-7632628115314855182": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "action-in-progress"
+      ]
+    },
+    "tt-7632637332079906070": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut",
+        "zoom-blur"
+      ],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "sound-effect",
+        "emoji-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "title-card"
+      ]
+    },
+    "tt-7632687249993288990": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "beat"
+      ],
+      "hookFormats": [
+        "transformation"
+      ]
+    },
+    "tt-7632690933141638423": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "text-on-screen-statement"
+      ]
+    },
+    "tt-7632706695457672479": {
+      "cuts": [],
+      "transitions": [
+        "whip-pan"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "sticker-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "result-first,-then-process"
+      ]
+    },
+    "tt-7632814115227995422": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "direct-address-with-premise"
+      ]
+    },
+    "tt-7632996524808473886": {
+      "cuts": [],
+      "transitions": [
+        "whip-pan"
+      ],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "drop"
+      ],
+      "hookFormats": [
+        "misdirection"
+      ]
+    },
+    "tt-7633011034449612045": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "tracking",
+        "pan-right"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat",
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "visual-hook"
+      ]
+    },
+    "tt-7633070024772570386": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "push-in",
+        "tracking",
+        "pan-right",
+        "tilt-down"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "melody-in"
+      ],
+      "hookFormats": [
+        "text-overlay-posing-a-curiosity-('this-is-not-ai')-over-an-intriguing-initial-shot-of-the-cat."
+      ]
+    },
+    "tt-7633155390489840916": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "static",
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "mirror"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "drop",
+        "beat"
+      ],
+      "hookFormats": [
+        "text-overlay-promise"
+      ]
+    },
+    "tt-7633266114436369694": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "image-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "repetitive-audio-trend-and-on-screen-text-question-('our-summer-internships')."
+      ]
+    },
+    "tt-7633525163694378258": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "start"
+      ],
+      "hookFormats": [
+        "problem-solution"
+      ]
+    },
+    "tt-7633618814139174175": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "text-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "personal-story-hook-with-a-quick-montage-of-the-final-product."
+      ]
+    },
+    "tt-7633677350328110356": {
+      "cuts": [],
+      "transitions": [
+        "match-cut"
+      ],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "before-state-reveal-with-text-overlay-promising-a-transition"
+      ]
+    },
+    "tt-7633876635095207182": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "drop"
+      ],
+      "hookFormats": [
+        "before-after"
+      ]
+    },
+    "tt-7633917107712937224": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "sound-effect"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "product-demonstration"
+      ]
+    },
+    "tt-7633921752648731935": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "direct-statement"
+      ]
+    },
+    "tt-7633932775485099294": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "before-after-setup"
+      ]
+    },
+    "tt-7633954223591410975": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "tilt-up"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "text-overlay-on-action"
+      ]
+    },
+    "tt-7633962568343702814": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "result-preview"
+      ]
+    },
+    "tt-7633964556783570206": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat",
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "result-first"
+      ]
+    },
+    "tt-7633972727510043925": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-phrase",
+        "drop",
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "before-after-setup"
+      ]
+    },
+    "tt-7633996997933944084": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "text-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "beat"
+      ],
+      "hookFormats": [
+        "value-proposition"
+      ]
+    },
+    "tt-7633997007773895967": {
+      "cuts": [],
+      "transitions": [
+        "whip-pan"
+      ],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "drop",
+        "vocal-out"
+      ],
+      "hookFormats": [
+        "before/after-setup"
+      ]
+    },
+    "tt-7634004087985425684": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "push-in"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "picture-in-picture"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "reaction-to-viral-video"
+      ]
+    },
+    "tt-7634008038168448264": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [],
+      "speedChanges": [
+        "ramp-up"
+      ],
+      "effects": [
+        "animated-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "problem-solution"
+      ]
+    },
+    "tt-7634115788558929183": {
+      "cuts": [],
+      "transitions": [
+        "whip-pan"
+      ],
+      "cameraMoves": [],
+      "speedChanges": [],
+      "effects": [
+        "text-overlay"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "beat"
+      ],
+      "hookFormats": [
+        "direct-instruction"
+      ]
+    },
+    "tt-7634139745899007246": {
+      "cuts": [],
+      "transitions": [
+        "hard-cut"
+      ],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "compilation-preview"
+      ]
+    },
+    "tt-7634171226679823629": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "pan-right",
+        "tilt-up"
+      ],
+      "speedChanges": [],
+      "effects": [
+        "picture-in-picture",
+        "doodle-text"
+      ],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "rapid-montage-voiceover"
+      ]
+    },
+    "tt-7634205861577231636": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "handheld"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in"
+      ],
+      "hookFormats": [
+        "title-card"
+      ]
+    },
+    "tt-7634249360498330894": {
+      "cuts": [],
+      "transitions": [
+        "whip-pan"
+      ],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [
+        "vocal-in",
+        "drop",
+        "vocal-phrase"
+      ],
+      "hookFormats": [
+        "before-state-with-audio-cue"
+      ]
+    },
+    "tt-7634272946927783181": {
+      "cuts": [],
+      "transitions": [],
+      "cameraMoves": [
+        "static"
+      ],
+      "speedChanges": [],
+      "effects": [],
+      "subtitleStyles": [],
+      "audioSyncAnchors": [],
+      "hookFormats": [
+        "direct-address-problem-solution"
+      ]
+    }
+  }
+}

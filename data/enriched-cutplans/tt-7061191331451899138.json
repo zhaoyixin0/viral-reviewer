@@ -1,0 +1,230 @@
+{
+  "videoId": "tt-7061191331451899138",
+  "durationSec": 10.423,
+  "fps": 50,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Side view of a woman on a leg press machine in a gym, starting the first demonstration."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 10,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 5
+      },
+      "text": "Know the difference",
+      "durationSec": 3.9,
+      "style": {
+        "font": "Sans-serif, bold",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 25
+      },
+      "text": "Leg press edition ✨",
+      "durationSec": 9,
+      "style": {
+        "font": "Sans-serif, bold",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.2,
+        "frame": 60
+      },
+      "text": "Glutes focus 🍑",
+      "durationSec": 2.8,
+      "style": {
+        "font": "Script",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 1.8,
+        "frame": 90
+      },
+      "type": "image_overlay",
+      "durationSec": 2.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4,
+        "frame": 200
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Jump cut to the woman with a different foot placement (lower on the platform) for the quad-focused demonstration."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.5,
+        "frame": 225
+      },
+      "text": "Quads focus 🍗",
+      "durationSec": 2.5,
+      "style": {
+        "font": "Script",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 5,
+        "frame": 250
+      },
+      "type": "image_overlay",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7,
+        "frame": 350
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Jump cut to the woman with a wide foot placement and toes pointed out for the adductor-focused demonstration."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.3,
+        "frame": 365
+      },
+      "text": "Adductors focus ✨",
+      "durationSec": 2.2,
+      "style": {
+        "font": "Script",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 7.8,
+        "frame": 390
+      },
+      "type": "image_overlay",
+      "durationSec": 1.7
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.5,
+        "frame": 475
+      },
+      "text": "Follow for more 🤍",
+      "durationSec": 0.5,
+      "style": {
+        "font": "Sans-serif",
+        "color": "white"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Woman - Doja Cat (Sped Up Remix)",
+    "trending": true,
+    "bpm": 125,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 4,
+          "frame": 200
+        },
+        "kind": "vocal_phrase",
+        "note": "Cut to quads focus aligns with a new musical phrase."
+      },
+      {
+        "at": {
+          "sec": 7,
+          "frame": 350
+        },
+        "kind": "vocal_phrase",
+        "note": "Cut to adductors focus aligns with another phrase change."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 3,
+      "avgShotDurationSec": 3.33,
+      "cutDensityPerSec": 0.2,
+      "rhythmProfile": "medium",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "driving_beat",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "mixed_font_clean",
+      "colorGrade": "natural_gym"
+    },
+    "structure": {
+      "hookFormat": "Text_Hook",
+      "openingShot": "Wide shot of exercise setup with title overlay.",
+      "endingShot": "Final demonstration with a CTA overlay.",
+      "cta": "Follow_CTA",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 50,
+    "transition": 20,
+    "effect": 65,
+    "bgmSync": 85,
+    "overall": 70
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:16:22.177Z"
+  }
+}

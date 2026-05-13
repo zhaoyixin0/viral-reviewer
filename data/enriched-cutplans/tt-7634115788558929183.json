@@ -1,0 +1,729 @@
+{
+  "videoId": "tt-7634115788558929183",
+  "durationSec": 43.629,
+  "fps": 29.97,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A muscular man stands at a kitchen counter and begins cracking an egg into a glass bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.4,
+        "frame": 12
+      },
+      "text": "If you crack",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He cracks a second egg into the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.9,
+        "frame": 27
+      },
+      "text": "one",
+      "durationSec": 0.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.1,
+        "frame": 33
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He cracks a third egg into the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.2,
+        "frame": 36
+      },
+      "text": "two",
+      "durationSec": 0.3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.5,
+        "frame": 45
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He cracks a fourth egg into the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.6,
+        "frame": 48
+      },
+      "text": "three",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.1,
+        "frame": 63
+      },
+      "toShotSize": "medium",
+      "shotDescription": "All four eggs are now in the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.2,
+        "frame": 66
+      },
+      "text": "four eggs",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.6,
+        "frame": 78
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He grinds salt into the bowl of eggs."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "text": "throw in some salt",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.4,
+        "frame": 102
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He grinds pepper into the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.6,
+        "frame": 108
+      },
+      "text": "pepper",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4,
+        "frame": 120
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He adds everything bagel seasoning from a shaker."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.3,
+        "frame": 129
+      },
+      "text": "everything bagel",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5,
+        "frame": 150
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He pours a splash of almond milk from a carton into the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.4,
+        "frame": 162
+      },
+      "text": "and a splash",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6,
+        "frame": 180
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He scrambles the eggs in the bowl with a fork."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.3,
+        "frame": 189
+      },
+      "text": "Scramble it up",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7,
+        "frame": 210
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He moves to the stove and pours the egg mixture into a hot pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.5,
+        "frame": 225
+      },
+      "text": "then toss those",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.5,
+        "frame": 285
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He places the empty bowl down as the eggs cook in the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.8,
+        "frame": 294
+      },
+      "text": "Let that sit",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.8,
+        "frame": 324
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He stands by an air fryer, holding a large tortilla wrap."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.2,
+        "frame": 336
+      },
+      "text": "the eggs",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12,
+        "frame": 360
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He places the tortilla into the air fryer basket."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.2,
+        "frame": 366
+      },
+      "text": "tortilla wrap",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 13,
+        "frame": 390
+      },
+      "type": "whip_pan",
+      "durationFrames": 6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.2,
+        "frame": 396
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The camera pans back to the stove where the omelette is cooking."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.4,
+        "frame": 402
+      },
+      "text": "fryer",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He adds a handful of spinach to one side of the omelette."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.2,
+        "frame": 426
+      },
+      "text": "the eggs",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15,
+        "frame": 450
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He adds mixed greens on top of the spinach."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15.1,
+        "frame": 453
+      },
+      "text": "spinach",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 474
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He adds a scoop of cottage cheese."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16,
+        "frame": 480
+      },
+      "text": "some mixed greens",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17,
+        "frame": 509
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He adds a spoonful of pickled onions."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.3,
+        "frame": 518
+      },
+      "text": "and some",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.5,
+        "frame": 554
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He holds a spatula, ready to fold the omelette."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.6,
+        "frame": 557
+      },
+      "text": "pickled onions",
+      "durationSec": 0.9
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.5,
+        "frame": 584
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He uses the spatula to carefully fold the empty half of the omelette over the half with toppings."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.7,
+        "frame": 590
+      },
+      "text": "and flip",
+      "durationSec": 4.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.2,
+        "frame": 725
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Back at the counter, he slides the finished omelette from the pan onto the tortilla on a plate."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.8,
+        "frame": 743
+      },
+      "text": "toss that into",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26,
+        "frame": 779
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He holds up the plate to show the omelette on the tortilla."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.3,
+        "frame": 788
+      },
+      "text": "your tortilla",
+      "durationSec": 0.9
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.2,
+        "frame": 815
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He drizzles sriracha sauce over the omelette."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 27.5,
+        "frame": 824
+      },
+      "text": "throw on",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.5,
+        "frame": 854
+      },
+      "toShotSize": "medium",
+      "shotDescription": "With the plate on the counter, he begins to fold the tortilla wrap."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28.7,
+        "frame": 860
+      },
+      "text": "and tuck",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.2,
+        "frame": 875
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He finishes folding the wrap into a semi-circle."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.4,
+        "frame": 881
+      },
+      "text": "like you're",
+      "durationSec": 1.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30.8,
+        "frame": 923
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close up on the man holding the finished wrap, showing a cross-section."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31,
+        "frame": 929
+      },
+      "text": "to your child",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.8,
+        "frame": 953
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "He holds the wrap after taking a bite, explaining the recipe's benefits."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 32,
+        "frame": 959
+      },
+      "text": "and you will",
+      "durationSec": 2.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.8,
+        "frame": 1043
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "He takes another large bite of the wrap."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35,
+        "frame": 1049
+      },
+      "text": "absolutely",
+      "durationSec": 2.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.8,
+        "frame": 1133
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Sudden cut to the man posing in a gym/stairwell setting, showing off his muscular physique in a double bicep pose."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 38.2,
+        "frame": 1145
+      },
+      "text": "four months",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39,
+        "frame": 1169
+      },
+      "toShotSize": "wide",
+      "shotDescription": "He changes to another physique pose, with hands behind his head."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 39.2,
+        "frame": 1175
+      },
+      "text": "prep",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.8,
+        "frame": 1193
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Cut back to the kitchen, he is chewing the wrap with a satisfied expression."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 39.9,
+        "frame": 1196
+      },
+      "type": "text_overlay",
+      "durationSec": 3.1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 40.2,
+        "frame": 1205
+      },
+      "text": "Oh my God",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.2,
+        "frame": 1235
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He points to the remaining wrap on the plate."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 41.5,
+        "frame": 1244
+      },
+      "text": "hits the spot",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42.2,
+        "frame": 1265
+      },
+      "toShotSize": "medium",
+      "shotDescription": "He turns and walks out of the frame, leaving the plate on the counter."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 42.5,
+        "frame": 1274
+      },
+      "text": "every time",
+      "durationSec": 0.5
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Funk Electronic",
+    "trending": false,
+    "bpm": 120,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in",
+        "note": "Voiceover starts"
+      },
+      {
+        "at": {
+          "sec": 37.8,
+          "frame": 1133
+        },
+        "kind": "beat",
+        "note": "Beat hits on the cut to the physique shot"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 31,
+      "avgShotDurationSec": 1.39,
+      "cutDensityPerSec": 0.69,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 37.8,
+        "frame": 1133
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.16,
+        "medium": 0.78,
+        "wide": 0.06,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut",
+        "whip_pan"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_upbeat",
+      "bgmSyncTightness": "moderate",
+      "subtitleStyle": "white_sans_serif_with_shadow",
+      "colorGrade": "warm_cinematic"
+    },
+    "structure": {
+      "hookFormat": "direct_instruction",
+      "openingShot": "medium_shot_of_creator_at_kitchen_counter",
+      "endingShot": "creator_walks_out_of_frame",
+      "cta": "text_overlay_dm_for_recipe",
+      "payoffAt": {
+        "sec": 31.8,
+        "frame": 953
+      }
+    }
+  },
+  "density": {
+    "editing": 95,
+    "transition": 20,
+    "effect": 15,
+    "bgmSync": 60,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:27:31.786Z"
+  }
+}

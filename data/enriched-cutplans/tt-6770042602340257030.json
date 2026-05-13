@@ -1,0 +1,334 @@
+{
+  "videoId": "tt-6770042602340257030",
+  "durationSec": 18.066,
+  "fps": 30,
+  "resolution": {
+    "width": 576,
+    "height": 1024
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman in a black hoodie holds up a pair of black leggings in front of a mirror in a studio setting."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "toShotSize": "wide",
+      "shotDescription": "View from behind of two women sitting at a desk in an office. The leggings are thrown towards the woman in the foreground."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2.5,
+        "frame": 75
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.5,
+        "frame": 75
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up on the woman's hands as she begins to stretch the black leggings."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman looks at the camera with a surprised and amused expression, gesturing with her hands."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 5.5,
+        "frame": 165
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.5,
+        "frame": 165
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A young man sitting at a desk is handed the leggings and begins to stretch them."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The young man smiles at the camera, holding the bunched-up leggings."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman with glasses at a desk turns to look at the camera with a curious expression."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 10.5,
+        "frame": 315
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.5,
+        "frame": 315
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up on her hands stretching the leggings."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.8,
+        "frame": 354
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman with glasses smiles while holding the leggings."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man with a beard and glasses, wrapped in a red blanket, smiles at the camera."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 13.5,
+        "frame": 405
+      },
+      "type": "handheld",
+      "durationSec": 3,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 16.5,
+        "frame": 495
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.5,
+        "frame": 495
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The first woman is now standing on a tall stool, holding the leggings fully stretched out to reveal their extreme length."
+    }
+  ],
+  "bgm": {
+    "name": "Classical Music (Remix)",
+    "trending": true,
+    "bpm": 140,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.8,
+          "frame": 24
+        },
+        "kind": "beat",
+        "note": "Cut to office scene"
+      },
+      {
+        "at": {
+          "sec": 2.5,
+          "frame": 75
+        },
+        "kind": "beat",
+        "note": "Cut to close-up stretch"
+      },
+      {
+        "at": {
+          "sec": 4.8,
+          "frame": 144
+        },
+        "kind": "beat",
+        "note": "Cut to reaction shot"
+      },
+      {
+        "at": {
+          "sec": 5.5,
+          "frame": 165
+        },
+        "kind": "beat",
+        "note": "Cut to next person"
+      },
+      {
+        "at": {
+          "sec": 8.8,
+          "frame": 264
+        },
+        "kind": "beat",
+        "note": "Cut to next person"
+      },
+      {
+        "at": {
+          "sec": 12.8,
+          "frame": 384
+        },
+        "kind": "vocal_in",
+        "note": "Vocal sample 'Oh' and cut to next person"
+      },
+      {
+        "at": {
+          "sec": 16.5,
+          "frame": 495
+        },
+        "kind": "beat",
+        "note": "Cut to final reveal"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 12,
+      "avgShotDurationSec": 1.48,
+      "cutDensityPerSec": 0.62,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 16.5,
+        "frame": 495
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 2,
+        "medium": 8,
+        "wide": 2,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Upbeat, quirky, repetitive instrumental loop driving the edit.",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "none",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "A mysterious object is introduced and then passed around to different people, building curiosity.",
+      "openingShot": "A woman holds up a pair of leggings in a studio.",
+      "endingShot": "The same woman stands on a stool, revealing the extreme length of the leggings.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 16.5,
+        "frame": 495
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 0,
+    "bgmSync": 95,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:11:04.398Z"
+  }
+}

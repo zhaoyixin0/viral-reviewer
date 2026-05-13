@@ -1,0 +1,291 @@
+{
+  "videoId": "tt-7021637822595550465",
+  "durationSec": 26.608,
+  "fps": 29.97002997002997,
+  "resolution": {
+    "width": 576,
+    "height": 1024
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A man in a striped shirt smiles and talks directly to the camera in a room with blue neon accent lighting."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "Interested in interning at ✨TikTok?✨",
+      "durationSec": 8.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 8.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "type": "whip_pan",
+      "durationFrames": 5,
+      "note": "Creator swipes hand across the camera to initiate the transition."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9,
+        "frame": 270
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The man continues talking, now in front of a dynamic background of repeating, multi-colored TikTok logos."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A close-up shot of black headphones resting on a white, backlit mechanical keyboard."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "type": "pan_right",
+      "durationSec": 2.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.5,
+        "frame": 405
+      },
+      "text": "Create go-to market strategies 🚀",
+      "durationSec": 2.2
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 15.8,
+        "frame": 474
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 474
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A TikTok branded varsity jacket hanging on a door. The back reads 'DON'T MAKE ADS. Make TikToks.'"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.3,
+        "frame": 489
+      },
+      "text": "Drive adoption of ad products 🚘",
+      "durationSec": 1.8
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 18.1,
+        "frame": 542
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.1,
+        "frame": 542
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "An extreme close-up of a black notebook with the TikTok logo, with a pen resting on top."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.5,
+        "frame": 554
+      },
+      "text": "Market research of advertiser needs 💻",
+      "durationSec": 2
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 20.6,
+        "frame": 617
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.6,
+        "frame": 617
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A computer screen displaying the TikTok feed, with a blue neon cloud light on the wall above."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21,
+        "frame": 629
+      },
+      "text": "Grow the business by enabling our sales team 📈",
+      "durationSec": 1.8
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 22.8,
+        "frame": 683
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.8,
+        "frame": 683
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The man reappears, overlaid on a screenshot of the TikTok careers webpage, and points down."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 22.8,
+        "frame": 683
+      },
+      "type": "green_screen",
+      "durationSec": 3.2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23,
+        "frame": 689
+      },
+      "text": "Apply now!",
+      "durationSec": 2,
+      "style": {
+        "font": "cursive",
+        "color": "blue"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Chill Lo-fi Beat",
+    "trending": false,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "beat",
+        "note": "Start of consistent lo-fi beat loop."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 7,
+      "avgShotDurationSec": 3.71,
+      "cutDensityPerSec": 0.23,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "pan_right"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 1,
+        "close_up": 4,
+        "medium": 1,
+        "wide": 1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut",
+        "whip_pan"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Consistent lo-fi loop",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "Standard sans-serif with emoji, plus one stylized cursive font",
+      "colorGrade": "Natural with blue accent lighting"
+    },
+    "structure": {
+      "hookFormat": "Direct question",
+      "openingShot": "Direct-to-camera address",
+      "endingShot": "Direct-to-camera address with visual CTA overlay",
+      "cta": "Explicit verbal and visual CTA",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 40,
+    "transition": 20,
+    "effect": 30,
+    "bgmSync": 10,
+    "overall": 30
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:08:20.059Z"
+  }
+}

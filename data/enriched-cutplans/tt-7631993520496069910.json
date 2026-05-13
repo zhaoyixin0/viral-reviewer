@@ -1,0 +1,422 @@
+{
+  "videoId": "tt-7631993520496069910",
+  "durationSec": 18.389,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A tall stack of green pea fritters is shown on a white plate in a well-lit kitchen setting."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 12
+      },
+      "text": "it is WILD",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.8,
+        "frame": 48
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A hand holds up a single pea fritter, showcasing its crispy, textured surface."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.1,
+        "frame": 66
+      },
+      "text": "how much people",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.8,
+        "frame": 108
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "The pea fritter is dipped into a small bowl of white, herby sauce."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.1,
+        "frame": 126
+      },
+      "text": "stress about protein",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.7,
+        "frame": 162
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator holds the dipped fritter up to the camera before eating it, with a plate of fritters in front of him."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.2,
+        "frame": 192
+      },
+      "text": "when they're DEFINITELY",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 288
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down shot of hands mashing green peas in a patterned bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.3,
+        "frame": 258
+      },
+      "text": "not eating enough fibre",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.8,
+        "frame": 348
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Chopped fresh mint is added to the bowl of mashed peas."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.2,
+        "frame": 372
+      },
+      "text": "which is why peas",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.9,
+        "frame": 414
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoonful of minced garlic is added to the bowl, which now also contains nutritional yeast."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.4,
+        "frame": 444
+      },
+      "text": "are so great",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8,
+        "frame": 480
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Flaky salt is sprinkled over the ingredients in the bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 528
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "White flour is added to the bowl and mixed in with a spoon."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.5,
+        "frame": 510
+      },
+      "text": "because they have both in abundance",
+      "durationSec": 1.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.8,
+        "frame": 588
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator mixes the fritter batter with his hands in a blue bowl, looking at the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.3,
+        "frame": 618
+      },
+      "text": "mash and mix them",
+      "durationSec": 0.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11,
+        "frame": 660
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Spoonfuls of the green batter are placed into a hot, oiled frying pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.5,
+        "frame": 690
+      },
+      "text": "with gram flour",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.1,
+        "frame": 726
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The fritters are shown frying in the pan, getting golden brown."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.6,
+        "frame": 756
+      },
+      "text": "and seasonings",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.1,
+        "frame": 786
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spatula lifts a perfectly cooked, golden-brown fritter from the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.6,
+        "frame": 816
+      },
+      "text": "before frying till golden",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.1,
+        "frame": 846
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Chopped fresh herbs are added to a small bowl containing a white sauce base."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.9,
+        "frame": 894
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand squeezes a lemon half, adding juice to the sauce."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15.3,
+        "frame": 918
+      },
+      "text": "serve with a",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 948
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator takes a large, satisfying bite of a fritter dipped in the sauce."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.2,
+        "frame": 972
+      },
+      "text": "herby/lemony dip",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.2,
+        "frame": 1032
+      },
+      "text": "for a spring time snack",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Instrumental Lo-fi Hip Hop Beat",
+    "trending": false,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.1,
+          "frame": 6
+        },
+        "kind": "beat",
+        "note": "Start of main beat loop"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 17,
+      "avgShotDurationSec": 1.06,
+      "cutDensityPerSec": 0.89,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.2,
+        "close_up": 0.6,
+        "medium": 0.2,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Consistent lo-fi hip-hop beat throughout",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "White sans-serif font with a black outline, centered",
+      "colorGrade": "Warm and natural with high saturation on greens and golds"
+    },
+    "structure": {
+      "hookFormat": "Finished Product First & Problem/Solution",
+      "openingShot": "Close-up of a stack of the finished pea fritters",
+      "endingShot": "Medium shot of the creator eating and enjoying the final product",
+      "cta": null,
+      "payoffAt": {
+        "sec": 15.8,
+        "frame": 948
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 0,
+    "bgmSync": 20,
+    "overall": 75
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:55:46.523Z"
+  }
+}

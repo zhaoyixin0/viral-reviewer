@@ -1,0 +1,756 @@
+{
+  "videoId": "tt-7225848485906599170",
+  "durationSec": 84.614,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "push_in",
+      "durationSec": 2.8,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "one year ago today I made a video on English muffins",
+      "durationSec": 2.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator talking directly to the camera, closer shot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.2,
+        "frame": 96
+      },
+      "text": "the people of England commented what the fuck is an English muffin",
+      "durationSec": 2.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.8,
+        "frame": 174
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator talking and gesturing with his hand."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.2,
+        "frame": 186
+      },
+      "text": "which I found to be quite funny but let's make them again because they're fucking easy",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator points a finger at the camera for emphasis."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.2,
+        "frame": 276
+      },
+      "text": "first up flour salt and sugar",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.5,
+        "frame": 285
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds up two small containers with salt and sugar over a bowl of flour."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.5,
+        "frame": 315
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator holds up a container with yeast and pours it into the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11,
+        "frame": 330
+      },
+      "text": "yeast",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.5,
+        "frame": 345
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds a whisk over the bowl and shares a fun fact."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.5,
+        "frame": 375
+      },
+      "text": "fun fact I used to make videos while hiding my face",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.5,
+        "frame": 435
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator whisks the dry ingredients in the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.8,
+        "frame": 444
+      },
+      "text": "yeah I was like the Batman of the horny baking world",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17,
+        "frame": 510
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Pouring milk into the bowl of dry ingredients."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.4,
+        "frame": 522
+      },
+      "text": "piss warm milk one egg",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18,
+        "frame": 540
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Cracking an egg into the bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.8,
+        "frame": 564
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Mixing the wet and dry ingredients with a whisk."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.8,
+        "frame": 594
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds up pieces of soft butter."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20,
+        "frame": 600
+      },
+      "text": "when a dough is formed add the soft butter",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21,
+        "frame": 630
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator's hands are pinching butter into the dough in the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.5,
+        "frame": 645
+      },
+      "text": "now a good way to incorporate butter by pinching it into the dough",
+      "durationSec": 2.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24,
+        "frame": 720
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds up the ball of enriched dough."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.5,
+        "frame": 735
+      },
+      "text": "now we have an enriched dough",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.2,
+        "frame": 756
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator slams the dough on the table and starts kneading it."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.5,
+        "frame": 795
+      },
+      "text": "palm back the other way",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.8,
+        "frame": 864
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds the kneaded dough, stretching it to show its elasticity."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.5,
+        "frame": 885
+      },
+      "text": "less sticky stretchy and smooth",
+      "durationSec": 1.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.5,
+        "frame": 945
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Folding the dough into a ball on the table."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.8,
+        "frame": 954
+      },
+      "text": "arms in legs in",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34,
+        "frame": 1020
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator shapes the dough into a smooth ball."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 34.2,
+        "frame": 1026
+      },
+      "text": "flip the cunt in the bowl",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36,
+        "frame": 1080
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator shows the dough in a bowl covered with plastic wrap."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 36.4,
+        "frame": 1092
+      },
+      "text": "I'm gonna let that rest for one hour",
+      "durationSec": 1.1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.5,
+        "frame": 1125
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator rolls the rested dough into a log shape."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39,
+        "frame": 1170
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator starts cutting the dough log with a knife."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 39.2,
+        "frame": 1176
+      },
+      "text": "cut it into 6 pieces",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40,
+        "frame": 1200
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close up of the knife cutting the dough into pieces."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.2,
+        "frame": 1236
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Shaping a small piece of dough into a ball."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 41.5,
+        "frame": 1245
+      },
+      "text": "legs in arms in flip the cunt",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43.5,
+        "frame": 1305
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator rolls the dough pieces into balls on the table."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 43.7,
+        "frame": 1311
+      },
+      "text": "form a ball if you're feeling confident",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 45,
+        "frame": 1350
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator covers the dough balls with a plastic container."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 45.3,
+        "frame": 1359
+      },
+      "text": "if you're feeling extra confident cover them up",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.5,
+        "frame": 1395
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator talks to the camera, pointing."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 47,
+        "frame": 1410
+      },
+      "text": "you can also use plastic wrap if you're a cheap cunt",
+      "durationSec": 1.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48.8,
+        "frame": 1464
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator shows the covered dough balls after resting."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 49.2,
+        "frame": 1476
+      },
+      "text": "15 minutes later",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 49.8,
+        "frame": 1494
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Sprinkling cornmeal over the dough balls and coating the bottom."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 50.3,
+        "frame": 1509
+      },
+      "text": "cornmeal over the top and put it on the bottom as well",
+      "durationSec": 1.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52,
+        "frame": 1560
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator slightly squashes the dough balls with a bench scraper."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 52.5,
+        "frame": 1575
+      },
+      "text": "just slightly squash them cover",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 53.5,
+        "frame": 1605
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator covers the squashed dough balls for the final proof."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 54.8,
+        "frame": 1644
+      },
+      "text": "45 minutes later",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 55.5,
+        "frame": 1665
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds a spatula and explains the cooking process."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 56,
+        "frame": 1680
+      },
+      "text": "cook it on low heat each side 5 minutes",
+      "durationSec": 1.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 57.8,
+        "frame": 1734
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Montage of flipping the English muffins in a hot pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 101,
+        "frame": 3030
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds a fork and explains the next step."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 101.5,
+        "frame": 3045
+      },
+      "text": "you gotta let these fuckers cool down",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 102.5,
+        "frame": 3075
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator demonstrates poking the side of a muffin with a fork."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 103,
+        "frame": 3090
+      },
+      "text": "we don't just cut through it with a knife we use a fork and do that all around till it opens it up",
+      "durationSec": 4.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 107.8,
+        "frame": 3234
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator holds the two halves of the opened muffin, showing the texture."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 108.2,
+        "frame": 3246
+      },
+      "text": "and that's what you get when it opens up",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 109.8,
+        "frame": 3294
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator tosses a muffin half towards the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 110,
+        "frame": 3300
+      },
+      "text": "let's do a sausage and Egg McMuffin",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 111.8,
+        "frame": 3354
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A finished sausage and egg muffin sandwich on a plate, which the creator then picks up."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 113.2,
+        "frame": 3396
+      },
+      "text": "that looks fucking beautiful",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 113.8,
+        "frame": 3414
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator takes a big bite of the sandwich."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 115,
+        "frame": 3450
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator talks to the camera while holding the half-eaten sandwich."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 115.3,
+        "frame": 3459
+      },
+      "text": "better than maccas (mcdonalds) why would you even buy this? you can make fucking 6 at home",
+      "durationSec": 3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 118.5,
+        "frame": 3555
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close up of the creator talking while holding the sandwich."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 119,
+        "frame": 3570
+      },
+      "text": "and to think that English muffins were once on the top 10 worst rated bread list",
+      "durationSec": 3.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 122.8,
+        "frame": 3684
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator gestures and talks to the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 123,
+        "frame": 3690
+      },
+      "text": "good times once again",
+      "durationSec": 1
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 123.8,
+        "frame": 3714
+      },
+      "type": "push_in",
+      "durationSec": 1,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_out"
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 40,
+      "avgShotDurationSec": 2.12,
+      "cutDensityPerSec": 0.47,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "push_in"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 5,
+        "close_up": 40,
+        "medium": 55,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "n/a",
+      "subtitleStyle": "yellow_sans_serif_bottom_center",
+      "colorGrade": "natural_warm_contrast"
+    },
+    "structure": {
+      "hookFormat": "storytelling_hook",
+      "openingShot": "medium_talking_head",
+      "endingShot": "medium_talking_head_with_product",
+      "cta": "implicit_value_proposition",
+      "payoffAt": {
+        "sec": 111.8,
+        "frame": 3354
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 5,
+    "bgmSync": 0,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:23:18.217Z"
+  }
+}

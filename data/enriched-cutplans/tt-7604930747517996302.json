@@ -1,0 +1,1113 @@
+{
+  "videoId": "tt-7604930747517996302",
+  "durationSec": 54.067,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Cooked potatoes are poured from a black bowl into a white bowl on a wooden surface."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 12
+      },
+      "text": "LOOKING",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.7,
+        "frame": 42
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A wooden spoon adds seasoned ground beef on top of the potatoes in the white bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1,
+        "frame": 60
+      },
+      "text": "WITH",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.4,
+        "frame": 84
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoon adds guacamole and pico de gallo on top of the ground beef."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.9,
+        "frame": 114
+      },
+      "text": "BACK",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.3,
+        "frame": 138
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A creamy orange sauce is squeezed from a bottle over the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3,
+        "frame": 180
+      },
+      "text": "SERIES",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.2,
+        "frame": 252
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Chopped cilantro is sprinkled over the finished bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.5,
+        "frame": 270
+      },
+      "text": "YOU",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.4,
+        "frame": 324
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands hold and present the completed, garnished bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.5,
+        "frame": 330
+      },
+      "text": "DELICIOUS",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.5,
+        "frame": 390
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A fork lifts a bite of the food out of the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.6,
+        "frame": 396
+      },
+      "text": "HIGH",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.5,
+        "frame": 450
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator holds the fork with a bite towards the camera, with the bowl in the background."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.8,
+        "frame": 468
+      },
+      "text": "BEEF",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.5,
+        "frame": 510
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator sits at a table, takes a bite of the food, and chews thoughtfully."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.8,
+        "frame": 528
+      },
+      "text": "PERFECT",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.1,
+        "frame": 606
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator looks at the camera and speaks after tasting the food."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.2,
+        "frame": 612
+      },
+      "text": "MUSCLE",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11,
+        "frame": 660
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Top-down view of hands holding three small potatoes on a wooden cutting board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.1,
+        "frame": 666
+      },
+      "text": "INCREDIBLE",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.5,
+        "frame": 690
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down view of hands dicing a potato with a knife."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.8,
+        "frame": 708
+      },
+      "text": "START",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.5,
+        "frame": 750
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down view of hands sweeping diced potatoes off the cutting board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.6,
+        "frame": 756
+      },
+      "text": "POTATOES",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.2,
+        "frame": 792
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down view of diced potatoes inside an air fryer basket."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.5,
+        "frame": 810
+      },
+      "text": "CUBE",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.1,
+        "frame": 846
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Cooking spray/oil is applied to the potatoes in the air fryer."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.5,
+        "frame": 870
+      },
+      "text": "FRYER",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.1,
+        "frame": 906
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Paprika is sprinkled from a shaker onto the potatoes."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15.5,
+        "frame": 930
+      },
+      "text": "COOKING",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.1,
+        "frame": 966
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Salt is sprinkled over the potatoes."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.5,
+        "frame": 990
+      },
+      "text": "PAPRIKA",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17,
+        "frame": 1020
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The air fryer basket is shaken to mix the potatoes and seasonings."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.5,
+        "frame": 1050
+      },
+      "text": "PEPPER",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18,
+        "frame": 1080
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A static top-down shot of the fully seasoned raw potatoes in the basket."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.5,
+        "frame": 1110
+      },
+      "text": "390",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.8,
+        "frame": 1188
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator stands in his kitchen and holds up a white onion to the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20,
+        "frame": 1200
+      },
+      "text": "FOR",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.5,
+        "frame": 1230
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands finely dice the white onion on the cutting board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.8,
+        "frame": 1248
+      },
+      "text": "GOING",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.8,
+        "frame": 1308
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A bench scraper is used to move the diced onions into a bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22,
+        "frame": 1320
+      },
+      "text": "WHITE",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.5,
+        "frame": 1350
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The diced onions are added to a hot pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.8,
+        "frame": 1368
+      },
+      "text": "GONNA",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.8,
+        "frame": 1428
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The onions are sautéed in the pan with a wooden spatula."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24,
+        "frame": 1440
+      },
+      "text": "AND",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25,
+        "frame": 1500
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A close-up shot shows the onions have become golden brown."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 25.5,
+        "frame": 1530
+      },
+      "text": "AROUND",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.5,
+        "frame": 1590
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator adds a block of lean ground beef to the pan with the onions."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.8,
+        "frame": 1608
+      },
+      "text": "UNTIL",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.5,
+        "frame": 1710
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The ground beef is broken up and cooked with the onions in the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.5,
+        "frame": 1770
+      },
+      "text": "GROUND",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.5,
+        "frame": 1890
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A packet of taco seasoning is poured over the cooked ground beef."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.8,
+        "frame": 1908
+      },
+      "text": "CALORIES",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33,
+        "frame": 1980
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Bone broth is poured into the pan with the beef and seasoning."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.5,
+        "frame": 2010
+      },
+      "text": "AND",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34,
+        "frame": 2040
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The mixture is stirred together until combined."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 34.2,
+        "frame": 2052
+      },
+      "text": "SEASONING",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.5,
+        "frame": 2130
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A wooden spatula holds up a scoop of the finished beef mixture."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35.8,
+        "frame": 2148
+      },
+      "text": "UNTIL",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36.5,
+        "frame": 2190
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A scoop of Greek yogurt is added to a food processor."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 36.8,
+        "frame": 2208
+      },
+      "text": "COOKED",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 36.8,
+        "frame": 2208
+      },
+      "type": "on_screen_text",
+      "durationSec": 5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.5,
+        "frame": 2250
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Chipotle pepper, adobo sauce, and red bell pepper are added to the food processor."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 37.8,
+        "frame": 2268
+      },
+      "text": "DELICIOUS",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.5,
+        "frame": 2310
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Honey is drizzled into the food processor."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 38.8,
+        "frame": 2328
+      },
+      "text": "PEPPER",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.5,
+        "frame": 2370
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Lime juice and cilantro are added."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 39.8,
+        "frame": 2388
+      },
+      "text": "THESE",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40.5,
+        "frame": 2430
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A pinch of salt is added."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 40.8,
+        "frame": 2448
+      },
+      "text": "YOU",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.5,
+        "frame": 2490
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The lid is placed on the food processor."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 41.8,
+        "frame": 2508
+      },
+      "text": "SCREEN",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42.8,
+        "frame": 2568
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands hold a squeeze bottle filled with the finished orange sauce."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 43,
+        "frame": 2580
+      },
+      "text": "GIVING",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.5,
+        "frame": 2670
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Recycled shot: Ground beef is added to the bowl of potatoes."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 44.8,
+        "frame": 2688
+      },
+      "text": "NICE",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 45.5,
+        "frame": 2730
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Recycled shot: Guacamole and pico de gallo are added."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 45.8,
+        "frame": 2748
+      },
+      "text": "HAVE",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.5,
+        "frame": 2790
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Recycled shot: Sauce is squeezed over the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 46.8,
+        "frame": 2808
+      },
+      "text": "EVERYTHING",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 47.5,
+        "frame": 2850
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Recycled shot: Cilantro is sprinkled on top."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 47.8,
+        "frame": 2868
+      },
+      "text": "EQUAL",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48.5,
+        "frame": 2910
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator uses a fork to mix all the ingredients in the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 48.8,
+        "frame": 2928
+      },
+      "text": "CHECK",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 50,
+        "frame": 3000
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator takes a bite of the mixed dish."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 50.2,
+        "frame": 3012
+      },
+      "text": "MORE",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 51.5,
+        "frame": 3090
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator reacts with a look of amazement after tasting the food."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 51.8,
+        "frame": 3108
+      },
+      "text": "PROTEIN",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52.8,
+        "frame": 3168
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator slams his hand on the table for emphasis."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 52.9,
+        "frame": 3174
+      },
+      "text": "READY",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Corporate Pop",
+    "trending": false,
+    "bpm": 125,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in",
+        "note": "Voiceover starts"
+      },
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "beat",
+        "note": "Upbeat instrumental music begins"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 43,
+      "avgShotDurationSec": 1.26,
+      "cutDensityPerSec": 0.79,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.1,
+        "close_up": 0.6,
+        "medium": 0.3,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Upbeat instrumental loop",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "White text with black stroke, all caps, sans-serif font, centered at bottom.",
+      "colorGrade": "Bright, saturated, warm tones"
+    },
+    "structure": {
+      "hookFormat": "Finished product montage",
+      "openingShot": "Pouring cooked potatoes into a bowl, the first step of assembling the final dish.",
+      "endingShot": "Creator slams hand on the table and exclaims 'That is perfection!'",
+      "cta": "Check out my cookbook for more delicious high protein recipes.",
+      "payoffAt": {
+        "sec": 51.5,
+        "frame": 3090
+      }
+    }
+  },
+  "density": {
+    "editing": 95,
+    "transition": 10,
+    "effect": 15,
+    "bgmSync": 60,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:20:26.651Z"
+  }
+}

@@ -1,0 +1,486 @@
+{
+  "videoId": "tt-7609549831039700238",
+  "durationSec": 105.069,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "comedy",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A golden retriever lies on the floor next to a fan, looking up at a person on a bed holding a water bottle."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 3.4,
+        "frame": 102
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.6,
+        "frame": 108
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Inside a car, a woman holds a treat up, and a dog in the back seat looks at it intently."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.2,
+        "frame": 126
+      },
+      "text": "The expression of a traitor",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "type": "push_in",
+      "durationSec": 1.5,
+      "scaleFrom": 1,
+      "scaleTo": 1.8,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 9.8,
+        "frame": 294
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10,
+        "frame": 300
+      },
+      "toShotSize": "wide",
+      "shotDescription": "On a city sidewalk at night, a dog sits next to a statue of a person and a dog. A street performer disguised as the statue suddenly moves, startling the real dog."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 14.5,
+        "frame": 435
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.7,
+        "frame": 441
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A German Shepherd looks out a door, then turns its head towards the camera with a confused expression upon hearing a voiceover."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20,
+        "frame": 600
+      },
+      "text": "Prank my dog",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 20.8,
+        "frame": 624
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21,
+        "frame": 630
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot of a hand offering a treat to a dog. The hand is then shown to be empty, and the dog growls."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.2,
+        "frame": 636
+      },
+      "text": "Got his ass",
+      "durationSec": 4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 27.8,
+        "frame": 834
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28,
+        "frame": 840
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot of a hand pretending to give a treat to a beagle, who barks in frustration each time the hand is empty."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 34,
+        "frame": 1020
+      },
+      "text": "Prank my dog",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 34.6,
+        "frame": 1038
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.8,
+        "frame": 1044
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A black and a yellow Labrador watch as a person tests their patience with food, eventually bringing out a toy axe, causing the yellow lab to look concerned."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35.2,
+        "frame": 1056
+      },
+      "text": "Don't move.",
+      "durationSec": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 38,
+        "frame": 1140
+      },
+      "text": "Give a snack as a reward.",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 39.2,
+        "frame": 1176
+      },
+      "text": "Wait a moment",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 40.2,
+        "frame": 1206
+      },
+      "text": "I can do it.",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 41.2,
+        "frame": 1236
+      },
+      "text": "Do not move.",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 42.5,
+        "frame": 1275
+      },
+      "text": "I'm about to start.",
+      "durationSec": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 44.8,
+        "frame": 1344
+      },
+      "text": "Why an axe?",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 46,
+        "frame": 1380
+      },
+      "text": "Do you want to kill me?",
+      "durationSec": 1
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 47.8,
+        "frame": 1434
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48,
+        "frame": 1440
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A dog with a unique, deep bark chases other dogs down a street at night. It then squeezes through a small opening in a gate."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 48.5,
+        "frame": 1455
+      },
+      "text": "Bro is fluent in Barking 😭",
+      "durationSec": 8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 57.8,
+        "frame": 1734
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58,
+        "frame": 1740
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person opens a Big Mac box for themselves and a tiny toy burger for the dog sitting at the table. The dog growls."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 105.8,
+        "frame": 3174
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 106,
+        "frame": 3180
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A dog lies on its back with a tennis ball. The camera pans to a sleeping man, then back to the dog, who makes a funny face and licks its nose."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 111.8,
+        "frame": 3354
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 112,
+        "frame": 3360
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A Doberman watches its owner put on slap bracelets. The owner then slaps one onto the dog's snout."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 122.5,
+        "frame": 3675
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 122.7,
+        "frame": 3681
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man on a bed pretends to be scared, but his dog just looks at him with a sideways glance, unbothered."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 123.5,
+        "frame": 3705
+      },
+      "text": "Scare your dog to see their reaction...",
+      "durationSec": 3.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 128.5,
+        "frame": 3855
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 128.7,
+        "frame": 3861
+      },
+      "toShotSize": "wide",
+      "shotDescription": "In a grassy yard, a man fakes hitting a tennis ball with a bat, confusing his black lab."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 133.8,
+        "frame": 4014
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 134,
+        "frame": 4020
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A dog aggressively rejects a piece of lettuce but gently accepts a piece of chicken."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 140.8,
+        "frame": 4224
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 141,
+        "frame": 4230
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A man hides behind a couch to surprise his two dogs, who run up and lick his face when they find him."
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 15,
+      "avgShotDurationSec": 9.6,
+      "cutDensityPerSec": 0.1,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.3,
+        "medium": 0.4,
+        "wide": 0.3,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut_with_sfx"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "clip_specific_diegetic_sound",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "white_sans_serif_on_black_bar",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "comedic_reaction",
+      "openingShot": "Golden retriever startled by water bottle sound",
+      "endingShot": "Man's attempt to scare dogs results in licks",
+      "cta": null,
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 25,
+    "effect": 10,
+    "bgmSync": 60,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:43:03.447Z"
+  }
+}

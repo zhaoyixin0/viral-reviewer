@@ -1,0 +1,290 @@
+{
+  "videoId": "tt-7632628115314855182",
+  "durationSec": 95.503,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "comedy",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "Fake Dog Prank.",
+      "durationSec": 95,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A man with a fake German Shepherd approaches two women on a paved area, causing them to scream and run."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "type": "handheld",
+      "durationSec": 4.7,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "toShotSize": "wide",
+      "shotDescription": "In a pet food store aisle, a man with the fake dog scares a woman who throws a large bag of food and flees."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.3,
+        "frame": 309
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Outside a brick building, a woman exits and is immediately scared by the man with the fake dog, running away screaming."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.7,
+        "frame": 471
+      },
+      "toShotSize": "wide",
+      "shotDescription": "On a brick-paved city street, a woman in a pink hat is pranked and runs to hide behind a large flower planter."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15.8,
+        "frame": 474
+      },
+      "text": "Try Not To Laugh 😂 😂",
+      "durationSec": 6.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.5,
+        "frame": 675
+      },
+      "toShotSize": "wide",
+      "shotDescription": "On a road lined with palm trees, a woman throws her drink in the air and runs from the fake dog, climbing onto a park swing."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.8,
+        "frame": 894
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Under a covered walkway, a woman is startled and runs away. The prankster then throws the fake dog on the ground."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36.5,
+        "frame": 1095
+      },
+      "toShotSize": "wide",
+      "shotDescription": "On a sidewalk, a woman in a brown outfit runs away from the fake dog, looking back in terror."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40.8,
+        "frame": 1224
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Inside a Popeyes fast-food restaurant, a customer in line gets scared and vaults over the service counter to escape."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46,
+        "frame": 1380
+      },
+      "toShotSize": "wide",
+      "shotDescription": "In an outdoor patio area, a woman runs from the fake dog and jumps on top of a stone table for safety."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 52.5,
+        "frame": 1575
+      },
+      "text": "Try not to laugh 😂\nFake Dog Prank",
+      "durationSec": 6.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52.4,
+        "frame": 1572
+      },
+      "toShotSize": "wide",
+      "shotDescription": "At a gas station, a man in a mint green outfit is chased, jumping onto the hood of a car and then climbing the gas pump."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59,
+        "frame": 1770
+      },
+      "toShotSize": "wide",
+      "shotDescription": "In a parking garage, a man with a shopping bag is scared, hurdles a yellow railing, and runs away."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 64.8,
+        "frame": 1944
+      },
+      "text": "Fake Dog Prank",
+      "durationSec": 7.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "black",
+        "position": "top_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 64.7,
+        "frame": 1941
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Outside a convenience store, a man is chased. A second prankster, pretending to be blind with a fake black dog, joins in."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 72.5,
+        "frame": 2175
+      },
+      "toShotSize": "wide",
+      "shotDescription": "On a boardwalk at night, a person in a Spider-Man costume is approached but reacts calmly, realizing it's a prank."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 77.6,
+        "frame": 2328
+      },
+      "toShotSize": "wide",
+      "shotDescription": "On a beach, a group of women are scared by the fake dog and run screaming through the shallow water."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 83.6,
+        "frame": 2508
+      },
+      "text": "Fake Dog Prank",
+      "durationSec": 6.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "black",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 83.5,
+        "frame": 2505
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A FedEx driver is chased and jumps into his delivery truck for safety, with the prankster following him inside."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 89.8,
+        "frame": 2694
+      },
+      "toShotSize": "wide",
+      "shotDescription": "In a shopping mall decorated for Christmas, Santa Claus is pranked and runs away from the fake dog."
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 16,
+      "avgShotDurationSec": 5.97,
+      "cutDensityPerSec": 0.16,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 66.5,
+        "frame": 1995
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "tracking"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.05,
+        "medium": 0.25,
+        "wide": 0.7,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "simple_white_text",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "action_in_progress",
+      "openingShot": "Wide shot of a man with a fake dog pranking two women in a park.",
+      "endingShot": "Wide shot of Santa Claus running away from the fake dog in a mall.",
+      "cta": null,
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 20,
+    "bgmSync": 0,
+    "overall": 75
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:41:20.429Z"
+  }
+}

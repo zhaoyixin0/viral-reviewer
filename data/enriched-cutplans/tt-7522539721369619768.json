@@ -1,0 +1,200 @@
+{
+  "videoId": "tt-7522539721369619768",
+  "durationSec": 7.8,
+  "fps": 23.976,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "A woman in a hoodie looks emotionally at the camera, covering her mouth with her hand, during a golden hour sunrise on a mountain."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "how am i supposed to spend my 20's working when the world has places like this to explore",
+      "durationSec": 7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 2,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 1.8,
+        "frame": 43
+      },
+      "type": "pan_right",
+      "durationSec": 0.5,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2,
+        "frame": 48
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2,
+        "frame": 48
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "A wide view of a mountain landscape with a sea of clouds below during sunrise."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 2,
+        "frame": 48
+      },
+      "type": "static",
+      "durationSec": 2.8,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 4.8,
+        "frame": 115
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 115
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "A static shot of the sun rising over a sea of clouds, with a prominent lens flare."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 4.8,
+        "frame": 115
+      },
+      "type": "static",
+      "durationSec": 2.2,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 5.5,
+        "frame": 132
+      },
+      "type": "lens_flare",
+      "durationSec": 1.5
+    }
+  ],
+  "bgm": {
+    "name": "Ethereal Ambient Sound",
+    "trending": true,
+    "bpm": 60,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 2,
+          "frame": 48
+        },
+        "kind": "swell",
+        "note": "Music swells as the wide landscape is revealed"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 3,
+      "avgShotDurationSec": 2.33,
+      "cutDensityPerSec": 0.28,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 2
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Atmospheric and emotional, builds slowly",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "Minimalist, centered, white sans-serif font",
+      "colorGrade": "Warm, saturated, golden hour tones"
+    },
+    "structure": {
+      "hookFormat": "Emotional reaction shot with a relatable text overlay (question)",
+      "openingShot": "Medium close-up selfie of a woman reacting emotionally to a sunrise.",
+      "endingShot": "Extreme wide shot of a sunrise over a sea of clouds with a lens flare effect.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 2,
+        "frame": 48
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 10,
+    "effect": 25,
+    "bgmSync": 50,
+    "overall": 25
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:48:38.266Z"
+  }
+}

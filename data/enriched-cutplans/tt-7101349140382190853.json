@@ -1,0 +1,211 @@
+{
+  "videoId": "tt-7101349140382190853",
+  "durationSec": 23.473,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "comedy",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot of a laptop screen showing a video call in progress. A woman with glasses is speaking."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "i had to stop her from getting to my food during my impromptu meeting",
+      "durationSec": 3.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.6,
+        "frame": 228
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Jump cut in the video playback. The woman is now holding the cat, which is trying to get to her face."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 7.6,
+        "frame": 228
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.8,
+        "frame": 324
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Jump cut in the video playback. The woman holds the cat, which is now looking towards the camera."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 10.8,
+        "frame": 324
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 11,
+        "frame": 330
+      },
+      "type": "push_in",
+      "durationSec": 1,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.7,
+        "frame": 411
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Jump cut in the video playback. The woman is laughing while holding the cat."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 13.7,
+        "frame": 411
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.6,
+        "frame": 498
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Jump cut in the video playback. The woman is holding the cat, which is trying to move away."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 16.6,
+        "frame": 498
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.6,
+        "frame": 618
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Jump cut in the video playback. The woman is kissing the cat."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 20.6,
+        "frame": 618
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.6,
+        "frame": 648
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Jump cut in the video playback. The woman is holding the cat, which is meowing loudly."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 21.6,
+        "frame": 648
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 7,
+      "avgShotDurationSec": 3.28,
+      "cutDensityPerSec": 0.26,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 2.8,
+        "frame": 84
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "push_in"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0.2,
+        "wide": 0.8,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "standard_white_text_black_background",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "text_on_screen",
+      "openingShot": "POV shot of a laptop screen showing a video call.",
+      "endingShot": "The woman holds her loudly meowing cat.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 3,
+        "frame": 90
+      }
+    }
+  },
+  "density": {
+    "editing": 80,
+    "transition": 20,
+    "effect": 5,
+    "bgmSync": 0,
+    "overall": 65
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:14:16.328Z"
+  }
+}

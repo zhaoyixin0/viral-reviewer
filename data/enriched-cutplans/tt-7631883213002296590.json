@@ -1,0 +1,452 @@
+{
+  "videoId": "tt-7631883213002296590",
+  "durationSec": 126.851,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "listicle",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot of a boxer dog sniffing a white water bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.9,
+        "frame": 27
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A ball drops into the water bowl, startling the dog."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The boxer dog runs excitedly around the backyard."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.8,
+        "frame": 174
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A dachshund sniffs a toad on a stone ledge."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8,
+        "frame": 240
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "The dachshund snarls at the toad, showing its teeth."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.6,
+        "frame": 318
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot following a French bulldog walking down an apartment hallway."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 10.6,
+        "frame": 318
+      },
+      "type": "tracking",
+      "durationSec": 4.9,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.5,
+        "frame": 465
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The French bulldog stops and looks back with a scared expression."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.9,
+        "frame": 537
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A person falls off a bed, and a Rottweiler looks on."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.5,
+        "frame": 675
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A white pitbull sits on its bed, facing away from the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23,
+        "frame": 690
+      },
+      "text": "Hes mad we didn't want to cuddle with him 😂",
+      "durationSec": 6,
+      "style": {
+        "font": "Snapchat",
+        "color": "black"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.5,
+        "frame": 885
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The pitbull gives a dramatic side-eye."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31,
+        "frame": 930
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A yellow lab on a couch ignores its owner."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.2,
+        "frame": 936
+      },
+      "text": "She hates bathtime 😂",
+      "durationSec": 5.8,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.5,
+        "frame": 1125
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A golden retriever on a bed gives a dramatic look."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 39.8,
+        "frame": 1194
+      },
+      "type": "push_in",
+      "durationSec": 4,
+      "scaleFrom": 1,
+      "scaleTo": 1.2,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.7,
+        "frame": 1341
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A lab on a bed is asked what it's doing."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 49,
+        "frame": 1470
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The lab looks at the camera and sticks its tongue out."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 51.5,
+        "frame": 1545
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A dog sits near a Christmas tree with a concerned look."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 52.5,
+        "frame": 1575
+      },
+      "type": "push_in",
+      "durationSec": 5,
+      "scaleFrom": 1,
+      "scaleTo": 1.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59,
+        "frame": 1770
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A dog lies patiently in front of a line of toy trucks as a toy car flies by."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 105,
+        "frame": 3150
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A golden retriever in a car gives a suspicious side-eye."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 108.8,
+        "frame": 3264
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A black lab wearing glasses gives a quizzical look."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 113.7,
+        "frame": 3411
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A man calls his dog, who is sitting right next to him, and the dog looks confused."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 114,
+        "frame": 3420
+      },
+      "text": "Call your dog's name when they're right next to you",
+      "durationSec": 4.5,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "black"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 120.8,
+        "frame": 3624
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A brown pitbull on a couch makes a funny, confused face."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 125,
+        "frame": 3750
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A German Shepherd puppy reacts defiantly to being told it's not allowed on the bed."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 130.8,
+        "frame": 3924
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A Doberman with wrapped ears yawns and shakes its head."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 137,
+        "frame": 4110
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A Rottweiler looks at a cartoonish painting of itself and then at the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 137.5,
+        "frame": 4125
+      },
+      "text": "Bozey what do you think? Does that look like you?",
+      "durationSec": 3,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 142.8,
+        "frame": 4284
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A pitbull has a shocked reaction to its owner's comment."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 143.5,
+        "frame": 4305
+      },
+      "text": "He couldn't believe it 😂",
+      "durationSec": 3,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 147,
+        "frame": 4410
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A black greyhound with a very long snout looks up from its water bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 151,
+        "frame": 4530
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A dog in a car looks terrified during a car wash."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 151.5,
+        "frame": 4545
+      },
+      "text": "My first trip to the car wash And the last.",
+      "durationSec": 4,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 156,
+        "frame": 4680
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A small dog in a parking lot gives a suspicious look."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 156.5,
+        "frame": 4695
+      },
+      "text": "My neighbor's dog still doesn't quite trust me 😭",
+      "durationSec": 3,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "black"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 200,
+        "frame": 6000
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A single piece of bacon lies on a leather couch."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 201.5,
+        "frame": 6045
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A beagle gives an extremely guilty look to the camera."
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 31,
+      "avgShotDurationSec": 4.08,
+      "cutDensityPerSec": 0.24,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld",
+        "push_in"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.05,
+        "close_up": 0.45,
+        "medium": 0.4,
+        "wide": 0.1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "diegetic_only",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "social_media_overlay",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "cold_open",
+      "openingShot": "Medium shot of a boxer dog reacting to a ball in its water bowl.",
+      "endingShot": "Close-up of a beagle with a guilty expression.",
+      "cta": null,
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 25,
+    "bgmSync": 70,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:37:53.023Z"
+  }
+}

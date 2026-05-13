@@ -1,0 +1,478 @@
+{
+  "videoId": "tt-7222182343480593666",
+  "durationSec": 54.5,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds a McDonald's Big Mac in a kitchen setting."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.5,
+        "frame": 45
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator appears behind a wooden board, comparing a large homemade burger to the McDonald's Big Mac."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The creator takes a bite of the McDonald's Big Mac."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds the larger, homemade Big Mac, mirroring the opening shot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.8,
+        "frame": 204
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Back to the creator comparing the two burgers side-by-side."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.8,
+        "frame": 324
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The creator takes a large bite of the homemade burger."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12,
+        "frame": 360
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Back to the creator reacting after tasting the homemade burger."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands use a knife to finely dice an onion on a wooden cutting board."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.8,
+        "frame": 504
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands open a glass jar of pickles."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18,
+        "frame": 540
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Fingers hold up a slice of pickle to the camera."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.8,
+        "frame": 564
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands dice the pickle slices on the cutting board."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20,
+        "frame": 600
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands shred iceberg lettuce with a knife."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.5,
+        "frame": 645
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A pile of finely shredded lettuce is shown."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22,
+        "frame": 660
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands use a knife to slice the bottom of a burger bun to create the middle layer."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.5,
+        "frame": 735
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The freshly cut middle bun slice is shown."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25,
+        "frame": 750
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A plastic container of ground beef is placed on the cutting board."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.8,
+        "frame": 774
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands roll the ground beef into balls."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.5,
+        "frame": 825
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Two perfectly formed beef balls are held in hand."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28,
+        "frame": 840
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Mayonnaise is squeezed into a white bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29,
+        "frame": 870
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Diced onions are added to the mayonnaise."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.8,
+        "frame": 894
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Diced pickles are added to the bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30.2,
+        "frame": 906
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A sequence of adding other sauce ingredients: mustard, tomato sauce, paprika, etc."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 30.5,
+        "frame": 915
+      },
+      "type": "text_overlay",
+      "durationSec": 3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33.5,
+        "frame": 1005
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The finished Big Mac sauce is shown, fully mixed in the bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34,
+        "frame": 1020
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Hands place the three bun pieces onto a hot cast iron pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36,
+        "frame": 1080
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds up a perfectly toasted golden-brown bun."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37,
+        "frame": 1110
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A beef ball is placed on the hot pan and smashed flat with a spatula."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.5,
+        "frame": 1155
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The second beef ball is smashed flat next to the first one."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.8,
+        "frame": 1194
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Salt and pepper are sprinkled over the raw side of the patties."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.5,
+        "frame": 1245
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The patties are flipped, revealing a dark brown crust."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43,
+        "frame": 1290
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Diced onions are sprinkled onto the cooked patties."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.5,
+        "frame": 1335
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Slices of American cheese are placed on top of each patty."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 45.8,
+        "frame": 1374
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Burger assembly begins: sauce is spread on the bottom bun."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.8,
+        "frame": 1404
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Shredded lettuce is added on top of the sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 47.5,
+        "frame": 1425
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The first beef patty with melted cheese is placed on the lettuce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48.2,
+        "frame": 1446
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Pickle slices are added on top of the cheese."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 49,
+        "frame": 1470
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The middle bun, with sauce on it, is placed on top."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 50,
+        "frame": 1500
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "More lettuce is added to the middle bun."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 51,
+        "frame": 1530
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The second beef patty with cheese is added."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52,
+        "frame": 1560
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Sauce is spread on the inside of the top bun."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52.8,
+        "frame": 1584
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The top bun is placed on the burger to complete it."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 53.2,
+        "frame": 1596
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand gently pats the top of the finished burger."
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Electronic Pop",
+    "trending": true,
+    "bpm": 125,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 13.8,
+          "frame": 414
+        },
+        "kind": "beat",
+        "note": "Start of the fast-cut cooking tutorial section."
+      },
+      {
+        "at": {
+          "sec": 34,
+          "frame": 1020
+        },
+        "kind": "beat",
+        "note": "Transition to cooking the buns and patties."
+      },
+      {
+        "at": {
+          "sec": 45.8,
+          "frame": 1374
+        },
+        "kind": "beat",
+        "note": "Start of the final assembly montage."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 35,
+      "avgShotDurationSec": 1.54,
+      "cutDensityPerSec": 0.65,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.1,
+        "close_up": 0.7,
+        "medium": 0.2,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "White sans-serif font with a black outline, centered on screen for recipe list.",
+      "colorGrade": "Warm & Natural"
+    },
+    "structure": {
+      "hookFormat": "Comparison",
+      "openingShot": "Close-up of a McDonald's Big Mac.",
+      "endingShot": "Hero shot of the completed, much larger homemade Big Mac.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 54,
+        "frame": 1620
+      }
+    }
+  },
+  "density": {
+    "editing": 95,
+    "transition": 10,
+    "effect": 40,
+    "bgmSync": 90,
+    "overall": 90
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:22:18.526Z"
+  }
+}

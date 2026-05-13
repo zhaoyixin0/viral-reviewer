@@ -1,0 +1,306 @@
+{
+  "videoId": "tt-7064703044331523375",
+  "durationSec": 26.236,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "ugc_native",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman in a gym is in the starting position for a heavy deadlift."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 6
+      },
+      "text": "deadlifting 425 pounds is cool...",
+      "durationSec": 5.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 5.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.5,
+        "frame": 330
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A side angle of the woman preparing for the lift, showing other gym-goers in the background."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.5,
+        "frame": 390
+      },
+      "text": "but seeing everyone's reaction is cooler",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.5,
+        "frame": 450
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A close-up on an older man in a yellow cap looking surprised."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 7.5,
+        "frame": 450
+      },
+      "type": "push_in",
+      "durationSec": 2,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.5,
+        "frame": 570
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A close-up on two younger men looking on with serious expressions."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 9.5,
+        "frame": 570
+      },
+      "type": "push_in",
+      "durationSec": 3,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.5,
+        "frame": 750
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A medium shot of a man in a white t-shirt and visor with a shocked expression."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 12.5,
+        "frame": 750
+      },
+      "type": "push_in",
+      "durationSec": 2.3,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.8,
+        "frame": 888
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A medium shot of a woman looking on."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 14.8,
+        "frame": 888
+      },
+      "type": "push_in",
+      "durationSec": 1.7,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.5,
+        "frame": 990
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A medium shot of a man in a black shirt looking on."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 16.5,
+        "frame": 990
+      },
+      "type": "push_in",
+      "durationSec": 3,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.5,
+        "frame": 1170
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A medium shot of another man looking on."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 19.5,
+        "frame": 1170
+      },
+      "type": "push_in",
+      "durationSec": 3,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_in_out"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.5,
+        "frame": 1350
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A close-up of a man with a towel over his head, looking impressed."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 22.5,
+        "frame": 1350
+      },
+      "type": "push_in",
+      "durationSec": 3,
+      "scaleFrom": 1,
+      "scaleTo": 1.1,
+      "easing": "ease_in_out"
+    }
+  ],
+  "bgm": {
+    "name": "Without Me - Eminem",
+    "trending": true,
+    "bpm": 112,
+    "startsAt": {
+      "sec": 7.5,
+      "frame": 450
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 7.5,
+          "frame": 450
+        },
+        "kind": "drop",
+        "note": "The main beat and vocal line 'Now this looks like a job for me' starts, initiating the sequence of reaction shots."
+      },
+      {
+        "at": {
+          "sec": 9.5,
+          "frame": 570
+        },
+        "kind": "beat",
+        "note": "Cut to the next reaction is synced to the beat."
+      },
+      {
+        "at": {
+          "sec": 12.5,
+          "frame": 750
+        },
+        "kind": "beat",
+        "note": "Cut to the next reaction is synced to the beat."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 9,
+      "avgShotDurationSec": 2.83,
+      "cutDensityPerSec": 0.31,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": {
+        "sec": 7.5,
+        "frame": 450
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "push_in"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.33,
+        "medium": 0.45,
+        "wide": 0.22,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut_on_beat"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "build_and_drop",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "standard_tiktok_sans_serif",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "text_on_screen_setup",
+      "openingShot": "Wide shot of the subject performing the main action (deadlift).",
+      "endingShot": "Close-up of the final reaction shot, a man looking impressed.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 7.5,
+        "frame": 450
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 70,
+    "effect": 60,
+    "bgmSync": 95,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:15:21.602Z"
+  }
+}

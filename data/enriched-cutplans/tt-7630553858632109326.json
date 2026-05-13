@@ -1,0 +1,649 @@
+{
+  "videoId": "tt-7630553858632109326",
+  "durationSec": 104.07,
+  "fps": 39.79170004806922,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A close-up shot of a fancy meal on a table with dry ice smoke billowing out. A person is in the background."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.9,
+        "frame": 36
+      },
+      "toShotSize": "text_screen",
+      "shotDescription": "Black screen with yellow text 'Bali' and white text 'Indonesia'."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.2,
+        "frame": 48
+      },
+      "text": "come with me as I",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.8,
+        "frame": 72
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman in a bright pink dress sits on a large swing with a lush green valley and blue sky in the background."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 2,
+        "frame": 80
+      },
+      "type": "text_overlay",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.1,
+        "frame": 84
+      },
+      "text": "come with me as I travel to Bali",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.9,
+        "frame": 115
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Interior of a luxury shopping area in an airport, showing Valentino and Dolce & Gabbana stores."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 4,
+        "frame": 159
+      },
+      "type": "text_overlay",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 4.8,
+        "frame": 191
+      },
+      "type": "text_overlay",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.8,
+        "frame": 231
+      },
+      "toShotSize": "wide",
+      "shotDescription": "View from an airplane window, showing the wing over clouds and the ocean."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 6.8,
+        "frame": 271
+      },
+      "type": "text_overlay",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 350
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A colorful 'Welcome to Bali' mural inside the airport."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.8,
+        "frame": 430
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV shot driving into a resort entrance with lush greenery."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.8,
+        "frame": 470
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The ornate, golden reception desk of the Apurva Kempinski Bali resort."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.8,
+        "frame": 549
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Exterior view of the terraced architecture of the resort."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.8,
+        "frame": 589
+      },
+      "toShotSize": "wide",
+      "shotDescription": "High-angle shot looking down at resort villas, each with a private pool."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 629
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A large, turquoise resort swimming pool lined with cabanas."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.8,
+        "frame": 669
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A small chalkboard sign that reads 'Balinese Station' at a buffet."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 17.8,
+        "frame": 708
+      },
+      "type": "pan_right",
+      "durationSec": 3,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.8,
+        "frame": 828
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A smaller, more secluded pool area surrounded by trees."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.8,
+        "frame": 867
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A scuba diver inside a large aquarium surrounded by schools of yellow fish."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 22.8,
+        "frame": 907
+      },
+      "type": "text_overlay",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.8,
+        "frame": 947
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A vibrant purple liquid is poured into a large wine glass."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.8,
+        "frame": 987
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Return to the shot of the meal with dry ice smoke."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.8,
+        "frame": 1066
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A pan across a dark, intricately carved stone wall."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.8,
+        "frame": 1106
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A wide shot of a restaurant set inside a large, dimly lit cave."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29,
+        "frame": 1154
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Selfie shot of the creator inside the cave restaurant."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.8,
+        "frame": 1186
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up of two white, cylindrical food items on a black stone holder."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.8,
+        "frame": 1265
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holding a wine glass with 'The Cave' text overlay."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33.8,
+        "frame": 1345
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A wide shot of the cave restaurant with colorful light projections on the ceiling."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 36,
+        "frame": 1433
+      },
+      "type": "light_projection",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.8,
+        "frame": 1504
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman in the pink dress walks through a lush garden path."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.8,
+        "frame": 1544
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman on the Bali Swing, with a 'Bali Swing' text overlay."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40.8,
+        "frame": 1624
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman poses for a photo inside a large, heart-shaped wicker structure."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43.8,
+        "frame": 1743
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A wide shot of a water temple with statues and a large pond."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 45.8,
+        "frame": 1822
+      },
+      "toShotSize": "high_angle",
+      "shotDescription": "Looking down at a school of large koi fish in the water."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.8,
+        "frame": 1862
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The woman, now in a neon yellow outfit, crouches on a stone platform feeding the koi fish."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48.8,
+        "frame": 1942
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A local woman working at an outdoor food stall."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 49.8,
+        "frame": 1982
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Two people walk down a road in a village towards a large mountain in the distance."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 50.8,
+        "frame": 2021
+      },
+      "type": "text_overlay",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52.8,
+        "frame": 2101
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A wide shot of the Lempuyang Temple complex."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 53.8,
+        "frame": 2141
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The iconic photo at the 'Gates of Heaven,' with a mirror creating a water reflection effect. A person in yellow is jumping."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.8,
+        "frame": 2340
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Another photo at the Gates of Heaven, this time with a group of four people sitting."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 101.8,
+        "frame": 4051
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A stone sign for 'PURA DESA' temple."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 102.8,
+        "frame": 4091
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A beautiful, lush spa garden with a stream and small waterfall."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 104.8,
+        "frame": 4170
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spa therapist presents a tray of small bottles of essential oils."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 106.8,
+        "frame": 4250
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A round tub filled with a colorful pattern of flower petals is being filled with water."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 107.8,
+        "frame": 4290
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator is smiling while sitting in the flower bath."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 109.8,
+        "frame": 4369
+      },
+      "toShotSize": "wide",
+      "shotDescription": "People walk towards the entrance of the Elephant Sanctuary, flanked by large elephant statues."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 110.8,
+        "frame": 4409
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Koi fish swimming in a pond, with 'Elephants Sanctuary' text overlay."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 111.8,
+        "frame": 4449
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Two people riding on the back of an elephant."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 114.8,
+        "frame": 4568
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator poses next to two elephants, one of which is holding a flower wreath with its trunk."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 116.8,
+        "frame": 4648
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A group photo in front of the Tirta Empul Hindu Water Temple entrance."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 117.8,
+        "frame": 4687
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Three women in green sarongs sit on the ground meditating before the water ritual."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 119.8,
+        "frame": 4767
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Many people stand in the holy spring water, participating in the purification ritual."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 121.8,
+        "frame": 4847
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator is being helped into traditional Balinese attire."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 122.8,
+        "frame": 4886
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Four women in colorful traditional Balinese outfits pose on a sandy beach."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 124.8,
+        "frame": 4966
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A large blue sign for 'Atlas Beach Club'."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 126.8,
+        "frame": 5046
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Two large white floating trays filled with food (floating brunch) in a swimming pool."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 128.8,
+        "frame": 5125
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A beautiful sunset over the ocean, viewed from the edge of the beach club's pool."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 130.8,
+        "frame": 5205
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The beach club at night, with colorful lights and a stage in the background."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 132.8,
+        "frame": 5284
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman celebrating on an orange floatie in the pool at night."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 136.8,
+        "frame": 5444
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Selfie video of the creator in a room, summarizing the trip."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 139.5,
+        "frame": 5551
+      },
+      "text": "make sure y'all let me know if you want a part two",
+      "durationSec": 2
+    }
+  ],
+  "bgm": {
+    "name": "Voiceover Narration",
+    "trending": false,
+    "bpm": null,
+    "startsAt": {
+      "sec": 1,
+      "frame": 40
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 46,
+      "avgShotDurationSec": 2.26,
+      "cutDensityPerSec": 0.43,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "pan_right"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.2,
+        "medium": 0.4,
+        "wide": 0.4,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_voiceover",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "simple, white, sans-serif, bottom-center",
+      "colorGrade": "vibrant_saturated"
+    },
+    "structure": {
+      "hookFormat": "in_medias_res_with_direct_address",
+      "openingShot": "Close-up of a dramatic food presentation with dry ice.",
+      "endingShot": "Selfie video summarizing the trip and providing a call to action.",
+      "cta": "Request a 'part two' for more details.",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 10,
+    "effect": 55,
+    "bgmSync": 75,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:46:48.903Z"
+  }
+}

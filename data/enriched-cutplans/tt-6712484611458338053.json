@@ -1,0 +1,181 @@
+{
+  "videoId": "tt-6712484611458338053",
+  "durationSec": 13.422,
+  "fps": 30,
+  "resolution": {
+    "width": 576,
+    "height": 1024
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A hand twists a red lipstick tube open."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.9,
+        "frame": 27
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A makeup brush takes some product from the tip of the red lipstick."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The brush applies the red lipstick onto a fingernail, starting from the cuticle."
+    },
+    {
+      "kind": "speed_change",
+      "at": {
+        "sec": 3.5,
+        "frame": 105
+      },
+      "multiplier": 2.5,
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.6,
+        "frame": 168
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A hand with all nails painted red is shown next to a bottle of clear nail polish."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 5.9,
+        "frame": 177
+      },
+      "type": "text_overlay",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.9,
+        "frame": 177
+      },
+      "text": "Clear Enamel",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.2,
+        "frame": 216
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Top-down shot of the hand and the clear polish bottle being opened."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.7,
+        "frame": 261
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down shot of the clear polish being applied to the middle finger."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.5,
+        "frame": 345
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Top-down shot showing the final result: a hand with glossy, red-painted nails."
+    }
+  ],
+  "bgm": {
+    "name": "Good As Hell",
+    "trending": true,
+    "bpm": 96,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in",
+        "note": "The main chorus begins immediately."
+      },
+      {
+        "at": {
+          "sec": 9.5,
+          "frame": 285
+        },
+        "kind": "vocal_phrase",
+        "note": "Vocal phrase 'I do my hair toss' starts."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 7,
+      "avgShotDurationSec": 1.83,
+      "cutDensityPerSec": 0.47,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.1,
+        "close_up": 0.6,
+        "medium": 0.1,
+        "wide": 0.2,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_trending_pop",
+      "bgmSyncTightness": "moderate",
+      "subtitleStyle": "minimal_sans_serif_overlay",
+      "colorGrade": "bright_clean_natural"
+    },
+    "structure": {
+      "hookFormat": "intriguing_action",
+      "openingShot": "Extreme close-up of a brush taking product from a lipstick, creating curiosity.",
+      "endingShot": "Wide top-down shot revealing the glossy, finished nails.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 11.5,
+        "frame": 345
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 15,
+    "bgmSync": 60,
+    "overall": 70
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:24:58.627Z"
+  }
+}

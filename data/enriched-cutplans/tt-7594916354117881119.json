@@ -1,0 +1,230 @@
+{
+  "videoId": "tt-7594916354117881119",
+  "durationSec": 25.611,
+  "fps": 29.97,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "edit",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Aerial top-down shot of a turquoise ocean meeting a sandy beach, with two people standing at the water's edge."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "push_in",
+      "durationSec": 8.8,
+      "scaleFrom": 1,
+      "scaleTo": 1.2,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "one life.",
+      "durationSec": 25.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "type": "cross_dissolve",
+      "durationFrames": 15
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Aerial top-down shot transitioning to clear turquoise water, revealing the coral reef below the surface."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 10.5,
+        "frame": 315
+      },
+      "type": "cross_dissolve",
+      "durationFrames": 15
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.5,
+        "frame": 315
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Aerial top-down shot of a traditional blue and white outrigger boat (jukung) floating in the turquoise water."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 14.8,
+        "frame": 444
+      },
+      "type": "cross_dissolve",
+      "durationFrames": 15
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.8,
+        "frame": 444
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Aerial top-down shot of two boats, the outrigger and a modern white speedboat, in deep blue water."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 17.5,
+        "frame": 524
+      },
+      "type": "cross_dissolve",
+      "durationFrames": 15
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17.5,
+        "frame": 524
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Aerial top-down shot of the white speedboat alone in the vast deep blue ocean."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 20.5,
+        "frame": 614
+      },
+      "type": "cross_dissolve",
+      "durationFrames": 15
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.5,
+        "frame": 614
+      },
+      "toShotSize": "extreme_wide",
+      "shotDescription": "Aerial top-down shot of three sea turtles swimming in the open deep blue ocean."
+    }
+  ],
+  "bgm": {
+    "name": "Inspirational Piano with Motivational Speech",
+    "trending": false,
+    "bpm": 65,
+    "startsAt": {
+      "sec": 1,
+      "frame": 30
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in",
+        "note": "Voiceover starts: 'One life.'"
+      },
+      {
+        "at": {
+          "sec": 3.5,
+          "frame": 105
+        },
+        "kind": "vocal_phrase",
+        "note": "'Why aren't we running like we're on fire...'"
+      },
+      {
+        "at": {
+          "sec": 9.2,
+          "frame": 276
+        },
+        "kind": "vocal_phrase",
+        "note": "'We got one shot at this...'"
+      },
+      {
+        "at": {
+          "sec": 16.5,
+          "frame": 495
+        },
+        "kind": "vocal_phrase",
+        "note": "'I got one shot at this life...'"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 6,
+      "avgShotDurationSec": 4.25,
+      "cutDensityPerSec": 0.19,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "push_in"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 0,
+        "extreme_wide": 1
+      },
+      "transitionPatterns": [
+        "cross_dissolve"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "motivational_speech_over_ambient_music",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "minimalist_center_sans_serif",
+      "colorGrade": "vibrant_natural"
+    },
+    "structure": {
+      "hookFormat": "philosophical_statement",
+      "openingShot": "Aerial top-down of two people on a vast beach, establishing a theme of scale and life's journey.",
+      "endingShot": "Aerial top-down of sea turtles swimming freely, symbolizing freedom and purpose.",
+      "cta": null,
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 15,
+    "effect": 5,
+    "bgmSync": 25,
+    "overall": 20
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:49:00.015Z"
+  }
+}

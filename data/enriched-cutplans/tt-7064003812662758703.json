@@ -1,0 +1,184 @@
+{
+  "videoId": "tt-7064003812662758703",
+  "durationSec": 15.369,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman in a gym is shown from the front, holding two heavy dumbbells on her shoulders. This is the 'before' shot."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 7.8,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "8 MONTH DIFFERENCE",
+      "durationSec": 7.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "pink"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "text": "JUNE '21",
+      "durationSec": 7,
+      "style": {
+        "font": "sans-serif",
+        "color": "pink"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The same woman, now visibly more toned, is shown in a different gym setting. She holds a kettlebell overhead with one arm and performs a high-knee exercise with stability. This is the 'after' shot."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "type": "static",
+      "durationSec": 7.2,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "text": "FEB '22",
+      "durationSec": 6.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "pink"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "I ain't ever been with a baddie (TikTok Sound)",
+    "trending": true,
+    "bpm": 155,
+    "startsAt": {
+      "sec": 7.8,
+      "frame": 234
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in",
+        "note": "Raw, acapella-style vocal starts"
+      },
+      {
+        "at": {
+          "sec": 7.8,
+          "frame": 234
+        },
+        "kind": "drop",
+        "note": "Main beat and produced track kicks in, synced with the visual transformation"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 2,
+      "avgShotDurationSec": 7.5,
+      "cutDensityPerSec": 0.067,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": {
+        "sec": 7.8,
+        "frame": 234
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0.5,
+        "wide": 0.5,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "raw_vocal_to_beat_drop",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "bold_pink_sans_serif_upper",
+      "colorGrade": "natural_gym_lighting"
+    },
+    "structure": {
+      "hookFormat": "before_after_text_overlay",
+      "openingShot": "Wide shot of the 'before' state, showing struggle with an exercise.",
+      "endingShot": "Medium shot of the 'after' state, showing confident execution of the exercise.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 7.8,
+        "frame": 234
+      }
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 5,
+    "effect": 10,
+    "bgmSync": 95,
+    "overall": 30
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:16:08.638Z"
+  }
+}

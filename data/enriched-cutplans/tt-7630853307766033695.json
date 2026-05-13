@@ -1,0 +1,690 @@
+{
+  "videoId": "tt-7630853307766033695",
+  "durationSec": 44.488,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.85,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A beauty shot of sliced steak with chimichurri sauce and roasted garlic on a wooden board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.3,
+        "frame": 9
+      },
+      "text": "I love living",
+      "durationSec": 0.8,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.9,
+        "frame": 27
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman holds a piece of steak over her hand, showing it to the camera. A man (her stepdad) is in the background."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.1,
+        "frame": 33
+      },
+      "text": "because",
+      "durationSec": 0.8,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.1,
+        "frame": 63
+      },
+      "text": "I get to eat good steak whenever I want",
+      "durationSec": 1.8,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.1,
+        "frame": 123
+      },
+      "text": "helluurr everyone",
+      "durationSec": 1,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.2,
+        "frame": 156
+      },
+      "text": "welcome to cooking with my stepdad",
+      "durationSec": 1.4,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.1,
+        "frame": 183
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The stepdad is in the kitchen, chopping garlic on a cutting board."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.9,
+        "frame": 207
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up on the stepdad's hands mincing garlic with a knife."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7,
+        "frame": 210
+      },
+      "text": "cooking up some steak with",
+      "durationSec": 1.8,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.4,
+        "frame": 252
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up on hands chopping fresh parsley."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "text": "chimichurri sauce",
+      "durationSec": 1,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.4,
+        "frame": 282
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Wider shot of the stepdad chopping herbs."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10,
+        "frame": 300
+      },
+      "text": "feeling a little fancy",
+      "durationSec": 1,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.5,
+        "frame": 315
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Extreme close-up of a knife rapidly chopping a pile of green herbs."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.2,
+        "frame": 336
+      },
+      "text": "it's super quick and easy",
+      "durationSec": 1.5,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12,
+        "frame": 360
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands using a mortar and pestle to grind spices."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.8,
+        "frame": 384
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Chopped herbs are scraped from a cutting board into a white bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.2,
+        "frame": 396
+      },
+      "text": "some garlic, parsley and fresh oregano",
+      "durationSec": 2.2,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.2,
+        "frame": 426
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Minced garlic is added to the bowl of herbs."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.2,
+        "frame": 456
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Red wine vinegar is poured into the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15.8,
+        "frame": 474
+      },
+      "text": "then add some",
+      "durationSec": 0.8,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.2,
+        "frame": 486
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Ground pepper from the mortar is added to the bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17,
+        "frame": 510
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Olive oil is poured generously into the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.2,
+        "frame": 516
+      },
+      "text": "a lot of olive oil",
+      "durationSec": 1.2,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.2,
+        "frame": 546
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand squeezes a lemon half over the bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.3,
+        "frame": 579
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoon stirs the chimichurri sauce in the white bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.5,
+        "frame": 585
+      },
+      "text": "if you guys are not familiar with chimichurri",
+      "durationSec": 1.8,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.3,
+        "frame": 639
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A hand seasons several raw filet mignon steaks on a tray with salt and pepper."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.5,
+        "frame": 645
+      },
+      "text": "it's this herbaceous, garlicky green sauce from Argentina",
+      "durationSec": 3.5,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.2,
+        "frame": 696
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands place the seasoned steaks into a hot, smoking pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 25.2,
+        "frame": 756
+      },
+      "text": "it is uncooked so it's very aromatic",
+      "durationSec": 1.8,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.8,
+        "frame": 804
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The steaks are searing in the pan. Butter and whole garlic cloves are added."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 27.2,
+        "frame": 816
+      },
+      "text": "and usually served with grilled meat",
+      "durationSec": 1.6,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29,
+        "frame": 870
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The steaks are flipped in the pan, revealing a golden-brown crust."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.2,
+        "frame": 876
+      },
+      "text": "Also you guys have been asking if",
+      "durationSec": 1.5,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30.1,
+        "frame": 903
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The stepdad stands at the stove, cooking the steaks in the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 30.8,
+        "frame": 924
+      },
+      "text": "my stepdad is a chef",
+      "durationSec": 1,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.4,
+        "frame": 942
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand uses tongs to tilt a steak while basting it with melted butter and garlic in the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 32,
+        "frame": 960
+      },
+      "text": "and the answer is",
+      "durationSec": 1,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 32.7,
+        "frame": 981
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A perfectly cooked steak is lifted from the pan with tongs and placed onto a wooden board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.5,
+        "frame": 1005
+      },
+      "text": "nope 😩",
+      "durationSec": 0.8,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.1,
+        "frame": 1023
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A knife and fork begin to slice the cooked steak on the board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 34.4,
+        "frame": 1032
+      },
+      "text": "he just loves cooking, especially steak",
+      "durationSec": 1.8,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36.3,
+        "frame": 1089
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The steak is sliced further, revealing a perfect medium-rare pink center."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 36.6,
+        "frame": 1098
+      },
+      "text": "which is perfect because I have",
+      "durationSec": 1.4,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.9,
+        "frame": 1137
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The sliced steak is on the board, and a hand stirs the chimichurri sauce in the background."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 38.2,
+        "frame": 1146
+      },
+      "text": "low blood pressure like 90% of the time",
+      "durationSec": 1.8,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.5,
+        "frame": 1185
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoon drizzles the chimichurri sauce over the sliced steak."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 40,
+        "frame": 1200
+      },
+      "text": "so yeah",
+      "durationSec": 0.6,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40.8,
+        "frame": 1224
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Final beauty shot of the completed steak dish, camera pans slightly."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 40.8,
+        "frame": 1224
+      },
+      "type": "pan_left",
+      "durationSec": 1.2,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 41,
+        "frame": 1230
+      },
+      "text": "this is what dinner looks like",
+      "durationSec": 1.2,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42.1,
+        "frame": 1263
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The stepdad and the woman are eating the steak and enjoying it."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 42.5,
+        "frame": 1275
+      },
+      "text": "in a random Tuesday",
+      "durationSec": 1,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 43.7,
+        "frame": 1311
+      },
+      "text": "which is exactly why",
+      "durationSec": 0.8,
+      "style": {
+        "font": "handwritten",
+        "color": "white"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Lo-fi Jazz Piano",
+    "trending": false,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 24,
+      "avgShotDurationSec": 1.84,
+      "cutDensityPerSec": 0.52,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 32.7,
+        "frame": 981
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.1,
+        "close_up": 0.65,
+        "medium": 0.25,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_loop",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "handwritten_font_overlay",
+      "colorGrade": "warm_natural"
+    },
+    "structure": {
+      "hookFormat": "visual_and_statement_hook",
+      "openingShot": "final_product_reveal",
+      "endingShot": "reaction_shot",
+      "cta": null,
+      "payoffAt": {
+        "sec": 40.8,
+        "frame": 1224
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 20,
+    "bgmSync": 15,
+    "overall": 75
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:56:14.886Z"
+  }
+}

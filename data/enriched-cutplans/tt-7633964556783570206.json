@@ -1,0 +1,453 @@
+{
+  "videoId": "tt-7633964556783570206",
+  "durationSec": 42.2,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A person's hands hold two finished broccoli cheddar melts on a wooden board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "5 minute, high protein meal that SAVED me while losing 55 lbs pp",
+      "durationSec": 3.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman smiles at the camera while holding a checkered bag."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.2,
+        "frame": 126
+      },
+      "text": "~55 lbs pp eating meals I ENJOY",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.8,
+        "frame": 174
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A package of Thomas' English muffins is placed on a wooden board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6,
+        "frame": 180
+      },
+      "text": "low cal English muffin",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.8,
+        "frame": 294
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands split an English muffin in half."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11,
+        "frame": 330
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The two muffin halves are on the board, and a glass bowl is placed next to them."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12,
+        "frame": 360
+      },
+      "text": "ANY chicken works, I like canned here",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.5,
+        "frame": 375
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A can of chunk chicken is shown."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The canned chicken is now in the glass bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.8,
+        "frame": 444
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A Laughing Cow cheese wedge is added to the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15,
+        "frame": 450
+      },
+      "text": "2 laughing cows",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.8,
+        "frame": 504
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoonful of chopped broccoli is added to the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17,
+        "frame": 510
+      },
+      "text": "cooked/chopped broccoli",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18,
+        "frame": 540
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Ranch seasoning is sprinkled into the bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19,
+        "frame": 570
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Shredded cheese is added to the bowl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.5,
+        "frame": 585
+      },
+      "text": "little blob of garlic parm sauce",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.5,
+        "frame": 615
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Garlic parmesan sauce is poured into the bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22,
+        "frame": 660
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The ingredients in the bowl are mixed with a spoon."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.2,
+        "frame": 666
+      },
+      "text": "mix",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.5,
+        "frame": 705
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand holds the bowl showing the fully mixed ingredients."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23.8,
+        "frame": 714
+      },
+      "text": "trust the process ✨",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25,
+        "frame": 750
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The mixture is spread onto the English muffin halves."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.8,
+        "frame": 804
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Shredded cheese is sprinkled on top of the mixture."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28,
+        "frame": 840
+      },
+      "text": "air fry for 6 min",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29,
+        "frame": 870
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The cooked melts are shown on the board next to a bowl of salad."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.5,
+        "frame": 945
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Cheese sauce is drizzled over the finished melts."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.8,
+        "frame": 954
+      },
+      "text": "drizzle of cheese sauce is fine ✨",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35,
+        "frame": 1050
+      },
+      "text": "high protein, healthy girl\nBROCCOLI CHEDDAR TOASTY BITES",
+      "durationSec": 3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.5,
+        "frame": 1155
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand pulls one of the melts apart, revealing a cheese pull."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 39,
+        "frame": 1170
+      },
+      "text": "crush your goals with my digital cookbooks",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40.8,
+        "frame": 1224
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand gives a thumbs-up next to a printed cookbook page showing the recipe."
+    }
+  ],
+  "bgm": {
+    "name": "Get It On Tonite - Montell Jordan",
+    "trending": false,
+    "bpm": 100,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.5,
+          "frame": 15
+        },
+        "kind": "beat",
+        "note": "Main drum beat starts"
+      },
+      {
+        "at": {
+          "sec": 7.8,
+          "frame": 234
+        },
+        "kind": "vocal_in",
+        "note": "Main vocals begin"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 21,
+      "avgShotDurationSec": 2.02,
+      "cutDensityPerSec": 0.47,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.9,
+        "medium": 0.05,
+        "wide": 0.05,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Consistent upbeat R&B track throughout",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "Centered, simple white sans-serif font",
+      "colorGrade": "Warm, bright, and saturated"
+    },
+    "structure": {
+      "hookFormat": "result_first",
+      "openingShot": "Close-up of the finished, delicious-looking meal.",
+      "endingShot": "Close-up of the recipe in a cookbook, promoting the product.",
+      "cta": "Implicit CTA to purchase the creator's digital cookbooks.",
+      "payoffAt": {
+        "sec": 38.5,
+        "frame": 1155
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 15,
+    "bgmSync": 80,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:18:18.608Z"
+  }
+}

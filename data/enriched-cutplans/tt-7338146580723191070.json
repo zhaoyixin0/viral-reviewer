@@ -1,0 +1,334 @@
+{
+  "videoId": "tt-7338146580723191070",
+  "durationSec": 90.267,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "listicle",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "Do not",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "text": "MAKE THIS MISTAKE",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.5,
+        "frame": 45
+      },
+      "text": "In Tokyo",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.6,
+        "frame": 78
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up shot of two pieces of Spam musubi on a white plate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.6,
+        "frame": 108
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up of meat being grilled on a small charcoal grill, with a lot of smoke."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.7,
+        "frame": 201
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A piece of tonkatsu (fried pork cutlet) is held up by chopsticks, showing the juicy interior."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.6,
+        "frame": 318
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A deconstructed ramen dish (tsukemen) with noodles, pork belly, soft-boiled eggs, and seaweed."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.6,
+        "frame": 378
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up of the thick, dark dipping broth for the tsukemen."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.6,
+        "frame": 468
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A bowl of traditional tonkotsu ramen with pork slices, egg, and mushrooms."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.7,
+        "frame": 621
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A full set meal of gyukatsu (beef cutlet) with shredded cabbage, potato salad, and various dipping sauces."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 23.5,
+        "frame": 705
+      },
+      "type": "pan_left",
+      "durationSec": 4,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.8,
+        "frame": 834
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A slice of rare gyukatsu is being cooked on a personal hot stone grill using chopsticks."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38,
+        "frame": 1140
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Interior shot of a modern cafe, focusing on the bar stools against a tiled wall."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 39.5,
+        "frame": 1185
+      },
+      "type": "pan_left",
+      "durationSec": 4,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43.8,
+        "frame": 1314
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A large, shareable crème brûlée dessert is being cracked with a spoon."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 53.8,
+        "frame": 1614
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A bowl of udon noodles with cheese, egg, and a large piece of tempura bacon is being mixed with chopsticks."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 104.9,
+        "frame": 3147
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A thick slice of beef tongue is sizzling on a charcoal grill."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 107,
+        "frame": 3210
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Tongs flip the meat on the grill, causing a large flame to flare up."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 109.6,
+        "frame": 3288
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Plated, sliced wagyu beef is being dipped in mustard with chopsticks."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 112.6,
+        "frame": 3378
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A thin, marinated slice of beef is being placed on the grill."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 115.8,
+        "frame": 3474
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A knife slices open a fluffy omurice, which splits to reveal a soft, custardy interior."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 123.2,
+        "frame": 3696
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A dark demi-glace sauce is poured over the opened omurice."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 125.1,
+        "frame": 3753
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A fork and knife cut into the omurice, revealing a hamburger steak (meatloaf) inside."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 127.8,
+        "frame": 3834
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The creator walks away from the camera down a narrow, decorated alley in Tokyo."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 128.2,
+        "frame": 3846
+      },
+      "text": "Locations in caption",
+      "durationSec": 1.8,
+      "style": {
+        "font": "serif",
+        "color": "white"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Unknown Lo-fi Hip Hop",
+    "trending": false,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "vocal_in",
+        "note": "Voiceover starts"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 22,
+      "avgShotDurationSec": 4.09,
+      "cutDensityPerSec": 0.24,
+      "rhythmProfile": "medium",
+      "keyTwistAt": {
+        "sec": 125.1,
+        "frame": 3753
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "pan_left"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.1,
+        "close_up": 0.7,
+        "medium": 0.15,
+        "wide": 0.05,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_lofi_beat",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "White bold sans-serif text with black stroke, occasional yellow highlight on words.",
+      "colorGrade": "Warm and saturated"
+    },
+    "structure": {
+      "hookFormat": "negative_hook",
+      "openingShot": "Satisfying close-up of a knife cutting into a fluffy omurice.",
+      "endingShot": "Creator walking away down a classic Tokyo alley.",
+      "cta": "check_caption",
+      "payoffAt": {
+        "sec": 125.1,
+        "frame": 3753
+      }
+    }
+  },
+  "density": {
+    "editing": 60,
+    "transition": 10,
+    "effect": 25,
+    "bgmSync": 15,
+    "overall": 65
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:53:58.902Z"
+  }
+}

@@ -1,0 +1,402 @@
+{
+  "videoId": "tt-7630212428940250382",
+  "durationSec": 291.866667,
+  "fps": 30,
+  "resolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "Have you ever made ground beef like this? 😍",
+      "durationSec": 1.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2,
+        "frame": 60
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A hand adds a spoonful of butter to a hot cast iron pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.2,
+        "frame": 66
+      },
+      "text": "Melt 1 tablespoon of butter",
+      "durationSec": 1.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4,
+        "frame": 120
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Overhead shot of hands finely chopping a shallot on a wooden cutting board."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5,
+        "frame": 150
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up on the knife slicing through the shallot."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8,
+        "frame": 240
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Low-angle shot of the knife scooping up the chopped shallots."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.1,
+        "frame": 243
+      },
+      "text": "I Turned Ground Beef Into THIS... and Now I Make It Every Week 🔥",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11,
+        "frame": 330
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Hands grating a carrot on a box grater."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.8,
+        "frame": 564
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Grated carrots are added to the pan with the sizzling onions."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18,
+        "frame": 540
+      },
+      "text": "Add grated carrot, and cook for 3-4 minutes, stirring occasionally",
+      "durationSec": 4.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26,
+        "frame": 780
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Slicing garlic cloves directly into the pan over the vegetables."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39,
+        "frame": 1170
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Vegetables are pushed to one side of the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 39.2,
+        "frame": 1176
+      },
+      "text": "Push the vegetables to the side, add 450 g (1 lb) of ground beef",
+      "durationSec": 4.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.5,
+        "frame": 1335
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A bowl of raw ground beef is added to the empty side of the pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58,
+        "frame": 1740
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The ground beef is fully browned and mixed with the vegetables."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 58.2,
+        "frame": 1746
+      },
+      "text": "Season with salt and black pepper",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 107,
+        "frame": 3210
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Sprinkling garlic powder over the beef mixture."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 117.5,
+        "frame": 3525
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Pouring sherry vinegar from a bottle into the pan to deglaze."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 128.5,
+        "frame": 3855
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Adding spoonfuls of flour to the beef mixture."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 130,
+        "frame": 3900
+      },
+      "text": "Stir in 2 heaping tbsp of flour and cook for a further 2-3 minutes, stirring constantly",
+      "durationSec": 4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 146.8,
+        "frame": 4404
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Pouring hot water or stock into the pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 205.5,
+        "frame": 6165
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Pouring frozen peas into the simmering sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 210.2,
+        "frame": 6306
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Pouring heavy cream into the pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 214,
+        "frame": 6420
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Hands chopping fresh parsley on a cutting board."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 229.2,
+        "frame": 6876
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Adding the chopped parsley to the creamy sauce."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 246,
+        "frame": 7380
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Grating Parmesan cheese directly into the pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 262,
+        "frame": 7860
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Arranging squares of puff pastry on top of the sauce."
+    },
+    {
+      "kind": "speed_change",
+      "at": {
+        "sec": 265,
+        "frame": 7950
+      },
+      "multiplier": 4,
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 284,
+        "frame": 8520
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Whisking an egg in a decorative bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 290,
+        "frame": 8700
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Brushing the puff pastry squares with the beaten egg."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 247,
+        "frame": 7410
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Placing the pan into a preheated oven."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 270,
+        "frame": 8100
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The dish is golden brown and bubbling in the oven."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 278,
+        "frame": 8340
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Sprinkling freshly chopped chives over the finished dish."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 282,
+        "frame": 8460
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The final dish is plated beautifully."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 282.2,
+        "frame": 8466
+      },
+      "text": "Thanks for watching, liking and subscribing 🥰",
+      "durationSec": 3.5
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 291,
+        "frame": 8730
+      },
+      "type": "fade",
+      "durationFrames": 15
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Acoustic Instrumental",
+    "trending": false,
+    "bpm": 120,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 72,
+      "avgShotDurationSec": 4.05,
+      "cutDensityPerSec": 0.24,
+      "rhythmProfile": "medium",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.2,
+        "close_up": 0.5,
+        "medium": 0.25,
+        "wide": 0.05,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_loop",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "White, rounded, sans-serif font with a slight drop shadow.",
+      "colorGrade": "natural_warm"
+    },
+    "structure": {
+      "hookFormat": "question_and_payoff",
+      "openingShot": "Close-up of the finished, golden-brown dish baking in the oven.",
+      "endingShot": "Close-up of the plated dish being cut into with a knife and fork.",
+      "cta": "text_overlay",
+      "payoffAt": {
+        "sec": 270,
+        "frame": 8100
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 15,
+    "bgmSync": 20,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:57:35.857Z"
+  }
+}

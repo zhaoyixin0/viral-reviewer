@@ -1,0 +1,900 @@
+{
+  "videoId": "tt-7634008038168448264",
+  "durationSec": 48.646,
+  "fps": 50,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Medium shot of a man with tattoos in a black t-shirt, holding a vacuum-sealed package of meat and talking to the camera in a kitchen setting."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "IS ONE",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.8,
+        "frame": 40
+      },
+      "text": "THAT",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.8,
+        "frame": 90
+      },
+      "text": "COOKS",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.8,
+        "frame": 140
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up of hands placing the vacuum-sealed meat onto a wire rack on a baking sheet."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.8,
+        "frame": 140
+      },
+      "text": "IT MAKES",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 190
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "Medium close-up of a hand taking a raw steak out of the packaging and placing it onto the wire rack."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.8,
+        "frame": 190
+      },
+      "text": "DIFFERENCE",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 240
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up shot of salt being sprinkled onto the raw steak."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.2,
+        "frame": 260
+      },
+      "text": "DRY",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.8,
+        "frame": 290
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "Medium close-up of hands seasoning the entire surface of the steak with salt."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.2,
+        "frame": 310
+      },
+      "text": "JUST",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.8,
+        "frame": 340
+      },
+      "text": "SALT",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 390
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Wide shot from behind the man as he opens a fridge and places the tray with the steak inside."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.8,
+        "frame": 390
+      },
+      "text": "YOUR STEAK",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 440
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "POV shot from inside the fridge as the tray is placed on a shelf."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.8,
+        "frame": 440
+      },
+      "text": "FRIDGE",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.5,
+        "frame": 475
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up of a hand closing the stainless steel fridge door."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.8,
+        "frame": 490
+      },
+      "text": "UNCOVERED",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.5,
+        "frame": 525
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Extreme close-up timelapse shot of the steak on the rack as it dry brines, showing moisture being drawn out and reabsorbed."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 10.8,
+        "frame": 540
+      },
+      "type": "animated_overlay",
+      "durationSec": 9.2
+    },
+    {
+      "kind": "speed_change",
+      "at": {
+        "sec": 10.8,
+        "frame": 540
+      },
+      "multiplier": 100,
+      "durationSec": 9.2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.8,
+        "frame": 540
+      },
+      "text": "ACTUALLY",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.2,
+        "frame": 610
+      },
+      "text": "THE SALT",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.2,
+        "frame": 660
+      },
+      "text": "TO THE SURFACE",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.2,
+        "frame": 710
+      },
+      "text": "DISSOLVES",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15.2,
+        "frame": 760
+      },
+      "text": "IT",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16,
+        "frame": 800
+      },
+      "text": "PULLED",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.8,
+        "frame": 840
+      },
+      "text": "MEAT",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18,
+        "frame": 900
+      },
+      "text": "SEASONING",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19,
+        "frame": 950
+      },
+      "text": "INTO THE MUSCLE",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20,
+        "frame": 1000
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "Medium close-up of a hand placing the dry-brined steak into a hot, oiled stainless steel pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.2,
+        "frame": 1010
+      },
+      "text": "BREAKS",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.2,
+        "frame": 1060
+      },
+      "text": "SO",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.2,
+        "frame": 1110
+      },
+      "text": "ONTO",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23.2,
+        "frame": 1160
+      },
+      "text": "WHEN IT HITS",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24,
+        "frame": 1200
+      },
+      "text": "HEAT",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.5,
+        "frame": 1225
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "Medium close-up of the steak searing in the pan, a metal steak press is placed on top."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 25.2,
+        "frame": 1260
+      },
+      "text": "UP",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.8,
+        "frame": 1290
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "The steak is flipped with tongs, revealing a golden-brown crust."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.2,
+        "frame": 1310
+      },
+      "text": "MEANS",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 27,
+        "frame": 1350
+      },
+      "text": "YOU GET THAT",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28,
+        "frame": 1400
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up of the steak searing on the other side."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28.2,
+        "frame": 1410
+      },
+      "text": "MAHOGANY",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.5,
+        "frame": 1475
+      },
+      "toShotSize": "medium_close_up",
+      "shotDescription": "The man uses a spoon to baste the steak with oil from the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.2,
+        "frame": 1460
+      },
+      "text": "A",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 30.2,
+        "frame": 1510
+      },
+      "text": "AND",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31,
+        "frame": 1550
+      },
+      "text": "ALL THE WAY",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31.8,
+        "frame": 1590
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up of the cooked steak being moved from the pan to the wire rack to rest."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 32.2,
+        "frame": 1610
+      },
+      "text": "YOU",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 32.8,
+        "frame": 1640
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up of hands using a knife to slice the cooked steak on a wooden cutting board, revealing a pink, medium-rare interior."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.2,
+        "frame": 1660
+      },
+      "text": "45 MINUTES",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 34.2,
+        "frame": 1710
+      },
+      "text": "OUT OR",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35.2,
+        "frame": 1760
+      },
+      "text": "EVEN",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 36.2,
+        "frame": 1810
+      },
+      "text": "DO IT",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 37.2,
+        "frame": 1860
+      },
+      "text": "10 TO 30",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 38.2,
+        "frame": 1910
+      },
+      "text": "BEFORE",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 39.2,
+        "frame": 1960
+      },
+      "text": "KIND",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 40.2,
+        "frame": 2010
+      },
+      "text": "WHERE",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 41,
+        "frame": 2050
+      },
+      "text": "IS THE DRAWBACKS",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 42,
+        "frame": 2100
+      },
+      "text": "BENEFITS",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42.5,
+        "frame": 2125
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Medium shot of the man standing behind the cutting board, holding up a slice of steak and talking to the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 43.2,
+        "frame": 2160
+      },
+      "text": "ZERO",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 44.2,
+        "frame": 2210
+      },
+      "text": "WORK",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 45.2,
+        "frame": 2260
+      },
+      "text": "BETTER",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 46.2,
+        "frame": 2310
+      },
+      "text": "EVERY",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 47,
+        "frame": 2350
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up of the man putting a slice of steak in his mouth."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 47.2,
+        "frame": 2360
+      },
+      "text": "STEAK",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48,
+        "frame": 2400
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close-up of the man's face as he chews and talks approvingly to the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 48.2,
+        "frame": 2410
+      },
+      "text": "I LOVE STEAK",
+      "durationSec": 0.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "yellow"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Funky Soul Instrumental",
+    "trending": false,
+    "bpm": 105,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 19,
+      "avgShotDurationSec": 2.58,
+      "cutDensityPerSec": 0.37,
+      "rhythmProfile": "mixed",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.1,
+        "close_up": 0.5,
+        "medium": 0.3,
+        "wide": 0.1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_upbeat_instrumental",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "yellow_sans_serif_allcaps_center",
+      "colorGrade": "warm_natural"
+    },
+    "structure": {
+      "hookFormat": "problem_solution",
+      "openingShot": "medium_shot_talking_head",
+      "endingShot": "close_up_reaction",
+      "cta": "implicit",
+      "payoffAt": {
+        "sec": 32.8,
+        "frame": 1640
+      }
+    }
+  },
+  "density": {
+    "editing": 80,
+    "transition": 10,
+    "effect": 40,
+    "bgmSync": 60,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:58:48.127Z"
+  }
+}

@@ -1,0 +1,390 @@
+{
+  "videoId": "tt-7594138825635417357",
+  "durationSec": 159.614,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "comedy",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A woman leans in and pretends to bite her dog's paw, accompanied by a loud crunching sound effect."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "type": "handheld",
+      "durationSec": 1.5,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2.9,
+        "frame": 87
+      },
+      "type": "hard_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.1,
+        "frame": 93
+      },
+      "text": "Prank dogs",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man is lying in bed with his dog. An off-screen person screams, startling the dog."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.2,
+        "frame": 126
+      },
+      "text": "Scare your dog to see their reaction...",
+      "durationSec": 2.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.6,
+        "frame": 228
+      },
+      "toShotSize": "pov",
+      "shotDescription": "A person pretends to feed a small white dog with a spoon but then drops the spoon, making a loud noise and scaring the dog away."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.6,
+        "frame": 468
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman pretends to bite her dog's paw, and the dog makes a hilarious smiling/baring teeth expression."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.1,
+        "frame": 483
+      },
+      "text": "I pretended to take a bite out of my dog's paw and his reaction was hilarious...",
+      "durationSec": 4.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.2,
+        "frame": 666
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A person offers a piece of cabbage to a small dog instead of a treat from the bag, causing the dog to growl intensely."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 26.2,
+        "frame": 786
+      },
+      "type": "push_in",
+      "durationSec": 4,
+      "scaleFrom": 1,
+      "scaleTo": 1.2,
+      "easing": "ease_in"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37.9,
+        "frame": 1137
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person on a couch makes a sudden noise, startling a small chihuahua next to them."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.8,
+        "frame": 1254
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man makes a spitting sound at his dog, and the dog reacts by playfully attacking him."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 45.8,
+        "frame": 1374
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A dog approaches its doghouse, and a scary monster mask pops out, causing the dog to leap back in fear and run away."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 49.9,
+        "frame": 1497
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A corgi lying on the floor reacts to a fart sound effect with a dramatic side-eye."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 51.2,
+        "frame": 1536
+      },
+      "type": "dramatic_sound_sting",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 54.8,
+        "frame": 1644
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A dog sitting at a table is shown a tiny toy burger instead of a real one, and it growls in disappointment."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 101,
+        "frame": 3030
+      },
+      "toShotSize": "top_down",
+      "shotDescription": "A dog lying on its back has its ball taken away, and it freezes with a shocked expression."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 106,
+        "frame": 3180
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman with a dog resting on her shoulders suddenly barks loudly, startling the dog."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 112.8,
+        "frame": 3384
+      },
+      "toShotSize": "pov",
+      "shotDescription": "A person puts a single piece of kibble in a small dog's bowl. After eating it, the dog frantically runs around."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 120.8,
+        "frame": 3624
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A golden retriever reacts to a long fake fart sound with a very sad and confused look."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 129.8,
+        "frame": 3894
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A sleeping labrador is woken up by a smaller dog wearing a scary monster mask, causing the labrador to panic and crash into a cabinet."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 135.8,
+        "frame": 4074
+      },
+      "toShotSize": "pov",
+      "shotDescription": "A bulldog sleeping on its owner's stomach is woken by a fart sound and gives an annoyed look."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 140.7,
+        "frame": 4221
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A dog hears a fake bark sound, looks around confused, and then barks back."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 146.7,
+        "frame": 4401
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person crinkles a plastic water bottle on a sleeping dog's stomach, causing it to jump up in fright."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 152.8,
+        "frame": 4584
+      },
+      "toShotSize": "high_angle",
+      "shotDescription": "A person snatches a treat off a dog's nose and pretends to eat it, leaving the dog looking betrayed."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 158.8,
+        "frame": 4764
+      },
+      "toShotSize": "pov",
+      "shotDescription": "A person pretends to give a dog a treat but reveals an empty hand, making the dog angry."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 205.8,
+        "frame": 6174
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A man tries to scare his dog with a monster pose, but the dog slips and falls while trying to escape."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 211,
+        "frame": 6330
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A man hiding behind a couch jumps out to scare his two dogs as they run into the room."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 214.8,
+        "frame": 6444
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person in a werewolf mask jumps out at a dog in a hallway, scaring it."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 219,
+        "frame": 6570
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A person makes a loud noise to startle several pitbulls sleeping in the sun."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 223.6,
+        "frame": 6708
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man pretends to eat his dog's leg, and the dog gives him an annoyed side-eye."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 229,
+        "frame": 6870
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A bulldog on a couch farts, causing the woman lying next to it to recoil in disgust."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 232.8,
+        "frame": 6984
+      },
+      "toShotSize": "pov",
+      "shotDescription": "A labrador lying at a person's feet is startled by a fart sound and begins barking."
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 28,
+      "avgShotDurationSec": 5.3,
+      "cutDensityPerSec": 0.18,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.1,
+        "close_up": 0.3,
+        "medium": 0.5,
+        "wide": 0.1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut_to_black_screen_bumper"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "sound_effect_driven",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "simple_white_sans_serif",
+      "colorGrade": "native"
+    },
+    "structure": {
+      "hookFormat": "rapid_fire_compilation",
+      "openingShot": "A woman pretends to bite her dog's paw, eliciting a funny reaction, setting the 'prank' theme.",
+      "endingShot": "A labrador reacts angrily to a fart sound, ending the compilation on a high-energy, funny note.",
+      "cta": null,
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 95,
+    "transition": 80,
+    "effect": 45,
+    "bgmSync": 90,
+    "overall": 92
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:44:37.634Z"
+  }
+}

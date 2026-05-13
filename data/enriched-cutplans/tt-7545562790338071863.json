@@ -1,0 +1,254 @@
+{
+  "videoId": "tt-7545562790338071863",
+  "durationSec": 1281.8,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A woman's hands pour sliced onions from a glass bowl into a pan of frying potato slices."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.8,
+        "frame": 144
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A woman's hands slice a peeled potato on a round wooden cutting board."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.8,
+        "frame": 564
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A pan with hot oil on an induction cooktop."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.8,
+        "frame": 594
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Using a slotted spoon to add batches of sliced potatoes into the hot oil."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.8,
+        "frame": 834
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A repeat of the opening shot: pouring sliced onions into the pan with now-golden potatoes."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33.5,
+        "frame": 1005
+      },
+      "toShotSize": "medium",
+      "shotDescription": "An empty large glass bowl is on a wooden table, with smaller bowls of eggs, salt, and pepper next to it."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37,
+        "frame": 1110
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Pouring six whole eggs from a small bowl into the large mixing bowl."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.5,
+        "frame": 1245
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Pouring salt from a small white ramekin into the bowl of eggs."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 45.5,
+        "frame": 1365
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Pouring black pepper from a small white ramekin into the bowl of eggs."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48,
+        "frame": 1440
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A person's hands whisk the eggs, salt, and pepper with a fork."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 104.5,
+        "frame": 3135
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The potatoes and onions are golden brown and frying in the pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 107,
+        "frame": 3210
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Using a slotted spoon to scoop the fried potatoes and onions out of the oil."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 110.5,
+        "frame": 3315
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Adding the drained potatoes and onions to the bowl of whisked eggs."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 121,
+        "frame": 3630
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Mixing the potato and egg mixture with a spoon."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 131.5,
+        "frame": 3945
+      },
+      "toShotSize": "medium",
+      "shotDescription": "An empty, clean non-stick pan on the induction cooktop."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 132.8,
+        "frame": 3984
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Pouring olive oil into the pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 135,
+        "frame": 4050
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Using a silicone brush to spread the oil evenly across the pan's surface."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 149,
+        "frame": 4470
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Pouring the potato and egg mixture into the hot pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 153.8,
+        "frame": 4614
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Using a spoon to spread the mixture evenly in the pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 182,
+        "frame": 5460
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man's hands add garlic cloves to a pan of creamy pasta. This is a hook for a different recipe, indicating the video is a compilation."
+    }
+  ],
+  "bgm": {
+    "name": "Unknown upbeat instrumental",
+    "trending": false,
+    "bpm": 120,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 32,
+      "avgShotDurationSec": 5.6,
+      "cutDensityPerSec": 0.17,
+      "rhythmProfile": "medium",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.8,
+        "medium": 0.2,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_loop",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "None",
+      "colorGrade": "natural_bright"
+    },
+    "structure": {
+      "hookFormat": "action_in_progress",
+      "openingShot": "Close-up of onions being added to frying potatoes, a step from the middle of the recipe.",
+      "endingShot": "A fork lifting a piece of the finished omelette.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 142.5,
+        "frame": 4275
+      }
+    }
+  },
+  "density": {
+    "editing": 70,
+    "transition": 10,
+    "effect": 0,
+    "bgmSync": 5,
+    "overall": 50
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:01:15.973Z"
+  }
+}

@@ -1,0 +1,351 @@
+{
+  "videoId": "tt-7180653911232007430",
+  "durationSec": 20,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "vlog",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A man sits on a wooden staircase leading to a treehouse, overlooking a stunning tropical bay with turquoise water and green cliffs."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "Instagram vs Reality",
+      "durationSec": 19.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "push_in",
+      "durationSec": 2.7,
+      "scaleFrom": 1,
+      "scaleTo": 1.05,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2.7,
+        "frame": 81
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.7,
+        "frame": 81
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot looking up the simple, rickety wooden staircase from below."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 2.7,
+        "frame": 81
+      },
+      "type": "handheld",
+      "durationSec": 1.2,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 3.9,
+        "frame": 117
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.9,
+        "frame": 117
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot continues walking up the stairs and onto the wooden platform of the treehouse."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 3.9,
+        "frame": 117
+      },
+      "type": "handheld",
+      "durationSec": 1.1,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 5,
+        "frame": 150
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5,
+        "frame": 150
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot walks along the narrow wooden balcony of the treehouse."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 5,
+        "frame": 150
+      },
+      "type": "handheld",
+      "durationSec": 2,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 7,
+        "frame": 210
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7,
+        "frame": 210
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "POV of a hand reaching out to unlatch a simple metal hook on a black wooden door."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 8.5,
+        "frame": 255
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.5,
+        "frame": 255
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The door opens to reveal a very basic, small room with raw wooden walls and a mattress on the floor."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 8.5,
+        "frame": 255
+      },
+      "type": "handheld",
+      "durationSec": 3,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 11.5,
+        "frame": 345
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.5,
+        "frame": 345
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A panning shot inside the room, showing the mattress, a small table with a fan, and the simple construction."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 11.5,
+        "frame": 345
+      },
+      "type": "pan_right",
+      "durationSec": 2.3,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Fast POV shot turning and exiting the room."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "type": "handheld",
+      "durationSec": 0.7,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 14.5,
+        "frame": 435
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.5,
+        "frame": 435
+      },
+      "toShotSize": "wide",
+      "shotDescription": "POV from the balcony reveals the stunning ocean view again, framed by the thatched roof, showing the payoff."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 14.5,
+        "frame": 435
+      },
+      "type": "pan_right",
+      "durationSec": 5,
+      "easing": "linear"
+    }
+  ],
+  "bgm": {
+    "name": "Rush - Ayra Starr",
+    "trending": true,
+    "bpm": 100,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.8,
+          "frame": 24
+        },
+        "kind": "vocal_in"
+      },
+      {
+        "at": {
+          "sec": 2.7,
+          "frame": 81
+        },
+        "kind": "beat",
+        "note": "Cut to 'Reality' POV"
+      },
+      {
+        "at": {
+          "sec": 8.5,
+          "frame": 255
+        },
+        "kind": "vocal_phrase",
+        "note": "Lyrics 'I give her life' syncs with room reveal"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 9,
+      "avgShotDurationSec": 2.17,
+      "cutDensityPerSec": 0.41,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 8.5,
+        "frame": 255
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld",
+        "pan_right"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.1,
+        "medium": 0.6,
+        "wide": 0.3,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Consistent upbeat Afrobeats track",
+      "bgmSyncTightness": "moderate",
+      "subtitleStyle": "White bold sans-serif text with black outline, centered",
+      "colorGrade": "Vibrant and saturated"
+    },
+    "structure": {
+      "hookFormat": "Expectation vs. Reality text overlay",
+      "openingShot": "Idealized, picturesque travel shot",
+      "endingShot": "Payoff shot revealing the authentic, beautiful view",
+      "cta": null,
+      "payoffAt": {
+        "sec": 14.5,
+        "frame": 435
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 20,
+    "bgmSync": 70,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:45:30.328Z"
+  }
+}

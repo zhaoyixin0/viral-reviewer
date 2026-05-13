@@ -1,0 +1,133 @@
+{
+  "videoId": "tt-7632060030954556703",
+  "durationSec": 6.779,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "transformation",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A woman in a blue crop top and black pants stands in her bedroom, posing with her hands on her hips."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 6,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2.5,
+        "frame": 75
+      },
+      "type": "match_cut",
+      "durationFrames": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.5,
+        "frame": 75
+      },
+      "toShotSize": "medium",
+      "shotDescription": "In the same position, the woman is now wearing a light yellow dress, smiling and posing."
+    }
+  ],
+  "bgm": {
+    "name": "Bounce - Remix Sound",
+    "trending": true,
+    "bpm": 135,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 2.5,
+          "frame": 75
+        },
+        "kind": "drop",
+        "note": "The beat drops, perfectly synchronized with the outfit transformation."
+      },
+      {
+        "at": {
+          "sec": 3.9,
+          "frame": 117
+        },
+        "kind": "vocal_in",
+        "note": "The main vocal phrase 'Pop that thang' begins."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 2,
+      "avgShotDurationSec": 3,
+      "cutDensityPerSec": 0.17,
+      "rhythmProfile": "key_moment",
+      "keyTwistAt": {
+        "sec": 2.5,
+        "frame": 75
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "match_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "buildup_and_drop",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "none",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "before_state",
+      "openingShot": "Medium shot of the creator in a casual 'before' outfit.",
+      "endingShot": "Medium shot of the creator in the transformed 'after' outfit, smiling.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 2.5,
+        "frame": 75
+      }
+    }
+  },
+  "density": {
+    "editing": 20,
+    "transition": 75,
+    "effect": 5,
+    "bgmSync": 95,
+    "overall": 60
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:28:28.407Z"
+  }
+}

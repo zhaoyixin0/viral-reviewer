@@ -1,0 +1,1296 @@
+{
+  "videoId": "tt-7633618814139174175",
+  "durationSec": 174.434,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "POV shot holding a saucepan with gravy."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.4,
+        "frame": 12
+      },
+      "text": "MY NAME IS",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.8,
+        "frame": 24
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A steaming pot of gravy on the stove."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.1,
+        "frame": 33
+      },
+      "text": "JOEY. I'M 17",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A pot of mac and cheese on the stove."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.2,
+        "frame": 66
+      },
+      "text": "YEARS OLD,",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.8,
+        "frame": 84
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Sliced pork tenderloin on a wooden cutting board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.4,
+        "frame": 102
+      },
+      "text": "DINNER FOR MY",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4,
+        "frame": 120
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Wider shot of the sliced pork tenderloin."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.3,
+        "frame": 129
+      },
+      "text": "FAMILY BECAUSE MY",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5,
+        "frame": 150
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Panning shot over a baking sheet of dinner rolls."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.3,
+        "frame": 159
+      },
+      "text": "MOM IS NO",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.2,
+        "frame": 186
+      },
+      "text": "LONGER ABLE TO.",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7,
+        "frame": 210
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A bowl of mashed potatoes and a pot of mac and cheese."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.2,
+        "frame": 216
+      },
+      "text": "TONIGHT, I'M MAKING",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A pot of gravy and a pot of mac and cheese."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.2,
+        "frame": 246
+      },
+      "text": "A PORK TENDERLOIN",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.8,
+        "frame": 264
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A pan of broccoli and a pot of gravy."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.4,
+        "frame": 282
+      },
+      "text": "OF SIDES.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.9,
+        "frame": 297
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Pouring oil into a cast iron pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.2,
+        "frame": 336
+      },
+      "text": "COOK MY TENDERLOINS",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 11.5,
+        "frame": 345
+      },
+      "type": "text_overlay",
+      "durationSec": 5.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.5,
+        "frame": 375
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Placing a seasoned pork tenderloin into the hot pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.8,
+        "frame": 414
+      },
+      "text": "ANOTHER CREATOR DO THIS,",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 474
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Flipping the pork tenderloin in the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.2,
+        "frame": 486
+      },
+      "text": "SURE TO TAG",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 17,
+        "frame": 510
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Flipping the pork again."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.2,
+        "frame": 516
+      },
+      "text": "HER IN THE CAPTION.",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.5,
+        "frame": 555
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Flipping the pork again to sear another side."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.4,
+        "frame": 582
+      },
+      "text": "SHE DID WAS",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20,
+        "frame": 600
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Lifting the seared pork out of the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.4,
+        "frame": 612
+      },
+      "text": "HEAT UP SOME",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 20.5,
+        "frame": 615
+      },
+      "type": "text_overlay",
+      "durationSec": 2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.8,
+        "frame": 624
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Placing the seared pork onto a foil-lined baking sheet."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.5,
+        "frame": 645
+      },
+      "text": "CAST IRON ON",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.2,
+        "frame": 666
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Static shot of the pork on the foil."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.5,
+        "frame": 675
+      },
+      "text": "MEDIUM HIGH HEAT.",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.2,
+        "frame": 696
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Placing pats of butter on top of the pork."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24.4,
+        "frame": 732
+      },
+      "text": "HER PORK FOR",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.2,
+        "frame": 756
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Finishing adding the butter pats."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 25.8,
+        "frame": 774
+      },
+      "text": "EACH SIDE.",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.5,
+        "frame": 795
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Beginning to wrap the pork in aluminum foil."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 27.4,
+        "frame": 822
+      },
+      "text": "AFTER THAT, SHE",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.2,
+        "frame": 846
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Continuing to fold the foil over the pork."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28.6,
+        "frame": 858
+      },
+      "text": "MOVED IT OVER",
+      "durationSec": 0.9
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 29.5,
+        "frame": 885
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Crimping the edges of the foil."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.8,
+        "frame": 894
+      },
+      "text": "OF TIN FOIL",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30.5,
+        "frame": 915
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The fully wrapped pork on the baking sheet."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31,
+        "frame": 930
+      },
+      "text": "PATS OF BUTTER",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 32,
+        "frame": 960
+      },
+      "toShotSize": "medium",
+      "shotDescription": "POV shot looking into an open, preheated oven."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 32.8,
+        "frame": 984
+      },
+      "text": "WRAPPING IT ALL UP.",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33.8,
+        "frame": 1014
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Placing the baking sheet into the oven."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 34.5,
+        "frame": 1035
+      },
+      "text": "THEN SHE PUT",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.2,
+        "frame": 1056
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The baking sheet sitting on the oven rack."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35.8,
+        "frame": 1074
+      },
+      "text": "OVEN AT 375",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36.8,
+        "frame": 1104
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Closing the oven door."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 37.4,
+        "frame": 1122
+      },
+      "text": "DEGREES FAHRENHEIT FOR",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 38.2,
+        "frame": 1146
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Shot of the closed oven door."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 38.5,
+        "frame": 1155
+      },
+      "text": "20 MINUTES.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39,
+        "frame": 1170
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Opening the oven door after 20 minutes."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 41.2,
+        "frame": 1236
+      },
+      "text": "MINUTES, SHE TOOK",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.5,
+        "frame": 1245
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Taking the baking sheet out of the oven."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 42.2,
+        "frame": 1266
+      },
+      "text": "IT OUT AND",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42.6,
+        "frame": 1278
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The baking sheet placed on the stovetop."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 43,
+        "frame": 1290
+      },
+      "text": "SHE UNWRAPPED IT,",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43.5,
+        "frame": 1305
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Unwrapping the foil from the pork."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 44.4,
+        "frame": 1332
+      },
+      "text": "PUT IT BACK",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 45.2,
+        "frame": 1356
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The unwrapped pork sitting in melted butter and juices."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 45.5,
+        "frame": 1365
+      },
+      "text": "IN FOR 10",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 46.4,
+        "frame": 1392
+      },
+      "text": "MORE MINUTES.",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 49.5,
+        "frame": 1485
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Placing the unwrapped pork back into the oven."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 54.8,
+        "frame": 1644
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Closing the oven door."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 56,
+        "frame": 1680
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Opening the oven door again."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 56.8,
+        "frame": 1704
+      },
+      "text": "AFTER MAKING SURE",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 57.2,
+        "frame": 1716
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Taking the finished pork out of the oven."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 58,
+        "frame": 1740
+      },
+      "text": "THE TENDERLOIN WAS",
+      "durationSec": 1.2
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59.2,
+        "frame": 1776
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Placing the baking sheet on the stovetop."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 59.5,
+        "frame": 1785
+      },
+      "text": "AT LEAST 145",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 100.2,
+        "frame": 3006
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Placing the pork on a wooden cutting board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 100.5,
+        "frame": 3015
+      },
+      "text": "DEGREES FAHRENHEIT",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 102.5,
+        "frame": 3075
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Wrapping the pork back in foil to rest."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 102.8,
+        "frame": 3084
+      },
+      "text": "IT UP IN",
+      "durationSec": 1.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 107.8,
+        "frame": 3234
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Unwrapping the rested pork."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 113.5,
+        "frame": 3405
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Slicing the pork tenderloin."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 114.5,
+        "frame": 3435
+      },
+      "text": "AND I CUT",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 115.2,
+        "frame": 3456
+      },
+      "text": "IT UP JUST",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 116.2,
+        "frame": 3486
+      },
+      "text": "BEFORE SERVING.",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 118,
+        "frame": 3540
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Pouring water into a small pot for mashed potatoes."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 119,
+        "frame": 3570
+      },
+      "text": "POTATOES, I'M JUST",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 119.8,
+        "frame": 3594
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Adding a pat of butter to the water."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 120.2,
+        "frame": 3606
+      },
+      "text": "USING INSTANT MASH,",
+      "durationSec": 0.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 120.8,
+        "frame": 3624
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Adding various dried herbs and seasonings to the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 121.2,
+        "frame": 3636
+      },
+      "text": "AND I FOLLOWED",
+      "durationSec": 1.3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 124.5,
+        "frame": 3735
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Pouring milk into the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 125,
+        "frame": 3750
+      },
+      "text": "EXCEPT I'M ADDING",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 126.2,
+        "frame": 3786
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Adding instant potato flakes to the liquid."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 126.5,
+        "frame": 3795
+      },
+      "text": "IN SOME DRIED THYME,",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 127.5,
+        "frame": 3825
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Stirring the mashed potatoes with a fork."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 127.6,
+        "frame": 3828
+      },
+      "text": "PARSLEY, AND ONION.",
+      "durationSec": 0.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 132,
+        "frame": 3960
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Pouring water into a large pot for mac and cheese."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 133.5,
+        "frame": 4005
+      },
+      "text": "AND CHEESE, I'M",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 134.5,
+        "frame": 4035
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Showing the packaging for the mac and cheese."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 135,
+        "frame": 4050
+      },
+      "text": "FOLLOWING THE DIRECTIONS",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 135.8,
+        "frame": 4074
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Pouring dry pasta into the boiling water."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 136.2,
+        "frame": 4086
+      },
+      "text": "ON THE PACKAGING.",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 138.5,
+        "frame": 4155
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Adding cheese powder to the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 139,
+        "frame": 4170
+      },
+      "text": "WHICH IS AN",
+      "durationSec": 2.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 141.5,
+        "frame": 4245
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Stirring the mac and cheese with a wooden spoon."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 141.8,
+        "frame": 4254
+      },
+      "text": "TO TRY OUT.",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 155.2,
+        "frame": 4656
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Stirring the thickened mac and cheese."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 155.5,
+        "frame": 4665
+      },
+      "text": "FOR 15 TO",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 156.5,
+        "frame": 4695
+      },
+      "text": "20 MINUTES.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 200,
+        "frame": 6000
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Pouring oil into the cast iron pan for broccoli."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 200.5,
+        "frame": 6015
+      },
+      "text": "FOR MY BROCCOLI,",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 201.8,
+        "frame": 6054
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Adding broccoli florets to the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 202.5,
+        "frame": 6075
+      },
+      "text": "OIL TO A",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 217.8,
+        "frame": 6534
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Adding water to the pan to steam the broccoli."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 218,
+        "frame": 6540
+      },
+      "text": "STARTED TO BROWN",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 219,
+        "frame": 6570
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Covering the pan with a lid."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 219.2,
+        "frame": 6576
+      },
+      "text": "THEN I ADDED",
+      "durationSec": 1.6
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 224.5,
+        "frame": 6735
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Removing the lid from the steaming broccoli."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 225,
+        "frame": 6750
+      },
+      "text": "THEM OFF THE",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 228.2,
+        "frame": 6846
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Melting butter in a small pot for gravy."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 229.5,
+        "frame": 6885
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Adding flour to the butter to make a roux."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 230.2,
+        "frame": 6906
+      },
+      "text": "I MELTED ABOUT",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 235,
+        "frame": 7050
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Pouring pork drippings into the roux."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 235.8,
+        "frame": 7074
+      },
+      "text": "TABLESPOONS OF FLOUR.",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 244.5,
+        "frame": 7335
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Top-down shot of the gravy simmering, with mac and cheese in the background."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 244.8,
+        "frame": 7344
+      },
+      "text": "LITTLE BIT TOO THICK,",
+      "durationSec": 0.7
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 244.6,
+        "frame": 7338
+      },
+      "type": "text_overlay",
+      "durationSec": 3.4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 245.5,
+        "frame": 7365
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Adding salt, rosemary, and onion powder to the gravy."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 245.8,
+        "frame": 7374
+      },
+      "text": "SO I ADDED",
+      "durationSec": 4
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 249.8,
+        "frame": 7494
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Stirring the finished gravy."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 250.5,
+        "frame": 7515
+      },
+      "text": "AND SOME ONION POWDER.",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 252,
+        "frame": 7560
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Final shot of the finished gravy in the pot."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 252.2,
+        "frame": 7566
+      },
+      "text": "WHEN MY GRAVY",
+      "durationSec": 1
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 253.2,
+        "frame": 7596
+      },
+      "text": "WAS DONE, DINNER",
+      "durationSec": 0.8
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 109,
+      "avgShotDurationSec": 1.6,
+      "cutDensityPerSec": 0.63,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.1,
+        "close_up": 0.6,
+        "medium": 0.3,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "White sans-serif text with black stroke and intermittent red word highlights.",
+      "colorGrade": "Natural, warm kitchen lighting"
+    },
+    "structure": {
+      "hookFormat": "Personal story hook with a quick montage of the final product.",
+      "openingShot": "POV shot of a pot of gravy, part of a quick montage of the finished meal.",
+      "endingShot": "Close-up of the finished gravy in a pot on the stove.",
+      "cta": "none",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 10,
+    "effect": 40,
+    "bgmSync": 0,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:58:31.157Z"
+  }
+}

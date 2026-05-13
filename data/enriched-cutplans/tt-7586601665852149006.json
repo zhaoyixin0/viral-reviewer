@@ -1,0 +1,454 @@
+{
+  "videoId": "tt-7586601665852149006",
+  "durationSec": 94.435,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "comedy",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A man in a living room attempts to scare his dog by making monster-like gestures."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "😂 I tried to scare my dog and this happened...",
+      "durationSec": 2.5,
+      "style": {}
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 3.8,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Black screen with text."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.2,
+        "frame": 126
+      },
+      "text": "Prank dogs",
+      "durationSec": 0.7,
+      "style": {}
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 4.9,
+        "frame": 147
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.9,
+        "frame": 147
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man hides behind a blanket to surprise his bulldog sleeping on the bed."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 10.9,
+        "frame": 327
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.7,
+        "frame": 351
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A man pretends to be a pair of pants on a bed, startling a black dog which then jumps on him."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 15.2,
+        "frame": 456
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16,
+        "frame": 480
+      },
+      "toShotSize": "pov",
+      "shotDescription": "A person pretends to give a treat to a dog, then pulls their hand away, causing the dog to snarl."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.5,
+        "frame": 495
+      },
+      "text": "Got his ass",
+      "durationSec": 5,
+      "style": {}
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 22.5,
+        "frame": 675
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23,
+        "frame": 690
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person teases a beagle in a dinosaur costume by pretending to give it a treat, causing it to howl."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 28.2,
+        "frame": 846
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.8,
+        "frame": 864
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person taps an empty bowl with a spoon, startling a small grey dog."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 34,
+        "frame": 1020
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.8,
+        "frame": 1044
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A person shows a large burger to a small white dog, then swaps it for a tiny toy burger, causing the dog to growl."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 41.6,
+        "frame": 1248
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42,
+        "frame": 1260
+      },
+      "toShotSize": "high_angle",
+      "shotDescription": "A person pretends to pour food into a Pomeranian's bowl, which then gets startled by a sudden noise."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 42.5,
+        "frame": 1275
+      },
+      "text": "His reaction 😂",
+      "durationSec": 8,
+      "style": {}
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 50.8,
+        "frame": 1524
+      },
+      "text": "Since you've watched this far, you might as well drop us a FOLLOW as we post videos like this all the time! ❤️",
+      "durationSec": 1.4,
+      "style": {}
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 52.2,
+        "frame": 1566
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 52.9,
+        "frame": 1587
+      },
+      "toShotSize": "high_angle",
+      "shotDescription": "A person pretends to pour water into a dog's empty bowl, causing the dog to check it multiple times in confusion."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 53.2,
+        "frame": 1596
+      },
+      "text": "bro had to triple check 😥",
+      "durationSec": 4.5,
+      "style": {}
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 57.9,
+        "frame": 1737
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.7,
+        "frame": 1761
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person makes a spitting sound at a dog, which reacts by playfully attacking them."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 59,
+        "frame": 1770
+      },
+      "text": "Have you ever seen a dog who doesn't like to be spit on?",
+      "durationSec": 2,
+      "style": {}
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 102.2,
+        "frame": 3066
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 102.8,
+        "frame": 3084
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A dog lying on its back makes a funny, wide-eyed expression."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 106.6,
+        "frame": 3198
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 107.2,
+        "frame": 3216
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person startles a pitbull by shouting its name, and the dog responds by kissing the owner."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 114.5,
+        "frame": 3435
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 115.2,
+        "frame": 3456
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A man takes a toy from his husky, which retaliates by slamming his laptop shut."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 115.5,
+        "frame": 3465
+      },
+      "text": "The way she slammed the laptop when he took her toy away 😂",
+      "durationSec": 4,
+      "style": {}
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 120.7,
+        "frame": 3621
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 121,
+        "frame": 3630
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A person pretends to eat their Doberman, which playfully bites back."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 121.2,
+        "frame": 3636
+      },
+      "text": "pretending to eat my doberman puppy till she gets mad",
+      "durationSec": 2,
+      "style": {}
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 125,
+        "frame": 3750
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 125.8,
+        "frame": 3774
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A golden retriever gives a judgmental look after its owner makes a fake farting sound."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 126.2,
+        "frame": 3786
+      },
+      "text": "Getting my dog's reaction to me fake farting...",
+      "durationSec": 3,
+      "style": {}
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 29,
+      "avgShotDurationSec": 3.24,
+      "cutDensityPerSec": 0.31,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.1,
+        "close_up": 0.4,
+        "medium": 0.4,
+        "wide": 0.1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "cut_to_black_screen"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "original_sound",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "standard_overlay",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "text_overlay_statement",
+      "openingShot": "A man attempts to scare his dog, setting the prank compilation theme.",
+      "endingShot": "A golden retriever gives a judgmental look, ending on a strong comedic reaction.",
+      "cta": "A text overlay at 0:51 asks viewers to follow the account.",
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 20,
+    "effect": 5,
+    "bgmSync": 0,
+    "overall": 70
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:41:11.043Z"
+  }
+}

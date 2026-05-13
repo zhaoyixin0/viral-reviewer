@@ -1,0 +1,170 @@
+{
+  "videoId": "tt-7096883311024475438",
+  "durationSec": 5.361,
+  "fps": 59.22829581993569,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium_wide",
+      "shotDescription": "A woman in a dress is sleeping on a grey couch in a home office setting, holding a remote control."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 5,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 12
+      },
+      "text": "The most terrifying sound while working from home",
+      "durationSec": 4.8,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "black",
+        "position": "bottom_center"
+      }
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 0.5,
+        "frame": 30
+      },
+      "type": "sound_effect",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 1.6,
+        "frame": 95
+      },
+      "type": "sound_effect",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 2.8,
+        "frame": 166
+      },
+      "type": "sound_effect",
+      "durationSec": 2.2
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 5,
+        "frame": 296
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5,
+        "frame": 296
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The same woman is now sitting at her desk, wearing headphones and looking attentively at her computer screen."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 5,
+        "frame": 296
+      },
+      "type": "static",
+      "durationSec": 1.6,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.5,
+        "frame": 326
+      },
+      "text": "Hi, yes, I'm here",
+      "durationSec": 1.1,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "black",
+        "position": "bottom_center"
+      }
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 2,
+      "avgShotDurationSec": 3.3,
+      "cutDensityPerSec": 0.15,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": {
+        "sec": 5,
+        "frame": 296
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 1,
+        "wide": 1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "sound_effect_driven",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "standard_tiktok",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "text_on_screen_promise",
+      "openingShot": "establishing_shot",
+      "endingShot": "punchline_reveal",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 5,
+        "frame": 296
+      }
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 5,
+    "effect": 50,
+    "bgmSync": 90,
+    "overall": 30
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:12:22.299Z"
+  }
+}

@@ -1,0 +1,313 @@
+{
+  "videoId": "tt-7622013966125993246",
+  "durationSec": 63.529,
+  "fps": 37.87234042553192,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 8
+      },
+      "text": "high protein smoothie I make all the time",
+      "durationSec": 2.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.9,
+        "frame": 110
+      },
+      "toShotSize": "wide",
+      "shotDescription": "Creator walks out of the frame, leaving an empty shot of the kitchen."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.8,
+        "frame": 144
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator walks back into the frame, holding a stack of smoothie ingredients."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.2,
+        "frame": 197
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator places the ingredients and a blender cup on the counter."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.8,
+        "frame": 258
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator holds up a carton of almond milk to the camera."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 295
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator pours almond milk into the blender."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11,
+        "frame": 417
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator holds up a container of organic protein powder and makes a peace sign."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.7,
+        "frame": 481
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator adds scoops of protein powder to the blender."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.6,
+        "frame": 629
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator adds spoonfuls of peanut butter to the blender."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 21.8,
+        "frame": 826
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator grabs a banana and dances slightly."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.5,
+        "frame": 890
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close up on the creator peeling the banana."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.1,
+        "frame": 988
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator breaks the banana and puts it in the blender."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27,
+        "frame": 1023
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator holds up a large bag of frozen berries."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.6,
+        "frame": 1083
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator pours frozen berries into the blender."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 32.2,
+        "frame": 1219
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator puts the lid on the blender."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35,
+        "frame": 1326
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator walks with the blender pitcher to the blender base by a window."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36.5,
+        "frame": 1382
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator places the pitcher on the base and turns it on. The smoothie blends."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41.6,
+        "frame": 1575
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator is back at the first counter, holding a container of oats."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 42.8,
+        "frame": 1621
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator adds scoops of oats to the blended smoothie."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.2,
+        "frame": 1750
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator is back at the blender base, gives a thumbs up, and blends the smoothie again."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 48.3,
+        "frame": 1829
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator is back at the first counter and pours the finished smoothie into two glass jars."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 54.8,
+        "frame": 2075
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Creator holds up a can of dairy-free coconut whipped cream."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 55.7,
+        "frame": 2109
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator adds whipped cream to both smoothies."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 58.5,
+        "frame": 2216
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Creator makes a 'chef's kiss' gesture next to the finished smoothies."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59.2,
+        "frame": 2242
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Close up on the creator's face as she smiles and makes finger hearts."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 59.8,
+        "frame": 2265
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Extreme close up of the creator's mouth as she eats a spoonful of the smoothie and smiles."
+    }
+  ],
+  "bgm": {
+    "name": "Gentle Instrumental Piano",
+    "trending": false,
+    "bpm": 65,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 26,
+      "avgShotDurationSec": 2.4,
+      "cutDensityPerSec": 0.4,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.05,
+        "close_up": 0.25,
+        "medium": 0.65,
+        "wide": 0.05,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_background",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "white_sans_serif_black_outline",
+      "colorGrade": "natural_warm"
+    },
+    "structure": {
+      "hookFormat": "text_on_screen_promise",
+      "openingShot": "medium_shot_direct_address",
+      "endingShot": "extreme_close_up_product_enjoyment",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 59.8,
+        "frame": 2265
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 5,
+    "bgmSync": 10,
+    "overall": 75
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:59:59.993Z"
+  }
+}

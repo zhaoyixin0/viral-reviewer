@@ -1,0 +1,386 @@
+{
+  "videoId": "tt-7608589996307565854",
+  "durationSec": 18.436,
+  "fps": 59.837251356238696,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "listicle",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "High-angle shot of three cats on a wooden floor looking up at the camera."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 3.6,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 12
+      },
+      "text": "rating how my cats react to meeting their new baby brother",
+      "durationSec": 3.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 3.6,
+        "frame": 215
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.6,
+        "frame": 215
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person holds a small brown kitten towards a larger white cat on a green couch."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 3.6,
+        "frame": 215
+      },
+      "type": "static",
+      "durationSec": 3.2,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.1,
+        "frame": 245
+      },
+      "text": "goobert",
+      "durationSec": 2.7
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.1,
+        "frame": 305
+      },
+      "text": "- he isn't food, so minimal interest",
+      "durationSec": 1.7
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 6.8,
+        "frame": 407
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.8,
+        "frame": 407
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A brown tabby cat with folded ears sits on an orange corduroy couch."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 6.8,
+        "frame": 407
+      },
+      "type": "static",
+      "durationSec": 1.2,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.2,
+        "frame": 431
+      },
+      "text": "doobert",
+      "durationSec": 3.6
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 8,
+        "frame": 479
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8,
+        "frame": 479
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The small brown kitten approaches the tabby cat on the orange couch."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 8,
+        "frame": 479
+      },
+      "type": "static",
+      "durationSec": 2.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.3,
+        "frame": 556
+      },
+      "text": "- he loves everyone n everyone loves him",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.3,
+        "frame": 616
+      },
+      "text": "10/10",
+      "durationSec": 0.5
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 10.8,
+        "frame": 646
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.8,
+        "frame": 646
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person holds the kitten towards a ginger cat, which licks the kitten's head."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 10.8,
+        "frame": 646
+      },
+      "type": "static",
+      "durationSec": 1.2,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.2,
+        "frame": 670
+      },
+      "text": "scoobert",
+      "durationSec": 2.6
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 12,
+        "frame": 718
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12,
+        "frame": 718
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The ginger cat hisses at the kitten."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 12,
+        "frame": 718
+      },
+      "type": "static",
+      "durationSec": 1.2,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.3,
+        "frame": 736
+      },
+      "text": "- wtf dude that's so mean",
+      "durationSec": 1.5
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 13.2,
+        "frame": 790
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.2,
+        "frame": 790
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The ginger cat sits alone on a cat tree, looking displeased."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 13.2,
+        "frame": 790
+      },
+      "type": "static",
+      "durationSec": 0.6,
+      "easing": "linear"
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 13.8,
+        "frame": 826
+      },
+      "type": "hard_cut",
+      "durationFrames": 0
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.8,
+        "frame": 826
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The tabby cat and the small kitten sit together on the orange couch."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 13.8,
+        "frame": 826
+      },
+      "type": "static",
+      "durationSec": 4.2,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.2,
+        "frame": 850
+      },
+      "text": "doobert wins !! 🎉🎉🎉",
+      "durationSec": 3.8
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.5,
+        "frame": 987
+      },
+      "text": "best brother ever ❤️",
+      "durationSec": 1.5
+    }
+  ],
+  "bgm": {
+    "name": "Playful Quirky Background Music",
+    "trending": false,
+    "bpm": 120,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 8,
+      "avgShotDurationSec": 2.25,
+      "cutDensityPerSec": 0.39,
+      "rhythmProfile": "medium",
+      "keyTwistAt": {
+        "sec": 12,
+        "frame": 718
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0.875,
+        "wide": 0.125,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Continuous loop of quirky, playful instrumental music.",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "White sans-serif text with a black outline, centered on screen.",
+      "colorGrade": "Natural, warm indoor lighting."
+    },
+    "structure": {
+      "hookFormat": "Text overlay stating the video's premise.",
+      "openingShot": "High-angle shot of all the cats involved, establishing the 'cast'.",
+      "endingShot": "The 'winning' cat and the new kitten cuddling together, providing a heartwarming conclusion.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 13.8,
+        "frame": 826
+      }
+    }
+  },
+  "density": {
+    "editing": 60,
+    "transition": 20,
+    "effect": 15,
+    "bgmSync": 20,
+    "overall": 45
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:33:33.376Z"
+  }
+}

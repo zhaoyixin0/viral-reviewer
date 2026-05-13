@@ -1,0 +1,124 @@
+{
+  "videoId": "tt-7063143123609816367",
+  "durationSec": 5.547,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman is lying on a Pilates reformer machine, performing leg exercises with her feet in straps."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 5,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.5,
+        "frame": 15
+      },
+      "text": "When you finally get to the feet in straps portion of your Pilates class",
+      "durationSec": 4.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "#F0E6D8",
+        "position": "upper_center"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.2,
+        "frame": 126
+      },
+      "text": "It's like a reward",
+      "durationSec": 0.8,
+      "style": {}
+    }
+  ],
+  "bgm": {
+    "name": "It's like a reward",
+    "trending": true,
+    "bpm": null,
+    "startsAt": {
+      "sec": 4.2,
+      "frame": 126
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 4.2,
+          "frame": 126
+        },
+        "kind": "vocal_in",
+        "note": "The punchline audio starts."
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 5,
+      "cutDensityPerSec": 0,
+      "rhythmProfile": "slow",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "punchline_audio",
+      "bgmSyncTightness": "thematic",
+      "subtitleStyle": "centered_sans_serif_white",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "relatable_text_overlay",
+      "openingShot": "Wide shot of a woman performing a Pilates exercise.",
+      "endingShot": "The woman smiles as the punchline audio plays, confirming the text's sentiment.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 4.2,
+        "frame": 126
+      }
+    }
+  },
+  "density": {
+    "editing": 0,
+    "transition": 0,
+    "effect": 0,
+    "bgmSync": 85,
+    "overall": 10
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:26:51.962Z"
+  }
+}

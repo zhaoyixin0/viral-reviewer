@@ -1,0 +1,103 @@
+{
+  "videoId": "tt-6930078601018608902",
+  "durationSec": 10.377,
+  "fps": 24,
+  "resolution": {
+    "width": 240,
+    "height": 446
+  },
+  "videoFormat": "ugc_native",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 9.9,
+      "easing": "linear"
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A person holds a long cardboard box on the floor, showing its length."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.5,
+        "frame": 60
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "The camera peers directly into the dark opening of the cardboard box, creating a tunnel effect. Two glowing eyes are visible in the distant darkness."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.5,
+        "frame": 204
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A tabby cat's head suddenly emerges from the box, filling the frame with a slightly annoyed expression."
+    }
+  ],
+  "bgm": null,
+  "dimensions": {
+    "pacing": {
+      "shotCount": 3,
+      "avgShotDurationSec": 3.3,
+      "cutDensityPerSec": 0.2,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": {
+        "sec": 8.5,
+        "frame": 204
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.6,
+        "close_up": 0.15,
+        "medium": 0,
+        "wide": 0.25,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "none",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "none",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "curiosity",
+      "openingShot": "POV shot looking down a long, mysterious cardboard box.",
+      "endingShot": "Close-up reveal of a cat's face emerging from the box.",
+      "cta": "none",
+      "payoffAt": {
+        "sec": 8.5,
+        "frame": 204
+      }
+    }
+  },
+  "density": {
+    "editing": 5,
+    "transition": 0,
+    "effect": 0,
+    "bgmSync": 0,
+    "overall": 5
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:32:12.913Z"
+  }
+}

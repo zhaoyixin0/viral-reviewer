@@ -1,0 +1,281 @@
+{
+  "videoId": "ig-DXusTKIkaHw",
+  "durationSec": 6.167,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 960
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A fork twirls creamy fettuccine pasta with basil in a red bowl."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 2.1,
+      "scaleFrom": 1,
+      "scaleTo": 1,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "The easiest pasta you'll ever make",
+      "durationSec": 2.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 2.1,
+        "frame": 63
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.1,
+        "frame": 63
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand pours heavy cream from a carton into a pan with melted butter."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 3.1,
+        "frame": 93
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.1,
+        "frame": 93
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand grates Parmesan cheese directly into the pan with the simmering cream sauce."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 4.1,
+        "frame": 123
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.1,
+        "frame": 123
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand adds cooked fettuccine pasta into the pan with the cheese sauce."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 5.1,
+        "frame": 153
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.1,
+        "frame": 153
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand uses tongs to toss the pasta, coating it with the creamy sauce in the pan."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 6.1,
+        "frame": 183
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 6.1,
+        "frame": 183
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand sprinkles chopped fresh basil over the pasta in the pan."
+    },
+    {
+      "kind": "transition",
+      "at": {
+        "sec": 7.1,
+        "frame": 213
+      },
+      "type": "hard_cut",
+      "durationFrames": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.1,
+        "frame": 213
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "The finished pasta is served in the red bowl, and a fork twirls it, lifting a portion."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.1,
+        "frame": 213
+      },
+      "text": "Recipe in caption",
+      "durationSec": 1.9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white",
+        "position": "center"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Jazzy Instrumental",
+    "trending": false,
+    "bpm": 120,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 2.1,
+          "frame": 63
+        },
+        "kind": "beat",
+        "note": "Cut to pouring cream"
+      },
+      {
+        "at": {
+          "sec": 3.1,
+          "frame": 93
+        },
+        "kind": "beat",
+        "note": "Cut to grating cheese"
+      },
+      {
+        "at": {
+          "sec": 4.1,
+          "frame": 123
+        },
+        "kind": "beat",
+        "note": "Cut to adding pasta"
+      },
+      {
+        "at": {
+          "sec": 5.1,
+          "frame": 153
+        },
+        "kind": "beat",
+        "note": "Cut to tossing pasta"
+      },
+      {
+        "at": {
+          "sec": 6.1,
+          "frame": 183
+        },
+        "kind": "beat",
+        "note": "Cut to adding basil"
+      },
+      {
+        "at": {
+          "sec": 7.1,
+          "frame": 213
+        },
+        "kind": "beat",
+        "note": "Cut to final shot"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 7,
+      "avgShotDurationSec": 1.28,
+      "cutDensityPerSec": 0.78,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static",
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.29,
+        "close_up": 0.71,
+        "medium": 0,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "upbeat_instrumental",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "simple_sans_serif_white",
+      "colorGrade": "warm_and_vibrant"
+    },
+    "structure": {
+      "hookFormat": "final_product_first",
+      "openingShot": "Extreme close-up of a fork twirling the finished pasta.",
+      "endingShot": "Extreme close-up of the finished pasta being twirled and lifted.",
+      "cta": "text_on_screen",
+      "payoffAt": {
+        "sec": 7.1,
+        "frame": 213
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 20,
+    "effect": 5,
+    "bgmSync": 90,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:11:57.855Z"
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "videoId": "tt-7067294493988474159",
+  "durationSec": 8.914,
+  "fps": 59.885714285714286,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "High-angle point-of-view shot of a person's legs and feet attached to a cable machine in a gym."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "text": "POV you finally figured out how to grow ur side glutes 🍑😩",
+      "durationSec": 8.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "pink"
+      }
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 8.2,
+      "easing": "linear"
+    }
+  ],
+  "bgm": {
+    "name": "Hit It One Time (Remix)",
+    "trending": true,
+    "bpm": 145,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.5,
+          "frame": 30
+        },
+        "kind": "beat",
+        "note": "Leg kicks out, synchronized with the beat"
+      },
+      {
+        "at": {
+          "sec": 1.5,
+          "frame": 90
+        },
+        "kind": "beat",
+        "note": "Leg kicks out, synchronized with the beat"
+      },
+      {
+        "at": {
+          "sec": 2.5,
+          "frame": 150
+        },
+        "kind": "beat",
+        "note": "Leg kicks out, synchronized with the beat"
+      },
+      {
+        "at": {
+          "sec": 3.5,
+          "frame": 210
+        },
+        "kind": "beat",
+        "note": "Leg kicks out, synchronized with the beat"
+      },
+      {
+        "at": {
+          "sec": 4.5,
+          "frame": 269
+        },
+        "kind": "beat",
+        "note": "Leg kicks out, synchronized with the beat"
+      },
+      {
+        "at": {
+          "sec": 5.5,
+          "frame": 329
+        },
+        "kind": "beat",
+        "note": "Leg kicks out, synchronized with the beat"
+      },
+      {
+        "at": {
+          "sec": 6.5,
+          "frame": 389
+        },
+        "kind": "beat",
+        "note": "Leg kicks out, synchronized with the beat"
+      },
+      {
+        "at": {
+          "sec": 7.5,
+          "frame": 449
+        },
+        "kind": "beat",
+        "note": "Leg kicks out, synchronized with the beat"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 1,
+      "avgShotDurationSec": 8.2,
+      "cutDensityPerSec": 0,
+      "rhythmProfile": "slow_burn",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": []
+    },
+    "audiovisual": {
+      "bgmPattern": "Upbeat rap with a strong, repetitive beat driving the action.",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "Centered pink text with a subtle glow effect.",
+      "colorGrade": "Natural gym lighting with neutral to cool tones."
+    },
+    "structure": {
+      "hookFormat": "Text overlay using the 'POV' format to present a relatable fitness goal.",
+      "openingShot": "High-angle POV of the exercise setup, immediately establishing the context.",
+      "endingShot": "The video ends abruptly mid-repetition, designed for seamless looping.",
+      "cta": null,
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 10,
+    "transition": 0,
+    "effect": 20,
+    "bgmSync": 90,
+    "overall": 30
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:16:18.809Z"
+  }
+}

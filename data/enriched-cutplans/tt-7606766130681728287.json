@@ -1,0 +1,678 @@
+{
+  "videoId": "tt-7606766130681728287",
+  "durationSec": 29.117,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand places a folded, cheesy taco onto a white marble plate."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 12
+      },
+      "text": "The last time I",
+      "durationSec": 0.8,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.6,
+        "frame": 36
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The hand places a second taco on the plate."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1,
+        "frame": 60
+      },
+      "text": "tacos",
+      "durationSec": 0.8,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 1.8,
+        "frame": 108
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Hands pull a taco apart, revealing a dramatic cheese pull."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.2,
+        "frame": 132
+      },
+      "text": "they broke the",
+      "durationSec": 1,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.2,
+        "frame": 192
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoon adds a creamy orange sauce to the open taco."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.4,
+        "frame": 204
+      },
+      "text": "with over 10",
+      "durationSec": 0.8,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.2,
+        "frame": 252
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands fold the sauced taco closed."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 4.4,
+        "frame": 264
+      },
+      "text": "Million views",
+      "durationSec": 1,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.4,
+        "frame": 324
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands break the taco apart, showing another cheese pull and the sauce inside."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.6,
+        "frame": 336
+      },
+      "text": "So you'll already",
+      "durationSec": 1,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.6,
+        "frame": 396
+      },
+      "text": "I had to make",
+      "durationSec": 0.6,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.2,
+        "frame": 432
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator takes a bite of the taco, looking at the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.2,
+        "frame": 432
+      },
+      "text": "them again",
+      "durationSec": 0.6,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.8,
+        "frame": 468
+      },
+      "text": "Oh my gosh",
+      "durationSec": 0.8,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.6,
+        "frame": 516
+      },
+      "text": "cheese pull",
+      "durationSec": 0.8,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 9.4,
+        "frame": 564
+      },
+      "text": "So I start by",
+      "durationSec": 0.8,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10,
+        "frame": 600
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "High-angle shot of chopped red onions sizzling in oil in a non-stick pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.2,
+        "frame": 612
+      },
+      "text": "cooking my beef in",
+      "durationSec": 1,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.2,
+        "frame": 672
+      },
+      "text": "my HexClad pan",
+      "durationSec": 1,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.2,
+        "frame": 732
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Ground beef is added to the pan with the onions."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.4,
+        "frame": 744
+      },
+      "text": "because nothing sticks",
+      "durationSec": 1.2,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.2,
+        "frame": 792
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The ground beef is being broken up and cooked in the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.2,
+        "frame": 792
+      },
+      "text": "And I do not have to scrape the",
+      "durationSec": 1.2,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.4,
+        "frame": 864
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Red seasoning powder is poured over the cooked ground beef."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.4,
+        "frame": 864
+      },
+      "text": "pan after",
+      "durationSec": 0.6,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15,
+        "frame": 900
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A wooden spoon stirs the seasoning into the beef."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15,
+        "frame": 900
+      },
+      "text": "Next I throw in some",
+      "durationSec": 1,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16,
+        "frame": 960
+      },
+      "text": "seasonings",
+      "durationSec": 0.6,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.6,
+        "frame": 996
+      },
+      "text": "because flavor is",
+      "durationSec": 0.8,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17.4,
+        "frame": 1044
+      },
+      "text": "non-negotiable",
+      "durationSec": 1,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.2,
+        "frame": 1092
+      },
+      "toShotSize": "wide",
+      "shotDescription": "High-angle shot of four tortillas on a wooden board. A hand adds shredded cheese to one."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.4,
+        "frame": 1104
+      },
+      "text": "And that's on",
+      "durationSec": 0.8,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.2,
+        "frame": 1152
+      },
+      "text": "period",
+      "durationSec": 0.6,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.8,
+        "frame": 1188
+      },
+      "text": "Next you're gonna fry",
+      "durationSec": 1,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 20.8,
+        "frame": 1248
+      },
+      "text": "your tacos",
+      "durationSec": 0.6,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.2,
+        "frame": 1272
+      },
+      "text": "And trust me",
+      "durationSec": 0.8,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22,
+        "frame": 1320
+      },
+      "text": "you do not need",
+      "durationSec": 0.8,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.4,
+        "frame": 1344
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Two folded tacos are placed into a pan with hot oil."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 22.8,
+        "frame": 1368
+      },
+      "text": "much oil because",
+      "durationSec": 1,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23.8,
+        "frame": 1428
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A pink spatula flips one of the frying tacos, revealing a golden-brown crust."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23.8,
+        "frame": 1428
+      },
+      "text": "this pan does the work",
+      "durationSec": 1.2,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 25,
+        "frame": 1500
+      },
+      "text": "And don't worry",
+      "durationSec": 0.8,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.4,
+        "frame": 1524
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The spatula flips another taco in the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 25.6,
+        "frame": 1536
+      },
+      "text": "everything you need for",
+      "durationSec": 1,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.6,
+        "frame": 1596
+      },
+      "text": "this recipe will be",
+      "durationSec": 0.8,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27,
+        "frame": 1620
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "View of the four golden-brown tacos frying in the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 27,
+        "frame": 1620
+      },
+      "text": "in the caption",
+      "durationSec": 0.8,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 27.6,
+        "frame": 1656
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The pink spatula lifts one of the finished tacos from the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 27.6,
+        "frame": 1656
+      },
+      "text": "And that's it",
+      "durationSec": 0.6,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 28.2,
+        "frame": 1692
+      },
+      "text": "Bye",
+      "durationSec": 0.6,
+      "style": {
+        "font": "TikTok Sans",
+        "color": "white"
+      }
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Lo-fi Instrumental",
+    "trending": false,
+    "bpm": 85,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": []
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 16,
+      "avgShotDurationSec": 1.8,
+      "cutDensityPerSec": 0.54,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.1,
+        "close_up": 0.8,
+        "medium": 0.05,
+        "wide": 0.05,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "looping_instrumental",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "default_tiktok_yellow_highlight",
+      "colorGrade": "warm_natural"
+    },
+    "structure": {
+      "hookFormat": "result_first",
+      "openingShot": "Close-up of the finished, cheesy tacos being plated.",
+      "endingShot": "Close-up of a perfectly cooked taco being lifted from the pan.",
+      "cta": "Implicit CTA to check the caption for the recipe.",
+      "payoffAt": {
+        "sec": 1.8,
+        "frame": 108
+      }
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 10,
+    "effect": 15,
+    "bgmSync": 20,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:55:38.494Z"
+  }
+}

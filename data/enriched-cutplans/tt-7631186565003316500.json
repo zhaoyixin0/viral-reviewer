@@ -1,0 +1,618 @@
+{
+  "videoId": "tt-7631186565003316500",
+  "durationSec": 47.554,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 0.95,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A person's hands arrange three golden-brown breakfast rolls on a black slate plate on a wooden table."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 12
+      },
+      "text": "LOW CALORIE & HIGH PROTEIN\nCHEESY EGG & BEEF\nBREAKFAST ROLLS",
+      "durationSec": 3.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.8,
+        "frame": 48
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The person stacks more breakfast rolls onto the plate, creating a pile."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2,
+        "frame": 120
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A wider shot shows the full pile of breakfast rolls on the slate."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.5,
+        "frame": 210
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand picks up one roll and dips it into a small white bowl of orange sauce."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.8,
+        "frame": 228
+      },
+      "text": "Only 318 Calories\nWith 36g Protein!",
+      "durationSec": 3.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.5,
+        "frame": 330
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "A roll is cut in half, revealing the cheesy egg and beef filling, with sauce drizzled over it."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.5,
+        "frame": 450
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator holds up a large pile of the rolls, each individually wrapped in aluminum foil."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 7.8,
+        "frame": 468
+      },
+      "text": "Easy, Healthy &\nDelicious Meal Prep!",
+      "durationSec": 2.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.5,
+        "frame": 570
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator places the foil-wrapped rolls on the wooden table."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.5,
+        "frame": 630
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down view of hands putting raw ground beef into a black frying pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11,
+        "frame": 660
+      },
+      "text": "1.1KG Extra Lean Beef Mince",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.5,
+        "frame": 750
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands hold a small white bowl filled with a mix of orange and brown spices."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 12.8,
+        "frame": 768
+      },
+      "text": "• 1 Tsp Salt\n• 1/2 Tsp Cumin\n• 1 Tsp Chilli Powder\n• 1 Tsp Black Pepper\n• 2 Tsp Smoked Paprika\n• 1 Tsp Onion Powder\n• 1 Tsp Garlic Powder\n• 1.5 Tsp Oregano",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.5,
+        "frame": 810
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The spices are poured from the bowl onto the raw beef in the pan."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.8,
+        "frame": 888
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Salsa is poured from a white bowl onto the now-cooked ground beef."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 15.2,
+        "frame": 912
+      },
+      "text": "400g Salsa",
+      "durationSec": 1.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 16.5,
+        "frame": 990
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoonful of light cream cheese is added to the beef and salsa mixture."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 17,
+        "frame": 1020
+      },
+      "text": "60g Light Cream Cheese",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18,
+        "frame": 1080
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A wooden spatula stirs the cream cheese into the beef mixture until combined."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 18.5,
+        "frame": 1110
+      },
+      "text": "Mix & Set Aside Once Cooked",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.8,
+        "frame": 1248
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A blue spatula spreads light butter in a clean black frying pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21.2,
+        "frame": 1272
+      },
+      "text": "25g Light Butter",
+      "durationSec": 1.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.5,
+        "frame": 1350
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Whisked eggs and egg whites are poured from a glass bowl into the hot pan with melted butter."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 23,
+        "frame": 1380
+      },
+      "text": "8 Eggs & 300g Egg Whites",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 24.8,
+        "frame": 1488
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "The blue spatula gently stirs and folds the eggs as they cook."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 25.2,
+        "frame": 1512
+      },
+      "text": "Constantly Stir & Fold Gently\nOn LOW - MEDIUM Heat",
+      "durationSec": 3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 26.8,
+        "frame": 1608
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A yellow banana-shaped spatula is now stirring the eggs."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 26.8,
+        "frame": 1608
+      },
+      "type": "comedy_gag",
+      "durationSec": 1.7
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.5,
+        "frame": 1710
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Shredded cheddar cheese is poured onto the scrambled eggs in the pan."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.2,
+        "frame": 1752
+      },
+      "text": "180g Light Grated Cheddar",
+      "durationSec": 1.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 30.5,
+        "frame": 1830
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spatula mixes the cheese into the eggs until melted and combined."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31,
+        "frame": 1860
+      },
+      "text": "Mix",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 33,
+        "frame": 1980
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Top-down view of hands holding a single tortilla over a wooden board."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.3,
+        "frame": 1998
+      },
+      "text": "1 Small/Medium Tortilla\n(missions carb balance tortilla)",
+      "durationSec": 1.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 34.5,
+        "frame": 2070
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoonful of the beef mixture is spread onto the center of the tortilla."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35,
+        "frame": 2100
+      },
+      "text": "Evenly Distribute Filling",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35.8,
+        "frame": 2148
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A spoonful of the cheesy egg mixture is added on top of the beef."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 37,
+        "frame": 2220
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "Hands fold the sides of the tortilla and then roll it up tightly."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 37.4,
+        "frame": 2244
+      },
+      "text": "Roll Tightly & Repeat\nFor Other 11 Rolls",
+      "durationSec": 2.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 39.8,
+        "frame": 2388
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A baking tray lined with parchment paper is shown, filled with 12 unbaked rolls."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 40.5,
+        "frame": 2430
+      },
+      "toShotSize": "medium",
+      "shotDescription": "Closer shot of the tray of rolls."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 40.5,
+        "frame": 2430
+      },
+      "text": "Light Cooking Oil Spray",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 41,
+        "frame": 2460
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The same shot of the tray, but with cooking instructions overlaid."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 41.2,
+        "frame": 2472
+      },
+      "text": "Oven Bake = 180C/375F\n6 - 8 Minutes\nOR\nAir Fry = 200C/400F\n5 - 8 Minutes",
+      "durationSec": 2.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 43.5,
+        "frame": 2610
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A pile of the finished, golden-brown rolls on the black slate."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 43.8,
+        "frame": 2628
+      },
+      "text": "SAVE THIS RECIPE\n(Per Roll - 12 Total)\n318 Calories\n5.5gC | 12gF | 36gP",
+      "durationSec": 3.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 44.8,
+        "frame": 2688
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator holds up the large pile of foil-wrapped rolls again."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 46.5,
+        "frame": 2790
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The creator places the foil-wrapped rolls on the wooden table."
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Lo-fi Hip Hop",
+    "trending": false,
+    "bpm": 90,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0,
+          "frame": 0
+        },
+        "kind": "beat"
+      },
+      {
+        "at": {
+          "sec": 10.5,
+          "frame": 630
+        },
+        "kind": "vocal_in",
+        "note": "Narration starts"
+      },
+      {
+        "at": {
+          "sec": 47,
+          "frame": 2820
+        },
+        "kind": "vocal_phrase",
+        "note": "Narration ends with 'and enjoy'"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 26,
+      "avgShotDurationSec": 1.83,
+      "cutDensityPerSec": 0.55,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": {
+        "sec": 26.8,
+        "frame": 1608
+      }
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0.1,
+        "close_up": 0.6,
+        "medium": 0.3,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_loop",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "white_on_black_rounded_box",
+      "colorGrade": "vibrant_warm"
+    },
+    "structure": {
+      "hookFormat": "product_reveal",
+      "openingShot": "Medium shot of the final, plated breakfast rolls.",
+      "endingShot": "The creator places the tray of meal-prepped, foil-wrapped rolls on the table.",
+      "cta": "text_overlay",
+      "payoffAt": {
+        "sec": 0,
+        "frame": 0
+      }
+    }
+  },
+  "density": {
+    "editing": 90,
+    "transition": 10,
+    "effect": 25,
+    "bgmSync": 20,
+    "overall": 85
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:20:05.967Z"
+  }
+}

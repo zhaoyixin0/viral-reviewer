@@ -1,0 +1,291 @@
+{
+  "videoId": "tt-6713167553973193989",
+  "durationSec": 15.047,
+  "fps": 30,
+  "resolution": {
+    "width": 608,
+    "height": 1080
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Final result of rainbow glitter nails."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "watermark",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0.85,
+        "frame": 26
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Applying a silver glitter base coat to a thumbnail."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 2.45,
+        "frame": 74
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Applying liquid latex around the nail cuticle."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.25,
+        "frame": 98
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Applying green and yellow nail polish onto a white makeup sponge."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.05,
+        "frame": 122
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Dabbing the sponge onto a nail to create a gradient effect."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.85,
+        "frame": 146
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Wiping away excess polish from the skin around the nail."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.65,
+        "frame": 170
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Applying dark green and pink nail polish onto a sponge."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.25,
+        "frame": 218
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Dabbing the sponge onto another nail."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 8.05,
+        "frame": 242
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Applying pink and yellow nail polish onto a sponge."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.65,
+        "frame": 290
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Dabbing the sponge onto a pinky nail."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.45,
+        "frame": 314
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Applying dark green and yellow polish onto a sponge."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.05,
+        "frame": 362
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Dabbing the sponge onto the index fingernail."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12.85,
+        "frame": 386
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Peeling off the dried liquid latex from around the nail."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 13.65,
+        "frame": 410
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Applying a clear top coat over the finished gradient nails."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14.45,
+        "frame": 434
+      },
+      "toShotSize": "extreme_close_up",
+      "shotDescription": "Final shot of the completed rainbow glitter manicure."
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Electronic Pop",
+    "trending": true,
+    "bpm": 125,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 0.85,
+          "frame": 26
+        },
+        "kind": "beat",
+        "note": "Cut sync"
+      },
+      {
+        "at": {
+          "sec": 2.45,
+          "frame": 74
+        },
+        "kind": "beat",
+        "note": "Cut sync"
+      },
+      {
+        "at": {
+          "sec": 4.05,
+          "frame": 122
+        },
+        "kind": "beat",
+        "note": "Cut sync"
+      },
+      {
+        "at": {
+          "sec": 5.65,
+          "frame": 170
+        },
+        "kind": "beat",
+        "note": "Cut sync"
+      },
+      {
+        "at": {
+          "sec": 7.25,
+          "frame": 218
+        },
+        "kind": "beat",
+        "note": "Cut sync"
+      },
+      {
+        "at": {
+          "sec": 8.05,
+          "frame": 242
+        },
+        "kind": "beat",
+        "note": "Cut sync"
+      },
+      {
+        "at": {
+          "sec": 9.65,
+          "frame": 290
+        },
+        "kind": "beat",
+        "note": "Cut sync"
+      },
+      {
+        "at": {
+          "sec": 12.05,
+          "frame": 362
+        },
+        "kind": "beat",
+        "note": "Cut sync"
+      },
+      {
+        "at": {
+          "sec": 13.65,
+          "frame": 410
+        },
+        "kind": "beat",
+        "note": "Cut sync"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 15,
+      "avgShotDurationSec": 0.98,
+      "cutDensityPerSec": 1.02,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 1,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "Repetitive beat-driven loop",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "none",
+      "colorGrade": "Vibrant and saturated"
+    },
+    "structure": {
+      "hookFormat": "Result first",
+      "openingShot": "Extreme close-up of the finished rainbow glitter nails.",
+      "endingShot": "Extreme close-up of the finished rainbow glitter nails.",
+      "cta": null,
+      "payoffAt": {
+        "sec": 14.45,
+        "frame": 434
+      }
+    }
+  },
+  "density": {
+    "editing": 95,
+    "transition": 10,
+    "effect": 5,
+    "bgmSync": 100,
+    "overall": 88
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:23:49.753Z"
+  }
+}

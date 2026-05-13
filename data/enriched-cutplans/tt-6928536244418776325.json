@@ -1,0 +1,388 @@
+{
+  "videoId": "tt-6928536244418776325",
+  "durationSec": 24.262,
+  "fps": 30,
+  "resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "videoFormat": "skit",
+  "videoFormatConfidence": 0.9,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "medium",
+      "shotDescription": "A white and grey cat sits on a small wooden table in a room."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "handheld",
+      "durationSec": 23.8,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.1,
+        "frame": 3
+      },
+      "text": "Welcome to another episode of",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.9,
+        "frame": 57
+      },
+      "text": "Will",
+      "durationSec": 2.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.3,
+        "frame": 69
+      },
+      "text": "Henry",
+      "durationSec": 1.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 2.9,
+        "frame": 87
+      },
+      "text": "Knock",
+      "durationSec": 1.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.2,
+        "frame": 96
+      },
+      "text": "It",
+      "durationSec": 0.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.5,
+        "frame": 105
+      },
+      "text": "Over?",
+      "durationSec": 0.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 4.6,
+        "frame": 138
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand places a green apple on the table in front of the cat."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.1,
+        "frame": 153
+      },
+      "text": "Apple",
+      "durationSec": 4.1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.8,
+        "frame": 174
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The cat looks at the apple, then begins to bat it with its paw until it falls off the table."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 9.2,
+        "frame": 276
+      },
+      "type": "emoji_overlay",
+      "durationSec": 1.3
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 10.6,
+        "frame": 318
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand places a K-Cup coffee pod on the table."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11.1,
+        "frame": 333
+      },
+      "text": "K-Cup",
+      "durationSec": 2.4,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 11.3,
+        "frame": 339
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The cat bats the K-Cup off the table."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 13.5,
+        "frame": 405
+      },
+      "type": "emoji_overlay",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 14,
+        "frame": 420
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand places a Pusheen cat toy holding a donut on the table."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 14.8,
+        "frame": 444
+      },
+      "text": "Pusheen Toy",
+      "durationSec": 3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15,
+        "frame": 450
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The cat bats the Pusheen toy off the table."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 17.8,
+        "frame": 534
+      },
+      "type": "emoji_overlay",
+      "durationSec": 1
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 18.7,
+        "frame": 561
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand places a small magnet on the table."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19,
+        "frame": 570
+      },
+      "text": "Magnets",
+      "durationSec": 4.8,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.2,
+        "frame": 576
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The cat bats the first magnet off the table."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 20,
+        "frame": 600
+      },
+      "type": "emoji_overlay",
+      "durationSec": 0.8
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 20.8,
+        "frame": 624
+      },
+      "toShotSize": "close_up",
+      "shotDescription": "A hand places a second magnet on the table, and the cat's paw immediately bats it."
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 22.8,
+        "frame": 684
+      },
+      "toShotSize": "medium",
+      "shotDescription": "The cat looks down after knocking the second magnet off the table."
+    },
+    {
+      "kind": "effect",
+      "at": {
+        "sec": 23,
+        "frame": 690
+      },
+      "type": "emoji_overlay",
+      "durationSec": 0.8
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat 8-bit Style Instrumental",
+    "trending": false,
+    "bpm": 128,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 4.6,
+          "frame": 138
+        },
+        "kind": "beat",
+        "note": "First item introduced"
+      },
+      {
+        "at": {
+          "sec": 10.6,
+          "frame": 318
+        },
+        "kind": "beat",
+        "note": "Second item introduced"
+      },
+      {
+        "at": {
+          "sec": 14,
+          "frame": 420
+        },
+        "kind": "beat",
+        "note": "Third item introduced"
+      },
+      {
+        "at": {
+          "sec": 18.7,
+          "frame": 561
+        },
+        "kind": "beat",
+        "note": "Fourth item introduced"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 11,
+      "avgShotDurationSec": 2.16,
+      "cutDensityPerSec": 0.46,
+      "rhythmProfile": "medium",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "handheld"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0.4,
+        "medium": 0.6,
+        "wide": 0,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "repetitive_instrumental_loop",
+      "bgmSyncTightness": "loose",
+      "subtitleStyle": "white_sans_serif_black_stroke",
+      "colorGrade": "natural"
+    },
+    "structure": {
+      "hookFormat": "title_card",
+      "openingShot": "medium_shot_of_subject",
+      "endingShot": "medium_shot_of_subject_after_action",
+      "cta": null,
+      "payoffAt": null
+    }
+  },
+  "density": {
+    "editing": 60,
+    "transition": 10,
+    "effect": 50,
+    "bgmSync": 30,
+    "overall": 55
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T06:32:18.673Z"
+  }
+}

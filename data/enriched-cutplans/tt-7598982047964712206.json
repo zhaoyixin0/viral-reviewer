@@ -1,0 +1,499 @@
+{
+  "videoId": "tt-7598982047964712206",
+  "durationSec": 37.567,
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "videoFormat": "tutorial",
+  "videoFormatConfidence": 1,
+  "actions": [
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "toShotSize": "wide",
+      "shotDescription": "A woman in a dance studio is in a full split position on the floor, facing the camera."
+    },
+    {
+      "kind": "camera_move",
+      "at": {
+        "sec": 0,
+        "frame": 0
+      },
+      "type": "static",
+      "durationSec": 37.5,
+      "easing": "linear"
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 0.2,
+        "frame": 6
+      },
+      "text": "SPLIT TUTORIAL",
+      "durationSec": 3.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 1.8,
+        "frame": 54
+      },
+      "text": "From a professional ballerina",
+      "durationSec": 1.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 3.5,
+        "frame": 105
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman is now standing in the center of the studio, ready to begin the warm-up."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 3.8,
+        "frame": 114
+      },
+      "text": "STEP 1: WARM UP",
+      "durationSec": 5.7,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 5.2,
+        "frame": 156
+      },
+      "text": "JUMPING JACKS 30 SEC",
+      "durationSec": 0.6,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 5.8,
+        "frame": 174
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman is doing high knees in place."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 6.5,
+        "frame": 195
+      },
+      "text": "HIGH KNEES 30 SEC",
+      "durationSec": 1.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 7.8,
+        "frame": 234
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman is doing bottom kickers, running in place."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 8.5,
+        "frame": 255
+      },
+      "text": "BOTTOM KICKERS 30 SEC",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 9.5,
+        "frame": 285
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman is sitting on the floor, performing windshield wiper leg movements."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10,
+        "frame": 300
+      },
+      "text": "STEP 2: MOBILIZE LARGE JOINTS",
+      "durationSec": 9.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 10.5,
+        "frame": 315
+      },
+      "text": "TARGETING THE HIPS",
+      "durationSec": 9,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 11,
+        "frame": 330
+      },
+      "text": "WINDSHIELD WIPERS 20 SECS",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 12,
+        "frame": 360
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman is in a wide stance, performing side-to-side lunges with her hands on the floor for support."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 13.5,
+        "frame": 405
+      },
+      "text": "SIDE TO SIDES W HANDS 10X",
+      "durationSec": 2.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 15.8,
+        "frame": 474
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman continues the side-to-side lunges, but now without her hands on the floor."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 16.5,
+        "frame": 495
+      },
+      "text": "WITHOUT HANDS 10X",
+      "durationSec": 3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 19.5,
+        "frame": 585
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman is in a deep lunge position, stretching her hip flexor."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 19.8,
+        "frame": 594
+      },
+      "text": "STEP 3: STRETCH",
+      "durationSec": 15.2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 21,
+        "frame": 630
+      },
+      "text": "DEEP LUNGE 20 SEC",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 23,
+        "frame": 690
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman is lying on her stomach, pushing her torso up into a cobra pose."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 24,
+        "frame": 720
+      },
+      "text": "COBRA 15 SEC",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 25.5,
+        "frame": 765
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman is in a reverse lunge position, stretching her hamstring by folding over her front leg."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 26.8,
+        "frame": 804
+      },
+      "text": "REVERSE LUNGE 45 SEC",
+      "durationSec": 2,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 28.8,
+        "frame": 864
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman is in a pigeon pose, stretching her glute and hip."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 29.5,
+        "frame": 885
+      },
+      "text": "PIGEON 30 SEC",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 31,
+        "frame": 930
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman is sitting on the floor in a butterfly stretch, folding forward."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 31.8,
+        "frame": 954
+      },
+      "text": "BUTTERFLY 30 SEC",
+      "durationSec": 1,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 32.8,
+        "frame": 984
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman is in a full split, holding the stretch."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 33.5,
+        "frame": 1005
+      },
+      "text": "SPLITS 45 SEC",
+      "durationSec": 1.5,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 35,
+        "frame": 1050
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman sits up from the split and gives two thumbs up to the camera."
+    },
+    {
+      "kind": "subtitle",
+      "at": {
+        "sec": 35.2,
+        "frame": 1056
+      },
+      "text": "HOPE THESE HELP!",
+      "durationSec": 2.3,
+      "style": {
+        "font": "sans-serif",
+        "color": "white"
+      }
+    },
+    {
+      "kind": "cut",
+      "at": {
+        "sec": 36,
+        "frame": 1080
+      },
+      "toShotSize": "wide",
+      "shotDescription": "The woman is sitting cross-legged on the floor, smiling and waving goodbye."
+    }
+  ],
+  "bgm": {
+    "name": "Upbeat Electronic Workout Track",
+    "trending": false,
+    "bpm": 125,
+    "startsAt": {
+      "sec": 0,
+      "frame": 0
+    },
+    "markers": [
+      {
+        "at": {
+          "sec": 3.5,
+          "frame": 105
+        },
+        "kind": "beat",
+        "note": "Cut to warm up"
+      },
+      {
+        "at": {
+          "sec": 5.8,
+          "frame": 174
+        },
+        "kind": "beat",
+        "note": "Cut to high knees"
+      },
+      {
+        "at": {
+          "sec": 9.5,
+          "frame": 285
+        },
+        "kind": "beat",
+        "note": "Cut to step 2"
+      },
+      {
+        "at": {
+          "sec": 19.5,
+          "frame": 585
+        },
+        "kind": "beat",
+        "note": "Cut to step 3"
+      }
+    ]
+  },
+  "dimensions": {
+    "pacing": {
+      "shotCount": 15,
+      "avgShotDurationSec": 2.5,
+      "cutDensityPerSec": 0.37,
+      "rhythmProfile": "fast_cut",
+      "keyTwistAt": null
+    },
+    "camera": {
+      "dominantMovements": [
+        "static"
+      ],
+      "shotSizeDistribution": {
+        "extreme_close_up": 0,
+        "close_up": 0,
+        "medium": 0,
+        "wide": 1,
+        "extreme_wide": 0
+      },
+      "transitionPatterns": [
+        "hard_cut"
+      ]
+    },
+    "audiovisual": {
+      "bgmPattern": "continuous_upbeat_electronic",
+      "bgmSyncTightness": "tight",
+      "subtitleStyle": "Modern, bold, all-caps, sans-serif font in white with a subtle drop shadow.",
+      "colorGrade": "natural_bright"
+    },
+    "structure": {
+      "hookFormat": "title_card_demonstration",
+      "openingShot": "Wide shot of the creator performing the final split.",
+      "endingShot": "Wide shot of the creator sitting cross-legged and waving.",
+      "cta": "Implied CTA to try the stretches, with the text 'HOPE THESE HELP!'",
+      "payoffAt": {
+        "sec": 32.8,
+        "frame": 984
+      }
+    }
+  },
+  "density": {
+    "editing": 85,
+    "transition": 10,
+    "effect": 25,
+    "bgmSync": 90,
+    "overall": 80
+  },
+  "meta": {
+    "model": "gemini-2.5-pro",
+    "analyzedAt": "2026-05-13T07:04:51.903Z"
+  }
+}
