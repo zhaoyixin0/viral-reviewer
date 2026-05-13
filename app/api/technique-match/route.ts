@@ -20,6 +20,7 @@ const Schema = z.object({
 
 type StreamEvent =
   | { type: "stage"; stage: string; message: string; data?: unknown }
+  | { type: "partial"; phase: "potential"; data: unknown }
   | { type: "result"; data: unknown }
   | { type: "error"; message: string };
 
@@ -126,6 +127,13 @@ export async function POST(req: NextRequest) {
             cutPointsCount: userPotential.potential.cutPoints.length,
             metaphorHooksCount: userPotential.potential.metaphorHooks.length,
           },
+        });
+        // P0 渐进披露：用户素材分析（fast lane）做完立即推到客户端，前端能先把
+        // UserDiagnosis 渲染出来，不用等 90-120s 后的 Opus 匹配。
+        send({
+          type: "partial",
+          phase: "potential",
+          data: { userVideoId: finalVideoId, userPotential },
         });
 
         // ============ Stage 4: 加载爆款 CutPlan 池 ============

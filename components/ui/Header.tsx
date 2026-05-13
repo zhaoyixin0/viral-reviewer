@@ -5,6 +5,7 @@ import { Sparkles } from "lucide-react";
 
 const NAV_ITEMS = [
   { href: "/", label: "首页" },
+  { href: "/analyze", label: "AI 分析", badge: "新" },
   { href: "/review", label: "开始评审" },
   { href: "/technique-match", label: "剪辑参考" },
   { href: "/library", label: "爆款库" },
@@ -33,9 +34,14 @@ export function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className="px-3 py-2 text-sm text-white/70 hover:text-white transition-colors rounded-lg hover:bg-white/[0.06]"
+              className="px-3 py-2 text-sm text-white/70 hover:text-white transition-colors rounded-lg hover:bg-white/[0.06] inline-flex items-center gap-1.5"
             >
               {item.label}
+              {item.badge && (
+                <span className="px-1.5 py-0.5 text-[9px] uppercase tracking-wider rounded bg-gradient-to-br from-[#22d3ee]/30 to-[#a78bfa]/30 text-[#22d3ee] border border-[#22d3ee]/40">
+                  {item.badge}
+                </span>
+              )}
             </Link>
           ))}
         </nav>
