@@ -18,22 +18,31 @@ const README_TEMPLATE = (projectName: string, hasBgm: boolean) => `# ${projectNa
    \`/Users/<你的用户名>/Movies/CapCut/User Data/Projects/com.lveditor.draft/\`
 2. 打开 CapCut
 
-## 第一次打开提示"找不到素材"
+## 第一次打开会弹"链接素材" — 这是预期的
 
-CapCut 用绝对路径机制的副作用。弹窗会列出丢失的视频文件，点 **"链接媒体"** 按钮选 \`materials/input.mp4\`，CapCut 会自动 fix 视频引用。${
+CapCut 云端生成的项目不知道你电脑上的绝对路径，所以**第一次打开必定弹"链接素材"对话框**。流程：
+
+1. **先把 zip 完整解压**（关键 — 不要直接从 zip 内拖文件）
+2. 双击进入项目，弹"链接素材"对话框，列出 \`${"input.mp4"}\`
+3. 点 **"链接素材"** 按钮 → 在文件选择器里**导航到解压后的 \`${"<projectName>"}/materials/\` 目录** → 选 \`input.mp4\`
+4. CapCut 自动 fix 视频引用，项目就能用了
+
+**链接成功后，下次打开就不会再弹弹窗**（CapCut 把绝对路径写入了项目元数据）。${
   hasBgm
     ? `
 
-**关闭视频链接弹窗后**，时间轴上的 BGM 音频轨可能仍显示红色"媒体丢失"。这是 CapCut 的限制：链接媒体弹窗一次只能 fix 一类素材。再做一次：
-- 看时间轴 audio 轨（红色 \`bgm.mp3\`）
-- CapCut 会再次弹"链接媒体"弹窗（或顶部 banner 提示）
-- 点 **"链接媒体"** 按钮 → 选 \`materials/bgm.mp3\` → 一键 fix
+**视频链接好后**，时间轴上的 BGM 音频轨可能仍显示红色"媒体丢失"。CapCut 一次只能 fix 一类素材。再做一次：
+- 看时间轴 audio 轨上的红色 \`bgm.mp3\`
+- CapCut 再次弹"链接素材"弹窗（或顶部 banner 提示）
+- 点 **"链接素材"** 按钮 → 选解压后的 \`materials/bgm.mp3\`
 
 之后视频和 BGM 都能完整播放。`
     : `
 
 注意：本项目**没有独立 audio 轨**。视频自带的音轨会在视频段里直接播放。如果想单独调音量或替换 BGM，右键视频段 → "分离音频" 即可分出独立音轨。`
 }
+
+> ⚠️ 如果点了"链接素材"按钮**没反应**，说明这是 2026-05-13 之前生成的旧 zip（draft_meta_info 填错路径导致死锁）。请回到 Viral Reviewer 重新导出。
 
 ## 项目结构
 

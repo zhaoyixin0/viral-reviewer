@@ -213,7 +213,8 @@ export type DraftContent = {
   new_version: string;
   last_modified_platform: {
     app_id: number;
-    app_source: "lv";
+    /** "lv" = 剪映国内版，"cc" = CapCut 国际版 */
+    app_source: "lv" | "cc";
     app_version: string;
     device_id: string;
     hard_disk_id: string;
@@ -226,40 +227,35 @@ export type DraftContent = {
 // ===== Meta (draft_meta_info.json) =====
 
 /**
- * CapCut 5.7+ 用 draft_meta_info.draft_materials[0].value[].file_Path 来定位
- * 媒体文件。漏写这个数组 → CapCut 启动校验失败 → 弹"链接媒体"对话框。
- * id 必须跟 draft_content.materials.videos[].id（或 audios[].id）一致。
+ * draft_meta_info 设计 — R 方案（2026-05-13）：
+ *
+ * 历史：5db8fce 试图填 draft_materials[0].value[] = [{ file_Path: "./materials/<file>", ... }]
+ * 让 CapCut 自动定位媒体。结果：CapCut 国际版 (cc / 8.5.0) 看到 entry 存在就跳过链接对话框，
+ * 但又 resolve 不出 "./materials/..." 相对路径（draft_fold_path 是空字符串），陷入死锁
+ * —— "链接素材"按钮无响应。
+ *
+ * 教训：CapCut 自己保存的 file_Path 是 user 第一次手动 link 时选的真实绝对路径
+ * （如 "C:/Users/Admin/Downloads/.../materials/input.mp4"），不是 "./materials/..."。
+ * 那个相对路径根本不是 CapCut 接受的格式，是 5db8fce 反向工程时取错了样本。
+ *
+ * R 方案：保留 draft_materials = [] 空数组（实际写 [{ type: 0, value: [] }]）。
+ * CapCut 看到空就走"链接素材"对话框流程：用户选 zip 里的 materials/<file>.mp4，
+ * CapCut 把绝对路径自己写回 draft_materials + draft_content videos[].path。
+ * 用户每个新机器解压一次都要 link 一次，但至少能 work。
+ *
+ * 长期解药：在 zip 里附 PowerShell / bash 脚本，用户运行脚本时它知道 cwd，
+ * 直接写绝对路径回 draft_meta_info.json 再启动 CapCut。本期不做。
  */
-export type DraftMaterialEntry = {
-  id: string; // 跟 draft_content video/audio material id 一致
-  file_Path: string; // 相对项目目录的相对路径，如 ./materials/input.mp4
-  extra_info: string; // 文件名，如 input.mp4
-  metetype: "video" | "audio" | "image" | "none";
-  width: number;
-  height: number;
-  duration: number; // μs
-  type: number; // 固定 0
-  item_source: number; // 固定 1
-  ai_group_type: "";
-  create_time: number;
-  enter_from: 0;
-  import_time: number;
-  import_time_ms: number;
-  md5: "";
-  roughcut_time_range: { duration: number; start: number };
-  sub_time_range: { duration: -1; start: -1 };
-};
-
 export type DraftMaterialGroup = {
   type: number; // 通常 0 = video/audio 主组
-  value: DraftMaterialEntry[];
+  value: never[]; // R 方案：始终空
 };
 
 export type DraftMetaInfo = {
   draft_id: string; // 同 DraftContent.id
   draft_name: string;
-  draft_root_path: string; // 通常用空
-  draft_fold_path: string;
+  draft_root_path: string; // 用空 — CapCut 自己会填
+  draft_fold_path: string; // 用空 — CapCut 自己会填
   draft_removable_storage_device: "";
   draft_timeline_materials_size_: number;
   draft_materials: DraftMaterialGroup[];

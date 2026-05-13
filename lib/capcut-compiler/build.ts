@@ -162,10 +162,14 @@ export function buildDraftContent(input: CompileInput): {
 
   // ===== Materials =====
 
+  // path 用纯文件名（不带目录前缀也不带 placeholder）：
+  // CapCut 5.7+ / 国际版 (cc / 8.5.0) 解析这种纯文件名时弹"链接素材"对话框，
+  // 用户选 zip 里的 materials/<file> 后 CapCut 自己回写绝对路径。
+  // 之前的 `##_draftpath_placeholder_##/materials/<file>` 在 5.7+ 不再被替换。
   const videoMaterial: VideoMaterial = {
     id: id(),
     type: "video",
-    path: `##_draftpath_placeholder_##/materials/${input.videoFileName}`,
+    path: input.videoFileName,
     material_name: input.videoFileName,
     width: input.meta.width,
     height: input.meta.height,
@@ -176,15 +180,12 @@ export function buildDraftContent(input: CompileInput): {
   // 视频自带音轨已经在 video segment 里播放（speed=1, volume=1）。
   // 只有用户主动上传 BGM 时才创建独立 audio 轨（Phase 5.5）。
   //
-  // path 说明：CapCut "链接媒体" 弹窗只匹配 video，audio 类型不进列表。
-  // 所以 audio path 不能用 placeholder（用户没办法手动 fix）。
-  // 尝试用纯相对路径 "materials/bgm.mp3" — CapCut 桌面端打开时如果识别相对路径
-  // 会相对项目根目录 resolve（项目根 = com.lveditor.draft\<projectName>\）。
+  // BGM path 同样用纯文件名 — 第二次"链接素材"对话框（audio 类）让用户选 bgm.mp3。
   const bgmMaterial: AudioMaterial | null = input.bgmFileName
     ? {
         id: id(),
         type: "music",
-        path: `materials/${input.bgmFileName}`,
+        path: input.bgmFileName,
         name: input.bgmFileName,
         duration: secToMicroseconds(
           Math.min(input.bgmDurationSec ?? input.meta.durationSec, input.meta.durationSec),
@@ -491,69 +492,25 @@ export function buildDraftContent(input: CompileInput): {
     create_time: createTime,
     update_time: updateTime,
     version: 360000,
-    new_version: "36.0.0",
+    // 跟 CapCut 国际版 (cc) 8.5.0 自存项目对齐 (samples: new_version 167.0.0)
+    new_version: "167.0.0",
     last_modified_platform: {
       app_id: 359289,
-      app_source: "lv",
-      app_version: "5.7.0",
+      app_source: "cc",
+      app_version: "8.5.0",
       device_id: "00000000-0000-0000-0000-000000000000",
       hard_disk_id: "00000000-0000-0000-0000-000000000000",
       mac_address: "00:00:00:00:00:00",
       os: "windows",
-      os_version: "10.0",
+      os_version: "10.0.26100",
     },
   };
 
-  // CapCut 5.7+ 通过 draft_meta_info.draft_materials[0].value[].file_Path
-  // 来定位媒体文件。漏写就弹"链接媒体"对话框。id 必须跟 draft_content
-  // materials.videos[].id (和 audios[].id) 完全一致。
-  const nowSec = Math.floor(Date.now() / 1000);
-  const nowMicros = Date.now() * 1000;
-  const draftMaterialEntries = [
-    {
-      id: videoMaterial.id,
-      file_Path: `./materials/${input.videoFileName}`,
-      extra_info: input.videoFileName,
-      metetype: "video" as const,
-      width: input.meta.width,
-      height: input.meta.height,
-      duration: durationUs,
-      type: 0,
-      item_source: 1,
-      ai_group_type: "" as const,
-      create_time: nowSec,
-      enter_from: 0 as const,
-      import_time: nowSec,
-      import_time_ms: nowMicros,
-      md5: "" as const,
-      roughcut_time_range: { duration: durationUs, start: 0 },
-      sub_time_range: { duration: -1 as const, start: -1 as const },
-    },
-    ...(bgmMaterial && input.bgmFileName
-      ? [
-          {
-            id: bgmMaterial.id,
-            file_Path: `./materials/${input.bgmFileName}`,
-            extra_info: input.bgmFileName,
-            metetype: "audio" as const,
-            width: 0,
-            height: 0,
-            duration: bgmMaterial.duration,
-            type: 0,
-            item_source: 1,
-            ai_group_type: "" as const,
-            create_time: nowSec,
-            enter_from: 0 as const,
-            import_time: nowSec,
-            import_time_ms: nowMicros,
-            md5: "" as const,
-            roughcut_time_range: { duration: bgmMaterial.duration, start: 0 },
-            sub_time_range: { duration: -1 as const, start: -1 as const },
-          },
-        ]
-      : []),
-  ];
-
+  // R 方案：draft_materials 留空（[{ type: 0, value: [] }]）让 CapCut 走"链接素材"
+  // 对话框流程。用户点击对话框 → 选 zip 里的 materials/<file> → CapCut 自己
+  // 写绝对路径回 draft_meta_info + draft_content。
+  //
+  // 历史教训详见 schema.ts 顶部 DraftMaterialGroup 注释块。
   const metaInfo: DraftMetaInfo = {
     draft_id: projectId,
     draft_name: input.projectName,
@@ -561,7 +518,7 @@ export function buildDraftContent(input: CompileInput): {
     draft_fold_path: "",
     draft_removable_storage_device: "",
     draft_timeline_materials_size_: 0,
-    draft_materials: [{ type: 0, value: draftMaterialEntries }],
+    draft_materials: [{ type: 0, value: [] }],
     draft_materials_copied_info: [],
     tm_draft_create: nowMs(),
     tm_draft_modified: nowMs(),
@@ -574,7 +531,7 @@ export function buildDraftContent(input: CompileInput): {
     draft_is_article_video_draft: false,
     draft_is_from_deeplink: "false",
     draft_is_invisible: false,
-    draft_new_version: "36.0.0",
+    draft_new_version: "167.0.0",
     draft_segment_extra_info: [],
     draft_type: "",
   };
