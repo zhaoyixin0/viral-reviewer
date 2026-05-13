@@ -12,6 +12,10 @@ export type DownloadResult =
  * - 已存在的 mp4 直接复用（断点续跑用）
  * - 失败重试 2 次（yt-dlp 偶尔超时）
  * - 单文件 90s 超时
+ *
+ * 使用约束：调用方需保证同一 outPath 不会被并发多次调用（脚本里每条爆款一个
+ * 独占的 `{id}.mp4` 路径，天然满足）。yt-dlp 的 `--output` 走相对路径，所以
+ * 调用必须从项目根目录发起（tsx 脚本默认满足）。
  */
 export async function downloadVideo(
   pageUrl: string,
