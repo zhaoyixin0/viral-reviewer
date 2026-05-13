@@ -65,3 +65,8 @@ yarn-error.log*
 
 .vercel
 .env*.local
+
+# P1 enrichment artifacts (large mp4s + transient error logs)
+data/raw-mp4s/
+data/enrichment-errors.json
+data/rescrape-*.json
