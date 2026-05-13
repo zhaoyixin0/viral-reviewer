@@ -162,14 +162,21 @@ export function buildDraftContent(input: CompileInput): {
 
   // ===== Materials =====
 
-  // path 用纯文件名（不带目录前缀也不带 placeholder）：
-  // CapCut 5.7+ / 国际版 (cc / 8.5.0) 解析这种纯文件名时弹"链接素材"对话框，
-  // 用户选 zip 里的 materials/<file> 后 CapCut 自己回写绝对路径。
-  // 之前的 `##_draftpath_placeholder_##/materials/<file>` 在 5.7+ 不再被替换。
+  // path 用相对路径 "materials/<file>"（不是纯文件名也不是 placeholder）：
+  //
+  // 之前尝试过 3 种格式，每种都失败：
+  //   1. `##_draftpath_placeholder_##/materials/<file>` (旧版): CapCut 5.7+ 不再 resolve placeholder
+  //   2. 填 draft_materials.value[] 假装已 link (5db8fce): CapCut 看到 entry 但 resolve 不到 → 死锁
+  //   3. 纯文件名 `<file>` (上一版 R 方案): CapCut 弹对话框但 "Couldn't link" — 因为不知道相对哪个目录找
+  //
+  // 当前方案：相对路径 `materials/<file>`，CapCut 启动时 cwd = `<projectName>/`，
+  // resolve 相对路径直接命中 `<projectName>/materials/<file>` → 不弹对话框。
+  // 即便弹了对话框，"Last known location" 会显示 `materials/<file>`，
+  // user 勾选 "Link media when selecting a folder" + 选 `<projectName>/` 即可 auto-link。
   const videoMaterial: VideoMaterial = {
     id: id(),
     type: "video",
-    path: input.videoFileName,
+    path: `materials/${input.videoFileName}`,
     material_name: input.videoFileName,
     width: input.meta.width,
     height: input.meta.height,
@@ -180,12 +187,12 @@ export function buildDraftContent(input: CompileInput): {
   // 视频自带音轨已经在 video segment 里播放（speed=1, volume=1）。
   // 只有用户主动上传 BGM 时才创建独立 audio 轨（Phase 5.5）。
   //
-  // BGM path 同样用纯文件名 — 第二次"链接素材"对话框（audio 类）让用户选 bgm.mp3。
+  // BGM path 同样用相对路径 `materials/<bgm>`。
   const bgmMaterial: AudioMaterial | null = input.bgmFileName
     ? {
         id: id(),
         type: "music",
-        path: input.bgmFileName,
+        path: `materials/${input.bgmFileName}`,
         name: input.bgmFileName,
         duration: secToMicroseconds(
           Math.min(input.bgmDurationSec ?? input.meta.durationSec, input.meta.durationSec),
