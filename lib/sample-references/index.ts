@@ -1,8 +1,11 @@
+import "server-only";
 import { readFile, readdir } from "fs/promises";
 import { join } from "path";
 import { CutPlanSchema, type CutPlan } from "@/lib/cut-plan/schema";
 import { loadTechniqueIndex } from "@/lib/technique-index/load-index";
 import { scoreCandidates } from "@/lib/technique-index/similarity";
+import { retrieveSimilarVideos } from "@/lib/review-engine/retrieval";
+import type { ReviewInputVideo, ViralVideo } from "@/lib/review-engine/types";
 
 const ENRICHED_DIR = "data/enriched-cutplans";
 const FALLBACK_DIR = "lib/sample-references/cutplans";
@@ -11,17 +14,37 @@ const FALLBACK_FILES = [
   "vlog-pull-out-aerial.json",
 ] as const;
 
+export type LiveFallbackInput = {
+  audience?: string;
+  scene?: string;
+  draft?: string;
+  videoFeatures?: ReviewInputVideo["videoFeatures"];
+};
+
 export type ReferenceFilter = {
   userFormat?: string;
   userTopic?: string;
   /** P2 新增：用户期望的技法 tag（来自 potential → desiredTags 映射） */
   desiredTechniques?: string[];
+  /**
+   * P3 新增：当本地池召回不够时，启用 review-engine 的实时抓取兜底。
+   * 提供 audience/scene/draft/videoFeatures 让 review-engine 的 topic
+   * inference 能用，没提供则跳过实时抓取。
+   */
+  liveFallback?: LiveFallbackInput;
   limit?: number;
 };
 
+export type ReferenceSource =
+  | "sample"
+  | "database"
+  | "technique-cluster"
+  | "live-metadata"
+  | "mixed";
+
 export type ReferenceLoadResult = {
   cutPlans: CutPlan[];
-  source: "sample" | "database" | "technique-cluster";
+  source: ReferenceSource;
   notice?: string;
 };
 
@@ -87,6 +110,71 @@ function filterByFormat(plans: CutPlan[], format: string): CutPlan[] {
   return plans.filter((p) => p.videoFormat.toLowerCase().startsWith(f));
 }
 
+/**
+ * 把实时抓取的 ViralVideo metadata 包装成 minimal CutPlan stub，让下游
+ * match-engine 能直接消费（match-engine 不会 crash on empty actions / 占位
+ * density）。这条 stub 的 density.overall 设 60（比真富化的 70+ 低一档），
+ * 避免它在 mixed 召回里抢真实富化数据的 top 位。
+ */
+export function viralVideoToCutPlanStub(v: ViralVideo, fallbackFormat: string): CutPlan {
+  const safeId =
+    v.id || `live-${v.url.replace(/[^a-z0-9]/gi, "").slice(-16)}` || "live-unknown";
+  return {
+    videoId: safeId,
+    durationSec: v.duration > 0 ? v.duration : 30,
+    fps: 30,
+    videoFormat: v.videoFormat ?? fallbackFormat ?? "ugc_native",
+    videoFormatConfidence: v.videoFormatConfidence ?? 0.5,
+    actions: [],
+    bgm: null,
+    dimensions: {
+      pacing: {
+        shotCount: 0,
+        avgShotDurationSec: 0,
+        cutDensityPerSec: 0,
+        rhythmProfile: "",
+        keyTwistAt: null,
+      },
+      camera: {
+        dominantMovements: [],
+        shotSizeDistribution: {
+          extreme_close_up: 0,
+          close_up: 0,
+          medium: 0,
+          wide: 0,
+          extreme_wide: 0,
+        },
+        transitionPatterns: [],
+      },
+      audiovisual: {
+        bgmPattern: v.bgm ?? "",
+        bgmSyncTightness: "",
+        subtitleStyle: "",
+        colorGrade: v.visualStyle ?? "",
+      },
+      structure: {
+        hookFormat: v.hook ?? "",
+        openingShot: "",
+        endingShot: "",
+        cta: "",
+        payoffAt: null,
+      },
+    },
+    density: {
+      editing: 50,
+      transition: 30,
+      effect: 20,
+      bgmSync: 50,
+      overall: 60,
+    },
+    meta: {
+      model: "live-metadata-stub",
+      analyzedAt: new Date().toISOString(),
+      sourceUrl: v.url,
+    },
+  };
+}
+
 export async function loadReferenceCutPlans(
   filter: ReferenceFilter = {},
 ): Promise<ReferenceLoadResult> {
@@ -116,15 +204,56 @@ export async function loadReferenceCutPlans(
 
   // Path B: format 召回（P1 baseline）
   let pool = plans;
+  let formatMatched = false;
   if (filter.userFormat) {
     const matched = filterByFormat(plans, filter.userFormat);
-    if (matched.length >= limit) pool = matched;
+    if (matched.length >= limit) {
+      pool = matched;
+      formatMatched = true;
+    }
   }
 
   const top = pool
     .slice()
     .sort((a, b) => (b.density.overall ?? 0) - (a.density.overall ?? 0))
     .slice(0, limit);
+
+  // Path C: 实时抓取兜底（P3）
+  // 触发条件：用户提供了 liveFallback 上下文，且本地池没能给出至少 ceil(limit/2)
+  // 条同 format 的命中（说明本地池对该题材/形态覆盖不足）
+  const lowCoverage = !formatMatched || top.length < Math.ceil(limit / 2);
+  if (filter.liveFallback && lowCoverage) {
+    try {
+      const live = await retrieveSimilarVideos({
+        topic: filter.userTopic,
+        audience: filter.liveFallback.audience,
+        scene: filter.liveFallback.scene,
+        draft: filter.liveFallback.draft,
+        videoFeatures: filter.liveFallback.videoFeatures,
+        topK: limit + 2,
+      });
+
+      if (live.videos.length > 0) {
+        const need = Math.max(0, limit - top.length);
+        const stubs = live.videos
+          .slice(0, need + 2)
+          .map((v) => viralVideoToCutPlanStub(v, filter.userFormat ?? "ugc_native"));
+        // 真实富化数据优先（top 在前），stub 追加补足
+        const merged = [...top, ...stubs].slice(0, limit);
+        const liveCount = merged.length - top.length;
+        return {
+          cutPlans: merged,
+          source: top.length > 0 ? "mixed" : "live-metadata",
+          notice:
+            top.length > 0
+              ? `本地富化池命中 ${top.length} 条；实时抓取 ${liveCount} 条 metadata 补充（深度数据未跑富化）`
+              : `本地池未命中，实时抓取 ${liveCount} 条 metadata 作 fallback（深度数据未跑富化）`,
+        };
+      }
+    } catch (e) {
+      console.warn("[sample-references] live fallback failed:", (e as Error).message);
+    }
+  }
 
   return {
     cutPlans: top,

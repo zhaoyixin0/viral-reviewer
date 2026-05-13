@@ -146,6 +146,20 @@ export async function POST(req: NextRequest) {
           userTopic: topic || undefined,
           desiredTechniques,
           limit: 5,
+          // P3: 本地池不够时启用实时抓取兜底
+          liveFallback: {
+            draft: intent || undefined,
+            videoFeatures: {
+              duration: userPotential.base.durationSec,
+              frameSamples: [],
+              transcript: "",
+              detectedHook:
+                userPotential.base.dimensions.structure.hookFormat ?? "",
+              detectedPlayStyle: userPotential.detectedFormat,
+              detectedVisualStyle:
+                userPotential.base.dimensions.audiovisual.colorGrade ?? "",
+            },
+          },
         });
         send({
           type: "stage",
