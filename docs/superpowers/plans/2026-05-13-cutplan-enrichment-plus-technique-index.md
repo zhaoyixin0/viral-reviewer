@@ -240,68 +240,89 @@ git commit -m "feat(enrichment): rescrape script to fetch videoUrl for 299 viral
 
 ---
 
-### Task 3: mp4 批量下载器
+### Task 3: mp4 批量下载器（yt-dlp 走页面 URL 解析）
 
 **Files:**
+- Modify: `package.json` (add `youtube-dl-exec` dependency)
 - Create: `lib/enrichment/video-downloader.ts`
 - Create: `scripts/download-mp4s.ts`
 
-- [ ] **Step 1: 写 downloader 模块**
+**背景（plan 调整说明）**：原计划假设 Apify 返回 CDN mp4 stream URL，但实际拿到的是页面 URL（`https://www.tiktok.com/@xx/video/123`、`https://www.instagram.com/p/xxx/`）。需要 yt-dlp 解析页面 → mp4。`youtube-dl-exec` 是包装 yt-dlp 的 npm 包，postinstall 时自动下二进制。
+
+- [ ] **Step 1: 装 youtube-dl-exec**
+
+```bash
+npm install youtube-dl-exec
+```
+
+Expected: 装好后 node_modules 里有 `youtube-dl-exec`，并且自带 yt-dlp.exe 二进制（Windows）或 yt-dlp（Linux/Mac）。安装期间会有一次 postinstall 拉二进制（5-15 MB）。
+
+- [ ] **Step 2: 写 downloader 模块**
 
 ```typescript
 // lib/enrichment/video-downloader.ts
-import { writeFile, mkdir, stat } from "node:fs/promises";
+import { mkdir, stat, unlink } from "node:fs/promises";
 import { dirname } from "node:path";
+import youtubeDl from "youtube-dl-exec";
 
 export type DownloadResult =
   | { ok: true; path: string; bytes: number; cached: boolean }
   | { ok: false; reason: string };
 
+/**
+ * 用 yt-dlp 把页面 URL（TikTok / Instagram post URL）解析为 mp4 并下载。
+ *
+ * - 已存在的 mp4 直接复用（断点续跑用）
+ * - 失败重试 2 次（yt-dlp 偶尔超时）
+ * - 单文件 90s 超时
+ */
 export async function downloadVideo(
-  videoUrl: string,
+  pageUrl: string,
   outPath: string,
   opts: { retries?: number; timeoutMs?: number } = {},
 ): Promise<DownloadResult> {
-  const { retries = 2, timeoutMs = 60_000 } = opts;
+  const { retries = 2, timeoutMs = 90_000 } = opts;
 
+  // 缓存命中：已经下过的不重下
   try {
-    const existing = await stat(outPath).catch(() => null);
-    if (existing && existing.size > 1024) {
+    const existing = await stat(outPath);
+    if (existing.size > 1024) {
       return { ok: true, path: outPath, bytes: existing.size, cached: true };
     }
+    // tiny file = 之前的失败残留，删了重下
+    await unlink(outPath).catch(() => {});
   } catch {
-    /* fall through */
+    /* not exists, fall through */
   }
 
   await mkdir(dirname(outPath), { recursive: true });
 
   let lastErr: unknown = null;
   for (let attempt = 0; attempt <= retries; attempt++) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {
-      const res = await fetch(videoUrl, {
-        signal: controller.signal,
-        headers: {
-          "user-agent":
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15",
-        },
+      const promise = youtubeDl(pageUrl, {
+        output: outPath,
+        format: "mp4/best[ext=mp4]/best",
+        noWarnings: true,
+        noCheckCertificates: true,
+        preferFreeFormats: true,
+        addHeader: ["referer:https://www.google.com"],
       });
-      if (!res.ok) {
-        lastErr = new Error(`http ${res.status}`);
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error(`yt-dlp timeout ${timeoutMs}ms`)), timeoutMs),
+      );
+      await Promise.race([promise, timeoutPromise]);
+
+      const s = await stat(outPath).catch(() => null);
+      if (!s || s.size < 1024) {
+        lastErr = new Error(`yt-dlp output tiny (${s?.size ?? 0} bytes)`);
+        await unlink(outPath).catch(() => {});
         continue;
       }
-      const buf = Buffer.from(await res.arrayBuffer());
-      if (buf.length < 1024) {
-        lastErr = new Error(`tiny response (${buf.length} bytes)`);
-        continue;
-      }
-      await writeFile(outPath, buf);
-      return { ok: true, path: outPath, bytes: buf.length, cached: false };
+      return { ok: true, path: outPath, bytes: s.size, cached: false };
     } catch (e) {
       lastErr = e;
-    } finally {
-      clearTimeout(timer);
+      await unlink(outPath).catch(() => {});
     }
   }
 
@@ -312,7 +333,7 @@ export async function downloadVideo(
 }
 ```
 
-- [ ] **Step 2: 写下载脚本**
+- [ ] **Step 3: 写下载脚本**
 
 ```typescript
 // scripts/download-mp4s.ts
@@ -376,7 +397,7 @@ main().catch((e) => {
 });
 ```
 
-- [ ] **Step 3: 添加 npm script**
+- [ ] **Step 4: 添加 npm script**
 
 编辑 `package.json` 的 `scripts`，加：
 
@@ -384,28 +405,51 @@ main().catch((e) => {
 "download:mp4s": "tsx --env-file=.env.local scripts/download-mp4s.ts",
 ```
 
-- [ ] **Step 4: 跑下载**
+- [ ] **Step 5: yt-dlp 烟雾测试（避免全跑炸）**
+
+```bash
+node -e "const d=require('./data/rescrape-2026-05-13.json'); const tt=d.find(v=>v.platform==='tiktok'&&v.videoUrl)?.videoUrl; const ig=d.find(v=>v.platform==='instagram'&&v.videoUrl)?.videoUrl; console.log('tt:',tt); console.log('ig:',ig);"
+```
+
+拷贝输出的两个 URL，分别跑：
+
+```bash
+npx youtube-dl-exec --version
+npx tsx -e "import('./lib/enrichment/video-downloader').then(async m => { const r=await m.downloadVideo('<TT_URL>', 'data/raw-mp4s/_smoke_tt.mp4'); console.log('tt:', r); })"
+npx tsx -e "import('./lib/enrichment/video-downloader').then(async m => { const r=await m.downloadVideo('<IG_URL>', 'data/raw-mp4s/_smoke_ig.mp4'); console.log('ig:', r); })"
+```
+
+Expected: 两条都返回 `{ ok: true, bytes: >100000, cached: false }`。如果其中一条失败：
+- TT 失败 → 报告 BLOCKED（TT 是大头 180 条）
+- IG 失败 → 接受，full run 把 IG 当 best-effort，输出 errors 列表
+
+烟雾测试通过后清掉测试文件：
+```bash
+rm -f data/raw-mp4s/_smoke_tt.mp4 data/raw-mp4s/_smoke_ig.mp4
+```
+
+- [ ] **Step 6: 跑全量下载**
 
 ```bash
 npm run download:mp4s
 ```
 
-Expected: 控制台输出每条进度，最终 `done: 250+/299 ok`（容忍 IG/TT video URL 过期 ~10-15%）。预计耗时：20-40 min。
+Expected: 控制台输出每条进度，最终 `done: 220+/287 ok`（yt-dlp 对 IG 公开 reel 解析率 70-90%，TT 95%+）。预计耗时：10-20 min（并发 5）。
 
-- [ ] **Step 5: 验证下载结果**
+- [ ] **Step 7: 验证下载结果**
 
 ```bash
 ls "data/raw-mp4s/" | grep -c "\.mp4$"
 node -e "const fs=require('fs'); const files=fs.readdirSync('data/raw-mp4s').filter(f=>f.endsWith('.mp4')); const sizes=files.map(f=>fs.statSync('data/raw-mp4s/'+f).size); console.log('count:', files.length, 'total MB:', (sizes.reduce((a,b)=>a+b,0)/1024/1024).toFixed(0));"
 ```
 
-Expected: count 250+，total MB 2000-5000。
+Expected: count 220+，total MB 1500-4000。
 
-- [ ] **Step 6: 提交 downloader 模块（产物已 gitignore）**
+- [ ] **Step 8: 提交 downloader 模块（mp4 产物已 gitignore）**
 
 ```bash
-git add lib/enrichment/video-downloader.ts scripts/download-mp4s.ts package.json
-git commit -m "feat(enrichment): mp4 batch downloader with retry + concurrency"
+git add lib/enrichment/video-downloader.ts scripts/download-mp4s.ts package.json package-lock.json
+git commit -m "feat(enrichment): yt-dlp based mp4 batch downloader for page URLs"
 ```
 
 ---

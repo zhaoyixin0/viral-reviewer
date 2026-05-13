@@ -1,5 +1,7 @@
+import "server-only";
 import { stat, writeFile, readFile } from "node:fs/promises";
 import { join } from "node:path";
+import { ZodError } from "zod";
 import { probeVideoMeta } from "@/lib/video/ffprobe-meta";
 import { analyzeMaterialPotential } from "@/lib/video/analyze-potential";
 import { CutPlanSchema } from "@/lib/cut-plan/schema";
@@ -71,7 +73,7 @@ export async function runCutPlanJob(
       ok: false,
       videoId: job.videoId,
       reason: (e as Error).message,
-      stage: e instanceof Error && e.name === "ZodError" ? "schema" : "write",
+      stage: e instanceof ZodError ? "schema" : "write",
     };
   }
 }
