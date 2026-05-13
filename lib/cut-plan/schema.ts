@@ -183,10 +183,18 @@ export const CameraDimensionSchema = z.object({
 });
 
 export const AudiovisualDimensionSchema = z.object({
-  bgmPattern: z.string().describe("BGM 整体模式"),
-  bgmSyncTightness: z.string().describe("卡点精度（loose / moderate / tight）"),
+  bgmPattern: z.string().nullable().optional().default("").describe("BGM 整体模式"),
+  bgmSyncTightness: z
+    .string()
+    .nullable()
+    .optional()
+    .default("")
+    .describe("卡点精度（loose / moderate / tight）"),
   subtitleStyle: z
     .string()
+    .nullable()
+    .optional()
+    .default("")
     .describe(
       "字幕风格（none / large_white_stroke / centered_minimal / kinetic / auto_caption / decorative / other）",
     ),
