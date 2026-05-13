@@ -1,73 +1,111 @@
-import { readFile } from "fs/promises";
+import { readFile, readdir } from "fs/promises";
 import { join } from "path";
 import { CutPlanSchema, type CutPlan } from "@/lib/cut-plan/schema";
 
 /**
- * Phase 4 临时方案：从 lib/sample-references/cutplans/ 加载 2 条已富化的 CutPlan
+ * Phase 6 后：从 data/enriched-cutplans/ 加载真实富化爆款池。
  *
- * Phase 6 完成（批量富化 299 条爆款）后，把这个模块换成调用
- * retrieveSimilarVideos(filter) 并按 videoFormat / topic / density 多维匹配。
- *
- * 接口签名保持稳定：传 filter，返回 CutPlan[]，让 /api/technique-match 无需改动。
+ * 兼容回退：若 enriched-cutplans 为空（未跑富化），退回 lib/sample-references/cutplans/ 的 2 条 demo。
  */
 
-const SAMPLE_FILES = [
+const ENRICHED_DIR = "data/enriched-cutplans";
+const FALLBACK_DIR = "lib/sample-references/cutplans";
+const FALLBACK_FILES = [
   "transformation-match-cut.json",
   "vlog-pull-out-aerial.json",
 ] as const;
 
 export type ReferenceFilter = {
-  /** 用户视频形态（vlog / tutorial / transformation / ...） */
   userFormat?: string;
-  /** 用户题材 */
   userTopic?: string;
-  /** 最多返回多少条爆款 */
   limit?: number;
 };
 
 export type ReferenceLoadResult = {
   cutPlans: CutPlan[];
-  /** 数据来源标识：sample（Phase 4 demo）/ database（Phase 6 真实库） */
   source: "sample" | "database";
   notice?: string;
 };
 
-let cache: CutPlan[] | null = null;
+let cache: { plans: CutPlan[]; source: "sample" | "database" } | null = null;
 let cacheTime = 0;
 const CACHE_TTL_MS = 60 * 1000;
 
-async function loadSamples(): Promise<CutPlan[]> {
-  if (cache && Date.now() - cacheTime < CACHE_TTL_MS) return cache;
-
-  const dir = join(process.cwd(), "lib", "sample-references", "cutplans");
-  const cutPlans: CutPlan[] = [];
-
-  for (const name of SAMPLE_FILES) {
+async function loadEnriched(): Promise<CutPlan[]> {
+  const dir = join(process.cwd(), ENRICHED_DIR);
+  let files: string[];
+  try {
+    files = (await readdir(dir)).filter((f) => f.endsWith(".json"));
+  } catch {
+    return [];
+  }
+  const results: CutPlan[] = [];
+  for (const f of files) {
     try {
-      const raw = await readFile(join(dir, name), "utf-8");
-      const parsed = JSON.parse(raw);
-      cutPlans.push(CutPlanSchema.parse(parsed));
+      const raw = await readFile(join(dir, f), "utf-8");
+      results.push(CutPlanSchema.parse(JSON.parse(raw)));
     } catch (e) {
-      console.warn(
-        `[sample-references] failed to load ${name}:`,
-        (e as Error).message,
-      );
+      console.warn(`[sample-references] skip ${f}: ${(e as Error).message}`);
     }
   }
+  return results;
+}
 
-  cache = cutPlans;
+async function loadFallback(): Promise<CutPlan[]> {
+  const dir = join(process.cwd(), FALLBACK_DIR);
+  const results: CutPlan[] = [];
+  for (const name of FALLBACK_FILES) {
+    try {
+      const raw = await readFile(join(dir, name), "utf-8");
+      results.push(CutPlanSchema.parse(JSON.parse(raw)));
+    } catch {
+      /* missing fallback is fine */
+    }
+  }
+  return results;
+}
+
+async function getCache(): Promise<{ plans: CutPlan[]; source: "sample" | "database" }> {
+  if (cache && Date.now() - cacheTime < CACHE_TTL_MS) return cache;
+  const enriched = await loadEnriched();
+  if (enriched.length >= 10) {
+    cache = { plans: enriched, source: "database" };
+  } else {
+    const fallback = await loadFallback();
+    cache = { plans: [...enriched, ...fallback], source: "sample" };
+  }
   cacheTime = Date.now();
-  return cutPlans;
+  return cache;
+}
+
+function filterByFormat(plans: CutPlan[], format: string): CutPlan[] {
+  const f = format.toLowerCase().trim();
+  return plans.filter((p) => p.videoFormat.toLowerCase().startsWith(f));
 }
 
 export async function loadReferenceCutPlans(
-  _filter: ReferenceFilter = {},
+  filter: ReferenceFilter = {},
 ): Promise<ReferenceLoadResult> {
-  const all = await loadSamples();
+  const { plans, source } = await getCache();
+  const limit = filter.limit ?? 5;
+
+  let pool = plans;
+  if (filter.userFormat) {
+    const matched = filterByFormat(plans, filter.userFormat);
+    if (matched.length >= limit) pool = matched;
+  }
+
+  const top = pool
+    .slice()
+    .sort((a, b) => (b.density.overall ?? 0) - (a.density.overall ?? 0))
+    .slice(0, limit);
+
   return {
-    cutPlans: all,
-    source: "sample",
+    cutPlans: top,
+    source,
     notice:
-      "Demo 数据池：仅 2 条手工挑选的爆款样本（vlog + transformation）。Phase 6 完成后会按用户题材+形态自动匹配 5-10 条真实库爆款。",
+      source === "database"
+        ? `从富化爆款池中按 format=${filter.userFormat ?? "any"} 召回 ${top.length} 条`
+        : `Demo 数据池：${top.length} 条手工样本（富化未跑或失败）`,
   };
 }
