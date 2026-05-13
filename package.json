@@ -15,7 +15,9 @@
     "probe:match": "tsx --env-file=.env.local scripts/probe-technique-match.ts",
     "rescrape:with-urls": "tsx --env-file=.env.local scripts/rescrape-with-video-urls.ts",
     "download:mp4s": "tsx --env-file=.env.local scripts/download-mp4s.ts",
-    "enrich:cutplans": "tsx --conditions=react-server --env-file=.env.local scripts/enrich-cutplans-batch.ts"
+    "enrich:cutplans": "tsx --conditions=react-server --env-file=.env.local scripts/enrich-cutplans-batch.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.12",
@@ -51,9 +53,11 @@
     "@types/pdf-parse": "^1.1.5",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@vitest/ui": "^4.1.6",
     "postcss": "^8.4.49",
     "tailwindcss": "^4.0.0",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.6"
   }
 }
