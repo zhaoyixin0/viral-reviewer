@@ -2,6 +2,7 @@ import "server-only";
 import { put, head, list, del } from "@vercel/blob";
 import { getIsoWeek } from "@/lib/utils/iso-week";
 import type { TrendingSnapshot } from "./types";
+import { TrendingSnapshotSchema } from "./types";
 
 const PREFIX = "trending";
 
@@ -20,7 +21,13 @@ export async function readSnapshot(
     if (!meta?.url) return null;
     const res = await fetch(meta.url, { cache: "no-store" });
     if (!res.ok) return null;
-    return (await res.json()) as TrendingSnapshot;
+    const json = await res.json();
+    const parsed = TrendingSnapshotSchema.safeParse(json);
+    if (!parsed.success) {
+      console.warn(`[snapshot-store] readSnapshot: invalid snapshot JSON for ${week}, ignoring`);
+      return null;
+    }
+    return parsed.data as unknown as TrendingSnapshot;
   } catch {
     return null;
   }
@@ -48,10 +55,18 @@ export async function readLatestTwoSnapshots(): Promise<{
       if (!url) return null;
       const res = await fetch(url, { cache: "no-store" });
       if (!res.ok) return null;
-      return (await res.json()) as TrendingSnapshot;
+      const json = await res.json();
+      const parsed = TrendingSnapshotSchema.safeParse(json);
+      if (!parsed.success) {
+        console.warn("[snapshot-store] readLatestTwoSnapshots: invalid snapshot JSON, ignoring");
+        return null;
+      }
+      return parsed.data as unknown as TrendingSnapshot;
     };
-    const current = await fetchBlob(sorted[0]?.url);
-    const previous = await fetchBlob(sorted[1]?.url);
+    const [current, previous] = await Promise.all([
+      fetchBlob(sorted[0]?.url),
+      fetchBlob(sorted[1]?.url),
+    ]);
     return { current, previous };
   } catch {
     return { current: null, previous: null };
@@ -73,7 +88,7 @@ export async function writeSnapshot(snapshot: TrendingSnapshot): Promise<void> {
     await put(key, body, opts);
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
-    console.error("[snapshot-store] write failed, retrying once:", msg);
+    console.warn("[snapshot-store] write failed, retrying once:", msg);
     try {
       await put(key, body, opts);
     } catch (e2) {

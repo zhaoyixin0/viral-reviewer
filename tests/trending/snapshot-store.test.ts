@@ -75,13 +75,16 @@ describe("writeSnapshot", () => {
     expect(putMock).not.toHaveBeenCalled();
   });
 
-  it("logs an error when both put attempts fail", async () => {
-    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+  it("logs a warn on first failure then an error when both put attempts fail", async () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     putMock.mockRejectedValue(new Error("persistent failure"));
     await writeSnapshot(SNAP);
     expect(putMock).toHaveBeenCalledTimes(2);
-    expect(consoleSpy).toHaveBeenCalledTimes(2);
-    consoleSpy.mockRestore();
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+    expect(errorSpy).toHaveBeenCalledTimes(1);
+    warnSpy.mockRestore();
+    errorSpy.mockRestore();
   });
 });
 
@@ -138,6 +141,13 @@ describe("readSnapshot", () => {
     expect(result).toBeNull();
     expect(headMock).not.toHaveBeenCalled();
   });
+
+  it("returns null when the blob JSON fails schema validation", async () => {
+    headMock.mockResolvedValue({ url: "https://blob/w20" });
+    fetchMock.mockResolvedValue({ ok: true, json: async () => ({ garbage: true }) });
+    const result = await readSnapshot("2026-W20");
+    expect(result).toBeNull();
+  });
 });
 
 describe("readLatestTwoSnapshots", () => {
@@ -188,6 +198,16 @@ describe("readLatestTwoSnapshots", () => {
       blobs: [{ pathname: "trending/snapshot-2026-W20.json", url: "u20" }],
     });
     fetchMock.mockRejectedValue(new Error("network down"));
+    const { current, previous } = await readLatestTwoSnapshots();
+    expect(current).toBeNull();
+    expect(previous).toBeNull();
+  });
+
+  it("returns null for a blob whose JSON fails schema validation", async () => {
+    listMock.mockResolvedValue({
+      blobs: [{ pathname: "trending/snapshot-2026-W20.json", url: "u20" }],
+    });
+    fetchMock.mockResolvedValue({ ok: true, json: async () => ({ not: "a snapshot" }) });
     const { current, previous } = await readLatestTwoSnapshots();
     expect(current).toBeNull();
     expect(previous).toBeNull();

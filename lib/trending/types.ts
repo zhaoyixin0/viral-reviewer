@@ -1,3 +1,4 @@
+import { z } from "zod";
 import type { ViralVideo } from "@/lib/review-engine/types";
 
 /** 快照 schema 版本。velocity.ts 跨周比较时校验,不一致 → 当作"无上周" → 全 NEW。 */
@@ -43,3 +44,24 @@ export type TrendingVideoWithVelocity = ViralVideo & {
     trend: TrendTag;
   };
 };
+
+/**
+ * Blob 是系统边界 —— 读回的快照 JSON 可能是旧 schema / 损坏 / 手改的。
+ * 这个 loose schema 只校验下游真正依赖的结构锚点(schemaVersion / week / videos[].id+views),
+ * 其余字段 passthrough。safeParse 失败 → 读取函数返回 null,不让 undefined 字段流进 velocity.ts。
+ * 参考 memory llm-schema-looseness:最小校验,不全字段严格化。
+ */
+export const TrendingSnapshotSchema = z
+  .object({
+    schemaVersion: z.number(),
+    week: z.string().min(1),
+    videos: z.array(
+      z
+        .object({
+          id: z.string().min(1),
+          views: z.number(),
+        })
+        .passthrough(),
+    ),
+  })
+  .passthrough();
