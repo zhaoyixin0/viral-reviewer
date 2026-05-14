@@ -515,8 +515,9 @@ export function buildDraftContent(input: CompileInput): {
   // （type 0/1/2/3/6/7/8）。type 0 = 本地导入媒体组，放视频（和 BGM）条目。
   // file_Path 写占位 token，setup 脚本在用户机器上替换成绝对路径。
   // entry.id 必须等于 draft_content 里对应 material 的 id（CapCut 靠它关联）。
-  const nowSec = Math.floor(Date.now() / 1000);
-  const nowUs = Date.now() * 1000;
+  const importedAtMs = Date.now();
+  const nowSec = Math.floor(importedAtMs / 1000);
+  const nowUs = importedAtMs * 1000;
 
   const videoMetaEntry: DraftMaterialEntry = {
     ai_group_type: "",
@@ -560,6 +561,8 @@ export function buildDraftContent(input: CompileInput): {
     });
   }
 
+  const tmNow = nowMs();
+
   const metaInfo: DraftMetaInfo = {
     draft_id: projectId,
     draft_name: input.projectName,
@@ -578,8 +581,8 @@ export function buildDraftContent(input: CompileInput): {
       { type: 8, value: [] },
     ],
     draft_materials_copied_info: [],
-    tm_draft_create: nowMs(),
-    tm_draft_modified: nowMs(),
+    tm_draft_create: tmNow,
+    tm_draft_modified: tmNow,
     tm_duration: outputDurationUs,
     draft_cover: "draft_cover.jpg",
     draft_deleted: false,
