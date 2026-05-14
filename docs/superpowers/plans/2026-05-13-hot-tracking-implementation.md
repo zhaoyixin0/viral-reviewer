@@ -512,6 +512,9 @@ git commit -m "feat(p1): add optional ViralVideo.topicConfidence field"
 
 ## Task P1.5: `lib/trending/velocity.ts` —— 纯函数(TDD 先行)
 
+> ✅ **已完成并 merged 进 main。** worker 不要重新实施本任务。
+> ⚠️ **as-merged 与下方代码块有出入,以 main 为准:** P1 review 修复(commit `75e2913` "velocity treats prevViews=0 as stable, not new")把 `classifyTrend` 改成了**双参** `classifyTrend(weekOverWeek: number | null, isNew: boolean)`,并在 `computeVelocity` 里引入 `inPrevious` 标志(present-but-prevViews=0 → "stable" 而非 "new")。下方 Step 1/3 的代码块是**初始单参版本**(历史记录)。**P1.15 复用的是 main 上的双参 `classifyTrend`** —— 不要照下方单参代码块去改 main。
+
 **Files:**
 - Create: `lib/trending/velocity.ts`
 - Test: `tests/trending/velocity.test.ts`
@@ -1929,9 +1932,9 @@ import {
 import { IG_HOT_HASHTAGS } from "./ig-hot-hashtags";
 import type { ViralVideo } from "@/lib/review-engine/types";
 
-// spec M1 钉死的抓取参数 —— 调大会线性涨成本,不要随意改
-const TT_TRENDING_FETCH_LIMIT = 20;  // Stage 1 趋势榜抓取量(architect M1:唯一来源,不留魔法数)
-const TT_TRENDING_HASHTAG_COUNT = 5; // Stage 2 取趋势榜 top-5 hashtag
+// spec「成本估算 → 钉死的抓取参数」段定义的常量 —— 调大会线性涨成本,不要随意改
+const TT_TRENDING_FETCH_LIMIT = 20;  // Stage 1 趋势榜抓回条数;Stage 1 是单 run,成本与条数基本无关,20 给 top-5 选取留余量
+const TT_TRENDING_HASHTAG_COUNT = 5; // Stage 2 从 Stage 1 的 20 条里取 top-5 hashtag
 const TT_VIDEOS_PER_HASHTAG = 30;    // 每个趋势 hashtag 抓 30 条视频
 const IG_RESULTS_LIMIT = 50;
 

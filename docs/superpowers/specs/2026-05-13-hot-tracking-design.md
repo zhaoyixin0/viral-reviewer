@@ -126,7 +126,8 @@ Vercel Cron 每周一次:TikTok 走两阶段(趋势 hashtag 榜 → 其下视频
 ### 成本估算(architect M1 —— 参数钉死后重算)
 
 **钉死的抓取参数**(实现时作为常量,成本随之缩放):
-- `TT_TRENDING_HASHTAG_COUNT = 5` —— Stage 2 取趋势榜 top-5 hashtag
+- `TT_TRENDING_FETCH_LIMIT = 20` —— Stage 1 `tiktok-trends-scraper` 抓回的趋势 hashtag 条数。Stage 1 是**单次 run**,成本与条数基本无关(见下「逐项」),20 只是给 Stage 2 的 top-5 选取留余量(榜上有失效/低质 hashtag 时仍够挑);不影响成本量级
+- `TT_TRENDING_HASHTAG_COUNT = 5` —— Stage 2 从 Stage 1 的 20 条里取 top-5 hashtag
 - `TT_VIDEOS_PER_HASHTAG = 30` —— 每个趋势 hashtag 抓 30 条视频 → Stage 2 共 ~150 视频/周
 - `IG_VIDEOS = ~50/周`(沿用)
 
