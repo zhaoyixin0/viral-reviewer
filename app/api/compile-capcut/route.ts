@@ -7,7 +7,10 @@ import {
   cleanupAssets,
   probeBgmDurationSec,
 } from "@/lib/capcut-compiler/assets";
-import { buildDraftContent } from "@/lib/capcut-compiler/build";
+import {
+  buildDraftContent,
+  sanitizeVideoFileName,
+} from "@/lib/capcut-compiler/build";
 import { packageDraftAsZip } from "@/lib/capcut-compiler/package";
 import { probeVideoMeta } from "@/lib/video/ffprobe-meta";
 import { MaterialPotentialSchema } from "@/lib/cut-plan/material-potential";
@@ -23,6 +26,8 @@ const RequestSchema = z.object({
     .max(80)
     .regex(/^[^\\/:*?"<>|]+$/, "项目名包含非法字符"),
   videoUrl: z.string().url(),
+  /** 用户上传的原始视频文件名（可选；缺失则退化为 input.mp4） */
+  videoFileName: z.string().min(1).max(200).optional(),
   /** Phase 5.5：可选 BGM 文件 URL（Vercel Blob 上传后的 URL） */
   bgmUrl: z.string().url().nullable().optional(),
   userPotential: z.unknown(),
@@ -52,6 +57,7 @@ export async function POST(req: NextRequest) {
   }
 
   const { projectName, videoUrl, bgmUrl } = parsed.data;
+  const videoFileName = sanitizeVideoFileName(parsed.data.videoFileName);
 
   const potentialParsed = MaterialPotentialSchema.safeParse(
     parsed.data.userPotential,
@@ -93,7 +99,7 @@ export async function POST(req: NextRequest) {
     // 4) 构造 CapCut JSON
     const { draftContent, metaInfo } = buildDraftContent({
       projectName,
-      videoFileName: "input.mp4",
+      videoFileName,
       bgmFileName: assets.bgmPath ? "bgm.mp3" : undefined,
       bgmDurationSec,
       meta,
@@ -113,7 +119,7 @@ export async function POST(req: NextRequest) {
       draftContent,
       metaInfo,
       videoBuffer,
-      videoFileName: "input.mp4",
+      videoFileName,
       bgmBuffer,
       bgmFileName: bgmBuffer ? "bgm.mp3" : undefined,
     });

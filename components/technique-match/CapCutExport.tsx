@@ -8,6 +8,8 @@ import type { TechniqueMatchingResult } from "@/lib/technique-matching/types";
 
 type Props = {
   videoUrl: string;
+  /** 用户原始视频文件名；可选，缺失时 server 退化为 input.mp4 */
+  videoFileName?: string;
   userPotential: MaterialPotential;
   match: TechniqueMatchingResult;
   defaultProjectName?: string;
@@ -25,6 +27,7 @@ const MAX_BGM_BYTES = 30 * 1024 * 1024;
 
 export function CapCutExport({
   videoUrl,
+  videoFileName,
   userPotential,
   match,
   defaultProjectName,
@@ -73,6 +76,7 @@ export function CapCutExport({
         body: JSON.stringify({
           projectName: projectName.trim() || fallbackName,
           videoUrl,
+          videoFileName,
           bgmUrl,
           userPotential,
           match,

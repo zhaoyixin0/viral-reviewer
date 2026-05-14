@@ -17,6 +17,7 @@ type StreamEvent =
 
 export type SubmitArgs = {
   videoUrl: string;
+  videoFileName: string;
   topic: string;
   intent: string;
 };
@@ -28,6 +29,7 @@ export type AnalyzeStreamState = {
   partial: { userVideoId: string; userPotential: MaterialPotential } | null;
   full: AnalyzeResponseShape | null;
   videoUrl: string | null;
+  videoFileName: string | null;
   submit: (args: SubmitArgs) => Promise<void>;
 };
 
@@ -46,6 +48,7 @@ export function useAnalyzeStream(): AnalyzeStreamState {
   >(null);
   const [full, setFull] = useState<AnalyzeResponseShape | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [videoFileName, setVideoFileName] = useState<string | null>(null);
 
   const submit = async (args: SubmitArgs) => {
     setLoading(true);
@@ -54,6 +57,7 @@ export function useAnalyzeStream(): AnalyzeStreamState {
     setPartial(null);
     setFull(null);
     setVideoUrl(args.videoUrl);
+    setVideoFileName(args.videoFileName);
 
     try {
       const res = await fetch("/api/technique-match", {
@@ -112,5 +116,14 @@ export function useAnalyzeStream(): AnalyzeStreamState {
     }
   };
 
-  return { loading, error, stages, partial, full, videoUrl, submit };
+  return {
+    loading,
+    error,
+    stages,
+    partial,
+    full,
+    videoUrl,
+    videoFileName,
+    submit,
+  };
 }
