@@ -30,6 +30,8 @@ if ($subDirs.Count -ne 1) {
 $projectDir = $subDirs[0].FullName
 $projectName = $subDirs[0].Name
 
+# 正则匹配 管道符 & 回车 换行 —— 这些字符会破坏后续字面 token 替换或 JSON。
+# 不拦反斜杠：PS1 用 .Replace 字面替换，且 finalFwd 已把反斜杠转成正斜杠。
 if ($projectDir -match '[\\|&\\r\\n]') {
   Write-Host "错误：项目路径含特殊字符（| 或 &），CapCut 可能无法识别。" -ForegroundColor Red
   Write-Host "请把整个文件夹移到简单路径（如 C:\\Temp\\）后重新运行。"
@@ -105,8 +107,8 @@ projectDir="\${subDirs[0]}"
 projectName="$(basename "$projectDir")"
 
 case "$projectDir" in
-  *"|"*|*"&"*)
-    echo "错误：项目路径含特殊字符（| 或 &）。请移到简单路径后重试。"
+  *"|"*|*"&"*|*\\\\*|*[[:cntrl:]]*)
+    echo "错误：项目路径含特殊字符（| & 反斜杠 或控制字符）。请移到简单路径后重试。"
     exit 1 ;;
 esac
 
@@ -137,9 +139,9 @@ else
 fi
 
 case "$final" in
-  *"|"*|*"&"*)
-    echo "错误：最终项目路径含特殊字符（| 或 &），无法安全处理。"
-    echo "请把 CapCut 项目目录移到不含 | & 的路径后重试。"
+  *"|"*|*"&"*|*\\\\*|*[[:cntrl:]]*)
+    echo "错误：最终项目路径含特殊字符（| & 反斜杠 或控制字符），无法安全处理。"
+    echo "请把 CapCut 项目目录移到简单路径后重试。"
     exit 1 ;;
 esac
 
