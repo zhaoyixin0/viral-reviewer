@@ -27,6 +27,7 @@
     "@anthropic-ai/sdk": "^0.91.1",
     "@google/genai": "^2.0.0",
     "@vercel/blob": "^2.3.3",
+    "@vercel/config": "^0.4.0",
     "ai": "^4.3.16",
     "apify-client": "^2.12.0",
     "class-variance-authority": "^0.7.1",
