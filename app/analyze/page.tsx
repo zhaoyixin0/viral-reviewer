@@ -53,6 +53,7 @@ export default function AnalyzePage() {
               partial={stream.partial}
               full={stream.full}
               videoUrl={stream.videoUrl}
+              videoFileName={stream.videoFileName}
               emptyTitle="上传你的视频素材"
               emptySubtitle="Gemini 先 30 秒给你素材诊断，Opus 再 2 分钟给你完整的爆款对标 + 可执行剪辑清单。"
             />

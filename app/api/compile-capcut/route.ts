@@ -7,7 +7,10 @@ import {
   cleanupAssets,
   probeBgmDurationSec,
 } from "@/lib/capcut-compiler/assets";
-import { buildDraftContent } from "@/lib/capcut-compiler/build";
+import {
+  buildDraftContent,
+  sanitizeVideoFileName,
+} from "@/lib/capcut-compiler/build";
 import { packageDraftAsZip } from "@/lib/capcut-compiler/package";
 import { probeVideoMeta } from "@/lib/video/ffprobe-meta";
 import { MaterialPotentialSchema } from "@/lib/cut-plan/material-potential";
@@ -23,6 +26,16 @@ const RequestSchema = z.object({
     .max(80)
     .regex(/^[^\\/:*?"<>|]+$/, "项目名包含非法字符"),
   videoUrl: z.string().url(),
+  /** 用户上传的原始视频文件名（可选；缺失则退化为 input.mp4）。
+   *  regex 在 Zod 层就拒绝路径分隔符，让服务端校验边界自身成立，
+   *  不单点依赖 sanitizeVideoFileName。浏览器 File.name 永远是 basename，
+   *  合法请求不含分隔符，不受影响。 */
+  videoFileName: z
+    .string()
+    .min(1)
+    .max(200)
+    .regex(/^[^/\\]+$/, "视频文件名不能包含路径分隔符")
+    .optional(),
   /** Phase 5.5：可选 BGM 文件 URL（Vercel Blob 上传后的 URL） */
   bgmUrl: z.string().url().nullable().optional(),
   userPotential: z.unknown(),
@@ -52,6 +65,7 @@ export async function POST(req: NextRequest) {
   }
 
   const { projectName, videoUrl, bgmUrl } = parsed.data;
+  const videoFileName = sanitizeVideoFileName(parsed.data.videoFileName);
 
   const potentialParsed = MaterialPotentialSchema.safeParse(
     parsed.data.userPotential,
@@ -93,7 +107,7 @@ export async function POST(req: NextRequest) {
     // 4) 构造 CapCut JSON
     const { draftContent, metaInfo } = buildDraftContent({
       projectName,
-      videoFileName: "input.mp4",
+      videoFileName,
       bgmFileName: assets.bgmPath ? "bgm.mp3" : undefined,
       bgmDurationSec,
       meta,
@@ -113,7 +127,7 @@ export async function POST(req: NextRequest) {
       draftContent,
       metaInfo,
       videoBuffer,
-      videoFileName: "input.mp4",
+      videoFileName,
       bgmBuffer,
       bgmFileName: bgmBuffer ? "bgm.mp3" : undefined,
     });
@@ -151,11 +165,12 @@ export async function POST(req: NextRequest) {
       );
     }
   } catch (e) {
+    // 详情只进日志，不回客户端 —— 避免泄露文件系统路径 / 内部服务名
     console.error("[compile-capcut] error:", e);
     return new Response(
       JSON.stringify({
         error: "compile_failed",
-        message: (e as Error).message,
+        message: "编译失败，请稍后重试",
       }),
       { status: 500, headers: { "content-type": "application/json" } },
     );

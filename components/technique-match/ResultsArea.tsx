@@ -28,6 +28,8 @@ export type AnalyzeResultsProps = {
   partial: { userVideoId: string; userPotential: MaterialPotential } | null;
   full: AnalyzeResponseShape | null;
   videoUrl: string | null;
+  /** 用户原始视频文件名；可选，缺失时 CapCutExport 退化为 input.mp4 */
+  videoFileName?: string | null;
   /** 文案：empty state 标题/副标题 */
   emptyTitle?: string;
   emptySubtitle?: string;
@@ -49,6 +51,7 @@ export function AnalyzeResults({
   partial,
   full,
   videoUrl,
+  videoFileName,
   emptyTitle = "上传你的视频草稿",
   emptySubtitle = "AI 会看完整段视频，找出你的素材能学什么、不能学什么，输出具体到秒的剪辑改动建议。",
 }: AnalyzeResultsProps) {
@@ -162,6 +165,7 @@ export function AnalyzeResults({
             {videoUrl && (
               <CapCutExport
                 videoUrl={videoUrl}
+                videoFileName={videoFileName ?? undefined}
                 userPotential={full.userPotential}
                 match={full.match}
               />
