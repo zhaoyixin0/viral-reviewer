@@ -2,7 +2,8 @@
  * CapCut draft_content.json schema (逆向自社区 capcut-cli + 直接观察 CapCut 桌面项目)
  *
  * 时间单位：全部 μs（微秒）
- * 路径：material.path 在 CapCut 里是绝对路径，但解压后第一次打开 CapCut 会自动 fix 到当前项目目录的子路径
+ * 路径：material.path 必须是素材的绝对路径（原生项目 0203/0205 验证）。server 端
+ *       写占位 token，zip 附的 setup 脚本在用户机器上替换成本机绝对路径。
  */
 
 export type TimeRange = {
@@ -15,7 +16,7 @@ export type TimeRange = {
 export type VideoMaterial = {
   id: string; // UUID
   type: "video";
-  path: string; // 相对当前项目目录的 "materials/xxx.mp4"
+  path: string; // 绝对路径；server 写 token（见 setup-scripts/tokens.ts）
   material_name: string;
   width: number;
   height: number;
@@ -227,35 +228,58 @@ export type DraftContent = {
 // ===== Meta (draft_meta_info.json) =====
 
 /**
- * draft_meta_info 设计 — R 方案（2026-05-13）：
+ * draft_meta_info 设计 — Setup-Script 方案（2026-05-13）：
  *
- * 历史：5db8fce 试图填 draft_materials[0].value[] = [{ file_Path: "./materials/<file>", ... }]
- * 让 CapCut 自动定位媒体。结果：CapCut 国际版 (cc / 8.5.0) 看到 entry 存在就跳过链接对话框，
- * 但又 resolve 不出 "./materials/..." 相对路径（draft_fold_path 是空字符串），陷入死锁
- * —— "链接素材"按钮无响应。
+ * CapCut 用「指向素材原始位置的绝对路径」引用素材，存在 draft_content.json 的
+ * materials.*.path 和 draft_meta_info.json 的 draft_materials[].value[].file_Path
+ * （本机原生项目 0203 / 0205 + capcut-cli 源码三方验证）。
  *
- * 教训：CapCut 自己保存的 file_Path 是 user 第一次手动 link 时选的真实绝对路径
- * （如 "C:/Users/Admin/Downloads/.../materials/input.mp4"），不是 "./materials/..."。
- * 那个相对路径根本不是 CapCut 接受的格式，是 5db8fce 反向工程时取错了样本。
+ * 历史教训纠正：commit 5db8fce 试图填 draft_materials 让 CapCut 自动定位媒体，
+ * 失败的真正原因是它填的 file_Path 是相对路径 "./materials/input.mp4" —— 不是
+ * "填 draft_materials" 这个动作错。原生 0203 证明：填**绝对** file_Path 正是
+ * CapCut 能用的状态。
  *
- * R 方案：保留 draft_materials = [] 空数组（实际写 [{ type: 0, value: [] }]）。
- * CapCut 看到空就走"链接素材"对话框流程：用户选 zip 里的 materials/<file>.mp4，
- * CapCut 把绝对路径自己写回 draft_materials + draft_content videos[].path。
- * 用户每个新机器解压一次都要 link 一次，但至少能 work。
- *
- * 长期解药：在 zip 里附 PowerShell / bash 脚本，用户运行脚本时它知道 cwd，
- * 直接写绝对路径回 draft_meta_info.json 再启动 CapCut。本期不做。
+ * 本方案：server 端把 file_Path / draft_fold_path / draft_root_path / videos[].path
+ * 全写成占位 token（见 setup-scripts/tokens.ts），zip 附 setup 脚本，用户解压后
+ * 运行脚本在本机把 token 字面替换成绝对路径。draft_materials 复刻原生 0203 的
+ * 七组结构（type 0/1/2/3/6/7/8），type 0 组放视频（和 BGM）条目。
  */
+
+/** draft_materials[].value[] 单条素材记录，对齐原生 0203 项目结构 */
+export type DraftMaterialEntry = {
+  ai_group_type: "";
+  create_time: number;
+  duration: number; // μs
+  extra_info: string; // 文件名，如 "20260429-200100.mp4"
+  /** 素材绝对路径；server 写 token，setup 脚本替换 */
+  file_Path: string;
+  height: number;
+  /** 必须等于 draft_content.json 里对应 material 的 id */
+  id: string;
+  import_time: number;
+  import_time_ms: number;
+  item_source: 1;
+  md5: "";
+  metetype: "video" | "music";
+  roughcut_time_range: { duration: number; start: number };
+  sub_time_range: { duration: number; start: number };
+  type: number;
+  width: number;
+};
+
 export type DraftMaterialGroup = {
-  type: number; // 通常 0 = video/audio 主组
-  value: never[]; // R 方案：始终空
+  /** 0=本地导入媒体（视频/音频），1/2/3/6/7/8=其它分类，本方案只往 type 0 填 */
+  type: number;
+  value: DraftMaterialEntry[];
 };
 
 export type DraftMetaInfo = {
   draft_id: string; // 同 DraftContent.id
   draft_name: string;
-  draft_root_path: string; // 用空 — CapCut 自己会填
-  draft_fold_path: string; // 用空 — CapCut 自己会填
+  /** drafts 目录绝对路径（com.lveditor.draft）；server 写 token */
+  draft_root_path: string;
+  /** 项目文件夹绝对路径；server 写 token */
+  draft_fold_path: string;
   draft_removable_storage_device: "";
   draft_timeline_materials_size_: number;
   draft_materials: DraftMaterialGroup[];
