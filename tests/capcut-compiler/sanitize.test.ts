@@ -30,4 +30,14 @@ describe("sanitizeVideoFileName", () => {
   it("keeps unicode filenames", () => {
     expect(sanitizeVideoFileName("我的视频.mp4")).toBe("我的视频.mp4");
   });
+
+  it("truncates an over-long filename, keeping the extension", () => {
+    const result = sanitizeVideoFileName(`${"a".repeat(200)}.mp4`);
+    expect(result.length).toBe(120);
+    expect(result.endsWith(".mp4")).toBe(true);
+  });
+
+  it("truncates an over-long extensionless filename to 120 chars", () => {
+    expect(sanitizeVideoFileName("z".repeat(200))).toBe("z".repeat(120));
+  });
 });

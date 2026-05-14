@@ -123,7 +123,7 @@ export function CapCutExport({
 
       <p className="text-xs text-white/65 mb-4 leading-relaxed">
         把上面的剪辑清单直接编译成 CapCut 桌面项目。zip 里包含你的视频、按时间轴排好的切镜点、push-in/pull-out
-        动画、字幕轨{`，可选 BGM 配乐`}。解压到 CapCut Projects 目录即可一键打开。
+        动画、字幕轨{`，可选 BGM 配乐`}。解压后运行 setup 脚本即可一键打开。
       </p>
 
       <div className="space-y-4">
@@ -199,22 +199,17 @@ export function CapCutExport({
         <div className="flex items-start gap-2 mt-3 text-[11px] text-white/55 leading-relaxed">
           <Info className="w-3.5 h-3.5 shrink-0 mt-0.5 text-[#22d3ee]" />
           <div>
-            <strong className="text-white/75">解压位置：</strong>
-            <div className="font-mono mt-0.5 text-[10px]">
-              Windows:{" "}
-              <span className="text-white/45">
-                %LOCALAPPDATA%\CapCut\User Data\Projects\com.lveditor.draft\
-              </span>
-            </div>
-            <div className="font-mono text-[10px]">
-              macOS:{" "}
-              <span className="text-white/45">
-                ~/Movies/CapCut/User Data/Projects/com.lveditor.draft/
-              </span>
+            <strong className="text-white/75">怎么用：</strong>
+            <div className="mt-0.5 text-white/50">
+              解压 zip 后，Windows 双击{" "}
+              <span className="font-mono text-white/45">setup.bat</span>，macOS
+              运行{" "}
+              <span className="font-mono text-white/45">setup.sh</span>
+              ，等它显示"完成"，再打开 CapCut 即可。
             </div>
             <div className="mt-1.5 text-white/50">
-              zip 里有 README.txt 详细说明。第一次打开如果提示"找不到素材"，点
-              materials/input.mp4 (和 bgm.mp3 如果有) 即可。
+              脚本会自动把项目放进 CapCut 目录并修好素材路径——纯本地操作、不联网。详见
+              zip 里的 README.txt。
             </div>
           </div>
         </div>

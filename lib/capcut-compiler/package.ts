@@ -59,7 +59,7 @@ export type PackageInput = {
   draftContent: DraftContent;
   metaInfo: DraftMetaInfo;
   videoBuffer: Buffer;
-  videoFileName: string; // "input.mp4"
+  videoFileName: string; // 用户原始视频文件名（已 sanitize）
   /** Phase 5.5：可选 BGM */
   bgmBuffer?: Buffer;
   bgmFileName?: string; // "bgm.mp3"
@@ -73,7 +73,7 @@ export type PackageInput = {
  *     draft_meta_info.json
  *     README.txt
  *     materials/
- *       input.mp4
+ *       <视频文件名>
  *       [bgm.mp3]   ← 只在用户传了 BGM 时存在
  */
 export async function packageDraftAsZip(
