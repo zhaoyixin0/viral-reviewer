@@ -86,6 +86,35 @@ export type CompileInput = {
 };
 
 /**
+ * 把用户上传的视频文件名清洗成可安全放进 zip / draft JSON 路径的文件名。
+ * 保留原始可识别性（消除"手动 link 文件名不匹配"那条根因），只替换会破坏
+ * 文件系统 / JSON 路径的字符。缺失或异常时退化为 "input.mp4"。
+ */
+export function sanitizeVideoFileName(raw: string | undefined): string {
+  const FALLBACK = "input.mp4";
+  if (!raw) return FALLBACK;
+  // 取 basename：去掉任何 / 或 \ 前缀
+  const base = raw.split(/[\\/]/).pop()?.trim() ?? "";
+  if (!base) return FALLBACK;
+  // 占位 token 出现在文件名里 → 直接退化，避免脏了字面替换
+  if (base.includes("__VR_")) return FALLBACK;
+  // 替换文件系统非法字符 + 控制字符
+  // eslint-disable-next-line no-control-regex
+  const cleaned = base.replace(/[\\/:*?"<>|\x00-\x1f]/g, "_");
+  if (!cleaned || cleaned === "." || cleaned === "..") return FALLBACK;
+  // 限长，保留扩展名
+  if (cleaned.length > 120) {
+    const dot = cleaned.lastIndexOf(".");
+    if (dot > 0) {
+      const ext = cleaned.slice(dot);
+      return cleaned.slice(0, 120 - ext.length) + ext;
+    }
+    return cleaned.slice(0, 120);
+  }
+  return cleaned;
+}
+
+/**
  * 把 topPriorityActions 里的「在 X 秒切镜」抽出来作为时间轴 cut points。
  * 同时把 push_in / pull_out 动作识别出来用于 keyframe。
  */

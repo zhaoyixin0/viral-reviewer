@@ -8,7 +8,12 @@ import { Sparkles, Upload, Loader2, Film } from "lucide-react";
 type Stage = "idle" | "uploading" | "submitting";
 
 type Props = {
-  onSubmit: (args: { videoUrl: string; topic: string; intent: string }) => void;
+  onSubmit: (args: {
+    videoUrl: string;
+    videoFileName: string;
+    topic: string;
+    intent: string;
+  }) => void;
   isLoading: boolean;
 };
 
@@ -56,6 +61,7 @@ export function InputPanel({ onSubmit, isLoading }: Props) {
       setStage("submitting");
       onSubmit({
         videoUrl: blob.url,
+        videoFileName: videoFile.name,
         topic: topic.trim(),
         intent: intent.trim(),
       });
