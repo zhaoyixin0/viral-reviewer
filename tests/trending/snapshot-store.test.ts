@@ -30,6 +30,7 @@ const SNAP: TrendingSnapshot = {
   week: "2026-W20",
   capturedAt: "2026-05-13T08:00:00Z",
   videos: [],
+  trendingHashtags: [],
   meta: {
     tiktok: { source: "trends-actor", actorRun: "r1", rawCount: 0, enrichedCount: 0, ok: true },
     instagram: { source: "hashtag-proxy", actorRun: "r2", rawCount: 0, enrichedCount: 0, ok: true },

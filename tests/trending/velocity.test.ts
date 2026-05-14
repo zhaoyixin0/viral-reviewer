@@ -33,6 +33,7 @@ function snapshot(week: string, videos: ViralVideo[], over: Partial<TrendingSnap
     week,
     capturedAt: `${week}-captured`,
     videos,
+    trendingHashtags: [],
     meta: {
       tiktok: { source: "trends-actor", actorRun: "r1", rawCount: videos.length, enrichedCount: videos.length, ok: true },
       instagram: { source: "hashtag-proxy", actorRun: "r2", rawCount: 0, enrichedCount: 0, ok: true },
