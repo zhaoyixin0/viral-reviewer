@@ -183,3 +183,48 @@ cp "<PORK>/draft_content.json.bak" "<PORK>/draft_content.json"
 3. 或者：原电脑同步 PORK 文件夹到新电脑（不推荐 — 可能跨 CapCut 安装实例有 cache 不一致）
 
 最稳妥：换电脑后从头跑一遍 compile-capcut + 实验，把结果记到这个 handover 文件下面的 "Findings" 章节，继续推进。
+
+---
+
+## Findings (2026-05-14 — Setup-Script 方案，已实施并验证)
+
+### 根因确认（三方证据交叉验证）
+CapCut 用「指向素材原始位置的**绝对路径**」引用素材，存在 `draft_content.json` 的
+`materials.*.path` **和** `draft_meta_info.json` 的 `draft_materials[].value[].file_Path`。
+证据：
+1. 本机原生项目 `0203` / `0205` —— `path` 是 `C:/Users/yixin/Downloads/...mp4` 绝对路径，
+   素材留在原位、不拷进项目；`draft_meta_info.draft_materials` 是 7 组结构（type 0/1/2/3/6/7/8）。
+2. capcut-cli 源码 —— `resolve(assetsDir, filename)` 写绝对路径，且**本地运行**所以能拿到。
+3. 我们历次失败的导出 —— placeholder / 相对 `file_Path` / 纯文件名 / `materials/` 相对路径全失败。
+
+服务端生成 zip 无法知道用户解压位置 → 写不出有效绝对路径。这是根本矛盾，
+`10bd106→5db8fce→27e5845→ec88b2d` 四次尝试都是在绕它。
+
+**历史误判纠正**：`schema.ts` 旧注释说 `5db8fce` 填 `draft_materials` 导致"死锁"——错。
+死锁是因为它填的 `file_Path` 是相对路径 `./materials/input.mp4`；原生 `0203` 证明
+填**绝对** `file_Path` 正是 CapCut 能用的状态。（已在 Task 1 修正注释。）
+
+### 方案：zip 附 setup 脚本，本地补绝对路径
+server 端把 `file_Path` / `draft_fold_path` / `draft_root_path` / `videos[].path` 全写成
+占位 token（`__VR_PROJECT_DIR__` / `__VR_DRAFTS_DIR__`），zip 根目录附 `setup.bat` /
+`setup.ps1` / `setup.sh`。用户解压后运行脚本，脚本在本机：探测 CapCut/剪映 drafts 目录 →
+把项目文件夹搬进去 → 对两个 JSON 做纯字面 token 替换换成绝对路径。脚本不解析 JSON。
+配套：保留用户原始视频文件名（不再 hardcode `input.mp4`）；`draft_materials` 复刻原生
+`0203` 七组结构。
+
+实施 plan：`docs/superpowers/plans/2026-05-13-capcut-setup-script-link-fix.md`（7 个 task，
+全部经 spec + code-quality + 窗口 3 review 通过并 merge 进 main）。
+
+### 实测结果
+- **Windows**: ✅ 成功。`scripts/probe-capcut-zip.ts` 用本机真实 mp4 生成测试 zip
+  （绕开 Gemini/Opus —— 公司 SWG TLS 拦截导致 `api.anthropic.com` 不可达，
+  `UNABLE_TO_GET_ISSUER_CERT_LOCALLY`，与本修复无关）。解压 → 双击 `setup.bat` →
+  打开 CapCut 双击项目 → **不弹 "Couldn't link" 对话框，正常进编辑器**。
+- **macOS**: 待真机补测。`setup.sh` 已有 CI 执行测试覆盖
+  （`tests/capcut-compiler/setup-scripts.test.ts` 按 `process.platform` 真实跑脚本）。
+
+### 已知 backlog
+- `capcut-exports/` 的 Blob zip 无 TTL，长期需 cron 清理。
+- dev 环境 `api.anthropic.com` TLS 信任：需给 Node 配公司根 CA（`NODE_EXTRA_CA_CERTS`），
+  与本修复独立。
+- 给 Gemini/Opus 调用加重试退避（外部 503 偶发）。
