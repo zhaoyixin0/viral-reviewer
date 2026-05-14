@@ -523,7 +523,7 @@ architect 二轮确认 v1 的 6 条已修到位,v2 新引入 3 个小问题:
 | v4-1 | `clockworks/tiktok-trends-scraper` 实际返回热门 **hashtag 榜**,非 trending 视频 —— v1-v3 H2 从文档摘要误推 | ✅ 重调研全部候选;TikTok 改为**两阶段**(Stage 1 趋势 hashtag 榜 → Stage 2 该 hashtag 下视频)。决策表 + 关键论证 + 数据流全部改写 |
 | v4-2 | 唯一直出 trending 视频的 `lexis-solutions/...` 是 $39/月订阅,超预算 | ✅ 否决;两阶段方案成本 ≤ $5/月,留在预算内。成本估算段重写 |
 | v4-3 | 用户要 hashtag 榜与视频都保留,视频要能追溯到趋势 hashtag | ✅ `TrendingSnapshot` 加 `trendingHashtags[]`;新增 `TrendingHashtag` 类型;`ViralVideo` 加 `trendingContext?`;看板加趋势 hashtag 榜视图(4.7) |
-| v4-4 | schema 变化波及已实现的 P1.3/P1.4 + P1 review 加的 loose Zod schema | ✅ `types.ts` 追加 `TrendingHashtag` + `trendingHashtags` 字段;`ViralVideo` 追加 `trendingContext`;loose Zod schema 把 `trendingHashtags` 加为 optional(旧快照不 parse 失败);schemaVersion 不 bump(feature 未上线无存量数据,见 2.1 注) |
+| v4-4 | schema 变化波及已实现的 P1.3/P1.4 + P1 review 加的 loose Zod schema | ✅ `types.ts` 追加 `TrendingHashtag` + `trendingHashtags` 字段;`ViralVideo` 追加 `trendingContext`;loose Zod schema 把 `trendingHashtags` 加为 optional(旧快照不 parse 失败);schemaVersion 不 bump —— 论证见 2.5(velocity 只读未变字段,architect H1 已纠正,不再用「无存量数据」旧理由) |
 
 **对 plan 的影响(architect H3 —— 处置表已纠正):** P1.7 已完成(probe 脚本是发现问题的工具,保留)。
 
