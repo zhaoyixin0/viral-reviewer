@@ -79,6 +79,8 @@
 
 > P0 只改 `topic-research.ts` 一个文件,上线即生效:消除 live 抓取里的「7 年老爆款」。不依赖 P1/P2 任何代码,可单独 commit、单独部署。
 
+> ✅ **P0.1 已完成并 merged 进 main(commit `6f74661`)。** worker 不要重新实施本任务。
+
 ## Task P0.1: `withinPublishWindow` 纯函数 + 接入 topic-research
 
 **Files:**
@@ -233,7 +235,11 @@ git commit -m "feat(p0): 30-day publish window filter on live research"
 
 > P1 产出:Vercel Cron 跑一次 → Blob 里出现一份 `trending/snapshot-<week>.json`。结束时可手动 POST 触发并验证快照写入。
 
-## Task P1.1: 验证 Vercel Cron 套餐可用性 + 配置 env vars(architect H1)
+> ✅ **P1.1 - P1.7 已完成并 merged 进 main**(P1.1 cron 部署文档、P1.2 iso-week、P1.3 types.ts、P1.4 topicConfidence、P1.5 velocity.ts、P1.6 snapshot-store、P1.7 probe 脚本 —— 含 P1 review 的 HIGH/MED/LOW 修复)。
+> **⚠️ 实施恢复点 = Task P1.8。** worker **不要**重新 Create P1.2-P1.7 的文件(`lib/utils/iso-week.ts` / `lib/trending/types.ts` / `lib/trending/velocity.ts` / `lib/trending/snapshot-store.ts` / `scripts/probe-tiktok-trends.ts` 均已在 main),否则会覆盖已 merged 代码。P1.1-P1.7 的 Task 正文保留作历史记录。
+> 注:P1.8 会**修改**(非 Create)已 merged 的 `lib/trending/types.ts` 和 `lib/review-engine/types.ts` —— 见 P1.8 正文。
+
+## Task P1.1: 验证 Vercel Cron 套餐可用性 + 配置 env vars(architect H1) ✅ 已完成
 
 > 无代码改动 —— 这是部署前置门禁。整条 P1/P2 pipeline 挂在 Cron 上,套餐不支持就得走降级方案。
 
@@ -1446,13 +1452,16 @@ import type { TrendingHashtag } from "@/lib/trending/types";
  * 该 actor 返回的是热门 hashtag 排行榜(rank/viewCount/videoCount/…),不是视频
  * —— 见 P1.7 probe 实测 + spec v4。Stage 2 用这些 hashtag 喂 scrapeTikTokByHashtag。
  * actor 输入键(countryCode / maxItems)以 P1.7 probe 验证为准。
+ *
+ * `maxItems` 为**必填**(无默认值)—— 抓取量是 fetch.ts 的成本决策,
+ * 由调用方传入 `TT_TRENDING_FETCH_LIMIT` 常量(architect M1:不在此处留魔法数)。
  */
-export async function scrapeTikTokTrendingHashtags(opts?: {
+export async function scrapeTikTokTrendingHashtags(opts: {
   countryCode?: string;
-  maxItems?: number;
+  maxItems: number;
 }): Promise<{ hashtags: TrendingHashtag[]; runId: string }> {
   const client = getApifyClient();
-  const { countryCode = "US", maxItems = 20 } = opts ?? {};
+  const { countryCode = "US", maxItems } = opts;
 
   const run = await client.actor("clockworks/tiktok-trends-scraper").call({
     countryCode,
@@ -1749,6 +1758,8 @@ git commit -m "feat(p1): add Haiku topic-classifier with confidence scoring"
 - Test: `tests/trending/fetch.test.ts`
 
 > **v4 重写。** TikTok 改两阶段:Stage 1 `scrapeTikTokTrendingHashtags`(P1.9)拿趋势 hashtag 榜 → 取 top-5 → Stage 2 按 rank 升序复用现有 `scrapeTikTokByHashtag` 抓每个 hashtag 下的视频,给视频打 `trendingContext`(首次命中锁定)。IG 不变。产出的 `TrendingSnapshot` 含 `trendingHashtags` + `videos`。**原 P1.12 的测试 mock 结构(`scrapeTikTokTrendingMock` 返回 `{videos,runId}`)整段作废,连实现一起重写。**
+>
+> **🔧 实施前确认(architect M3):** 实现 import `loadVideos` 前,先 `grep -rn "export.*loadVideos" lib/data/load-videos.ts` 确认真实导出名与路径(本 plan 按 `import { loadVideos } from "@/lib/data/load-videos"` 写,与 P1 已 merged 的 fetch 旧版一致,但 worker 仍应核对)。
 
 - [ ] **Step 1: 写失败测试**
 
@@ -1862,6 +1873,18 @@ describe("fetchTrendingSnapshot (two-stage TikTok)", () => {
     expect(scrapeTikTokByHashtagMock).not.toHaveBeenCalled();
   });
 
+  it("Stage 1 ok but ALL Stage 2 hashtags fail → tiktok.ok=false (architect H2)", async () => {
+    // Stage 1 给了 hashtag,但每个 hashtag 的 Stage 2 抓取都抛错 → 0 视频
+    scrapeTikTokByHashtagMock.mockRejectedValue(new Error("stage2 down"));
+    const snap = await fetchTrendingSnapshot();
+    expect(snap.meta.tiktok.ok).toBe(false);   // 不能是"成功但 0 视频"的假成功
+    expect(snap.meta.partial).toBe(true);
+    // trendingHashtags 仍保留(Stage 1 成功的产物)
+    expect(snap.trendingHashtags.map((h) => h.name)).toEqual(["morningroutine", "glowup"]);
+    // 只剩 IG 视频
+    expect(snap.videos.map((v) => v.id)).toEqual(["ig1"]);
+  });
+
   it("throws when BOTH platforms fail (caller must not write an empty snapshot)", async () => {
     scrapeTikTokTrendingHashtagsMock.mockRejectedValue(new Error("tt down"));
     scrapeInstagramByHashtagMock.mockRejectedValue(new Error("ig down"));
@@ -1907,6 +1930,7 @@ import { IG_HOT_HASHTAGS } from "./ig-hot-hashtags";
 import type { ViralVideo } from "@/lib/review-engine/types";
 
 // spec M1 钉死的抓取参数 —— 调大会线性涨成本,不要随意改
+const TT_TRENDING_FETCH_LIMIT = 20;  // Stage 1 趋势榜抓取量(architect M1:唯一来源,不留魔法数)
 const TT_TRENDING_HASHTAG_COUNT = 5; // Stage 2 取趋势榜 top-5 hashtag
 const TT_VIDEOS_PER_HASHTAG = 30;    // 每个趋势 hashtag 抓 30 条视频
 const IG_RESULTS_LIMIT = 50;
@@ -1918,7 +1942,12 @@ function failedMeta(source: PlatformMeta["source"]): PlatformMeta {
 /**
  * TikTok 两阶段:Stage 1 抓趋势 hashtag 榜 → 取 top-N → Stage 2 按 rank 升序
  * 复用 scrapeTikTokByHashtag 抓视频 + 打 trendingContext(首次命中锁定,见 spec 2.6)。
- * 返回 { hashtags, videos, runId } —— Stage 1 抛错时返回空。
+ *
+ * ok 判定(architect H2,符合 spec 5.1「不写空快照」):
+ * - Stage 1 抛错 → ok=false
+ * - Stage 1 成功但 Stage 2 全部 hashtag 抓取失败(有 hashtag 却 0 视频)→ ok=false
+ *   —— 否则会写一份「TikTok 成功但 0 视频」的假成功快照
+ * - Stage 1 成功且 Stage 2 至少抓到 1 条 → ok=true(部分 hashtag 失败是软降级)
  */
 async function fetchTikTokTwoStage(): Promise<{
   hashtags: TrendingHashtag[];
@@ -1929,7 +1958,9 @@ async function fetchTikTokTwoStage(): Promise<{
   let hashtags: TrendingHashtag[] = [];
   let runId = "";
   try {
-    const stage1 = await scrapeTikTokTrendingHashtags({ maxItems: 20 });
+    const stage1 = await scrapeTikTokTrendingHashtags({
+      maxItems: TT_TRENDING_FETCH_LIMIT,
+    });
     hashtags = stage1.hashtags;
     runId = stage1.runId;
   } catch (e) {
@@ -1961,7 +1992,17 @@ async function fetchTikTokTwoStage(): Promise<{
     }
   }
 
-  return { hashtags, videos, runId, ok: true };
+  // architect H2:有 hashtag 但 Stage 2 一条视频都没抓到 → 视为 TikTok 失败,
+  // 不让「TikTok 成功但 0 视频」的假成功快照落盘。
+  const ok = !(topHashtags.length > 0 && videos.length === 0);
+  if (!ok) {
+    console.error(
+      "[trending/fetch] TikTok Stage 2 produced 0 videos from",
+      topHashtags.length,
+      "hashtags — marking TikTok failed",
+    );
+  }
+  return { hashtags, videos, runId, ok };
 }
 
 /**
@@ -1987,20 +2028,23 @@ export async function fetchTrendingSnapshot(): Promise<TrendingSnapshot> {
     }),
   ]);
 
-  if (ttResult.status === "fulfilled" && ttResult.value.ok) {
-    trendingHashtags = ttResult.value.hashtags;
-    ttVideos = ttResult.value.videos;
+  if (ttResult.status === "fulfilled") {
+    const tt = ttResult.value;
+    // architect H2:即使 tt.ok=false(Stage 2 全挂),只要 Stage 1 成功拿到了
+    // hashtag 榜,trendingHashtags 仍保留落盘 —— hashtag 榜独立有价值(spec 2.8)。
+    trendingHashtags = tt.hashtags;
+    ttVideos = tt.videos;
     ttMeta = {
       source: "trends-actor",
-      actorRun: ttResult.value.runId, // Stage 1 run id(spec L2)
-      rawCount: ttVideos.length,      // Stage 2 视频数(spec L2)
+      actorRun: tt.runId,        // Stage 1 run id(spec L2)
+      rawCount: tt.videos.length, // Stage 2 视频数(spec L2)
       enrichedCount: 0,
-      ok: true,
+      ok: tt.ok,                 // Stage 1 失败 / Stage 2 全失败 → false
     };
   } else {
-    const reason =
-      ttResult.status === "rejected" ? ttResult.reason : "Stage 1 failed";
-    console.error("[trending/fetch] TikTok failed:", reason);
+    // fetchTikTokTwoStage 内部已 catch Stage 1 错误并返回 ok:false,
+    // 走到这里是 fetchTikTokTwoStage 本身的意外 throw —— 防御性分支。
+    console.error("[trending/fetch] TikTok unexpected rejection:", ttResult.reason);
   }
 
   if (igResult.status === "fulfilled") {
@@ -2049,7 +2093,7 @@ export async function fetchTrendingSnapshot(): Promise<TrendingSnapshot> {
 - [ ] **Step 4: 跑测试确认通过**
 
 Run: `npm test -- tests/trending/fetch.test.ts`
-Expected: PASS(6 passed)
+Expected: PASS(7 passed)
 
 - [ ] **Step 5: 跑全量测试 + 类型检查**
 
@@ -2847,7 +2891,7 @@ git commit -m "feat(p2): insert trending-snapshot fallback layer into retrieval 
 
 ```typescript
 import { describe, expect, it, vi, beforeEach } from "vitest";
-import type { TrendingSnapshot } from "@/lib/trending/types";
+import type { TrendingSnapshot, TrendingHashtag } from "@/lib/trending/types";
 import type { ViralVideo } from "@/lib/review-engine/types";
 
 const readLatestTwoMock = vi.fn();
@@ -2857,19 +2901,35 @@ vi.mock("@/lib/trending/snapshot-store", () => ({
 
 import { GET } from "@/app/api/trending/route";
 
-function vid(id: string, platform: "tiktok" | "instagram", views: number): ViralVideo {
+function vid(
+  id: string,
+  platform: "tiktok" | "instagram",
+  views: number,
+  trendingContext?: { hashtag: string; hashtagRank: number },
+): ViralVideo {
   return {
     id, platform, url: `https://x/${id}`, cover: "c", title: id,
     description: "desc", topic: "Travel", tags: ["#x"], views,
     likes: 1, comments: 1, shares: 1, duration: 20,
     playStyle: "p", visualStyle: "vs", hook: "h", bgm: "b",
     authorHandle: "@u", publishedAt: "2026-05-01",
+    ...(trendingContext ? { trendingContext } : {}),
   };
 }
 
-function snap(week: string, videos: ViralVideo[]): TrendingSnapshot {
+function ht(name: string, rank: number): TrendingHashtag {
+  return { name, rank, viewCount: 50000, videoCount: 200, rankDiff: 1, isNew: false };
+}
+
+function snap(
+  week: string,
+  videos: ViralVideo[],
+  trendingHashtags: TrendingHashtag[] = [],
+): TrendingSnapshot {
   return {
-    schemaVersion: 1, week, capturedAt: `${week}T08:00:00Z`, videos,
+    schemaVersion: 1, week, capturedAt: `${week}T08:00:00Z`,
+    trendingHashtags,
+    videos,
     meta: {
       tiktok: { source: "trends-actor", actorRun: "r", rawCount: videos.length, enrichedCount: videos.length, ok: true },
       instagram: { source: "hashtag-proxy", actorRun: "", rawCount: 0, enrichedCount: 0, ok: true },
@@ -2889,14 +2949,49 @@ describe("GET /api/trending", () => {
     const res = await GET(new Request("https://x/api/trending"));
     const body = await res.json();
     const card = body.cards[0];
-    // 精简投影只含卡片字段
-    expect(Object.keys(card).sort()).toEqual(
-      ["cover", "id", "platform", "title", "topic", "url", "velocity", "views"].sort(),
-    );
-    // 不含完整富化字段
+    // 精简投影不含完整富化字段
     expect(card).not.toHaveProperty("description");
     expect(card).not.toHaveProperty("playStyle");
     expect(card).not.toHaveProperty("hook");
+    // 含基本卡片字段
+    expect(card).toHaveProperty("id");
+    expect(card).toHaveProperty("velocity");
+  });
+
+  it("card projection includes trendingContext when present on the video", async () => {
+    readLatestTwoMock.mockResolvedValue({
+      current: snap("2026-W20", [
+        vid("tt1", "tiktok", 9000, { hashtag: "morningroutine", hashtagRank: 1 }),
+        vid("ig1", "instagram", 8000),
+      ]),
+      previous: null,
+    });
+    const res = await GET(new Request("https://x/api/trending"));
+    const body = await res.json();
+    const ttCard = body.cards.find((c: { id: string }) => c.id === "tt1");
+    const igCard = body.cards.find((c: { id: string }) => c.id === "ig1");
+    expect(ttCard.trendingContext).toEqual({ hashtag: "morningroutine", hashtagRank: 1 });
+    expect(igCard.trendingContext).toBeUndefined();
+  });
+
+  it("response includes trendingHashtags as slim projection (no rankDiff / industryName)", async () => {
+    readLatestTwoMock.mockResolvedValue({
+      current: snap("2026-W20", [], [ht("morningroutine", 1), ht("glowup", 2)]),
+      previous: null,
+    });
+    const res = await GET(new Request("https://x/api/trending"));
+    const body = await res.json();
+    expect(body.trendingHashtags).toHaveLength(2);
+    const h = body.trendingHashtags[0];
+    // 精简投影:只含 name / rank / viewCount / videoCount / velocity
+    expect(h).toHaveProperty("name");
+    expect(h).toHaveProperty("rank");
+    expect(h).toHaveProperty("viewCount");
+    expect(h).toHaveProperty("videoCount");
+    expect(h).toHaveProperty("velocity");
+    // 不含 rankDiff / industryName
+    expect(h).not.toHaveProperty("rankDiff");
+    expect(h).not.toHaveProperty("industryName");
   });
 
   it("filters by platform query param", async () => {
@@ -2910,11 +3005,12 @@ describe("GET /api/trending", () => {
     expect(body.cards[0].platform).toBe("instagram");
   });
 
-  it("returns empty cards with week=null when no snapshot exists", async () => {
+  it("returns empty cards and trendingHashtags:[] with week=null when no snapshot exists", async () => {
     readLatestTwoMock.mockResolvedValue({ current: null, previous: null });
     const res = await GET(new Request("https://x/api/trending"));
     const body = await res.json();
     expect(body.cards).toEqual([]);
+    expect(body.trendingHashtags).toEqual([]);
     expect(body.week).toBeNull();
   });
 });
@@ -2932,11 +3028,11 @@ Expected: FAIL —— Cannot find module `@/app/api/trending/route`
 ```typescript
 import { NextResponse } from "next/server";
 import { readLatestTwoSnapshots } from "@/lib/trending/snapshot-store";
-import { computeVelocity } from "@/lib/trending/velocity";
+import { computeVelocity, computeHashtagVelocity } from "@/lib/trending/velocity";
 
 export const runtime = "nodejs";
 
-/** 卡片精简投影 —— 只含看板渲染需要的字段,不返回完整富化快照。 */
+/** 卡片精简投影 —— 只含看板渲染需要的字段,不返回完整富化快照(spec 4.2 M1)。 */
 export type TrendingCard = {
   id: string;
   platform: "tiktok" | "instagram";
@@ -2945,6 +3041,21 @@ export type TrendingCard = {
   title: string;
   topic: string;
   views: number;
+  /** v4 新增:TikTok 视频带来源趋势 hashtag 信息;IG 视频 / 非 trending 来源为 undefined。 */
+  trendingContext?: { hashtag: string; hashtagRank: number };
+  velocity: {
+    weekOverWeek: number | null;
+    rank: { current: number; previous: number | null };
+    trend: "rising" | "stable" | "falling" | "new";
+  };
+};
+
+/** hashtag 榜精简投影 —— 供看板 hashtag 榜视图用,不含 rankDiff / industryName 等 raw 字段。 */
+export type TrendingHashtagCard = {
+  name: string;
+  rank: number;
+  viewCount: number;
+  videoCount: number;
   velocity: {
     weekOverWeek: number | null;
     rank: { current: number; previous: number | null };
@@ -2958,9 +3069,10 @@ export async function GET(request: Request) {
 
   const { current, previous } = await readLatestTwoSnapshots();
   if (!current) {
-    return NextResponse.json({ week: null, cards: [] });
+    return NextResponse.json({ week: null, cards: [], trendingHashtags: [] });
   }
 
+  // 视频 velocity
   const withVelocity = computeVelocity(current, previous);
   const filtered =
     platform === "tiktok" || platform === "instagram"
@@ -2975,23 +3087,35 @@ export async function GET(request: Request) {
     title: v.title,
     topic: v.topic,
     views: v.views,
+    // 透传 trendingContext(仅 TikTok trending 视频携带此字段)
+    ...(v.trendingContext ? { trendingContext: v.trendingContext } : {}),
     velocity: v.velocity,
   }));
 
-  return NextResponse.json({ week: current.week, cards });
+  // hashtag 级 velocity —— 精简投影(去掉 rankDiff / industryName 等 raw 字段)
+  const hashtagsWithVelocity = computeHashtagVelocity(current, previous);
+  const trendingHashtags: TrendingHashtagCard[] = hashtagsWithVelocity.map((h) => ({
+    name: h.name,
+    rank: h.rank,
+    viewCount: h.viewCount,
+    videoCount: h.videoCount,
+    velocity: h.velocity,
+  }));
+
+  return NextResponse.json({ week: current.week, cards, trendingHashtags });
 }
 ```
 
 - [ ] **Step 4: 跑测试确认通过**
 
 Run: `npm test -- tests/api/trending-route.test.ts`
-Expected: PASS(3 passed)
+Expected: PASS(5 passed)
 
 - [ ] **Step 5: Commit**
 
 ```bash
 git add app/api/trending/route.ts tests/api/trending-route.test.ts
-git commit -m "feat(p2): add /api/trending endpoint with slim card projection"
+git commit -m "feat(p2): /api/trending returns cards + trendingHashtags slim projections"
 ```
 
 ---
@@ -3135,6 +3259,12 @@ export function TrendingCard({ card }: { card: TrendingCardData }) {
           <span>{card.topic || "未分类"}</span>
           <span>{formatViews(card.views)} 播放</span>
         </div>
+        {/* v4.1:TikTok trending 视频来源 hashtag 小字(spec 4.7) */}
+        {card.trendingContext && (
+          <p className="mt-1 text-[10px] text-white/40">
+            来自趋势 #{card.trendingContext.hashtag}(榜 #{card.trendingContext.hashtagRank})
+          </p>
+        )}
         {card.platform === "instagram" && (
           <p className="mt-1 text-[10px] text-white/30">热门标签代理</p>
         )}
@@ -3153,7 +3283,7 @@ Expected: PASS(5 passed)
 
 ```bash
 git add components/trending/TrendingCard.tsx tests/trending/trending-card-format.test.ts
-git commit -m "feat(p2): add TrendingCard with null-safe velocity badge"
+git commit -m "feat(p2): TrendingCard renders trendingContext line for TikTok trending videos"
 ```
 
 ---
@@ -3245,19 +3375,23 @@ git commit -m "feat(p2): add PlatformFilter client component"
 "use client";
 
 import { useState } from "react";
-import { TrendingCard } from "./TrendingCard";
+import { TrendingCard, formatVelocityBadge } from "./TrendingCard";
 import { PlatformFilter, type Platform } from "./PlatformFilter";
-import type { TrendingCard as TrendingCardData } from "@/app/api/trending/route";
+import type { TrendingCard as TrendingCardData, TrendingHashtagCard } from "@/app/api/trending/route";
 
 export function TrendingBoard({
   initialWeek,
   initialCards,
+  initialTrendingHashtags,
 }: {
   initialWeek: string | null;
   initialCards: TrendingCardData[];
+  /** v4.1:hashtag 级 velocity 精简投影,来自 P2.6 RSC / /api/trending(spec 4.7)。 */
+  initialTrendingHashtags: TrendingHashtagCard[];
 }) {
   const [platform, setPlatform] = useState<Platform>("all");
   const [cards, setCards] = useState<TrendingCardData[]>(initialCards);
+  const [trendingHashtags, setTrendingHashtags] = useState<TrendingHashtagCard[]>(initialTrendingHashtags);
   const [loading, setLoading] = useState(false);
 
   async function handleChange(next: Platform) {
@@ -3268,8 +3402,10 @@ export function TrendingBoard({
       const res = await fetch(`/api/trending${qs}`);
       const body = await res.json();
       setCards(body.cards ?? []);
+      setTrendingHashtags(body.trendingHashtags ?? []);
     } catch {
       setCards([]);
+      setTrendingHashtags([]);
     } finally {
       setLoading(false);
     }
@@ -3283,12 +3419,49 @@ export function TrendingBoard({
     );
   }
 
+  // hashtag 榜:平台筛选为 Instagram 时隐藏(IG 无 trendingHashtags,spec 4.7)
+  const showHashtagBoard = platform !== "instagram" && trendingHashtags.length > 0;
+
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
         <p className="text-sm text-white/45">本周热点 · {initialWeek}</p>
         <PlatformFilter value={platform} onChange={handleChange} />
       </div>
+
+      {/* v4.1:趋势 hashtag 榜(仅 TikTok,spec 4.7) */}
+      {showHashtagBoard && (
+        <div className="glass-card mb-8 p-4">
+          <h2 className="mb-3 text-sm font-semibold text-white/70">TikTok 趋势 Hashtag 榜</h2>
+          <ul className="space-y-2">
+            {trendingHashtags.map((h) => {
+              const badge = formatVelocityBadge(h.velocity);
+              return (
+                <li
+                  key={h.name}
+                  className="flex items-center gap-3 rounded-lg bg-white/[0.04] px-3 py-2 text-sm"
+                >
+                  <span className="w-6 text-right text-xs text-white/40">#{h.rank}</span>
+                  <span className="flex-1 font-medium text-white/85">#{h.name}</span>
+                  <span className="text-xs text-white/45">
+                    {(h.viewCount / 1_000_000).toFixed(1)}M 播放
+                  </span>
+                  <span className="text-xs text-white/45">{h.videoCount} 视频</span>
+                  <span
+                    className="flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-bold"
+                    style={{ background: `${badge.color}26`, color: badge.color }}
+                  >
+                    <badge.Icon className="h-3 w-3" />
+                    {badge.label}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+
+      {/* 视频卡片网格 */}
       {loading ? (
         <div className="py-12 text-center text-white/40">加载中…</div>
       ) : cards.length === 0 ? (
@@ -3314,7 +3487,7 @@ Expected: 无错误
 
 ```bash
 git add components/trending/TrendingBoard.tsx
-git commit -m "feat(p2): add TrendingBoard client component with platform filter"
+git commit -m "feat(p2): TrendingBoard adds hashtag velocity board section (spec 4.7)"
 ```
 
 ---
@@ -3338,8 +3511,8 @@ import { Header } from "@/components/ui/Header";
 import { Footer } from "@/components/ui/Footer";
 import { TrendingBoard } from "@/components/trending/TrendingBoard";
 import { readLatestTwoSnapshots } from "@/lib/trending/snapshot-store";
-import { computeVelocity } from "@/lib/trending/velocity";
-import type { TrendingCard } from "@/app/api/trending/route";
+import { computeVelocity, computeHashtagVelocity } from "@/lib/trending/velocity";
+import type { TrendingCard, TrendingHashtagCard } from "@/app/api/trending/route";
 
 export const runtime = "nodejs";
 // 看板按周更新,RSC 缓存 1 小时即可
@@ -3350,8 +3523,13 @@ export default async function TrendingPage() {
 
   let week: string | null = null;
   let cards: TrendingCard[] = [];
+  // v4.1:hashtag 级 velocity 精简投影,注入 TrendingBoard(spec 4.7)
+  let initialTrendingHashtags: TrendingHashtagCard[] = [];
+
   if (current) {
     week = current.week;
+
+    // 视频 velocity + 精简投影(含 trendingContext 透传)
     cards = computeVelocity(current, previous).map((v) => ({
       id: v.id,
       platform: v.platform,
@@ -3360,7 +3538,18 @@ export default async function TrendingPage() {
       title: v.title,
       topic: v.topic,
       views: v.views,
+      // 透传 trendingContext:TikTok trending 视频带此字段,IG 视频不带
+      ...(v.trendingContext ? { trendingContext: v.trendingContext } : {}),
       velocity: v.velocity,
+    }));
+
+    // hashtag 级 velocity —— 精简投影(去掉 rankDiff / industryName 等 raw 字段)
+    initialTrendingHashtags = computeHashtagVelocity(current, previous).map((h) => ({
+      name: h.name,
+      rank: h.rank,
+      viewCount: h.viewCount,
+      videoCount: h.videoCount,
+      velocity: h.velocity,
     }));
   }
 
@@ -3370,7 +3559,7 @@ export default async function TrendingPage() {
       <main className="mx-auto max-w-7xl px-6 py-12 lg:px-10">
         <div className="mb-10 text-center">
           <span className="pill mb-4">
-            <TrendingUp className="h-3.5 h-3.5 text-[#22d3ee]" />
+            <TrendingUp className="h-3.5 w-3.5 text-[#22d3ee]" />
             平台热点 · 每周更新
           </span>
           <h1 className="text-gradient-primary text-4xl font-semibold tracking-tight md:text-5xl">
@@ -3380,7 +3569,11 @@ export default async function TrendingPage() {
             每周一抓 TikTok 全局趋势 + Instagram 热门标签,按周环比标注涨跌。
           </p>
         </div>
-        <TrendingBoard initialWeek={week} initialCards={cards} />
+        <TrendingBoard
+          initialWeek={week}
+          initialCards={cards}
+          initialTrendingHashtags={initialTrendingHashtags}
+        />
       </main>
       <Footer />
     </>
@@ -3398,7 +3591,10 @@ Expected: 类型无错;build 成功,输出里能看到 `/trending` route
 Run: `npm run dev`
 打开 `http://localhost:3000/trending`:
 - 无快照时显示「首次趋势数据将于下周一生成」
-- 有快照时显示卡片网格 + 平台筛选切换正常 + badge 无 `NaN%` / `+null%`
+- 有快照时显示趋势 hashtag 榜(TikTok)+ 视频卡片网格
+- TikTok 视频卡片显示「来自趋势 #hashtag(榜 #rank)」小字
+- 平台筛选切 Instagram 时 hashtag 榜隐藏
+- badge 无 `NaN%` / `+null%`
 
 (无 Blob 数据时只能验空状态;P1 cron 跑过后再验完整渲染。)
 
@@ -3406,7 +3602,7 @@ Run: `npm run dev`
 
 ```bash
 git add app/trending/page.tsx
-git commit -m "feat(p2): add /trending board page (RSC)"
+git commit -m "feat(p2): RSC page calls computeHashtagVelocity and passes initialTrendingHashtags"
 ```
 
 ---
