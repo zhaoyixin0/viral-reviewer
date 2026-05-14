@@ -84,15 +84,21 @@ export function CapCutExport({
         throw new Error(errJson.message ?? `编译失败 (${res.status})`);
       }
 
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
+      // server 把 zip 写 Blob 返回 URL，前端从 CDN 直接下载（绕开 4.5MB function limit）
+      const { url, filename } = (await res.json()) as {
+        url: string;
+        filename: string;
+      };
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${(projectName.trim() || fallbackName).replace(/[^\w\-\.]+/g, "-")}.zip`;
+      a.download = filename;
+      // 部分浏览器对 cross-origin URL 忽略 download attribute → 退化到 navigate
+      // 加 target=_blank 避免 navigate 走当前 tab
+      a.target = "_blank";
+      a.rel = "noopener";
       document.body.appendChild(a);
       a.click();
       a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
     } catch (e) {
       setError((e as Error).message);
     } finally {

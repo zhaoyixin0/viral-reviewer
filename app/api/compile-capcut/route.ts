@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { put } from "@vercel/blob";
 import { z } from "zod";
 import {
   prepareAssets,
@@ -119,13 +120,23 @@ export async function POST(req: NextRequest) {
 
     const safeName = projectName.replace(/[^\w\-\.]+/g, "-");
 
-    return new Response(Buffer.from(zipBytes), {
-      status: 200,
-      headers: {
-        "content-type": "application/zip",
-        "content-disposition": `attachment; filename="${safeName}.zip"`,
-        "cache-control": "no-store",
+    // 不能把 zip 直接作为 response body 返回 — Vercel function response
+    // 上限 4.5MB，含 mp4 的 zip 必然超限。改成写 Blob + 返回 URL 让
+    // 客户端直接从 CDN 下载（没 size limit）。
+    const blob = await put(
+      `capcut-exports/${safeName}-${Date.now()}.zip`,
+      Buffer.from(zipBytes),
+      {
+        access: "public",
+        contentType: "application/zip",
+        addRandomSuffix: false,
       },
+    );
+
+    return Response.json({
+      url: blob.url,
+      filename: `${safeName}.zip`,
+      sizeBytes: zipBytes.byteLength,
     });
   } catch (e) {
     console.error("[compile-capcut] error:", e);
