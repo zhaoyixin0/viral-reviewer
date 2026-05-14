@@ -146,6 +146,27 @@ Copy-Item .\.env.local .\.claude\worktrees\hot-tracking\.env.local
 ### 端口分配（防 dev server 冲突）
 窗口 1 = 3001,窗口 2 = 3002,窗口 3 = 3000。`npm run dev -- -p <port>`。
 
+---
+
+## 窗口 1 / 2 的 per-task 工作流（强制 —— 换机器后必须照此跑）
+
+> memory 是本机本地的、换机器不跟过去,所以这条工作流写进 repo 文档作权威来源。
+> 对应 memory:`feedback_sync_main_before_task.md`(本机)。
+
+多窗口并行(每窗口各自 worktree)时,**每个 task 走完整的「push → 等 merge → 同步」闭环,确认后才开始下一个 task**。不允许不 push 就接着做、或不等 merge 就抢下一个 —— 否则后续 commit 会跟 main 的 merge commit 分叉,merge history 变乱、易冲突。
+
+**完整 per-task 闭环:**
+1. 当前 task 完成(实现 + spec review + code-quality review 都过)
+2. **立即 `git push`** 把该 task 的 commit 推上去
+3. **主动监控 `origin/main` 判定是否已 merge** —— 不被动等用户说,周期性 `git fetch origin` 然后检查该 task 的 commit 是否已可从 `origin/main` 到达(`git branch -r --contains <sha>` 含 `origin/main`)。可用 Monitor 工具跑 `until` 轮询循环,合入即退出。轮询间隔分钟级。
+4. merge 确认后 **`git pull origin main --no-rebase`** 同步(显式 merge,保留分支历史)
+5. 同步无冲突后,**才** dispatch 下一个 task
+
+**要点:**
+- 「等 merge」是真的停下来等 —— 这是协调关卡,优先级高于「连续自动跑」。autonomous 指「不为每个工具批准停」,不是「跳过同步关卡」。
+- task 内部的实现 + 双 review 仍连续自动跑,只在 task 边界(push 后)停下监控 merge。
+- 窗口 3(协调者)那侧对应的是「收到 CHANGED → review → merge → 验证 → push」标准流程(见本文件上方)。两侧合起来才是完整闭环。
+
 ## 参考
 
 - `docs/HANDOVER-2026-05-13.md` — 5/13 会话主接力文档（P1+P2/hotfix/P3/P0 全记录）
