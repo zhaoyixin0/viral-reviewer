@@ -1,6 +1,8 @@
 import type { ViralVideo } from "@/lib/review-engine/types";
 import {
   TRENDING_SCHEMA_VERSION,
+  type TrendingHashtag,
+  type TrendingHashtagWithVelocity,
   type TrendingSnapshot,
   type TrendingVideoWithVelocity,
   type TrendTag,
@@ -62,6 +64,46 @@ export function computeVelocity(
       velocity: {
         weekOverWeek,
         rank: { current: currentRank, previous: prevRank },
+        trend: classifyTrend(weekOverWeek, !inPrevious),
+      },
+    };
+  });
+}
+
+/**
+ * v4.1:hashtag 级 velocity —— 与 computeVelocity 同构,比较对象换成
+ * trendingHashtags,按 name 跨周匹配。趋势 hashtag 榜有跨周连续性,这是 v4
+ * 两阶段下真正能做周环比的对象(见 spec 2.8 H2)。输出按当周 rank 升序。
+ * 边界:previous 为 null / schemaVersion 不一致 → 全标 new。
+ */
+export function computeHashtagVelocity(
+  current: TrendingSnapshot,
+  previous: TrendingSnapshot | null,
+): TrendingHashtagWithVelocity[] {
+  const curSorted = [...current.trendingHashtags].sort(
+    (a, b) => a.rank - b.rank,
+  );
+
+  const usePrevious =
+    previous !== null && previous.schemaVersion === TRENDING_SCHEMA_VERSION;
+
+  const prevByName = new Map<string, TrendingHashtag>();
+  if (usePrevious) {
+    for (const h of previous!.trendingHashtags) prevByName.set(h.name, h);
+  }
+
+  return curSorted.map((h) => {
+    const prev = prevByName.get(h.name);
+    const inPrevious = prev !== undefined;
+    const weekOverWeek =
+      inPrevious && prev!.viewCount > 0
+        ? (h.viewCount - prev!.viewCount) / prev!.viewCount
+        : null;
+    return {
+      ...h,
+      velocity: {
+        weekOverWeek,
+        rank: { current: h.rank, previous: inPrevious ? prev!.rank : null },
         trend: classifyTrend(weekOverWeek, !inPrevious),
       },
     };
