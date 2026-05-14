@@ -1,6 +1,6 @@
 # Hot Tracking — P0/P1/P2 Design
 
-**Status**: ✅ **设计完成(v2,已纳入 architect review)— 待用户 review 后转 writing-plans**
+**Status**: ✅ **设计完成(v3,已纳入两轮 architect review)— 待用户 review 后转 writing-plans**
 **Worktree**: `.claude/worktrees/hot-tracking`(branch `feat/hot-tracking-p0-p2`)
 **Started**: 2026-05-13
 **Author**: Claude (Opus 4.7) + yixin
@@ -62,9 +62,9 @@
 - live + trending-snapshot 才是「新」的数据源,对它们应用 filter
 
 **为什么 IG 用 hashtag 代理而非真 Explore**(architect H2 + memory `video-download-stack.md`):
-- Apify Store 无干净的 IG Explore/trending actor;`apify/instagram-reel-scraper` 只吃 profile/hashtag/username
+- Apify Store 无干净的 IG Explore/trending actor —— 评估过的候选 `apify/instagram-reel-scraper` 只支持 profile/hashtag/username 输入,无 explore feed 模式
 - IG Explore feed 高度个性化、对匿名访问封闭,无 cookies 大概率拿不到
-- 折中:cron 抓一组人工维护的「当前热门 hashtag」,作为 IG 趋势的**代理信号**,UI 上与 TikTok 真趋势区分标注
+- 折中:cron 复用现有 `scrapeInstagramByHashtag`(包 `apify/instagram-hashtag-scraper`)抓一组人工维护的「当前热门 hashtag」,作为 IG 趋势的**代理信号**,UI 上与 TikTok 真趋势区分标注
 
 ---
 
@@ -117,9 +117,10 @@ Vercel Cron 每周一次抓 TikTok 趋势 + IG 热门 hashtag → Haiku 富化 +
 - **方案 C Postgres**:留作 v2 升级路径,169 条富化样本的产品体量配不上
 
 ### ⚠️ 部署前置(architect H1)
-**Vercel Cron 在当前部署套餐下的可用性尚未验证**(本机无 Vercel CLI 无法查)。实施前必须确认:
+**Vercel Cron 在当前部署套餐下的可用性尚未验证**(本机无 Vercel CLI 无法查)。实施前必须确认 / 配置:
 - 部署套餐是否支持 cron(Hobby 套餐 cron 有频率限制)
 - 周度 schedule `0 8 * * 1` 是否被套餐允许
+- **环境变量 `ADMIN_TRIGGER_SECRET` 必须手动配置** —— `CRON_SECRET` 是 Vercel Cron 自带,`ADMIN_TRIGGER_SECRET` 不是;漏配则 H1 的手动触发降级入口失效
 若套餐不支持,降级方案:外部调度器(GitHub Actions cron)POST 到带 admin token 的 `/api/cron/trending`。
 
 ---
@@ -140,6 +141,7 @@ Vercel Cron 每周一次抓 TikTok 趋势 + IG 热门 hashtag → Haiku 富化 +
 | `app/api/trending/route.ts` | 🆕 新增 | 看板平台筛选用,返回**精简卡片投影**(非完整快照) |
 | `vercel.ts` | 🆕 新增 | cron schedule 配置(需 `npm i @vercel/config`) |
 | `lib/apify/scrapers.ts` | ✏️ 修改(追加) | 新增 `scrapeTikTokTrending`(包装 `clockworks/tiktok-trends-scraper`) |
+| `lib/review-engine/types.ts` | ✏️ 修改 | `ViralVideo` 加可选 `topicConfidence?: number`(trending 题材标签置信度) |
 | `lib/topic-cache/blob-cache.ts` | ✏️ 修改 | 改为 import `lib/utils/iso-week.ts`(去重) |
 | `lib/research/topic-research.ts` | ✏️ 修改 | TT/IG sort 前各加 30d filter(P0) |
 | `lib/review-engine/retrieval.ts` | ✏️ 修改 | cache 与 live 之间插入 snapshot 兜底层 |
@@ -230,8 +232,9 @@ type TrendingVideoWithVelocity = ViralVideo & {
 - 当前 `schemaVersion: 1`
 - `velocity.ts` 读到上周快照 `schemaVersion` 与本周不一致(或缺失)→ **当作「无上周快照」处理 → 本周全部标 NEW**,不抛错、不混算
 
-### 2.6 兼容性
-- 跟现有 `ViralVideo` type 完全兼容(trending 视频复用同一 type)
+### 2.6 `ViralVideo` 扩展与兼容性
+- `ViralVideo` 加一个可选字段 `topicConfidence?: number`(0-1,trending 题材标签置信度),与现有 Phase-1+ 可选字段(`videoFormat` / `density` 等)风格一致,向后兼容现有 enriched JSON
+- 非 trending 来源的 `ViralVideo` 不带此字段,不受影响
 - 现有 `TopicCacheEntry` 不动
 
 ---
@@ -268,11 +271,11 @@ local → topic-cache → trending-snapshot(按 topic 模糊匹配) → live-fet
 
 **global 快照如何按 `canonicalTopic` 归类** —— cron 时 LLM 打标签 + retrieval 端模糊匹配:
 
-- **cron 端**(`lib/trending/topic-classifier.ts`):`enrichSnapshot()` 富化后,Haiku 给每条 trending 视频分类题材,写入 `v.topic`,并输出 `confidence`(0-1)。分类器把本地库题材列表(`loadVideos()` 的 distinct topics)当 hint 传入,**优先归一化到已知题材**,机制与现有 `inferTopic` 一致。
-- **retrieval 端**:读最新快照,用 `jaccard()`(retrieval.ts 已有)对 `canonicalTopic` 与每条快照视频的 `v.topic` 做模糊匹配,取超阈值的 top-N;全部低于阈值 → 跳过此层直接走 live。
+- **cron 端**(`lib/trending/topic-classifier.ts`):`enrichSnapshot()` 富化后,Haiku 给每条 trending 视频分类题材,题材字符串写入 `v.topic`,置信度写入**独立字段** `v.topicConfidence`(0-1)。`v.topic` 始终是干净的题材字符串,不掺哨兵值。分类器把本地库题材列表(`loadVideos()` 的 distinct topics)当 hint 传入,**优先归一化到已知题材**,机制与现有 `inferTopic` 一致。
+- **retrieval 端**:读最新快照,先按 `v.topicConfidence >= 阈值` 过滤掉低置信视频,再用 `jaccard()`(retrieval.ts 已有)对 `canonicalTopic` 与每条快照视频的 `v.topic` 做模糊匹配,取超阈值的 top-N;全部不命中 → 跳过此层直接走 live。
 - 命中时 `RetrievalResult.source = "snapshot"`。
 
-**错判兜底(architect M3)**:topic-classifier 输出 `confidence` < 阈值的视频,`v.topic` 标记为低置信(留空或打 `__low_confidence__`);retrieval 端模糊匹配**只信高置信标签**,避免把跑题样本(如「做饭」误标「fitness」)静默注入 /analyze。低置信视频仍进看板(看板不依赖题材),只是不进 /analyze 的 topic 匹配。
+**错判兜底(architect M3)**:`v.topicConfidence` 是独立数值字段,不污染语义为「题材」的 `v.topic`,避免「留空 or 哨兵」两种写法让判空逻辑分叉。分类失败 → 不写 `topicConfidence`(retrieval 端视为 0);低于阈值的视频 retrieval 端直接跳过,避免把跑题样本(如「做饭」误标「fitness」)静默注入 /analyze。低置信视频仍进看板(看板不依赖题材),只是不进 /analyze 的 topic 匹配。
 
 ### 3.3 UI badge
 
@@ -346,7 +349,7 @@ IG 卡片角标附带「热门标签」小字,与 TikTok 真趋势区分(IG 是 
 
 ### 5.3 富化 / 题材分类部分失败
 - `enrichBatch` 已有 fallback(Haiku miss → 留原字段),直接复用
-- 题材标签分类同理:分类失败或低置信的视频 `v.topic` 留空 / 标低置信,retrieval 端模糊匹配自然跳过该条(见 3.2)
+- 题材标签分类同理:分类失败的视频不写 `v.topicConfidence`(retrieval 端视为 0),低置信视频 `topicConfidence` 低于阈值,retrieval 端按阈值过滤自然跳过(见 3.2)
 
 ### 5.4 Blob 写失败
 - 重试 1 次;仍失败 → log + 退出。快照幂等,下周 cron 重抓
@@ -367,7 +370,7 @@ IG 卡片角标附带「热门标签」小字,与 TikTok 真趋势区分(IG 是 
 - `lib/trending/velocity.ts` — 纯函数,**最优先**。覆盖:新视频(上周无)、排名上升 / 下降、views 涨 / 跌、第一周无上周快照(全 NEW)、**上周 `schemaVersion` 不一致 → 全 NEW**、**`weekOverWeek` 返回 null 的分支**
 - `lib/utils/iso-week.ts` — 抽出的纯函数,补跨年周边界测试
 - `lib/trending/snapshot-store.ts` — mock `@vercel/blob` 的 `put` / `head`,测周 key 生成 + `pruneOldSnapshots(keepWeeks=8)`
-- `lib/trending/topic-classifier.ts` — mock Haiku,测题材归一化到 hint 列表 + 分类失败留空 + **低置信标记**
+- `lib/trending/topic-classifier.ts` — mock Haiku,测题材归一化到 hint 列表 + 分类失败不写 `topicConfidence` + 低置信视频 `topicConfidence` 数值正确
 - `lib/apify/scrapers.ts` 新增的 `scrapeTikTokTrending` — mock Apify client
 
 ### 6.2 集成测
@@ -396,6 +399,18 @@ IG 卡片角标附带「热门标签」小字,与 TikTok 真趋势区分(IG 是 
 | L3 | Low | ✅ Section 1 补全(1.1-1.4) |
 | L4 | Low | ✅ `weekOverWeek: null` 渲染规则显式化(4.5) |
 
+### v2 review 二轮处置(v2 → v3)
+
+architect 二轮确认 v1 的 6 条已修到位,v2 新引入 3 个小问题:
+
+| # | 问题 | 处置 |
+|---|---|---|
+| v2-1 | `ADMIN_TRIGGER_SECRET` 未登记进部署清单 | ✅ 「⚠️ 部署前置」段显式加一项,标明它不是 Vercel 自带、漏配则降级入口失效 |
+| v2-2 | `apify/instagram-reel-scraper` 在「关键论证」是悬空引用 | ✅ 改为明确标「评估过的候选」,并补上实际选用的 `scrapeInstagramByHashtag` / `apify/instagram-hashtag-scraper` |
+| v2-3 | `__low_confidence__` 哨兵设计含糊、污染 `v.topic` | ✅ 改用独立字段 `topicConfidence?: number`(加进 `ViralVideo`),`v.topic` 保持纯净;分类失败=不写该字段,retrieval 端视为 0 |
+
+(L322 TOP 规则降级措辞 architect 标非阻塞,未改。)
+
 ---
 
 ## 当前 brainstorming 流程状态
@@ -407,7 +422,7 @@ IG 卡片角标附带「热门标签」小字,与 TikTok 真趋势区分(IG 是 
 - [x] **Step 3**: Clarifying questions — 产品决策 + 开放问题答完
 - [x] **Step 4**: Propose 2-3 approaches — 选定方案 A
 - [x] **Step 5**: Present design sections — 6/6 done,逐节用户批准
-- [x] **Step 6**: Write design doc — 当前文件(v2,已纳入 architect review)
+- [x] **Step 6**: Write design doc — 当前文件(v3,已纳入两轮 architect review)
 - [x] **Step 7**: Spec self-review
 - [ ] **Step 8**: User reviews spec(v2)
 - [ ] **Step 9**: Invoke `superpowers:writing-plans` skill
