@@ -151,4 +151,11 @@ export type ViralVideo = {
    * 字段独立,不污染语义为"题材"的 v.topic。
    */
   topicConfidence?: number;
+
+  /**
+   * v4 新增:TikTok 两阶段 Stage 2 视频记录它来自哪个趋势 hashtag。
+   * 按 trendingHashtags 的 rank 升序遍历抓取,视频首次出现即锁定(见 spec 2.6)。
+   * 仅 TikTok trending snapshot 来源的视频带此字段。
+   */
+  trendingContext?: { hashtag: string; hashtagRank: number };
 };

@@ -5,11 +5,11 @@ import type { ViralVideo } from "@/lib/review-engine/types";
 export const TRENDING_SCHEMA_VERSION = 1 as const;
 
 export type PlatformMeta = {
-  /** TikTok = 真趋势 actor;Instagram = 热门 hashtag 代理 */
+  /** TikTok = 两阶段(Stage 1 是 trends-actor);Instagram = 热门 hashtag 代理 */
   source: "trends-actor" | "hashtag-proxy";
-  /** Apify run ID,用于追溯 */
+  /** Apify run ID。TikTok 记 Stage 1 trends-scraper 的 run id */
   actorRun: string;
-  /** 抓回多少条原始数据 */
+  /** TikTok = Stage 2 抓回的视频条数;IG = 抓回的视频条数 */
   rawCount: number;
   /** Haiku 富化成功多少条 */
   enrichedCount: number;
@@ -23,6 +23,8 @@ export type TrendingSnapshot = {
   week: string;
   /** ISO timestamp */
   capturedAt: string;
+  /** v4 新增:TikTok Stage 1 趋势 hashtag 榜(IG 无此项,空数组即可)。 */
+  trendingHashtags: TrendingHashtag[];
   /** tt + ig 混合,靠 v.platform 区分;含 Haiku 题材标签写入 v.topic */
   videos: ViralVideo[];
   meta: {
@@ -34,6 +36,20 @@ export type TrendingSnapshot = {
 };
 
 export type TrendTag = "rising" | "stable" | "falling" | "new";
+
+/**
+ * v4 新增:TikTok Stage 1 趋势 hashtag 记录(来自 clockworks/tiktok-trends-scraper)。
+ * 字段映射见 P1.7 probe 实测结果。
+ */
+export type TrendingHashtag = {
+  name: string;
+  rank: number;
+  viewCount: number;
+  videoCount: number;
+  rankDiff: number;
+  isNew: boolean;
+  industryName?: string;
+};
 
 /** velocity 是派生类型,不落盘 —— 由 velocity.ts 读取时实时算。 */
 export type TrendingVideoWithVelocity = ViralVideo & {
@@ -63,5 +79,10 @@ export const TrendingSnapshotSchema = z
         })
         .passthrough(),
     ),
+    // v4:trendingHashtags 加为 optional —— TS type 上是必填,但 Zod 读侧 loose,
+    // 旧快照(无此字段)不应 parse 失败。校验锚点不变。
+    trendingHashtags: z
+      .array(z.object({ name: z.string() }).passthrough())
+      .optional(),
   })
   .passthrough();
