@@ -77,17 +77,19 @@
   - `scripts/probe-capcut-zip.ts`（绕开 Gemini/Opus 直接生成测试 zip）
 - **唯一剩余**：macOS 真机补测（`setup.sh`）—— 目前由 CI 执行测试 `tests/capcut-compiler/setup-scripts.test.ts` 覆盖。窗口 1 明天**无新任务**,除非要做 macOS 实测或新的 CapCut 功能。
 
-### 窗口 2 — hot-tracking / 周热点 —— 🔧 实施进行中,恢复点 P1.9
-- 分支：`feat/hot-tracking-p0-p2`,**已完整 merge 进 main（含到 P1.8）**,分支 tip behind main 1（`e6d136e` merge commit）
-- 状态：**P0 + P1 数据层 + spec v4.1 + plan 重写 + P1.8 全部 merge。恢复点 = P1.9**
+### 窗口 2 — hot-tracking / 周热点 —— 🔧 实施进行中,恢复点 **P1.8 checkpoint 2**
+- 分支：`feat/hot-tracking-p0-p2`,**已完整 merge 进 main（含到 P1.8 checkpoint 1）**,分支 tip behind main 1（`e6d136e` merge commit）
+- 状态：**P0 + P1 数据层 + spec v4.1 + plan 重写 + P1.8 checkpoint 1 全部 merge。恢复点 = P1.8 checkpoint 2**
 - spec：`docs/superpowers/specs/2026-05-13-hot-tracking-design.md`（**v4.1**,经 architect v1-v4 共 5 轮 review）
 - plan：`docs/superpowers/plans/2026-05-13-hot-tracking-implementation.md`（按 v4.1 重写,经 architect plan review 两轮,残留项已修）
 - 已 merge 的实施成果（都在 main）：
   - P0：`lib/research/topic-research.ts` 30 天发布窗口过滤
   - P1 数据层：`lib/trending/{types,velocity,snapshot-store}.ts`、`lib/utils/iso-week.ts`、`scripts/probe-tiktok-trends.ts`（P1.7 probe）
-  - P1.8：v4 schema type 层 —— `TrendingHashtag` 类型 + `TrendingSnapshot.trendingHashtags` + `ViralVideo.trendingContext?` + loose Zod 同步
-- **恢复点 P1.9 起的工作**（两阶段 TikTok 实施）：P1.9 `scrapeTikTokTrendingHashtags`(Stage 1) → P1.10/P1.11(ig-hot-hashtags / topic-classifier) → P1.12 `fetchTikTokTwoStage` 两阶段编排 → P1.13 cron route → P1.14 vercel.ts → P1.15 `computeHashtagVelocity` → P2 看板
-- architect 已确认：P1.8-P1.15 核心编排可信可连续实施；P2.2/P2.3/P2.5/P2.6 的 Step 代码已在 plan 修订里重写到位
+  - **P1.8 checkpoint 1**：v4 schema type 层 —— `TrendingHashtag` 类型 + `TrendingSnapshot.trendingHashtags` + `ViralVideo.trendingContext?` + loose Zod 同步（commit `4331835`）
+- **恢复点 = P1.8 checkpoint 2**：`normalizeTikTokTrendingHashtag` 加进 `lib/apify/normalize.ts` + 新建 `tests/apify/normalize-trending-hashtag.test.ts`（plan 里 `## Task P1.8` 的 Step 7-11,字段映射表在那,用 P1.7 probe 实测字段）
+- **之后的工作**：P1.9 `scrapeTikTokTrendingHashtags`(Stage 1) → P1.10/P1.11(ig-hot-hashtags / topic-classifier) → P1.12 `fetchTikTokTwoStage` 两阶段编排 → P1.13 cron route → P1.14 vercel.ts → P1.15 `computeHashtagVelocity` → P2 看板
+- architect 已确认：P1.8-P1.15 核心编排可信可连续实施；P2.2/P2.3/P2.5/P2.6 的 Step 代码已在 plan 修订里重写到位。窗口 2 建议:P1 段做完、进 P2 前再跟窗口 3 确认一次 P2 完全放行(architect C1 复审已覆盖,属保险确认)
+- ⚠️ **P1.1 的 Vercel 部署前置是 deploy-time gate**:viral-reviewer 在 Vercel 账户下还没 project,cron 套餐验证 + `ADMIN_TRIGGER_SECRET` 配置要首次部署后才能做 —— 不阻塞 P1.2-P1.14 代码实施
 
 ## 关键决策记忆（换机器/compact 后不能丢）
 
@@ -139,7 +141,7 @@ Copy-Item .\.env.local .\.claude\worktrees\hot-tracking\.env.local
 ### 三个窗口各自恢复
 - **窗口 3（主仓库 `main`,协调者）**：读本文件即可恢复。重新用 Monitor 工具起 persistent poll 脚本（90s 间隔,比对 `origin/worktree-capcut-link` 和 `origin/feat/hot-tracking-p0-p2` 的 tip）。然后进入"收到 CHANGED 事件 → 标准流程"的被动监控模式。
 - **窗口 1（`.claude/worktrees/capcut-link`）**：CapCut setup-script 任务**已完成**。开窗后先 `git pull origin main`。明天**无新任务**,除非用户要做 macOS `setup.sh` 真机实测,或开新的 CapCut 功能。
-- **窗口 2（`.claude/worktrees/hot-tracking`）**：开窗后先 `git pull origin main` 同步到 `e6d136e`。然后读 `docs/superpowers/plans/2026-05-13-hot-tracking-implementation.md`,**从 P1.9 恢复实施**（P1.1-P1.8 已标 ✅ 完成,不要重新 Create）。用 subagent-driven-development 跑 P1.9 → P1.15 → P2。
+- **窗口 2（`.claude/worktrees/hot-tracking`）**：开窗后先 `git pull origin main` 同步到 `e6d136e`。然后读 `docs/superpowers/plans/2026-05-13-hot-tracking-implementation.md` 的 `## Task P1.8`,**从 P1.8 checkpoint 2 恢复实施**（Step 7-11:`normalizeTikTokTrendingHashtag` 加进 `lib/apify/normalize.ts` + 新建 `tests/apify/normalize-trending-hashtag.test.ts`。P1.1-P1.7 + P1.8 checkpoint 1 已 ✅ merge,不要重新 Create/重做）。用 subagent-driven-development 跑 P1.8 ck2 → P1.9 → P1.15 → P2。
 
 ### 端口分配（防 dev server 冲突）
 窗口 1 = 3001,窗口 2 = 3002,窗口 3 = 3000。`npm run dev -- -p <port>`。
