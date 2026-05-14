@@ -1,5 +1,10 @@
 import { randomUUID } from "crypto";
 import { secToMicroseconds } from "@/lib/cut-plan/time-code";
+import {
+  TOKEN_PROJECT_DIR,
+  TOKEN_DRAFTS_DIR,
+} from "@/lib/capcut-compiler/setup-scripts/tokens";
+import type { DraftMaterialEntry } from "./schema";
 import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
 import type { TechniqueMatchingResult } from "@/lib/technique-matching/types";
 import type { VideoMeta } from "@/lib/video/ffprobe-meta";
@@ -162,21 +167,14 @@ export function buildDraftContent(input: CompileInput): {
 
   // ===== Materials =====
 
-  // path 用相对路径 "materials/<file>"（不是纯文件名也不是 placeholder）：
-  //
-  // 之前尝试过 3 种格式，每种都失败：
-  //   1. `##_draftpath_placeholder_##/materials/<file>` (旧版): CapCut 5.7+ 不再 resolve placeholder
-  //   2. 填 draft_materials.value[] 假装已 link (5db8fce): CapCut 看到 entry 但 resolve 不到 → 死锁
-  //   3. 纯文件名 `<file>` (上一版 R 方案): CapCut 弹对话框但 "Couldn't link" — 因为不知道相对哪个目录找
-  //
-  // 当前方案：相对路径 `materials/<file>`，CapCut 启动时 cwd = `<projectName>/`，
-  // resolve 相对路径直接命中 `<projectName>/materials/<file>` → 不弹对话框。
-  // 即便弹了对话框，"Last known location" 会显示 `materials/<file>`，
-  // user 勾选 "Link media when selecting a folder" + 选 `<projectName>/` 即可 auto-link。
+  // path 用占位 token：server 端写不出用户机器的绝对路径，所以写
+  // `${TOKEN_PROJECT_DIR}/materials/<file>`，zip 附的 setup 脚本在用户机器上
+  // 把 token 字面替换成项目文件夹的绝对路径。CapCut 要的就是绝对路径
+  // （原生项目 0203/0205 验证）。
   const videoMaterial: VideoMaterial = {
     id: id(),
     type: "video",
-    path: `materials/${input.videoFileName}`,
+    path: `${TOKEN_PROJECT_DIR}/materials/${input.videoFileName}`,
     material_name: input.videoFileName,
     width: input.meta.width,
     height: input.meta.height,
@@ -187,12 +185,12 @@ export function buildDraftContent(input: CompileInput): {
   // 视频自带音轨已经在 video segment 里播放（speed=1, volume=1）。
   // 只有用户主动上传 BGM 时才创建独立 audio 轨（Phase 5.5）。
   //
-  // BGM path 同样用相对路径 `materials/<bgm>`。
+  // BGM path 同样用占位 token。
   const bgmMaterial: AudioMaterial | null = input.bgmFileName
     ? {
         id: id(),
         type: "music",
-        path: `materials/${input.bgmFileName}`,
+        path: `${TOKEN_PROJECT_DIR}/materials/${input.bgmFileName}`,
         name: input.bgmFileName,
         duration: secToMicroseconds(
           Math.min(input.bgmDurationSec ?? input.meta.durationSec, input.meta.durationSec),
@@ -513,19 +511,72 @@ export function buildDraftContent(input: CompileInput): {
     },
   };
 
-  // R 方案：draft_materials 留空（[{ type: 0, value: [] }]）让 CapCut 走"链接素材"
-  // 对话框流程。用户点击对话框 → 选 zip 里的 materials/<file> → CapCut 自己
-  // 写绝对路径回 draft_meta_info + draft_content。
-  //
-  // 历史教训详见 schema.ts 顶部 DraftMaterialGroup 注释块。
+  // Setup-Script 方案：draft_materials 复刻原生 0203 项目的七组结构
+  // （type 0/1/2/3/6/7/8）。type 0 = 本地导入媒体组，放视频（和 BGM）条目。
+  // file_Path 写占位 token，setup 脚本在用户机器上替换成绝对路径。
+  // entry.id 必须等于 draft_content 里对应 material 的 id（CapCut 靠它关联）。
+  const nowSec = Math.floor(Date.now() / 1000);
+  const nowUs = Date.now() * 1000;
+
+  const videoMetaEntry: DraftMaterialEntry = {
+    ai_group_type: "",
+    create_time: nowSec,
+    duration: durationUs,
+    extra_info: input.videoFileName,
+    file_Path: `${TOKEN_PROJECT_DIR}/materials/${input.videoFileName}`,
+    height: input.meta.height,
+    id: videoMaterial.id,
+    import_time: nowSec,
+    import_time_ms: nowUs,
+    item_source: 1,
+    md5: "",
+    metetype: "video",
+    roughcut_time_range: { duration: durationUs, start: 0 },
+    sub_time_range: { duration: -1, start: -1 },
+    type: 0,
+    width: input.meta.width,
+  };
+
+  const group0Entries: DraftMaterialEntry[] = [videoMetaEntry];
+
+  if (bgmMaterial && input.bgmFileName) {
+    group0Entries.push({
+      ai_group_type: "",
+      create_time: nowSec,
+      duration: bgmMaterial.duration,
+      extra_info: input.bgmFileName,
+      file_Path: `${TOKEN_PROJECT_DIR}/materials/${input.bgmFileName}`,
+      height: 0,
+      id: bgmMaterial.id,
+      import_time: nowSec,
+      import_time_ms: nowUs,
+      item_source: 1,
+      md5: "",
+      metetype: "music",
+      roughcut_time_range: { duration: bgmMaterial.duration, start: 0 },
+      sub_time_range: { duration: -1, start: -1 },
+      type: 0,
+      width: 0,
+    });
+  }
+
   const metaInfo: DraftMetaInfo = {
     draft_id: projectId,
     draft_name: input.projectName,
-    draft_root_path: "",
-    draft_fold_path: "",
+    // setup 脚本会把这两个 token 替换成本机绝对路径
+    draft_root_path: TOKEN_DRAFTS_DIR,
+    draft_fold_path: TOKEN_PROJECT_DIR,
     draft_removable_storage_device: "",
     draft_timeline_materials_size_: 0,
-    draft_materials: [{ type: 0, value: [] }],
+    draft_materials: [
+      { type: 0, value: group0Entries },
+      { type: 1, value: [] },
+      { type: 2, value: [] },
+      { type: 3, value: [] },
+      { type: 6, value: [] },
+      { type: 7, value: [] },
+      { type: 8, value: [] },
+    ],
     draft_materials_copied_info: [],
     tm_draft_create: nowMs(),
     tm_draft_modified: nowMs(),
