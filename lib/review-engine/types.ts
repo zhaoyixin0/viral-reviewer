@@ -143,4 +143,12 @@ export type ViralVideo = {
    * 富化时可选填，文件可能较大（每条 ~5-15KB），仅在 technique-matching 流程读取
    */
   cutPlanRef?: string; // 指向 data/scraped/cutplans/<id>.json 的引用，避免主 JSON 膨胀
+
+  /**
+   * Trending 题材标签置信度(0-1)。仅 trending snapshot 来源的视频带此字段。
+   * 由 lib/trending/topic-classifier.ts 写入;retrieval.ts 按阈值过滤,
+   * 只信高置信标签 —— 避免跑题样本静默注入 /analyze。
+   * 字段独立,不污染语义为"题材"的 v.topic。
+   */
+  topicConfidence?: number;
 };
