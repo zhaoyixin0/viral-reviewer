@@ -42,4 +42,11 @@ describe("normalizeTikTokTrendingHashtag", () => {
     expect(h!.isNew).toBe(false);
     expect(h!.industryName).toBeUndefined();
   });
+
+  it("coerces non-numeric string fields to 0 (no NaN leaks)", () => {
+    const h = normalizeTikTokTrendingHashtag({ name: "x", rank: "N/A", viewCount: "" });
+    expect(h).not.toBeNull();
+    expect(h!.rank).toBe(0);
+    expect(h!.viewCount).toBe(0);
+  });
 });
