@@ -84,16 +84,17 @@ export function CapCutExport({
         throw new Error(errJson.message ?? `编译失败 (${res.status})`);
       }
 
-      // server 把 zip 写 Blob 返回 URL，前端从 CDN 直接下载（绕开 4.5MB function limit）
+      // server 把 zip 写 Blob 返回 downloadUrl，前端从 CDN 直接下载（绕开 4.5MB function limit）
       const { url, filename } = (await res.json()) as {
         url: string;
         filename: string;
       };
       const a = document.createElement("a");
       a.href = url;
+      // cross-origin URL 下浏览器忽略 a.download，真正触发"下载而非预览"的是
+      // Blob downloadUrl 自带的 Content-Disposition: attachment 头。a.download
+      // 仅作同源场景的提示；target=_blank 防止下载导航占用当前 tab。
       a.download = filename;
-      // 部分浏览器对 cross-origin URL 忽略 download attribute → 退化到 navigate
-      // 加 target=_blank 避免 navigate 走当前 tab
       a.target = "_blank";
       a.rel = "noopener";
       document.body.appendChild(a);
