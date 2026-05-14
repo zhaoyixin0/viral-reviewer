@@ -3,8 +3,8 @@ import {
   AssemblyTimelineSchema,
   TechniqueMatchingResultSchema,
 } from "@/lib/technique-matching/types";
-import { Schema as TechniqueMatchRequestSchema } from "@/app/api/technique-match/route";
-import { RequestSchema as CompileCapcutRequestSchema } from "@/app/api/compile-capcut/route";
+import { Schema as TechniqueMatchRequestSchema } from "@/app/api/technique-match/schema";
+import { RequestSchema as CompileCapcutRequestSchema } from "@/app/api/compile-capcut/schema";
 
 /** 最小合法 TechniqueMatchingResult（不含多视频改造的新字段） */
 const baseResult = {
