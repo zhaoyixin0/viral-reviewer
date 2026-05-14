@@ -38,7 +38,7 @@
 4. **判断**：
    - 还在 plan 阶段（只改 plan 文档）→ 不 merge，等实施 commit
    - 实施 commit 且 review 干净 → merge
-   - review 有 Critical/High → 不 merge，整理可粘贴指令给用户转达窗口
+   - review 有 Critical/High → 不 merge，把指令写进 `docs/coordination/window-<N>.md` 并 push（见下方「给窗口传指令」）
 5. **Merge**（仅实施阶段、review 干净时）：
    ```
    git checkout main && git pull --ff-only origin main
@@ -51,13 +51,20 @@
    已更新：它们每次开新 task 前会自己 `git pull origin main` 并确认上个 task 已 merge。
    只在需要决策 / review 有 Critical-High / 冲突时才传话。
 
-### 打扰用户的格式（仅在真需要时）
+### 给窗口传指令（用文件，不用用户转贴）
 
-- **标明给哪个窗口** + 一段可直接粘贴的指令（用 ``` 代码块）
-- 需要决策的：把选项 + 权衡列清楚，用户拍板
+跨窗口指令 / review 反馈 / 决策结果 → 写进 `docs/coordination/window-<N>.md` 并 push 到 `main`。
+对应窗口 `git pull` 后自己读，不再依赖用户人工转贴。约定见 `docs/coordination/README.md`：
+- 文件整体覆盖，只留最新一条；头部标注「写于哪天 · 针对 main 哪个 SHA · 给哪个窗口」
+- 写完 commit + push，然后只给用户一句话回执（写了什么、在哪个文件），不在对话里贴长指令
+
+### 打扰用户的格式（仅在真需要用户动作时）
+
+- 需要**决策**的（只有用户能拍板）：把选项 + 权衡列清楚，等用户回复 —— 这类仍在对话里问
 - 纯 FYI 不夹带，只有真需要用户动作时才出现
-- 触发条件：review 发现 Critical/High、merge 冲突解不了、tsc/test/build 验证失败、
-  需要决策（某阶段是否 ship、跨窗口依赖打架）、production 风险 / secret
+- 触发条件：merge 冲突解不了、tsc/test/build 验证失败、需要决策（某阶段是否 ship、
+  跨窗口依赖打架）、production 风险 / secret
+- review 发现 Critical/High → 不打扰用户，直接写 `docs/coordination/window-<N>.md`（见上）
 
 ## 当前进度快照（2026-05-14 收工）
 
@@ -160,7 +167,8 @@ Copy-Item .\.env.local .\.claude\worktrees\hot-tracking\.env.local
 2. **立即 `git push`** 把该 task 的 commit 推上去
 3. **主动监控 `origin/main` 判定是否已 merge** —— 不被动等用户说,周期性 `git fetch origin` 然后检查该 task 的 commit 是否已可从 `origin/main` 到达(`git branch -r --contains <sha>` 含 `origin/main`)。可用 Monitor 工具跑 `until` 轮询循环,合入即退出。轮询间隔分钟级。
 4. merge 确认后 **`git pull origin main --no-rebase`** 同步(显式 merge,保留分支历史)
-5. 同步无冲突后,**才** dispatch 下一个 task
+5. **读 `docs/coordination/window-<N>.md`** —— 若头部 SHA 比上次读的新,说明窗口 3 有新指令(review 反馈 / 决策 / 跨窗口传话),按它执行
+6. 同步无冲突、指令已消化后,**才** dispatch 下一个 task
 
 **要点:**
 - 「等 merge」是真的停下来等 —— 这是协调关卡,优先级高于「连续自动跑」。autonomous 指「不为每个工具批准停」,不是「跳过同步关卡」。
