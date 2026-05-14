@@ -47,7 +47,9 @@
    git push origin main
    ```
    merge message 要写清：并入了什么、review 经过、跟 main 无冲突的确认
-6. merge 后 worktree 会 behind main 1，提醒对应窗口下次实施前 `git pull origin main`
+6. merge 后 worktree 会 behind main 1。**无需再传话提醒 pull** —— 窗口 1/2 的记忆
+   已更新：它们每次开新 task 前会自己 `git pull origin main` 并确认上个 task 已 merge。
+   只在需要决策 / review 有 Critical-High / 冲突时才传话。
 
 ### 打扰用户的格式（仅在真需要时）
 
