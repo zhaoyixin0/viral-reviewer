@@ -60,6 +60,12 @@ if ($draftsDir) {
   $final = $projectDir
 }
 
+if ($final -match '[\\|&\\r\\n]') {
+  Write-Host "错误：最终项目路径含特殊字符（| 或 &），CapCut 可能无法识别。" -ForegroundColor Red
+  Write-Host "请把 CapCut 项目目录移到不含 | & 的路径后重新运行。"
+  exit 1
+}
+
 if ($final -ne $projectDir) {
   Move-Item -LiteralPath $projectDir -Destination $final
 }
@@ -129,6 +135,13 @@ if [ -n "$draftsDir" ]; then
 else
   final="$projectDir"
 fi
+
+case "$final" in
+  *"|"*|*"&"*)
+    echo "错误：最终项目路径含特殊字符（| 或 &），无法安全处理。"
+    echo "请把 CapCut 项目目录移到不含 | & 的路径后重试。"
+    exit 1 ;;
+esac
 
 if [ "$final" != "$projectDir" ]; then
   mv "$projectDir" "$final"
