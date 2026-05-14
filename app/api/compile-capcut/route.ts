@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { put } from "@vercel/blob";
 import { z } from "zod";
 import {
   prepareAssets,
@@ -119,14 +120,36 @@ export async function POST(req: NextRequest) {
 
     const safeName = projectName.replace(/[^\w\-\.]+/g, "-");
 
-    return new Response(Buffer.from(zipBytes), {
-      status: 200,
-      headers: {
-        "content-type": "application/zip",
-        "content-disposition": `attachment; filename="${safeName}.zip"`,
-        "cache-control": "no-store",
-      },
-    });
+    // 不能把 zip 直接作为 response body 返回 — Vercel function response
+    // 上限 4.5MB，含 mp4 的 zip 必然超限。改成写 Blob + 返回 downloadUrl
+    // 让客户端从 CDN 直接下载（没 size limit）。
+    // addRandomSuffix:true — 同毫秒内同名项目并发 export 会撞 key，随机后缀消除覆盖风险。
+    try {
+      const blob = await put(
+        `capcut-exports/${safeName}-${Date.now()}.zip`,
+        Buffer.from(zipBytes),
+        {
+          access: "public",
+          contentType: "application/zip",
+          addRandomSuffix: true,
+        },
+      );
+      // downloadUrl 自带 Content-Disposition: attachment，保证浏览器下载而非预览。
+      return Response.json({
+        url: blob.downloadUrl,
+        filename: `${safeName}.zip`,
+        sizeBytes: zipBytes.byteLength,
+      });
+    } catch (e) {
+      console.error("[compile-capcut] blob upload failed:", e);
+      return new Response(
+        JSON.stringify({
+          error: "blob_upload_failed",
+          message: "zip 上传到存储失败，请重试",
+        }),
+        { status: 502, headers: { "content-type": "application/json" } },
+      );
+    }
   } catch (e) {
     console.error("[compile-capcut] error:", e);
     return new Response(
