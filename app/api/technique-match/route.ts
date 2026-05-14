@@ -1,5 +1,4 @@
 import { NextRequest } from "next/server";
-import { z } from "zod";
 import { mkdir, writeFile, rm } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
@@ -7,16 +6,10 @@ import { probeVideoMeta } from "@/lib/video/ffprobe-meta";
 import { analyzeMaterialPotential } from "@/lib/video/analyze-potential";
 import { loadReferenceCutPlans } from "@/lib/sample-references";
 import { matchTechniques } from "@/lib/technique-matching/match-engine";
+import { Schema } from "./schema";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
-
-const Schema = z.object({
-  videoUrl: z.string().url(),
-  topic: z.string().max(200).optional().default(""),
-  intent: z.string().max(500).optional().default(""),
-  videoId: z.string().max(120).optional(),
-});
 
 type StreamEvent =
   | { type: "stage"; stage: string; message: string; data?: unknown }

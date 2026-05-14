@@ -138,6 +138,66 @@ export const RecommendedBgmSchema = z.object({
 export type RecommendedBgm = z.infer<typeof RecommendedBgmSchema>;
 
 /**
+ * 跨视频编排：单个 clip（多视频改造 · Task 1 契约冻结）
+ *
+ * AI 编排引擎产出、CapCut 编译层消费、前端透传展示。
+ * 命名约束：字段名必须避开 match-engine.ts walk() 的重写键
+ * （at / userVideoAt / sourceAt / fromAt / toAt）。
+ */
+export const AssemblyClipSchema = z.object({
+  /** 0-based，对齐 videoUrls[] / VideoMaterial[]，编译层主键。索引基准恒为「上传全集」 */
+  sourceVideoIndex: z.number().int().min(0),
+  /** 冗余校验/调试用，编译层不依赖 */
+  sourceVideoId: z.string(),
+  /** = clips 数组下标，显式冗余便于校验 */
+  order: z.number().int().min(0),
+  /** 该视频内源 in 点（裸秒 float，非 {sec,frame} 对象） */
+  sourceStartSec: z.number().min(0),
+  /** 该视频内源 out 点（裸秒 float） */
+  sourceEndSec: z.number().min(0),
+  /** 片段动画（push-in / pull-out 等）；无则 null */
+  animation: z
+    .object({
+      type: z.string(),
+      scaleFrom: z.number().nullable().optional(),
+      scaleTo: z.number().nullable().optional(),
+    })
+    .nullable(),
+  /** 与「上一个 clip」之间的转场；第一个 clip = null */
+  incomingTransition: z
+    .object({
+      type: z
+        .string()
+        .describe("cross_dissolve | whip_pan | match_cut | hard_cut | fade | ..."),
+      durationSec: z.number().min(0),
+      reason: z.string(),
+    })
+    .nullable(),
+  /** 为什么选这段、为什么放这位置（引用 potential 维度 / 参考爆款） */
+  reason: z.string(),
+}).refine((c) => c.sourceEndSec > c.sourceStartSec, {
+  // 跨字段不变量：clip 必须有正时长。否则编译层 sourceEndSec - sourceStartSec
+  // 会得到 0 或负数，产出畸形 CapCut 草稿。Zod 单字段约束表达不了，用 refine。
+  message: "sourceEndSec 必须大于 sourceStartSec",
+  path: ["sourceEndSec"],
+});
+export type AssemblyClip = z.infer<typeof AssemblyClipSchema>;
+
+/**
+ * 跨视频编排时间线（多视频改造 · Task 1 契约冻结）
+ *
+ * AI 看完 N 份素材后产出的有序时间线：选段 + 裁剪 + 转场 + 动画。
+ * N 个 clip 之间有 N-1 个转场，挂在各 clip 的 incomingTransition 上。
+ */
+export const AssemblyTimelineSchema = z.object({
+  clips: z.array(AssemblyClipSchema),
+  estimatedDurationSec: z.number().min(0),
+  narrativeSummary: z.string(),
+  rationale: z.string(),
+});
+export type AssemblyTimeline = z.infer<typeof AssemblyTimelineSchema>;
+
+/**
  * 多条爆款的批量匹配结果（最终交付给前端）
  */
 export const TechniqueMatchingResultSchema = z.object({
@@ -197,6 +257,19 @@ export const TechniqueMatchingResultSchema = z.object({
       referenceCount: z.number().int().optional(),
     })
     .optional(),
+
+  /**
+   * 跨视频编排时间线（多视频改造 · Task 1 契约冻结）。
+   * `.nullable().optional()` 是硬约束：旧单视频分析结果 / 未升级的编译层
+   * parse 这份数据时不能崩 —— 缺这个字段照样通过。
+   */
+  assemblyTimeline: AssemblyTimelineSchema.nullable().optional(),
+
+  /**
+   * 用户上传的全部素材 ID（按「上传全集」顺序，与 assemblyTimeline 的
+   * sourceVideoIndex 同一索引基准）。optional：旧单视频结果只有 userVideoId。
+   */
+  userVideoIds: z.array(z.string()).optional(),
 });
 export type TechniqueMatchingResult = z.infer<
   typeof TechniqueMatchingResultSchema

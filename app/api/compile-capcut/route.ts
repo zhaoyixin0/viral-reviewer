@@ -1,6 +1,5 @@
 import { NextRequest } from "next/server";
 import { put } from "@vercel/blob";
-import { z } from "zod";
 import {
   prepareAssets,
   readAsset,
@@ -15,32 +14,10 @@ import { packageDraftAsZip } from "@/lib/capcut-compiler/package";
 import { probeVideoMeta } from "@/lib/video/ffprobe-meta";
 import { MaterialPotentialSchema } from "@/lib/cut-plan/material-potential";
 import { TechniqueMatchingResultSchema } from "@/lib/technique-matching/types";
+import { RequestSchema } from "./schema";
 
 export const runtime = "nodejs";
 export const maxDuration = 120;
-
-const RequestSchema = z.object({
-  projectName: z
-    .string()
-    .min(1)
-    .max(80)
-    .regex(/^[^\\/:*?"<>|]+$/, "项目名包含非法字符"),
-  videoUrl: z.string().url(),
-  /** 用户上传的原始视频文件名（可选；缺失则退化为 input.mp4）。
-   *  regex 在 Zod 层就拒绝路径分隔符，让服务端校验边界自身成立，
-   *  不单点依赖 sanitizeVideoFileName。浏览器 File.name 永远是 basename，
-   *  合法请求不含分隔符，不受影响。 */
-  videoFileName: z
-    .string()
-    .min(1)
-    .max(200)
-    .regex(/^[^/\\]+$/, "视频文件名不能包含路径分隔符")
-    .optional(),
-  /** Phase 5.5：可选 BGM 文件 URL（Vercel Blob 上传后的 URL） */
-  bgmUrl: z.string().url().nullable().optional(),
-  userPotential: z.unknown(),
-  match: z.unknown(),
-});
 
 export async function POST(req: NextRequest) {
   let body: unknown;
