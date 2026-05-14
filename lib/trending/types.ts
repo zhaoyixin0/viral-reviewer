@@ -61,6 +61,16 @@ export type TrendingVideoWithVelocity = ViralVideo & {
   };
 };
 
+/** v4.1 新增:hashtag 级 velocity 派生类型 —— 趋势连续性主载体(见 spec 2.8)。 */
+export type TrendingHashtagWithVelocity = TrendingHashtag & {
+  velocity: {
+    /** (本周 viewCount - 上周 viewCount) / 上周 viewCount;上周无此 hashtag = null */
+    weekOverWeek: number | null;
+    rank: { current: number; previous: number | null };
+    trend: TrendTag;
+  };
+};
+
 /**
  * Blob 是系统边界 —— 读回的快照 JSON 可能是旧 schema / 损坏 / 手改的。
  * 这个 loose schema 只校验下游真正依赖的结构锚点(schemaVersion / week / videos[].id+views),
