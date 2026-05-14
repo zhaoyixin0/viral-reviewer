@@ -1,4 +1,5 @@
 import type { ViralVideo } from "@/lib/review-engine/types";
+import type { TrendingHashtag } from "@/lib/trending/types";
 
 /**
  * 把 Apify TikTok scraper 返回的 raw item 归一化为 ViralVideo。
@@ -157,5 +158,38 @@ export function normalizeInstagramItem(
       typeof raw.timestamp === "string"
         ? raw.timestamp.slice(0, 10)
         : new Date().toISOString().slice(0, 10),
+  };
+}
+
+/**
+ * Guard against NaN from non-numeric string coercion.
+ * If the Apify actor returns "N/A" or "", Number() would return NaN.
+ * We default to 0 and validate finiteness to prevent NaN pollution.
+ */
+const toFiniteNumber = (v: unknown): number => {
+  const n = Number(v ?? 0);
+  return Number.isFinite(n) ? n : 0;
+};
+
+/**
+ * clockworks/tiktok-trends-scraper 的 raw item -> TrendingHashtag。
+ * 字段映射来自 P1.7 probe 实测(该 actor 返回热门 hashtag 榜,非视频)。
+ * name 缺失 → 返回 null(name 是 hashtag 的唯一锚点)。
+ */
+export function normalizeTikTokTrendingHashtag(
+  raw: Record<string, unknown>,
+): TrendingHashtag | null {
+  const name = raw.name as string | undefined;
+  if (!name) return null;
+
+  const industryName = raw.industryName as string | undefined;
+  return {
+    name,
+    rank: toFiniteNumber(raw.rank),
+    viewCount: toFiniteNumber(raw.viewCount),
+    videoCount: toFiniteNumber(raw.videoCount),
+    rankDiff: toFiniteNumber(raw.rankDiff),
+    isNew: raw.markedAsNew === true,
+    ...(industryName ? { industryName } : {}),
   };
 }
