@@ -8,23 +8,26 @@
 
 **Tech Stack:** Next.js 15 App Router · TypeScript strict · Vitest · `@vercel/blob` · `apify-client` · `@anthropic-ai/sdk`(Haiku 富化/分类)· `@vercel/config`(vercel.ts cron 配置)
 
-**Spec:** `docs/superpowers/specs/2026-05-13-hot-tracking-design.md`(v3,已过三轮 architect review)
+**Spec:** `docs/superpowers/specs/2026-05-13-hot-tracking-design.md`(**v4.1** —— P1.7 probe 实测驱动的两阶段 TikTok 重构,已过 architect v4 复审)
 
 ---
 
 ## 实施约束(来自 spec 的 architect review,每条都必须落地)
 
-> 任务指针经 architect plan review C2 修订 —— 核对过实际任务编号,以下指针准确。
+> 任务指针经 architect plan review C2 修订 + v4.1 重写更新 —— 以下指针准确。
 
 | 约束 | 体现在 |
 |---|---|
 | **H1** — Vercel Cron 套餐可用性未验证 + `ADMIN_TRIGGER_SECRET` 要手动配 | **Task P1.1**(plan 第一个 P1 任务就是验证 + 配 env) |
 | **H1** — cron route 双认证(cron header / admin token) | **Task P1.13** |
 | `velocity.ts` 是纯函数,TDD 先行 | **Task P1.5**(纯函数,先写测试) |
-| `/api/trending` 只返回精简投影,不返回完整富化快照 | Task P2.2 |
+| `/api/trending` 只返回精简投影(v4.1:含 `cards` + `trendingHashtags` 两个精简投影) | **Task P2.2** |
 | `TrendingSnapshot` 带 `schemaVersion: 1`,`velocity.ts` 处理版本不一致 → 全 NEW | **Task P1.3**(定义 schemaVersion)+ **Task P1.5**(velocity 处理不一致/缺失) |
 | `topicConfidence` 是 `ViralVideo` 的独立字段,不污染 `v.topic` | **Task P1.4**(加字段)+ **Task P1.11**(classifier 写入) |
-| 复用现有层(retrieval.ts / blob-cache.ts / enrichBatch / sample-references)而非平行实现 | P0.1 改 topic-research.ts;P1.2 改 blob-cache.ts;**P1.12 复用 `enrichBatch`**;P2.1 改 retrieval.ts |
+| 复用现有层(retrieval.ts / blob-cache.ts / enrichBatch / sample-references)而非平行实现 | P0.1 改 topic-research.ts;P1.2 改 blob-cache.ts;**P1.12 复用 `enrichBatch` + `scrapeTikTokByHashtag`(Stage 2)**;P2.1 改 retrieval.ts |
+| **v4(spec H2)** — TikTok 两阶段:Stage 1 趋势 hashtag 榜 → Stage 2 复用现有 scraper 抓视频,视频带 `trendingContext` | **Task P1.9**(Stage 1 scraper)+ **Task P1.12**(两阶段编排)+ **Task P1.8**(`TrendingHashtag` 类型 + `trendingContext` 字段) |
+| **v4.1(spec 2.8 H2)** — 两阶段下 video velocity 退化,hashtag 级 velocity 作连续性主载体 | **Task P1.15**(`computeHashtagVelocity` 纯函数,TDD)+ **Task P2.5/P2.6**(看板 hashtag 榜涨跌 badge 用它) |
+| **v4(spec 2.7 C1)** — schema 变化波及已 merge 代码的 TS type 层 + Zod 层 + `ViralVideo` | **Task P1.8 checkpoint 1**(types.ts TS type + Zod 同步 + `ViralVideo.trendingContext` + 修两处 test helper) |
 
 ---
 
@@ -1117,192 +1120,252 @@ git commit -m "chore(p1): add probe script for tiktok-trends-scraper output shap
 
 ---
 
-## Task P1.8: `normalizeTikTokTrendItem` —— trends actor → ViralVideo
+## Task P1.8: v4 schema 类型层 + `normalizeTikTokTrendingHashtag`(v4 重写)
+
+> **v4 重写。** 原 P1.8 是「视频 normalizer」;P1.7 probe 实测发现 `clockworks/tiktok-trends-scraper` 返回的是 **hashtag 趋势榜**(spec v4)。本任务做两件事,**两个 commit checkpoint**:
+> - **checkpoint 1 — v4 schema 类型层连带改动**(spec 2.7 C1):`TrendingHashtag` 类型 + `TrendingSnapshot.trendingHashtags` + Zod 同步 + `ViralVideo.trendingContext?` + 修两处 test helper
+> - **checkpoint 2 — Stage 1 的 hashtag 记录 normalizer**
 
 **Files:**
-- Modify: `lib/apify/normalize.ts`(文件末尾追加)
-- Test: `tests/apify/normalize-trend.test.ts`
+- Modify: `lib/trending/types.ts`(加 `TrendingHashtag` + `TrendingSnapshot.trendingHashtags` + Zod 同步 + 注释同步)
+- Modify: `lib/review-engine/types.ts`(`ViralVideo` 加 `trendingContext?`)
+- Modify: `tests/trending/snapshot-store.test.ts` + `tests/trending/velocity.test.ts`(test helper 补 `trendingHashtags: []`,否则 tsc 红)
+- Modify: `lib/apify/normalize.ts`(追加 `normalizeTikTokTrendingHashtag`)
+- Test: `tests/trending/types-schema.test.ts`(Zod schema 接受带 / 不带 trendingHashtags)
+- Test: `tests/apify/normalize-trending-hashtag.test.ts`
 
-> **⚠️ BLOCKED ON Task P1.7** —— 本任务必须在 P1.7 probe 跑通并记录真实输出之后才能开始。
-> 下面的 fixture 与 normalizer 取值键名是按 `clockworks` 系 actor 常见 schema 写的 **provisional 猜测**,**不是已确认事实**。Step 1 强制核对后才可继续。
+### P1.7 probe 实测的真实字段映射(本任务据此写,**非猜测**)
 
-- [ ] **Step 1: 用 P1.7 的 probe 输出核对/修正键名映射**
+`clockworks/tiktok-trends-scraper` 的 raw item 是 **hashtag 趋势记录**:
 
-打开 P1.7 `npm run probe:trends` 记录的真实 raw item 结构,逐字段核对下面 Step 2 的 fixture `RAW_ITEM` 与 Step 4 normalizer 的取值键:
-- `id` / `webVideoUrl` / `stats.playCount` / `stats.diggCount` / `videoMeta.duration` / `authorMeta.name` / `hashtags[].name` / `musicMeta.musicName` / `createTimeISO`
-- 真实键名与下面 provisional 猜测**不一致的**,同步改 fixture + normalizer 的取值键;一致的保留。
-- normalizer 本身已按现有文件的多 fallback 风格写(容错强),但 fixture 必须反映真实结构,否则测试是"自我验证的假绿灯"。
-- 核对改完后,fixture 与 normalizer 才从 provisional 变 verified,方可继续。
+| `TrendingHashtag` 字段 | raw key | 说明 |
+|---|---|---|
+| `name` | `raw.name` | hashtag 名,如 `"tiktoktvfilmcontest"` |
+| `rank` | `raw.rank` | 趋势榜排名,1 = #1 |
+| `viewCount` | `raw.viewCount` | 该 hashtag 下视频聚合播放量 |
+| `videoCount` | `raw.videoCount` | 使用该 hashtag 的视频数 |
+| `rankDiff` | `raw.rankDiff` | 排名变化,>0 上升 |
+| `isNew` | `raw.markedAsNew` | actor 标记的新晋趋势 |
+| `industryName` | `raw.industryName` | 行业 / 类目标签 |
 
-- [ ] **Step 2: 写失败测试**
+---
 
-创建 `tests/apify/normalize-trend.test.ts`(fixture 已按 Step 1 核对真实结构):
+### Checkpoint 1 —— v4 schema 类型层
+
+- [ ] **Step 1: 改 `lib/trending/types.ts`**
+
+在 `TrendTag` type 之后(`TrendingVideoWithVelocity` 之前)插入 `TrendingHashtag`:
+
+```typescript
+/**
+ * v4 新增:TikTok Stage 1 趋势 hashtag 记录(来自 clockworks/tiktok-trends-scraper)。
+ * 字段映射见 P1.7 probe 实测结果。
+ */
+export type TrendingHashtag = {
+  name: string;
+  rank: number;
+  viewCount: number;
+  videoCount: number;
+  rankDiff: number;
+  isNew: boolean;
+  industryName?: string;
+};
+```
+
+在 `TrendingSnapshot` type 里,`videos` 字段**之前**插入一行(`trendingHashtags` 是**必填**字段):
+
+```typescript
+  /** v4 新增:TikTok Stage 1 趋势 hashtag 榜(IG 无此项,空数组即可)。 */
+  trendingHashtags: TrendingHashtag[];
+```
+
+把 `PlatformMeta` 的 `source` 注释(architect L1 语义漂移)从:
+```typescript
+  /** TikTok = 真趋势 actor;Instagram = 热门 hashtag 代理 */
+```
+改成:
+```typescript
+  /** TikTok = 两阶段(Stage 1 是 trends-actor);Instagram = 热门 hashtag 代理 */
+```
+并把 `actorRun` / `rawCount` 注释钉死口径:
+```typescript
+  /** Apify run ID。TikTok 记 Stage 1 trends-scraper 的 run id */
+  actorRun: string;
+  /** TikTok = Stage 2 抓回的视频条数;IG = 抓回的视频条数 */
+  rawCount: number;
+```
+
+把 `TrendingSnapshotSchema`(loose Zod)加 `trendingHashtags` —— **optional**(旧快照无此字段不应 parse 失败),内层 passthrough:
+
+```typescript
+export const TrendingSnapshotSchema = z
+  .object({
+    schemaVersion: z.number(),
+    week: z.string().min(1),
+    videos: z.array(
+      z
+        .object({
+          id: z.string().min(1),
+          views: z.number(),
+        })
+        .passthrough(),
+    ),
+    // v4:trendingHashtags 加为 optional —— TS type 上是必填,但 Zod 读侧 loose,
+    // 旧快照(无此字段)不应 parse 失败。校验锚点不变。
+    trendingHashtags: z
+      .array(z.object({ name: z.string() }).passthrough())
+      .optional(),
+  })
+  .passthrough();
+```
+
+- [ ] **Step 2: 改 `lib/review-engine/types.ts` —— `ViralVideo` 加 `trendingContext?`**
+
+在 `ViralVideo` type 里,`topicConfidence?: number;` 那一行之后(闭合 `}` 之前)插入:
+
+```typescript
+
+  /**
+   * v4 新增:TikTok 两阶段 Stage 2 视频记录它来自哪个趋势 hashtag。
+   * 按 trendingHashtags 的 rank 升序遍历抓取,视频首次出现即锁定(见 spec 2.6)。
+   * 仅 TikTok trending snapshot 来源的视频带此字段。
+   */
+  trendingContext?: { hashtag: string; hashtagRank: number };
+```
+
+- [ ] **Step 3: 修两处 `TrendingSnapshot` test helper(否则 tsc 红)**
+
+`trendingHashtags` 是 `TrendingSnapshot` 的必填字段 —— 已 merge 的测试里构造 `TrendingSnapshot` 的地方会 tsc 报错。
+
+在 `tests/trending/snapshot-store.test.ts`,`SNAP` 常量里 `videos: [],` 之后加一行:
+```typescript
+  trendingHashtags: [],
+```
+
+在 `tests/trending/velocity.test.ts`,`snapshot()` helper 的返回对象里 `videos,` 之后加一行:
+```typescript
+    trendingHashtags: [],
+```
+
+- [ ] **Step 4: 写 Zod schema 行为测试**
+
+创建 `tests/trending/types-schema.test.ts`:
 
 ```typescript
 import { describe, expect, it } from "vitest";
-import { normalizeTikTokTrendItem } from "@/lib/apify/normalize";
+import { TrendingSnapshotSchema } from "@/lib/trending/types";
 
-// fixture 形状基于 clockworks 系 actor;若 P1.7 探测发现不同,改这里
-const RAW_ITEM = {
-  id: "7300000000000000001",
-  webVideoUrl: "https://www.tiktok.com/@creator/video/7300000000000000001",
-  text: "POV: your morning routine glow up",
-  videoMeta: { coverUrl: "https://cover/x.jpg", duration: 18 },
-  authorMeta: { name: "creator" },
-  stats: { playCount: 2_500_000, diggCount: 410_000, commentCount: 3_200, shareCount: 9_100 },
-  hashtags: [{ name: "morningroutine" }, { name: "glowup" }],
-  musicMeta: { musicName: "original sound - creator" },
-  createTimeISO: "2026-05-10T12:00:00.000Z",
+const base = {
+  schemaVersion: 1,
+  week: "2026-W20",
+  capturedAt: "2026-05-14T08:00:00Z",
+  videos: [{ id: "tt-1", views: 1000 }],
+  meta: { tiktok: {}, instagram: {}, partial: false },
 };
 
-describe("normalizeTikTokTrendItem", () => {
-  it("maps a raw trend item into a ViralVideo with platform=tiktok", () => {
-    const v = normalizeTikTokTrendItem(RAW_ITEM);
-    expect(v).not.toBeNull();
-    expect(v!.platform).toBe("tiktok");
-    expect(v!.id).toBe("tt-7300000000000000001");
-    expect(v!.url).toBe(RAW_ITEM.webVideoUrl);
-    expect(v!.views).toBe(2_500_000);
-    expect(v!.likes).toBe(410_000);
-    expect(v!.duration).toBe(18);
-    expect(v!.publishedAt).toBe("2026-05-10T12:00:00.000Z");
-    expect(v!.authorHandle).toBe("@creator");
-    expect(v!.tags).toEqual(["#morningroutine", "#glowup"]);
+describe("TrendingSnapshotSchema (v4)", () => {
+  it("accepts a snapshot WITH trendingHashtags", () => {
+    const r = TrendingSnapshotSchema.safeParse({
+      ...base,
+      trendingHashtags: [{ name: "morningroutine", rank: 1, viewCount: 9, videoCount: 3, rankDiff: 0, isNew: false }],
+    });
+    expect(r.success).toBe(true);
   });
 
-  it("returns null when id or url is missing", () => {
-    expect(normalizeTikTokTrendItem({ text: "no id" })).toBeNull();
-    expect(normalizeTikTokTrendItem({ id: "x" })).toBeNull();
+  it("accepts a snapshot WITHOUT trendingHashtags (old snapshot, optional)", () => {
+    const r = TrendingSnapshotSchema.safeParse(base);
+    expect(r.success).toBe(true);
   });
 
-  it("leaves topic empty (topic-classifier fills it later)", () => {
-    const v = normalizeTikTokTrendItem(RAW_ITEM);
-    expect(v!.topic).toBe("");
+  it("rejects a snapshot missing the structural anchors", () => {
+    expect(TrendingSnapshotSchema.safeParse({ garbage: true }).success).toBe(false);
   });
 });
 ```
 
-- [ ] **Step 3: 跑测试确认失败**
+- [ ] **Step 5: 跑测试 + 类型检查**
 
-Run: `npm test -- tests/apify/normalize-trend.test.ts`
-Expected: FAIL —— `normalizeTikTokTrendItem` is not exported
+Run: `npm test -- tests/trending/types-schema.test.ts && npm test && npx tsc --noEmit`
+Expected: types-schema 3 passed;全量 PASS;tsc clean(确认两处 test helper 修好后 tsc 不再红)
 
-- [ ] **Step 4: 在 normalize.ts 末尾追加 normalizer(取值键已按 Step 1 核对)**
-
-在 `lib/apify/normalize.ts` 文件末尾追加:
-
-```typescript
-
-/**
- * clockworks/tiktok-trends-scraper 的 raw item -> ViralVideo。
- * 与 normalizeTikTokItem 同源(clockworks 系),字段名做多 fallback 容错。
- * topic 留空字符串 —— 由 lib/trending/topic-classifier.ts 后续填充。
- */
-export function normalizeTikTokTrendItem(
-  raw: Record<string, unknown>,
-): ViralVideo | null {
-  const id = (raw.id ?? raw.videoId ?? raw.itemId) as string | undefined;
-  const url = (raw.webVideoUrl ?? raw.shareUrl ?? raw.videoUrl ?? raw.url) as
-    | string
-    | undefined;
-  if (!id || !url) return null;
-
-  const title = (raw.text ?? raw.desc ?? raw.title ?? "") as string;
-  const videoMeta = raw.videoMeta as Record<string, unknown> | undefined;
-  const cover = (videoMeta?.coverUrl ??
-    raw.coverUrl ??
-    raw.thumbnailUrl ??
-    "") as string;
-
-  const authorMeta =
-    (raw.authorMeta as Record<string, unknown> | undefined) ?? {};
-  const handle = (authorMeta.name ?? authorMeta.uniqueId ?? "") as string;
-
-  const stats = (raw.stats as Record<string, unknown>) ?? {};
-  const views = Number(stats.playCount ?? raw.playCount ?? raw.views ?? 0);
-  const likes = Number(stats.diggCount ?? raw.diggCount ?? raw.likes ?? 0);
-  const comments = Number(stats.commentCount ?? raw.commentCount ?? 0);
-  const shares = Number(stats.shareCount ?? raw.shareCount ?? 0);
-  const duration = Number(videoMeta?.duration ?? raw.duration ?? 0);
-
-  const tagsRaw = (raw.hashtags ?? []) as Array<
-    Record<string, unknown> | string
-  >;
-  const tags = tagsRaw
-    .map((t) => (typeof t === "string" ? t : ((t.name ?? "") as string)))
-    .filter(Boolean)
-    .map((t) => `#${t}`)
-    .slice(0, 6);
-
-  const music = (raw.musicMeta as Record<string, unknown> | undefined) ?? {};
-  const bgm =
-    (music.musicName as string) ??
-    (raw.musicName as string) ??
-    "Original sound";
-
-  return {
-    id: `tt-${id}`,
-    platform: "tiktok",
-    url,
-    cover,
-    title: title.slice(0, 100),
-    description: title,
-    topic: "",
-    tags,
-    views,
-    likes,
-    comments,
-    shares,
-    duration: Math.max(duration, 0),
-    playStyle: "未分类",
-    visualStyle: "未分类",
-    hook: "需要 LLM 二次提取",
-    bgm,
-    authorHandle: handle ? `@${handle.replace(/^@+/, "")}` : "@unknown",
-    publishedAt:
-      typeof raw.createTimeISO === "string"
-        ? raw.createTimeISO
-        : new Date().toISOString().slice(0, 10),
-  };
-}
-```
-
-- [ ] **Step 5: 跑测试确认通过**
-
-Run: `npm test -- tests/apify/normalize-trend.test.ts`
-Expected: PASS(3 passed)
-
-- [ ] **Step 6: Commit**
+- [ ] **Step 6: Commit checkpoint 1**
 
 ```bash
-git add lib/apify/normalize.ts tests/apify/normalize-trend.test.ts
-git commit -m "feat(p1): add normalizeTikTokTrendItem for trends actor output"
+git add lib/trending/types.ts lib/review-engine/types.ts tests/trending/snapshot-store.test.ts tests/trending/velocity.test.ts tests/trending/types-schema.test.ts
+git commit -m "feat(p1): v4 schema type layer — TrendingHashtag + trendingContext"
 ```
 
 ---
 
-## Task P1.9: `scrapeTikTokTrending` —— 包装 trends actor
+### Checkpoint 2 —— Stage 1 hashtag 记录 normalizer
 
-**Files:**
-- Modify: `lib/apify/scrapers.ts`(文件末尾追加)
+- [ ] **Step 7: 写失败测试**
 
-> 薄包装层,无单测(真实 Apify 调用无法单元测试,靠 P1.7 probe 做 smoke)。
+创建 `tests/apify/normalize-trending-hashtag.test.ts`(fixture 按 P1.7 probe 实测的真实字段):
 
-- [ ] **Step 1: 在 scrapers.ts 末尾追加**
-
-在 `lib/apify/scrapers.ts` 文件末尾追加,并把顶部 import 补上 `normalizeTikTokTrendItem`:
-
-把第 2 行:
 ```typescript
-import { normalizeInstagramItem, normalizeTikTokItem } from "./normalize";
+import { describe, expect, it } from "vitest";
+import { normalizeTikTokTrendingHashtag } from "@/lib/apify/normalize";
+
+// fixture 字段名 = P1.7 probe 实测的 clockworks/tiktok-trends-scraper 真实 raw item
+const RAW = {
+  id: "7615394994269978635",
+  name: "tiktoktvfilmcontest",
+  url: "https://www.tiktok.com/tag/tiktoktvfilmcontest",
+  rank: 1,
+  viewCount: 202_936_112,
+  videoCount: 1_234,
+  rankDiff: 3,
+  markedAsNew: false,
+  industryName: "News & Entertainment",
+  type: "hashtag",
+};
+
+describe("normalizeTikTokTrendingHashtag", () => {
+  it("maps a raw trends-scraper item into a TrendingHashtag", () => {
+    const h = normalizeTikTokTrendingHashtag(RAW);
+    expect(h).not.toBeNull();
+    expect(h!.name).toBe("tiktoktvfilmcontest");
+    expect(h!.rank).toBe(1);
+    expect(h!.viewCount).toBe(202_936_112);
+    expect(h!.videoCount).toBe(1_234);
+    expect(h!.rankDiff).toBe(3);
+    expect(h!.isNew).toBe(false);
+    expect(h!.industryName).toBe("News & Entertainment");
+  });
+
+  it("returns null when name is missing", () => {
+    expect(normalizeTikTokTrendingHashtag({ rank: 1 })).toBeNull();
+  });
+
+  it("coerces missing numeric fields to 0 and missing markedAsNew to false", () => {
+    const h = normalizeTikTokTrendingHashtag({ name: "x" });
+    expect(h).not.toBeNull();
+    expect(h!.rank).toBe(0);
+    expect(h!.viewCount).toBe(0);
+    expect(h!.videoCount).toBe(0);
+    expect(h!.rankDiff).toBe(0);
+    expect(h!.isNew).toBe(false);
+    expect(h!.industryName).toBeUndefined();
+  });
+});
 ```
-改成:
+
+- [ ] **Step 8: 跑测试确认失败**
+
+Run: `npm test -- tests/apify/normalize-trending-hashtag.test.ts`
+Expected: FAIL —— `normalizeTikTokTrendingHashtag` is not exported
+
+- [ ] **Step 9: 在 `lib/apify/normalize.ts` 末尾追加 normalizer**
+
+文件顶部 import 区,把:
 ```typescript
-import {
-  normalizeInstagramItem,
-  normalizeTikTokItem,
-  normalizeTikTokTrendItem,
-} from "./normalize";
+import type { ViralVideo } from "@/lib/review-engine/types";
+```
+改成(追加 `TrendingHashtag` 的 import):
+```typescript
+import type { ViralVideo } from "@/lib/review-engine/types";
+import type { TrendingHashtag } from "@/lib/trending/types";
 ```
 
 文件末尾追加:
@@ -1310,18 +1373,86 @@ import {
 ```typescript
 
 /**
- * 抓 TikTok 全局趋势视频(clockworks/tiktok-trends-scraper)。
- * P2 trending 看板数据源。region 默认 US,时间窗交给 actor 的 timeRange 参数。
- * 返回 ViralVideo[](topic 留空,后续 topic-classifier 填)。
- *
- * 注:actor 的 input key 名以 P1.7 probe 验证为准,下面是 clockworks 系常见值。
+ * clockworks/tiktok-trends-scraper 的 raw item -> TrendingHashtag。
+ * 字段映射来自 P1.7 probe 实测(该 actor 返回热门 hashtag 榜,非视频)。
+ * name 缺失 → 返回 null(name 是 hashtag 的唯一锚点)。
  */
-export async function scrapeTikTokTrending(opts?: {
+export function normalizeTikTokTrendingHashtag(
+  raw: Record<string, unknown>,
+): TrendingHashtag | null {
+  const name = raw.name as string | undefined;
+  if (!name) return null;
+
+  const industryName = raw.industryName as string | undefined;
+  return {
+    name,
+    rank: Number(raw.rank ?? 0),
+    viewCount: Number(raw.viewCount ?? 0),
+    videoCount: Number(raw.videoCount ?? 0),
+    rankDiff: Number(raw.rankDiff ?? 0),
+    isNew: raw.markedAsNew === true,
+    ...(industryName ? { industryName } : {}),
+  };
+}
+```
+
+- [ ] **Step 10: 跑测试确认通过 + 全量 + 类型检查**
+
+Run: `npm test -- tests/apify/normalize-trending-hashtag.test.ts && npm test && npx tsc --noEmit`
+Expected: normalize-trending-hashtag 3 passed;全量 PASS;tsc clean
+
+- [ ] **Step 11: Commit checkpoint 2**
+
+```bash
+git add lib/apify/normalize.ts tests/apify/normalize-trending-hashtag.test.ts
+git commit -m "feat(p1): add normalizeTikTokTrendingHashtag for Stage 1 trends actor"
+```
+
+---
+
+## Task P1.9: `scrapeTikTokTrendingHashtags` —— Stage 1(v4 重写)
+
+**Files:**
+- Modify: `lib/apify/scrapers.ts`(文件末尾追加)
+
+> **v4 重写。** 原 P1.9 是「包装 actor 返回视频」;v4 两阶段下,本任务只做 **Stage 1** —— 包装 `clockworks/tiktok-trends-scraper` 返回 `TrendingHashtag[]`(趋势 hashtag 榜)。Stage 2(用 hashtag 抓视频)**直接复用现有 `scrapeTikTokByHashtag`,无需新代码**,在 P1.12 fetch.ts 里编排。
+> 薄包装层,无单测(真实 Apify 调用无法单元测试;normalizer 已在 P1.8 单测,actor 输入键已在 P1.7 probe 验证)。
+
+- [ ] **Step 1: 在 `lib/apify/scrapers.ts` 末尾追加**
+
+把顶部 import 区,从:
+```typescript
+import { normalizeInstagramItem, normalizeTikTokItem } from "./normalize";
+```
+改成(追加 `normalizeTikTokTrendingHashtag`):
+```typescript
+import {
+  normalizeInstagramItem,
+  normalizeTikTokItem,
+  normalizeTikTokTrendingHashtag,
+} from "./normalize";
+```
+并在文件顶部 import 区追加 `TrendingHashtag` 类型 import:
+```typescript
+import type { TrendingHashtag } from "@/lib/trending/types";
+```
+
+文件末尾追加:
+
+```typescript
+
+/**
+ * Stage 1:抓 TikTok 趋势 hashtag 榜(clockworks/tiktok-trends-scraper)。
+ * 该 actor 返回的是热门 hashtag 排行榜(rank/viewCount/videoCount/…),不是视频
+ * —— 见 P1.7 probe 实测 + spec v4。Stage 2 用这些 hashtag 喂 scrapeTikTokByHashtag。
+ * actor 输入键(countryCode / maxItems)以 P1.7 probe 验证为准。
+ */
+export async function scrapeTikTokTrendingHashtags(opts?: {
   countryCode?: string;
   maxItems?: number;
-}): Promise<{ videos: ViralVideo[]; runId: string }> {
+}): Promise<{ hashtags: TrendingHashtag[]; runId: string }> {
   const client = getApifyClient();
-  const { countryCode = "US", maxItems = 50 } = opts ?? {};
+  const { countryCode = "US", maxItems = 20 } = opts ?? {};
 
   const run = await client.actor("clockworks/tiktok-trends-scraper").call({
     countryCode,
@@ -1329,11 +1460,12 @@ export async function scrapeTikTokTrending(opts?: {
   });
 
   const { items } = await client.dataset(run.defaultDatasetId).listItems();
-  const videos = (items as Record<string, unknown>[])
-    .map((item) => normalizeTikTokTrendItem(item))
-    .filter((v): v is ViralVideo => v !== null);
+  const hashtags = (items as Record<string, unknown>[])
+    .map((item) => normalizeTikTokTrendingHashtag(item))
+    .filter((h): h is TrendingHashtag => h !== null)
+    .sort((a, b) => a.rank - b.rank);
 
-  return { videos, runId: run.id };
+  return { hashtags, runId: run.id };
 }
 ```
 
@@ -1346,7 +1478,7 @@ Expected: 无错误
 
 ```bash
 git add lib/apify/scrapers.ts
-git commit -m "feat(p1): add scrapeTikTokTrending wrapper for trends actor"
+git commit -m "feat(p1): add scrapeTikTokTrendingHashtags (Stage 1 trends actor)"
 ```
 
 ---
@@ -1610,11 +1742,13 @@ git commit -m "feat(p1): add Haiku topic-classifier with confidence scoring"
 
 ---
 
-## Task P1.12: `lib/trending/fetch.ts` —— 抓取 + 富化编排
+## Task P1.12: `lib/trending/fetch.ts` —— TikTok 两阶段编排(v4 重写)
 
 **Files:**
 - Create: `lib/trending/fetch.ts`
 - Test: `tests/trending/fetch.test.ts`
+
+> **v4 重写。** TikTok 改两阶段:Stage 1 `scrapeTikTokTrendingHashtags`(P1.9)拿趋势 hashtag 榜 → 取 top-5 → Stage 2 按 rank 升序复用现有 `scrapeTikTokByHashtag` 抓每个 hashtag 下的视频,给视频打 `trendingContext`(首次命中锁定)。IG 不变。产出的 `TrendingSnapshot` 含 `trendingHashtags` + `videos`。**原 P1.12 的测试 mock 结构(`scrapeTikTokTrendingMock` 返回 `{videos,runId}`)整段作废,连实现一起重写。**
 
 - [ ] **Step 1: 写失败测试**
 
@@ -1623,15 +1757,18 @@ git commit -m "feat(p1): add Haiku topic-classifier with confidence scoring"
 ```typescript
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import type { ViralVideo } from "@/lib/review-engine/types";
+import type { TrendingHashtag } from "@/lib/trending/types";
 
-const scrapeTikTokTrendingMock = vi.fn();
+const scrapeTikTokTrendingHashtagsMock = vi.fn();
+const scrapeTikTokByHashtagMock = vi.fn();
 const scrapeInstagramByHashtagMock = vi.fn();
 const enrichBatchMock = vi.fn();
 const classifyTopicsMock = vi.fn();
 const loadVideosMock = vi.fn();
 
 vi.mock("@/lib/apify/scrapers", () => ({
-  scrapeTikTokTrending: (...a: unknown[]) => scrapeTikTokTrendingMock(...a),
+  scrapeTikTokTrendingHashtags: (...a: unknown[]) => scrapeTikTokTrendingHashtagsMock(...a),
+  scrapeTikTokByHashtag: (...a: unknown[]) => scrapeTikTokByHashtagMock(...a),
   scrapeInstagramByHashtag: (...a: unknown[]) => scrapeInstagramByHashtagMock(...a),
 }));
 vi.mock("@/lib/research/enrich-one", () => ({
@@ -1655,60 +1792,84 @@ function vid(id: string, platform: "tiktok" | "instagram"): ViralVideo {
     bgm: "b", authorHandle: "@u", publishedAt: "2026-05-01",
   };
 }
+function ht(name: string, rank: number): TrendingHashtag {
+  return { name, rank, viewCount: 1000, videoCount: 10, rankDiff: 0, isNew: false };
+}
 
 beforeEach(() => {
-  scrapeTikTokTrendingMock.mockReset();
+  scrapeTikTokTrendingHashtagsMock.mockReset();
+  scrapeTikTokByHashtagMock.mockReset();
   scrapeInstagramByHashtagMock.mockReset();
   enrichBatchMock.mockReset();
   classifyTopicsMock.mockReset();
   loadVideosMock.mockReset();
   loadVideosMock.mockResolvedValue([{ topic: "早餐健身" }, { topic: "旅行 vlog" }]);
-  // enrich / classify 默认透传
+  // enrich / classify 默认透传(保留 trendingContext 等字段)
   enrichBatchMock.mockImplementation((vs: ViralVideo[]) => Promise.resolve(vs));
   classifyTopicsMock.mockImplementation((vs: ViralVideo[]) => Promise.resolve(vs));
+  // 默认:Stage 1 给 2 个 hashtag,Stage 2 每个 hashtag 给 1 条视频,IG 给 1 条
+  scrapeTikTokTrendingHashtagsMock.mockResolvedValue({
+    hashtags: [ht("morningroutine", 1), ht("glowup", 2)],
+    runId: "run-stage1",
+  });
+  scrapeTikTokByHashtagMock.mockImplementation((opts: { hashtags: string[] }) =>
+    Promise.resolve([vid(`tt-${opts.hashtags[0]}`, "tiktok")]),
+  );
+  scrapeInstagramByHashtagMock.mockResolvedValue([vid("ig1", "instagram")]);
 });
 
-describe("fetchTrendingSnapshot", () => {
-  it("merges tiktok + instagram videos into one snapshot", async () => {
-    scrapeTikTokTrendingMock.mockResolvedValue({ videos: [vid("tt1", "tiktok")], runId: "run-tt" });
-    scrapeInstagramByHashtagMock.mockResolvedValue([vid("ig1", "instagram")]);
-
+describe("fetchTrendingSnapshot (two-stage TikTok)", () => {
+  it("produces a snapshot with trendingHashtags + merged videos", async () => {
     const snap = await fetchTrendingSnapshot();
-
-    expect(snap.videos).toHaveLength(2);
     expect(snap.schemaVersion).toBe(1);
+    expect(snap.trendingHashtags.map((h) => h.name)).toEqual(["morningroutine", "glowup"]);
+    // 2 TT 视频(每 hashtag 1 条)+ 1 IG 视频
+    expect(snap.videos).toHaveLength(3);
     expect(snap.meta.tiktok.ok).toBe(true);
     expect(snap.meta.tiktok.source).toBe("trends-actor");
     expect(snap.meta.instagram.ok).toBe(true);
-    expect(snap.meta.instagram.source).toBe("hashtag-proxy");
     expect(snap.meta.partial).toBe(false);
   });
 
-  it("marks partial=true and tiktok.ok=false when the TT scraper throws", async () => {
-    scrapeTikTokTrendingMock.mockRejectedValue(new Error("actor failed"));
-    scrapeInstagramByHashtagMock.mockResolvedValue([vid("ig1", "instagram")]);
-
+  it("tags each TikTok video with trendingContext (hashtag + rank)", async () => {
     const snap = await fetchTrendingSnapshot();
+    const ttVideo = snap.videos.find((v) => v.id === "tt-morningroutine")!;
+    expect(ttVideo.trendingContext).toEqual({ hashtag: "morningroutine", hashtagRank: 1 });
+    // IG 视频不带 trendingContext
+    const igVideo = snap.videos.find((v) => v.id === "ig1")!;
+    expect(igVideo.trendingContext).toBeUndefined();
+  });
 
+  it("first-lock by rank: a video under multiple hashtags keeps the highest-rank one", async () => {
+    // morningroutine(rank 1)和 glowup(rank 2)都返回同一条 shared 视频
+    scrapeTikTokByHashtagMock.mockImplementation(() =>
+      Promise.resolve([vid("tt-shared", "tiktok")]),
+    );
+    const snap = await fetchTrendingSnapshot();
+    const shared = snap.videos.filter((v) => v.id === "tt-shared");
+    expect(shared).toHaveLength(1); // 去重
+    expect(shared[0].trendingContext).toEqual({ hashtag: "morningroutine", hashtagRank: 1 });
+  });
+
+  it("Stage 1 fails → tiktok.ok=false, trendingHashtags=[], IG still continues", async () => {
+    scrapeTikTokTrendingHashtagsMock.mockRejectedValue(new Error("stage1 down"));
+    const snap = await fetchTrendingSnapshot();
     expect(snap.meta.tiktok.ok).toBe(false);
+    expect(snap.trendingHashtags).toEqual([]);
     expect(snap.meta.instagram.ok).toBe(true);
     expect(snap.meta.partial).toBe(true);
-    expect(snap.videos).toHaveLength(1);
+    expect(snap.videos.map((v) => v.id)).toEqual(["ig1"]);
+    expect(scrapeTikTokByHashtagMock).not.toHaveBeenCalled();
   });
 
   it("throws when BOTH platforms fail (caller must not write an empty snapshot)", async () => {
-    scrapeTikTokTrendingMock.mockRejectedValue(new Error("tt down"));
+    scrapeTikTokTrendingHashtagsMock.mockRejectedValue(new Error("tt down"));
     scrapeInstagramByHashtagMock.mockRejectedValue(new Error("ig down"));
-
     await expect(fetchTrendingSnapshot()).rejects.toThrow(/both platforms failed/i);
   });
 
   it("passes library topics from loadVideos into the classifier", async () => {
-    scrapeTikTokTrendingMock.mockResolvedValue({ videos: [vid("tt1", "tiktok")], runId: "run-tt" });
-    scrapeInstagramByHashtagMock.mockResolvedValue([]);
-
     await fetchTrendingSnapshot();
-
     expect(classifyTopicsMock).toHaveBeenCalledTimes(1);
     const [, libraryTopics] = classifyTopicsMock.mock.calls[0];
     expect(libraryTopics).toEqual(["早餐健身", "旅行 vlog"]);
@@ -1728,7 +1889,8 @@ Expected: FAIL —— Cannot find module `@/lib/trending/fetch`
 ```typescript
 import "server-only";
 import {
-  scrapeTikTokTrending,
+  scrapeTikTokTrendingHashtags,
+  scrapeTikTokByHashtag,
   scrapeInstagramByHashtag,
 } from "@/lib/apify/scrapers";
 import { enrichBatch } from "@/lib/research/enrich-one";
@@ -1738,12 +1900,15 @@ import { currentWeek } from "./snapshot-store";
 import {
   TRENDING_SCHEMA_VERSION,
   type PlatformMeta,
+  type TrendingHashtag,
   type TrendingSnapshot,
 } from "./types";
 import { IG_HOT_HASHTAGS } from "./ig-hot-hashtags";
 import type { ViralVideo } from "@/lib/review-engine/types";
 
-const TT_MAX_ITEMS = 50;
+// spec M1 钉死的抓取参数 —— 调大会线性涨成本,不要随意改
+const TT_TRENDING_HASHTAG_COUNT = 5; // Stage 2 取趋势榜 top-5 hashtag
+const TT_VIDEOS_PER_HASHTAG = 30;    // 每个趋势 hashtag 抓 30 条视频
 const IG_RESULTS_LIMIT = 50;
 
 function failedMeta(source: PlatformMeta["source"]): PlatformMeta {
@@ -1751,21 +1916,70 @@ function failedMeta(source: PlatformMeta["source"]): PlatformMeta {
 }
 
 /**
- * 抓 TikTok 趋势 + IG 热门 hashtag 代理 → enrichBatch 富化 → Haiku 题材标签
+ * TikTok 两阶段:Stage 1 抓趋势 hashtag 榜 → 取 top-N → Stage 2 按 rank 升序
+ * 复用 scrapeTikTokByHashtag 抓视频 + 打 trendingContext(首次命中锁定,见 spec 2.6)。
+ * 返回 { hashtags, videos, runId } —— Stage 1 抛错时返回空。
+ */
+async function fetchTikTokTwoStage(): Promise<{
+  hashtags: TrendingHashtag[];
+  videos: ViralVideo[];
+  runId: string;
+  ok: boolean;
+}> {
+  let hashtags: TrendingHashtag[] = [];
+  let runId = "";
+  try {
+    const stage1 = await scrapeTikTokTrendingHashtags({ maxItems: 20 });
+    hashtags = stage1.hashtags;
+    runId = stage1.runId;
+  } catch (e) {
+    console.error("[trending/fetch] TikTok Stage 1 failed:", e);
+    return { hashtags: [], videos: [], runId: "", ok: false };
+  }
+
+  // Stage 2:按 rank 升序遍历 top-N hashtag,首次命中锁定 trendingContext
+  const topHashtags = hashtags.slice(0, TT_TRENDING_HASHTAG_COUNT);
+  const seen = new Set<string>();
+  const videos: ViralVideo[] = [];
+  for (const h of topHashtags) {
+    try {
+      const raw = await scrapeTikTokByHashtag({
+        hashtags: [h.name],
+        topic: "",
+        resultsPerPage: TT_VIDEOS_PER_HASHTAG,
+      });
+      for (const v of raw) {
+        if (seen.has(v.id)) continue; // 首次命中锁定:已属更高 rank hashtag 的不覆盖
+        seen.add(v.id);
+        videos.push({
+          ...v,
+          trendingContext: { hashtag: h.name, hashtagRank: h.rank },
+        });
+      }
+    } catch (e) {
+      console.error(`[trending/fetch] TikTok Stage 2 failed for #${h.name}:`, e);
+    }
+  }
+
+  return { hashtags, videos, runId, ok: true };
+}
+
+/**
+ * 抓 TikTok 趋势(两阶段)+ IG 热门 hashtag 代理 → enrichBatch 富化 → Haiku 题材标签
  * → 合并成一份 TrendingSnapshot(不落盘,落盘交给调用方 + snapshot-store)。
  *
  * 容错:单平台失败 → 该平台 meta.ok=false + partial=true,另一平台继续。
  * 两个平台都失败 → throw(调用方据此跳过写空快照,避免覆盖上周好数据)。
  */
 export async function fetchTrendingSnapshot(): Promise<TrendingSnapshot> {
-  // 1) 并行抓两个平台
+  let trendingHashtags: TrendingHashtag[] = [];
   let ttVideos: ViralVideo[] = [];
   let ttMeta: PlatformMeta = failedMeta("trends-actor");
   let igVideos: ViralVideo[] = [];
   let igMeta: PlatformMeta = failedMeta("hashtag-proxy");
 
   const [ttResult, igResult] = await Promise.allSettled([
-    scrapeTikTokTrending({ maxItems: TT_MAX_ITEMS }),
+    fetchTikTokTwoStage(),
     scrapeInstagramByHashtag({
       hashtags: IG_HOT_HASHTAGS,
       topic: "",
@@ -1773,17 +1987,20 @@ export async function fetchTrendingSnapshot(): Promise<TrendingSnapshot> {
     }),
   ]);
 
-  if (ttResult.status === "fulfilled") {
+  if (ttResult.status === "fulfilled" && ttResult.value.ok) {
+    trendingHashtags = ttResult.value.hashtags;
     ttVideos = ttResult.value.videos;
     ttMeta = {
       source: "trends-actor",
-      actorRun: ttResult.value.runId,
-      rawCount: ttVideos.length,
+      actorRun: ttResult.value.runId, // Stage 1 run id(spec L2)
+      rawCount: ttVideos.length,      // Stage 2 视频数(spec L2)
       enrichedCount: 0,
       ok: true,
     };
   } else {
-    console.error("[trending/fetch] TikTok scrape failed:", ttResult.reason);
+    const reason =
+      ttResult.status === "rejected" ? ttResult.reason : "Stage 1 failed";
+    console.error("[trending/fetch] TikTok failed:", reason);
   }
 
   if (igResult.status === "fulfilled") {
@@ -1803,16 +2020,14 @@ export async function fetchTrendingSnapshot(): Promise<TrendingSnapshot> {
     throw new Error("[trending/fetch] both platforms failed — skip writing snapshot");
   }
 
-  // 2) 富化(playStyle / visualStyle / hook)+ 题材标签
+  // 富化(playStyle / visualStyle / hook)+ 题材标签
   const merged = [...ttVideos, ...igVideos];
   const libraryTopics = Array.from(
     new Set((await loadVideos()).map((v) => v.topic)),
   );
-
   const enriched = await enrichBatch(merged);
   const classified = await classifyTopics(enriched, libraryTopics);
 
-  // enrichedCount 按平台回填
   ttMeta.enrichedCount = classified.filter((v) => v.platform === "tiktok").length;
   igMeta.enrichedCount = classified.filter((v) => v.platform === "instagram").length;
 
@@ -1820,6 +2035,7 @@ export async function fetchTrendingSnapshot(): Promise<TrendingSnapshot> {
     schemaVersion: TRENDING_SCHEMA_VERSION,
     week: currentWeek(),
     capturedAt: new Date().toISOString(),
+    trendingHashtags,
     videos: classified,
     meta: {
       tiktok: ttMeta,
@@ -1833,7 +2049,7 @@ export async function fetchTrendingSnapshot(): Promise<TrendingSnapshot> {
 - [ ] **Step 4: 跑测试确认通过**
 
 Run: `npm test -- tests/trending/fetch.test.ts`
-Expected: PASS(4 passed)
+Expected: PASS(6 passed)
 
 - [ ] **Step 5: 跑全量测试 + 类型检查**
 
@@ -1844,7 +2060,7 @@ Expected: 全部 PASS,无类型错误
 
 ```bash
 git add lib/trending/fetch.ts tests/trending/fetch.test.ts
-git commit -m "feat(p1): add fetchTrendingSnapshot orchestration with fault tolerance"
+git commit -m "feat(p1): two-stage TikTok fetchTrendingSnapshot orchestration"
 ```
 
 ---
@@ -1854,6 +2070,8 @@ git commit -m "feat(p1): add fetchTrendingSnapshot orchestration with fault tole
 **Files:**
 - Create: `app/api/cron/trending/route.ts`
 - Test: `tests/api/cron-trending.test.ts`
+
+> **🔧 v4.1 修订说明:** route 逻辑**不变**(它只是把 `fetchTrendingSnapshot()` 的产出透传给 `writeSnapshot` + `pruneOldSnapshots`)。唯一改动:Step 1 测试里 mock `fetchTrendingSnapshot` 的返回对象,在原有 `{ week, meta: { partial } }` 基础上**补 `trendingHashtags: []`**(v4 后 `TrendingSnapshot` 含此必填字段)。其余照原 task 实施。
 
 - [ ] **Step 1: 写失败测试**
 
@@ -2049,6 +2267,221 @@ git commit -m "feat(p1): add vercel.ts with weekly trending cron schedule"
 
 ---
 
+## Task P1.15: `computeHashtagVelocity` —— hashtag 级 velocity(v4.1 新增,纯函数 TDD)
+
+**Files:**
+- Modify: `lib/trending/types.ts`(加 `TrendingHashtagWithVelocity` 类型)
+- Modify: `lib/trending/velocity.ts`(追加 `computeHashtagVelocity`)
+- Test: `tests/trending/hashtag-velocity.test.ts`
+
+> **v4.1 新增(spec 2.8 H2)。** 两阶段下视频集合周周变 → `computeVelocity` 静默退化成几乎全 NEW。趋势 hashtag 榜才有跨周连续性 —— `computeHashtagVelocity` 是 v4 里真正能做周环比的对象,看板的涨跌 badge 主要挂它。**`computeVelocity` 不动**,这是追加函数;复用已有的私有 `classifyTrend(weekOverWeek, isNew)`。
+
+- [ ] **Step 1: 加 `TrendingHashtagWithVelocity` 类型到 `lib/trending/types.ts`**
+
+在 `TrendingVideoWithVelocity` type 之后追加:
+
+```typescript
+/** v4.1 新增:hashtag 级 velocity 派生类型 —— 趋势连续性主载体(见 spec 2.8)。 */
+export type TrendingHashtagWithVelocity = TrendingHashtag & {
+  velocity: {
+    /** (本周 viewCount - 上周 viewCount) / 上周 viewCount;上周无此 hashtag = null */
+    weekOverWeek: number | null;
+    rank: { current: number; previous: number | null };
+    trend: TrendTag;
+  };
+};
+```
+
+- [ ] **Step 2: 写失败测试**
+
+创建 `tests/trending/hashtag-velocity.test.ts`:
+
+```typescript
+import { describe, expect, it } from "vitest";
+import { computeHashtagVelocity } from "@/lib/trending/velocity";
+import {
+  TRENDING_SCHEMA_VERSION,
+  type TrendingHashtag,
+  type TrendingSnapshot,
+} from "@/lib/trending/types";
+
+function ht(name: string, rank: number, viewCount: number): TrendingHashtag {
+  return { name, rank, viewCount, videoCount: 10, rankDiff: 0, isNew: false };
+}
+
+function snap(
+  week: string,
+  hashtags: TrendingHashtag[],
+  over: Partial<TrendingSnapshot> = {},
+): TrendingSnapshot {
+  return {
+    schemaVersion: TRENDING_SCHEMA_VERSION,
+    week,
+    capturedAt: `${week}-captured`,
+    trendingHashtags: hashtags,
+    videos: [],
+    meta: {
+      tiktok: { source: "trends-actor", actorRun: "r", rawCount: 0, enrichedCount: 0, ok: true },
+      instagram: { source: "hashtag-proxy", actorRun: "", rawCount: 0, enrichedCount: 0, ok: true },
+      partial: false,
+    },
+    ...over,
+  };
+}
+
+describe("computeHashtagVelocity", () => {
+  it("marks every hashtag NEW when previous is null", () => {
+    const cur = snap("2026-W20", [ht("a", 1, 1000), ht("b", 2, 500)]);
+    const result = computeHashtagVelocity(cur, null);
+    expect(result).toHaveLength(2);
+    expect(result.every((h) => h.velocity.trend === "new")).toBe(true);
+    expect(result.every((h) => h.velocity.weekOverWeek === null)).toBe(true);
+    expect(result.every((h) => h.velocity.rank.previous === null)).toBe(true);
+  });
+
+  it("marks every hashtag NEW when previous schemaVersion mismatches", () => {
+    const cur = snap("2026-W20", [ht("a", 1, 1000)]);
+    const prev = snap("2026-W19", [ht("a", 1, 800)], {
+      schemaVersion: 99 as unknown as typeof TRENDING_SCHEMA_VERSION,
+    });
+    expect(computeHashtagVelocity(cur, prev)[0].velocity.trend).toBe("new");
+  });
+
+  it("computes rising / falling / stable from viewCount week-over-week", () => {
+    const prev = snap("2026-W19", [ht("up", 1, 1000), ht("down", 2, 1000), ht("flat", 3, 1000)]);
+    const cur = snap("2026-W20", [ht("up", 1, 1500), ht("down", 2, 800), ht("flat", 3, 1010)]);
+    const result = computeHashtagVelocity(cur, prev);
+    const byName = Object.fromEntries(result.map((h) => [h.name, h.velocity]));
+    expect(byName.up.trend).toBe("rising");
+    expect(byName.up.weekOverWeek).toBeCloseTo(0.5);
+    expect(byName.down.trend).toBe("falling");
+    expect(byName.flat.trend).toBe("stable");
+  });
+
+  it("matches hashtags by name and tracks rank change", () => {
+    const prev = snap("2026-W19", [ht("a", 3, 1000)]);
+    const cur = snap("2026-W20", [ht("a", 1, 1100)]);
+    const a = computeHashtagVelocity(cur, prev)[0];
+    expect(a.velocity.rank).toEqual({ current: 1, previous: 3 });
+  });
+
+  it("marks a hashtag NEW when absent from previous", () => {
+    const prev = snap("2026-W19", [ht("a", 1, 1000)]);
+    const cur = snap("2026-W20", [ht("a", 1, 1000), ht("newbie", 2, 900)]);
+    const newbie = computeHashtagVelocity(cur, prev).find((h) => h.name === "newbie")!;
+    expect(newbie.velocity.trend).toBe("new");
+    expect(newbie.velocity.weekOverWeek).toBeNull();
+  });
+
+  it("treats present-but-prev-viewCount-0 as stable, not new", () => {
+    const prev = snap("2026-W19", [ht("a", 1, 0)]);
+    const cur = snap("2026-W20", [ht("a", 1, 5000)]);
+    const a = computeHashtagVelocity(cur, prev)[0];
+    expect(a.velocity.trend).toBe("stable");
+    expect(a.velocity.weekOverWeek).toBeNull();
+    expect(a.velocity.rank.previous).toBe(1);
+  });
+
+  it("sorts output by current rank ascending", () => {
+    const cur = snap("2026-W20", [ht("third", 3, 1), ht("first", 1, 1), ht("second", 2, 1)]);
+    expect(computeHashtagVelocity(cur, null).map((h) => h.name)).toEqual([
+      "first",
+      "second",
+      "third",
+    ]);
+  });
+});
+```
+
+- [ ] **Step 3: 跑测试确认失败**
+
+Run: `npm test -- tests/trending/hashtag-velocity.test.ts`
+Expected: FAIL —— `computeHashtagVelocity` is not exported
+
+- [ ] **Step 4: 实现 `computeHashtagVelocity`**
+
+在 `lib/trending/velocity.ts`:
+
+把顶部 type import 从:
+```typescript
+import {
+  TRENDING_SCHEMA_VERSION,
+  type TrendingSnapshot,
+  type TrendingVideoWithVelocity,
+  type TrendTag,
+} from "./types";
+```
+改成(追加 `TrendingHashtag` + `TrendingHashtagWithVelocity`):
+```typescript
+import {
+  TRENDING_SCHEMA_VERSION,
+  type TrendingHashtag,
+  type TrendingHashtagWithVelocity,
+  type TrendingSnapshot,
+  type TrendingVideoWithVelocity,
+  type TrendTag,
+} from "./types";
+```
+
+在文件末尾追加(`classifyTrend` 已是文件内私有函数,直接复用):
+
+```typescript
+
+/**
+ * v4.1:hashtag 级 velocity —— 与 computeVelocity 同构,比较对象换成
+ * trendingHashtags,按 name 跨周匹配。趋势 hashtag 榜有跨周连续性,这是 v4
+ * 两阶段下真正能做周环比的对象(见 spec 2.8 H2)。输出按当周 rank 升序。
+ * 边界:previous 为 null / schemaVersion 不一致 → 全标 new。
+ */
+export function computeHashtagVelocity(
+  current: TrendingSnapshot,
+  previous: TrendingSnapshot | null,
+): TrendingHashtagWithVelocity[] {
+  const curSorted = [...current.trendingHashtags].sort(
+    (a, b) => a.rank - b.rank,
+  );
+
+  const usePrevious =
+    previous !== null && previous.schemaVersion === TRENDING_SCHEMA_VERSION;
+
+  const prevByName = new Map<string, TrendingHashtag>();
+  if (usePrevious) {
+    for (const h of previous!.trendingHashtags) prevByName.set(h.name, h);
+  }
+
+  return curSorted.map((h) => {
+    const prev = prevByName.get(h.name);
+    const inPrevious = prev !== undefined;
+    const weekOverWeek =
+      inPrevious && prev!.viewCount > 0
+        ? (h.viewCount - prev!.viewCount) / prev!.viewCount
+        : null;
+    return {
+      ...h,
+      velocity: {
+        weekOverWeek,
+        rank: { current: h.rank, previous: inPrevious ? prev!.rank : null },
+        trend: classifyTrend(weekOverWeek, !inPrevious),
+      },
+    };
+  });
+}
+```
+
+- [ ] **Step 5: 跑测试确认通过 + 全量 + 类型检查**
+
+Run: `npm test -- tests/trending/hashtag-velocity.test.ts && npm test && npx tsc --noEmit`
+Expected: hashtag-velocity 7 passed;全量 PASS;tsc clean
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add lib/trending/types.ts lib/trending/velocity.ts tests/trending/hashtag-velocity.test.ts
+git commit -m "feat(p1): add computeHashtagVelocity for cross-week trend continuity"
+```
+
+---
+
 # Phase P2 — Trending 读侧 surfaces
 
 > P2 产出:`/trending` 看板可访问、`/analyze` 的 retrieval 多一层免费 snapshot 兜底。依赖 P1 的快照数据格式。
@@ -2062,6 +2495,8 @@ git commit -m "feat(p1): add vercel.ts with weekly trending cron schedule"
 
 > 本任务两个 commit checkpoint:Step 5 提交纯函数,Step 12 提交链路集成 —— 各自独立可验证。
 > (回应 plan review M3:不做会触发 P2 整段重编号的拆分,改为任务内双 commit 保留编号稳定。)
+>
+> **🔧 v4.1 修订说明:** 链路集成测试(Step 7)里的 `snapshotWith()` helper 构造的对象**补一行 `trendingHashtags: [],`**(v4 后 `TrendingSnapshot` 含此必填字段,否则 tsc 报错)。`pickSnapshotMatches` 纯函数与 retrieval 兜底层逻辑**不受 v4 影响**(只读 `videos[]`),其余照原 task 实施。
 
 - [ ] **Step 1: 写失败测试**
 
@@ -2393,11 +2828,18 @@ git commit -m "feat(p2): insert trending-snapshot fallback layer into retrieval 
 
 ---
 
-## Task P2.2: `app/api/trending/route.ts` —— 精简卡片投影
+## Task P2.2: `app/api/trending/route.ts` —— 精简卡片投影 + 趋势 hashtag 榜投影
 
 **Files:**
 - Create: `app/api/trending/route.ts`
 - Test: `tests/api/trending-route.test.ts`
+
+> **🔧 v4.1 修订说明(spec v4.1 H3 决策:投影带 hashtag 榜):** 原 task 的 `/api/trending` 只返回 `{ week, cards }`。v4.1 改为返回 `{ week, cards, trendingHashtags }`:
+> - 新增 `trendingHashtags` —— 对 `snapshot.trendingHashtags` 过 `computeHashtagVelocity(current, previous)`(P1.15),再做**精简投影**:每项只留 `{ name, rank, viewCount, videoCount, velocity }`(不含 `rankDiff` / `industryName` 等);看板 hashtag 榜视图(spec 4.7)用
+> - `cards`(视频精简投影)逻辑不变,但每张 card 的投影里**追加 `trendingContext` 字段**(`{ hashtag, hashtagRank } | undefined`),供卡片显示「来自趋势 #hashtag」小字
+> - Step 1 测试相应追加:① 验证 response 含 `trendingHashtags` 且是精简投影(不含 `rankDiff`)② 验证 card 投影含 `trendingContext` ③ 无快照时 `trendingHashtags: []`
+> - 测试 fixture 的 `TrendingSnapshot` 要含 `trendingHashtags`
+> 其余(精简投影是 list 端点最佳实践、平台筛选、空状态)照原 task 实施。
 
 - [ ] **Step 1: 写失败测试**
 
@@ -2561,6 +3003,8 @@ git commit -m "feat(p2): add /api/trending endpoint with slim card projection"
 - Test: `tests/trending/trending-card-format.test.ts`
 
 > badge 文案的格式化逻辑抽成纯函数 `formatVelocityBadge` 单独测(architect L4:`weekOverWeek: null` 绝不渲染 `+null%` / `NaN%`)。
+>
+> **🔧 v4.1 修订说明:** `TrendingCard` 组件**追加渲染** `card.trendingContext`(若有)—— 在卡片上显示一行小字「来自趋势 #{hashtag}(榜 #{hashtagRank})」(spec 4.7)。`trendingContext` 为 `undefined` 时不渲染该行(IG 视频、非 trending 来源)。`formatVelocityBadge` 纯函数与 L4 的 null 处理**不变**;card 的 props 类型补上 `trendingContext?: { hashtag: string; hashtagRank: number }`。
 
 - [ ] **Step 1: 写失败测试**
 
@@ -2785,6 +3229,13 @@ git commit -m "feat(p2): add PlatformFilter client component"
 - Create: `components/trending/TrendingBoard.tsx`
 
 > client component:持有 platform 筛选状态,按筛选请求 `/api/trending`。初始数据由 RSC(P2.6)注入,避免首屏空白。
+>
+> **🔧 v4.1 修订说明:** `TrendingBoard` 除原有的视频卡片网格外,**新增一个趋势 hashtag 榜视图**(spec 4.7):
+> - props 追加 `initialTrendingHashtags`(带 velocity 的精简 hashtag 投影,来自 P2.6 RSC / `/api/trending`)
+> - 渲染一个 hashtag 榜列表区块:每行 `#name` · rank · viewCount · videoCount · **周环比 badge**(用 hashtag 的 `velocity` 出 rising/falling/stable/new,复用 P2.3 的 `formatVelocityBadge` 或同款逻辑)
+> - hashtag 榜放在视频网格之上或并排;平台筛选切到 Instagram 时 hashtag 榜可隐藏(IG 无 trendingHashtags)
+> - 拉 `/api/trending` 的 fetch 把返回的 `trendingHashtags` 也 setState 进去
+> 视频网格、平台筛选状态、空状态逻辑不变。
 
 - [ ] **Step 1: 实现 `components/trending/TrendingBoard.tsx`**
 
@@ -2874,6 +3325,8 @@ git commit -m "feat(p2): add TrendingBoard client component with platform filter
 - Create: `app/trending/page.tsx`
 
 > RSC:服务端直读最新 + 上周快照,算 velocity,把精简卡片注入 client `TrendingBoard`。
+>
+> **🔧 v4.1 修订说明:** RSC 除 `computeVelocity(current, previous)` 出视频 velocity 外,**还要调 `computeHashtagVelocity(current, previous)`**(P1.15)算 hashtag 级 velocity,做精简投影后作为 `initialTrendingHashtags` 一并注入 `TrendingBoard`(P2.5)。空状态(无快照)时 `initialTrendingHashtags = []`。视频卡片投影逻辑不变,但每张 card 投影**追加 `trendingContext`**(透传视频的该字段)。
 
 - [ ] **Step 1: 实现 `app/trending/page.tsx`**
 
@@ -3064,6 +3517,36 @@ Expected: 看到 P0 → P1 → P2 全部 commit,顺序合理
 
 Run: `git push -u origin feat/hot-tracking-p0-p2`
 Expected: 分支推到 remote
+
+---
+
+## v4.1 plan 修订记录(spec v4 → v4.1 驱动)
+
+实施进行到 P1.7 时,probe 实测发现 `clockworks/tiktok-trends-scraper` 返回 hashtag 榜非视频,spec 改到 v4.1(两阶段 TikTok + hashtag/video 双留 + `computeHashtagVelocity`)。本 plan 据 spec v4.1 同步重写:
+
+**完整重写的任务(含完整代码 + 测试):**
+| Task | v4.1 前 | v4.1 后 |
+|---|---|---|
+| **P1.8** | `normalizeTikTokTrendItem`(视频 normalizer,BLOCKED ON P1.7) | v4 schema 类型层(`TrendingHashtag` 类型 + `TrendingSnapshot.trendingHashtags` + Zod 同步 + `ViralVideo.trendingContext` + 修两处 test helper)+ `normalizeTikTokTrendingHashtag`;两个 commit checkpoint;字段映射用 P1.7 probe 实测结果 |
+| **P1.9** | `scrapeTikTokTrending` 返回视频 | `scrapeTikTokTrendingHashtags` 返回 `TrendingHashtag[]`(Stage 1);Stage 2 直接复用现有 `scrapeTikTokByHashtag` |
+| **P1.12** | `fetch.ts` 单阶段抓取 | TikTok 两阶段编排(Stage 1 hashtag 榜 → top-5 → Stage 2 复用 scraper 抓视频 + 打 `trendingContext` 首次锁定);测试 mock 整段重写;成本参数 `N=5 / 30 条` 钉死 |
+
+**新增任务:**
+| Task | 内容 |
+|---|---|
+| **P1.15** | `computeHashtagVelocity` 纯函数 + `TrendingHashtagWithVelocity` 类型(spec 2.8 H2:hashtag 级 velocity 作趋势连续性主载体);TDD,复用 `classifyTrend` |
+
+**加 🔧 v4.1 修订说明(原 task 体保留,标注精确增量):**
+- **P1.13** —— cron 测试 fixture 补 `trendingHashtags: []`(route 逻辑不变)
+- **P2.1** —— `snapshotWith()` helper 补 `trendingHashtags: []`(retrieval 逻辑不变)
+- **P2.2** —— `/api/trending` 返回加 `trendingHashtags` 精简投影 + card 投影加 `trendingContext`
+- **P2.3** —— `TrendingCard` 加渲染 `trendingContext` 小字
+- **P2.5** —— `TrendingBoard` 加趋势 hashtag 榜视图
+- **P2.6** —— RSC 加调 `computeHashtagVelocity` + 注入 `initialTrendingHashtags`
+
+**不受影响**(plan 无改动):P0.1 / P1.1 / P1.2 / P1.3(基础)/ P1.5(`computeVelocity` 不动)/ P1.6 / P1.7 / P1.10 / P1.11 / P1.14 / P2.4 / P2.7 / P2.8
+
+> **实施恢复点:** spec v4.1 + 本 plan 修订经 window 3 review 通过后,从 **P1.8** 恢复 subagent-driven 实施。
 
 ---
 
