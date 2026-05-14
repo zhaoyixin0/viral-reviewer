@@ -13,8 +13,9 @@ function sortedByViews(videos: ViralVideo[]): ViralVideo[] {
   return [...videos].sort((a, b) => b.views - a.views);
 }
 
-function classifyTrend(weekOverWeek: number | null): TrendTag {
-  if (weekOverWeek === null) return "new";
+function classifyTrend(weekOverWeek: number | null, isNew: boolean): TrendTag {
+  if (isNew) return "new";
+  if (weekOverWeek === null) return "stable"; // 在上周出现过但无法算环比(prevViews=0)
   if (weekOverWeek > TREND_THRESHOLD) return "rising";
   if (weekOverWeek < -TREND_THRESHOLD) return "falling";
   return "stable";
@@ -47,11 +48,12 @@ export function computeVelocity(
   }
 
   return curSorted.map((v, currentRank) => {
+    const inPrevious = prevByIdViews.has(v.id);
     const prevViews = prevByIdViews.get(v.id);
     const prevRank = prevRankById.has(v.id) ? prevRankById.get(v.id)! : null;
 
     const weekOverWeek =
-      prevViews !== undefined && prevViews > 0
+      inPrevious && prevViews !== undefined && prevViews > 0
         ? (v.views - prevViews) / prevViews
         : null;
 
@@ -60,7 +62,7 @@ export function computeVelocity(
       velocity: {
         weekOverWeek,
         rank: { current: currentRank, previous: prevRank },
-        trend: classifyTrend(weekOverWeek),
+        trend: classifyTrend(weekOverWeek, !inPrevious),
       },
     };
   });

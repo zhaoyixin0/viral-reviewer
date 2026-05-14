@@ -121,4 +121,13 @@ describe("computeVelocity", () => {
     expect(result[0].id).toBe("high");
     expect(result[1].id).toBe("low");
   });
+
+  it("marks a video stable (not new) when present in previous but prevViews was 0", () => {
+    const cur = snapshot("2026-W20", [vid("a", 5000)]);
+    const prev = snapshot("2026-W19", [vid("a", 0)]);
+    const result = computeVelocity(cur, prev);
+    expect(result[0].velocity.trend).toBe("stable");
+    expect(result[0].velocity.weekOverWeek).toBeNull();
+    expect(result[0].velocity.rank.previous).toBe(0);
+  });
 });
