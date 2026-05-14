@@ -1,9 +1,11 @@
 # Hot Tracking — P0/P1/P2 Design
 
-**Status**: ✅ **设计完成(v3,已纳入两轮 architect review)— 待用户 review 后转 writing-plans**
+**Status**: 🔧 **v4 —— P1.7 probe 实测发现 TikTok actor 选型错误,本版修正为两阶段方案 + 视频带 hashtag 趋势上下文**
 **Worktree**: `.claude/worktrees/hot-tracking`(branch `feat/hot-tracking-p0-p2`)
 **Started**: 2026-05-13
 **Author**: Claude (Opus 4.7) + yixin
+
+> **v4 修订摘要(2026-05-14):** 实施到 P1.7 时,probe 实测发现 `clockworks/tiktok-trends-scraper` 返回的是**热门 hashtag 排行榜**(rank/聚合 viewCount/videoCount/趋势直方图),**不是单条热门视频** —— 戳破了 v1-v3 H2 的核心假设。重调研结论:唯一直出「国家级 trending 视频」的 actor(`lexis-solutions/...`)是 $39/月订阅,超预算。用户决策:**两阶段方案**(趋势 hashtag → 该 hashtag 下的视频),且**视频与 hashtag 信息都保留** —— 每条视频带上它所属趋势 hashtag 的 rank 等上下文,「为什么火」有趋势背书。本版据此改写 H2 决策、数据流、Section 2 schema、Section 4 看板。详见末尾「v3 → v4 处置」。
 
 ---
 
@@ -46,7 +48,7 @@
 | Cron secret | **Vercel 自带 `CRON_SECRET` env var** |
 | 第一周无上周数据时 velocity | **全部标 🆕 NEW** |
 | trending 视频题材归类 | **cron 时 Haiku 打题材标签**(本地库题材列表当 hint,输出带 confidence) |
-| TikTok trending 数据源 | **`clockworks/tiktok-trends-scraper`**(已确认,见 H2) |
+| TikTok trending 数据源 | **两阶段**(v4 修正,见 H2):Stage 1 `clockworks/tiktok-trends-scraper` 抓趋势 hashtag 榜 → Stage 2 取 top-N 趋势 hashtag 喂现有 `scrapeTikTokByHashtag` 抓其下高播放视频。hashtag 榜与视频**都保留落盘**;每条视频带 `trendingContext`(来源趋势 hashtag + 其 rank) |
 | Instagram trending 数据源 | **热门 hashtag 代理**:复用 `scrapeInstagramByHashtag` + 人工维护的热门 hashtag 列表。**非真 Explore**,UI 明确标注。真 Explore 进 v2 backlog |
 
 ### 关键论证
@@ -61,55 +63,70 @@
 - 本地池作为「经典样本」UI 标 badge 保留
 - live + trending-snapshot 才是「新」的数据源,对它们应用 filter
 
+**为什么 TikTok 用两阶段方案(v4 修正,P1.7 probe 实测驱动):**
+- v1-v3 的 H2 假设 `clockworks/tiktok-trends-scraper` 直出 trending 视频 —— 这是从 actor 文档摘要里**误推**的。
+- P1.7 probe 实测:该 actor 抓的是 TikTok Creative Center「热门 hashtag」榜,输出是 **hashtag 趋势记录**(`name` / `rank` / 聚合 `viewCount` / `videoCount` / `trendingHistogram` / `rankDiff` / `markedAsNew`),**无任何 per-video 字段**(没有单条视频的 views/likes/duration/author/cover)。
+- 重调研全部候选:
+  - `clockworks/tiktok-discover-scraper` —— 出视频带完整互动数据,但输入是 **hashtag**,非全局 trending,且便宜($0.03/run + $0.003/item)
+  - `lexis-solutions/tiktok-trending-videos-scraper` —— **唯一**直出「国家级 trending 视频」的 actor,但 **$39/月订阅**,且互动数据要开 `includeDetailedVideoData`(更贵),超 spec「$5-10/月」预算
+  - 便宜的 clockworks 系全是 hashtag 路线
+- **结论:两阶段是成本合理的正解。** Stage 1 `tiktok-trends-scraper` 拿趋势 hashtag 榜(便宜,且本身就是权威趋势信号);Stage 2 取榜上 top-N hashtag 喂现有 `scrapeTikTokByHashtag` 抓其下高播放视频。
+- **hashtag 与视频都要(用户决策):** 不把 Stage 1 的 hashtag 榜当一次性中间产物丢掉 —— 它和 Stage 2 的视频**一起落盘**。每条视频带 `trendingContext`(它来自哪个趋势 hashtag、该 hashtag 的 rank),让「这条视频为什么算趋势」有 hashtag 榜背书,看板也能同时展示趋势 hashtag 榜 + 趋势视频。
+
 **为什么 IG 用 hashtag 代理而非真 Explore**(architect H2 + memory `video-download-stack.md`):
 - Apify Store 无干净的 IG Explore/trending actor —— 评估过的候选 `apify/instagram-reel-scraper` 只支持 profile/hashtag/username 输入,无 explore feed 模式
 - IG Explore feed 高度个性化、对匿名访问封闭,无 cookies 大概率拿不到
 - 折中:cron 复用现有 `scrapeInstagramByHashtag`(包 `apify/instagram-hashtag-scraper`)抓一组人工维护的「当前热门 hashtag」,作为 IG 趋势的**代理信号**,UI 上与 TikTok 真趋势区分标注
+- 注:IG 侧本就是「hashtag → 视频」,与 v4 后的 TikTok 两阶段思路天然一致;差别仅在 IG 的 hashtag 来源是人工维护列表,TikTok 是 Stage 1 actor 实时抓的趋势榜
 
 ---
 
 ## 选定方案 A — 周快照
 
 ### 一句话总览
-Vercel Cron 每周一次抓 TikTok 趋势 + IG 热门 hashtag → Haiku 富化 + 题材标签 → 存 Vercel Blob → 看板渲染 + /analyze 兜底用。
+Vercel Cron 每周一次:TikTok 走两阶段(趋势 hashtag 榜 → 其下视频),IG 走热门 hashtag 代理 → Haiku 富化 + 题材标签 → hashtag 榜 + 视频一起存 Vercel Blob → 看板渲染 + /analyze 兜底用。
 
 ### 数据流
 
 ```
-┌─ Vercel Cron: 每周一 08:00 UTC ─────────────────────┐
-│  → POST /api/cron/trending                          │
-│      认证: Cron header(CRON_SECRET)                │
-│            或 admin token(手动触发,见 H1)         │
-│  → fetchTrendingSnapshot()                          │
-│      ├─ Apify: clockworks/tiktok-trends-scraper     │
-│      │         (region + 30d time window)           │
-│      └─ Apify: scrapeInstagramByHashtag             │
-│                (人工维护的热门 hashtag 列表)        │
-│  → enrichSnapshot()                                 │
-│      ├─ enrichBatch(playStyle/visual/hook)          │
-│      └─ Haiku 题材标签 + confidence(本地库题材hint)│
-│  → writeSnapshot(week)  →  Vercel Blob              │
-│      key: trending/snapshot-<week>.json             │
-│  → pruneOldSnapshots(keepWeeks=8)                   │
-└─────────────────────────────────────────────────────┘
+┌─ Vercel Cron: 每周一 08:00 UTC ───────────────────────────────┐
+│  → POST /api/cron/trending                                    │
+│      认证: Cron header(CRON_SECRET)/ admin token(见 H1)     │
+│  → fetchTrendingSnapshot()                                    │
+│    ┌─ TikTok 两阶段 ───────────────────────────────────────┐  │
+│    │ Stage 1: clockworks/tiktok-trends-scraper             │  │
+│    │   → trendingHashtags[](rank/viewCount/videoCount…)   │  │
+│    │ Stage 2: 取 top-N hashtag → scrapeTikTokByHashtag     │  │
+│    │   → 视频,每条打 trendingContext{hashtag, hashtagRank}│  │
+│    └────────────────────────────────────────────────────────┘ │
+│    └─ IG: scrapeInstagramByHashtag(人工维护热门 hashtag 列表) │
+│  → enrichSnapshot()                                           │
+│      ├─ enrichBatch(playStyle/visual/hook)                    │
+│      └─ Haiku 题材标签 + confidence(本地库题材 hint)         │
+│  → writeSnapshot(week)  →  Vercel Blob                        │
+│      key: trending/snapshot-<week>.json                       │
+│      含: trendingHashtags[](TT 榜) + videos[](TT+IG)        │
+│  → pruneOldSnapshots(keepWeeks=8)                             │
+└────────────────────────────────────────────────────────────────┘
 
            ▼                              ▼
 ┌─────────────────────────┐   ┌─────────────────────────────┐
 │ /trending 看板(new)    │   │ /analyze(existing)         │
 │  - SSR RSC 直读快照      │   │  retrieval.ts 升级:         │
-│  - velocity.ts 算 badge │   │   ① P0: ≤30d filter on      │
-│  - top 50 合并排序       │   │      live + snapshot only   │
-│  - platform badge       │   │   ② cache miss 多一层兜底:  │
+│  - 趋势 hashtag 榜 +     │   │   ① P0: ≤30d filter on      │
+│    趋势视频两个视图      │   │      live + snapshot only   │
+│  - velocity.ts 算 badge │   │   ② cache miss 多一层兜底:  │
 │  - /api/trending 精简投影│   │      trending snapshot      │
 │    (平台筛选用)         │   │      按 topic 模糊匹配采样  │
 └─────────────────────────┘   └─────────────────────────────┘
 ```
 
 ### 成本估算
-- **TikTok**:`clockworks/tiktok-trends-scraper` `$1.70 / 1000 results`,50 条/周 ≈ **$0.09/周**
-- **Instagram**:`apify/instagram-hashtag-scraper` `$2.60 / 1000 results`,~50 条/周 ≈ **$0.13/周**
+- **TikTok Stage 1**:`clockworks/tiktok-trends-scraper` —— 抓趋势 hashtag 榜,1 run/周,≈ **$0.05-0.10/周**
+- **TikTok Stage 2**:`scrapeTikTokByHashtag` 跑 top-N 趋势 hashtag(N≈5-8),复用现有 scraper;视频量与现有 /analyze 实时抓同量级,≈ **$0.10-0.20/周**
+- **Instagram**:`apify/instagram-hashtag-scraper`,~50 条/周 ≈ **$0.13/周**
 - cron 时多一笔 Haiku 富化 + 题材分类(~100 条/周,成本可忽略)
-- 合计 **≤ $5/月**(含 Apify 平台 run 开销冗余),远低于日快照方案
+- 合计 **≤ $5/月**(含 Apify 平台 run 开销冗余)—— 仍在预算内,远低于 `lexis-solutions` 的 $39/月订阅方案
 - 8 周滚动 = 自然形成 velocity history
 
 ### 备选已 reject
@@ -129,27 +146,30 @@ Vercel Cron 每周一次抓 TikTok 趋势 + IG 热门 hashtag → Haiku 富化 +
 
 | 模块 | 状态 | 职责 |
 |---|---|---|
-| `lib/utils/iso-week.ts` | 🆕 新增 | 从 `blob-cache.ts` 抽出的 `getIsoWeek()` 纯函数,两处共用 |
-| `lib/trending/types.ts` | 🆕 新增 | `TrendingSnapshot` / `TrendingVideoWithVelocity` 类型(含 `schemaVersion`) |
+| `lib/utils/iso-week.ts` | ✅ 已完成 (P1.2) | 从 `blob-cache.ts` 抽出的 `getIsoWeek()` 纯函数,两处共用 |
+| `lib/trending/types.ts` | ✅ 已完成 (P1.3) /🔧 v4 追加 | 已有 `TrendingSnapshot` / `PlatformMeta` / `TrendingVideoWithVelocity`;**v4 追加** `TrendingHashtag` 类型 + `TrendingSnapshot.trendingHashtags[]` 字段 + loose Zod schema 同步加 `trendingHashtags` |
 | `lib/trending/ig-hot-hashtags.ts` | 🆕 新增 | 人工维护的 IG 热门 hashtag 列表 + 维护说明注释 |
-| `lib/trending/fetch.ts` | 🆕 新增 | 调 TikTok trends actor + IG hashtag 代理 + `enrichSnapshot()` |
-| `lib/trending/snapshot-store.ts` | 🆕 新增 | Blob 读写 + 周 key + `pruneOldSnapshots()` |
-| `lib/trending/velocity.ts` | 🆕 新增 | 纯函数:对比相邻两周快照算 velocity / rank / trend |
+| `lib/trending/fetch.ts` | 🆕 新增 | TikTok 两阶段(Stage 1 趋势 hashtag → Stage 2 该 hashtag 下视频 + 打 `trendingContext`)+ IG hashtag 代理 + `enrichSnapshot()` |
+| `lib/trending/snapshot-store.ts` | ✅ 已完成 (P1.6) | Blob 读写 + 周 key + `pruneOldSnapshots()`(v4 schema 变化由 types.ts 的 loose Zod 吸收,本文件逻辑不变) |
+| `lib/trending/velocity.ts` | ✅ 已完成 (P1.5) | 纯函数:对比相邻两周快照算 velocity / rank / trend(只比 `videos[]` 的 id/views,v4 不受影响) |
 | `lib/trending/topic-classifier.ts` | 🆕 新增 | Haiku 给 trending 视频打题材标签 + confidence(本地库题材当 hint) |
 | `app/api/cron/trending/route.ts` | 🆕 新增 | Cron handler(双认证:cron header / admin token + 失败容错) |
-| `app/trending/page.tsx` | 🆕 新增 | 看板 RSC,直读快照 |
+| `app/trending/page.tsx` | 🆕 新增 | 看板 RSC,直读快照,展示趋势 hashtag 榜 + 趋势视频两个视图 |
 | `app/api/trending/route.ts` | 🆕 新增 | 看板平台筛选用,返回**精简卡片投影**(非完整快照) |
 | `vercel.ts` | 🆕 新增 | cron schedule 配置(需 `npm i @vercel/config`) |
-| `lib/apify/scrapers.ts` | ✏️ 修改(追加) | 新增 `scrapeTikTokTrending`(包装 `clockworks/tiktok-trends-scraper`) |
-| `lib/review-engine/types.ts` | ✏️ 修改 | `ViralVideo` 加可选 `topicConfidence?: number`(trending 题材标签置信度) |
-| `lib/topic-cache/blob-cache.ts` | ✏️ 修改 | 改为 import `lib/utils/iso-week.ts`(去重) |
-| `lib/research/topic-research.ts` | ✏️ 修改 | TT/IG sort 前各加 30d filter(P0) |
-| `lib/review-engine/retrieval.ts` | ✏️ 修改 | cache 与 live 之间插入 snapshot 兜底层 |
+| `lib/apify/scrapers.ts` | ✏️ 修改(追加) | 新增 `scrapeTikTokTrendingHashtags`(包装 `clockworks/tiktok-trends-scraper`,**返回 `TrendingHashtag[]`**,Stage 1);Stage 2 直接复用现有 `scrapeTikTokByHashtag` |
+| `lib/apify/normalize.ts` | ✏️ 修改(追加) | 新增 `normalizeTikTokTrendingHashtag`(把 trends-scraper 的 hashtag 记录归一化为 `TrendingHashtag`);Stage 2 视频复用现有 `normalizeTikTokItem` |
+| `lib/review-engine/types.ts` | ✅ 已完成 (P1.4) /🔧 v4 追加 | 已有 `topicConfidence?: number`;**v4 追加** `ViralVideo` 可选字段 `trendingContext?: { hashtag: string; hashtagRank: number }` |
+| `lib/topic-cache/blob-cache.ts` | ✅ 已完成 (P1.2) | 改为 import `lib/utils/iso-week.ts`(去重) |
+| `lib/research/topic-research.ts` | ✅ 已完成 (P0.1) | TT/IG sort 前各加 30d filter(P0) |
+| `lib/review-engine/retrieval.ts` | 🆕 待做 (P2.1) | cache 与 live 之间插入 snapshot 兜底层 |
+| `scripts/probe-tiktok-trends.ts` | ✅ 已完成 (P1.7) | probe 脚本,实测发现 actor 返回 hashtag 榜 —— 驱动了本次 v4 修订 |
 
 ### 不动的模块
 - `lib/topic-cache/blob-cache.ts` 的缓存逻辑(trending 用独立 `trending/` namespace)
 - `lib/enrichment/batch-runner.ts` / `lib/research/enrich-one.ts` 的 `enrichBatch`(直接复用)
-- 现有 `scrapeTikTokByHashtag`(不删);`scrapeInstagramByHashtag` **复用**给 IG 代理,不改
+- 现有 `scrapeTikTokByHashtag`(不删,v4 后 Stage 2 **直接复用**它);`scrapeInstagramByHashtag` **复用**给 IG 代理,不改
+- 现有 `normalizeTikTokItem`(Stage 2 视频复用它)
 
 ---
 
@@ -180,16 +200,18 @@ Vercel Cron 每周一次抓 TikTok 趋势 + IG 热门 hashtag → Haiku 富化 +
 
 ## Section 2 — Data Schema
 
-### 2.1 `TrendingSnapshot`
+### 2.1 `TrendingSnapshot`(v4 修订)
 
-`ViralVideo` 已自带 `platform: "tiktok" | "instagram"` 字段;合并 tt+ig 单文件,无顶层 `source` 字段,靠 `v.platform` 区分。
+`ViralVideo` 已自带 `platform: "tiktok" | "instagram"` 字段;合并 tt+ig 单文件,无顶层 `source` 字段,靠 `v.platform` 区分。**v4 追加** `trendingHashtags[]` —— TikTok Stage 1 抓回的趋势 hashtag 榜,与 `videos[]` 一起落盘。
 
 ```typescript
 type TrendingSnapshot = {
-  schemaVersion: 1;        // 见 2.5,velocity.ts 跨周比较时校验
+  schemaVersion: 1;        // 见 2.5。注:v4 改了 schema 形状但 feature 未上线、无存量 v1 数据,
+                           // 故不 bump 版本号 —— "v1" 的定义直接更新为含 trendingHashtags
   week: string;            // ISO week "2026-W20"
   capturedAt: string;      // ISO timestamp
-  videos: ViralVideo[];    // tt + ig 混合;含 Haiku 题材标签写入 v.topic
+  trendingHashtags: TrendingHashtag[]; // v4 新增:TikTok Stage 1 趋势 hashtag 榜(IG 无此项,IG 用人工列表)
+  videos: ViralVideo[];    // tt + ig 混合;TT 视频带 trendingContext;含 Haiku 题材标签写入 v.topic
   meta: {
     tiktok: PlatformMeta;
     instagram: PlatformMeta;
@@ -197,10 +219,21 @@ type TrendingSnapshot = {
   };
 };
 
+// v4 新增:TikTok Stage 1 趋势 hashtag 记录(来自 clockworks/tiktok-trends-scraper)
+type TrendingHashtag = {
+  name: string;            // hashtag 名,如 "morningroutine"
+  rank: number;            // 趋势榜排名,1 = #1
+  viewCount: number;       // 该 hashtag 下视频的聚合播放量
+  videoCount: number;      // 使用该 hashtag 的视频数
+  rankDiff: number;        // 相对上期的排名变化(actor 提供;>0 上升)
+  isNew: boolean;          // actor 标记的新晋趋势
+  industryName?: string;   // actor 的行业/类目标签
+};
+
 type PlatformMeta = {
-  source: "trends-actor" | "hashtag-proxy"; // TT=真趋势, IG=hashtag 代理
-  actorRun: string;        // Apify run ID,用于追溯
-  rawCount: number;        // 抓回多少条
+  source: "trends-actor" | "hashtag-proxy"; // TT=两阶段(Stage 1 trends-actor), IG=hashtag 代理
+  actorRun: string;        // Apify run ID,用于追溯(TikTok 记 Stage 1 的 run id)
+  rawCount: number;        // 抓回多少条(TikTok 记 Stage 2 视频数)
   enrichedCount: number;   // Haiku 富化成功多少条
   ok: boolean;             // 该平台本次抓取是否成功
 };
@@ -233,9 +266,15 @@ type TrendingVideoWithVelocity = ViralVideo & {
 - `velocity.ts` 读到上周快照 `schemaVersion` 与本周不一致(或缺失)→ **当作「无上周快照」处理 → 本周全部标 NEW**,不抛错、不混算
 
 ### 2.6 `ViralVideo` 扩展与兼容性
-- `ViralVideo` 加一个可选字段 `topicConfidence?: number`(0-1,trending 题材标签置信度),与现有 Phase-1+ 可选字段(`videoFormat` / `density` 等)风格一致,向后兼容现有 enriched JSON
-- 非 trending 来源的 `ViralVideo` 不带此字段,不受影响
+- `ViralVideo` 加可选字段 `topicConfidence?: number`(0-1,trending 题材标签置信度),与现有 Phase-1+ 可选字段(`videoFormat` / `density` 等)风格一致,向后兼容现有 enriched JSON ✅ 已实现 (P1.4)
+- **v4 追加** `ViralVideo` 可选字段 `trendingContext?: { hashtag: string; hashtagRank: number }` —— TikTok Stage 2 视频记录它来自哪个趋势 hashtag、该 hashtag 在 Stage 1 榜上的 rank。让「这条视频为什么算趋势」可追溯到趋势 hashtag 榜。IG 视频与非 trending 来源的 `ViralVideo` 不带此字段。
+  - 一条视频若在多个趋势 hashtag 下都被抓到:取**首个命中(rank 最高)**的 hashtag,不存数组(v1 从简)。
+- 非 trending 来源的 `ViralVideo` 不带 `topicConfidence` / `trendingContext`,不受影响
 - 现有 `TopicCacheEntry` 不动
+
+### 2.7 loose Zod schema(v4 同步)
+- P1 实施时为「Blob 系统边界校验」加了 `TrendingSnapshotSchema`(loose Zod)。v4 schema 变化后,该 schema 需同步:`trendingHashtags` 加为 `z.array(...).optional()` 或 `z.array(...)`(passthrough 内层),保持 loose 风格 —— 旧快照(无 trendingHashtags)不应 parse 失败,故 **optional**。
+- 校验锚点不变:`schemaVersion` / `week` / `videos[].{id,views}`;`trendingHashtags` 作为 optional 结构补充。
 
 ---
 
@@ -299,7 +338,7 @@ export type RetrievalSource = "local" | "cache" | "live" | "snapshot" | "fallbac
 - `app/api/trending/route.ts` — 给前端平台筛选用
 
 ### 4.2 数据获取
-RSC 直接调 `snapshot-store.ts` 读最新 + 上周快照 → 过 `velocity.ts` 算增量 → 渲染。首屏无客户端 fetch。
+RSC 直接调 `snapshot-store.ts` 读最新 + 上周快照 → 过 `velocity.ts` 算增量 → 渲染。首屏无客户端 fetch。看板渲染**两个视图**(v4):趋势视频卡片网格(4.3)+ 趋势 hashtag 榜(4.7)。
 
 **`/api/trending` 返回精简投影(architect M1)**:该端点只返回卡片展示需要的字段(id/platform/cover/title/views/velocity/topic),**不返回完整富化快照**。理由是 list 端点最佳实践 —— 实际上 100 条富化 `ViralVideo` ≈ 200-300KB,离 Vercel 4.5MB 响应上限很远,但精简投影仍是正确做法(减少传输、前端只用得到这些字段)。参见 memory `feedback_vercel_4_5mb_limit.md`。
 
@@ -331,6 +370,14 @@ IG 卡片角标附带「热门标签」小字,与 TikTok 真趋势区分(IG 是 
 
 ### 4.6 空状态
 无任何快照时(首次部署、cron 尚未跑)渲染「首次数据将于下周一生成」,不报错。
+
+### 4.7 趋势 hashtag 榜视图(v4 新增)
+用户决策「hashtag 和视频都要」。看板除视频卡片网格外,再展示一个**趋势 hashtag 榜**(数据源:`snapshot.trendingHashtags`,仅 TikTok 有):
+- 列表/榜单形式,每行:`#hashtag` · rank · 聚合 viewCount · videoCount · rankDiff 升降箭头 · 🆕(`isNew`)
+- 排序:按 `rank` 升序
+- 点击某个 hashtag:可滚动/筛选到视频网格里 `trendingContext.hashtag` 命中该 hashtag 的视频(v1 可简化为纯展示,点击交互留 backlog)
+- 视频卡片(4.3)上,TikTok 视频额外显示一行小字「来自趋势 #hashtag(榜 #rank)」—— 即 `trendingContext`,让视频与 hashtag 榜呼应
+- IG 无 `trendingHashtags`,该视图只显示 TikTok 部分;IG 视频卡仍按既有「热门标签代理」小字标注
 
 ---
 
@@ -410,6 +457,25 @@ architect 二轮确认 v1 的 6 条已修到位,v2 新引入 3 个小问题:
 | v2-3 | `__low_confidence__` 哨兵设计含糊、污染 `v.topic` | ✅ 改用独立字段 `topicConfidence?: number`(加进 `ViralVideo`),`v.topic` 保持纯净;分类失败=不写该字段,retrieval 端视为 0 |
 
 (L322 TOP 规则降级措辞 architect 标非阻塞,未改。)
+
+### v3 → v4 处置(2026-05-14,P1.7 probe 实测驱动)
+
+实施进行到 P1.7(probe `clockworks/tiktok-trends-scraper`)时,实测发现 v1-v3 H2 的核心假设错误,触发本次 spec 修订:
+
+| # | 问题 | 处置 |
+|---|---|---|
+| v4-1 | `clockworks/tiktok-trends-scraper` 实际返回热门 **hashtag 榜**,非 trending 视频 —— v1-v3 H2 从文档摘要误推 | ✅ 重调研全部候选;TikTok 改为**两阶段**(Stage 1 趋势 hashtag 榜 → Stage 2 该 hashtag 下视频)。决策表 + 关键论证 + 数据流全部改写 |
+| v4-2 | 唯一直出 trending 视频的 `lexis-solutions/...` 是 $39/月订阅,超预算 | ✅ 否决;两阶段方案成本 ≤ $5/月,留在预算内。成本估算段重写 |
+| v4-3 | 用户要 hashtag 榜与视频都保留,视频要能追溯到趋势 hashtag | ✅ `TrendingSnapshot` 加 `trendingHashtags[]`;新增 `TrendingHashtag` 类型;`ViralVideo` 加 `trendingContext?`;看板加趋势 hashtag 榜视图(4.7) |
+| v4-4 | schema 变化波及已实现的 P1.3/P1.4 + P1 review 加的 loose Zod schema | ✅ `types.ts` 追加 `TrendingHashtag` + `trendingHashtags` 字段;`ViralVideo` 追加 `trendingContext`;loose Zod schema 把 `trendingHashtags` 加为 optional(旧快照不 parse 失败);schemaVersion 不 bump(feature 未上线无存量数据,见 2.1 注) |
+
+**对 plan 的影响:** P1.7 已完成(probe 脚本是发现问题的工具,保留)。需改写的 plan 任务:
+- **P1.8**:从「`normalizeTikTokTrendItem`(视频 normalizer)」改为「`normalizeTikTokTrendingHashtag`(hashtag 记录 normalizer)」+ `TrendingHashtag` 类型加进 types.ts + loose Zod 同步
+- **P1.9**:从「`scrapeTikTokTrending` 包装 actor 返回视频」改为「`scrapeTikTokTrendingHashtags` 返回 `TrendingHashtag[]`(Stage 1)」
+- **P1.12**(`fetch.ts`):改为 TikTok 两阶段编排 —— Stage 1 拿 hashtag 榜 → 取 top-N → Stage 2 复用 `scrapeTikTokByHashtag` 抓视频 + 打 `trendingContext` → 合并;`TrendingSnapshot` 落盘含 `trendingHashtags`
+- **P1.4 增量**:`ViralVideo` 加 `trendingContext?`(P1.4 已合入 `topicConfidence`,这是追加项,需新 task 或并入 P1.8)
+- **P2.x 看板**:P2.5/P2.6 加趋势 hashtag 榜视图;P2.3 卡片加 `trendingContext` 小字
+- 不受影响:P0.1 / P1.1 / P1.2 / P1.3(基础部分)/ P1.5 velocity / P1.6 snapshot-store / P1.10 ig-hot-hashtags / P1.11 topic-classifier / P1.13 cron route / P1.14 vercel.ts / P2.1 retrieval / P2.2 api / P2.4 / P2.7 / P2.8
 
 ---
 
