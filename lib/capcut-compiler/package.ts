@@ -1,50 +1,30 @@
 import JSZip from "jszip";
 import type { DraftContent, DraftMetaInfo } from "./schema";
+import { SETUP_BAT, SETUP_PS1, SETUP_SH } from "./setup-scripts";
 
 const README_TEMPLATE = (projectName: string, hasBgm: boolean) => `# ${projectName} · CapCut 项目导出
 
-由 Viral Reviewer 自动生成。素材已经按 AI 推荐的剪辑清单切好镜头 + 应用 push-in / pull-out 动画 + 字幕轨${hasBgm ? "+ BGM 配乐" : ""}。
+由 Viral Reviewer 自动生成。素材已按 AI 推荐的剪辑清单切好镜头 + 应用 push-in / pull-out 动画 + 字幕轨${hasBgm ? " + BGM 配乐" : ""}。
 
-## 怎么打开
+## 怎么用（一步）
+
+解压这个 zip 后，你会看到 setup 脚本和一个 \`${projectName}/\` 文件夹。
 
 ### Windows
-1. 解压这个 zip 到：
-   \`C:\\Users\\<你的用户名>\\AppData\\Local\\CapCut\\User Data\\Projects\\com.lveditor.draft\\\`
-2. 打开 CapCut 桌面版
-3. 在项目列表里看到 \`${projectName}\` —— 双击进入编辑器
+双击 \`setup.bat\`，等它显示"完成！"，然后打开 CapCut，项目列表里双击 \`${projectName}\` 即可。
 
 ### macOS
-1. 解压到：
-   \`/Users/<你的用户名>/Movies/CapCut/User Data/Projects/com.lveditor.draft/\`
-2. 打开 CapCut
+打开"终端"，把 \`setup.sh\` 拖进终端窗口回车（或 \`bash setup.sh\`），等它显示"完成！"，然后打开 CapCut。
 
-## 第一次打开
+脚本做的事：找到你电脑上的 CapCut 项目目录 → 把 \`${projectName}/\` 文件夹放进去 → 把项目文件里的素材路径改写成你电脑上的绝对路径。**纯本地文件操作，不联网。**
 
-**理想情况**：CapCut 自动 resolve 相对路径 \`materials/input.mp4\`，**不弹任何对话框**，直接进入编辑器。
+## 为什么需要这一步
 
-**如果弹"Link Media"对话框**（Last known location 显示 \`materials/input.mp4\`）：
-1. **勾上 "Link media when selecting a folder"**（对话框左下角复选框）
-2. 点 **"Link media"** 按钮
-3. 在文件选择器里**导航到解压后的 \`${"<projectName>"}/\` 目录**（不是 \`materials/\` 子目录，是上一层）
-4. CapCut 自动在 \`materials/\` 子目录里 match \`input.mp4\`，显示 "1/1 media linked"
-5. 点 OK 即可
+CapCut 用绝对路径引用素材，但这个 zip 是在服务器上生成的，不知道你会解压到哪。setup 脚本在你的电脑上补上这个绝对路径——这样 CapCut 打开时就能直接找到素材，不会弹"链接素材"对话框。
 
-**链接成功后，下次打开就不会再弹弹窗**（CapCut 把绝对路径写入了项目元数据）。${
-  hasBgm
-    ? `
+## 如果脚本说"没找到 CapCut 目录"
 
-**视频链接好后**，时间轴上的 BGM 音频轨可能仍显示红色"媒体丢失"。CapCut 一次只能 fix 一类素材。同样的流程做一次：
-- 看时间轴 audio 轨上的红色 \`bgm.mp3\`
-- CapCut 再次弹"Link Media"弹窗（Last known location: \`materials/bgm.mp3\`）
-- 同样勾 folder 模式 + 选 \`${"<projectName>"}/\` 目录
-
-之后视频和 BGM 都能完整播放。`
-    : `
-
-注意：本项目**没有独立 audio 轨**。视频自带的音轨会在视频段里直接播放。如果想单独调音量或替换 BGM，右键视频段 → "分离音频" 即可分出独立音轨。`
-}
-
-> ⚠️ 如果对话框显示 "Couldn't link"（旧版 path 是纯文件名导致 auto-link 失败），请回到 Viral Reviewer 重新导出（zip 必须含 2026-05-13 之后的 \`materials/<file>\` 相对路径格式）。
+脚本会把路径按当前位置修好，你可以直接从当前位置打开。若想把项目放进 CapCut 目录，把这个 zip 重新解压到目标位置再运行一次脚本即可。
 
 ## 项目结构
 
@@ -52,29 +32,22 @@ const README_TEMPLATE = (projectName: string, hasBgm: boolean) => `# ${projectNa
 ${projectName}/
 ├── draft_content.json   ← 时间轴 / 切镜 / 动画 / 字幕${hasBgm ? " / BGM 轨" : ""}
 ├── draft_meta_info.json ← 项目元数据
-└── materials/
-    ├── input.mp4        ← 你上传的原视频（含原音轨）${
-      hasBgm
-        ? `
-    └── bgm.mp3          ← AI 推荐的 BGM 配乐`
-        : ""
-    }
+└── materials/           ← 你的视频${hasBgm ? " + BGM" : ""}
 \`\`\`
 
 ## 已自动应用的 AI 推荐
 
 - 按时间轴排序的切镜点（来自 topPriorityActions）
-- 每段 push-in / pull-out 缩放动画（关键帧已写入，每段画面会有"呼吸感"）
+- 每段 push-in / pull-out 缩放动画（关键帧已写入）
 - 字幕轨（用户原视频字幕）${hasBgm ? `
-- 独立 BGM 配乐轨（你上传的音乐 + AI 适配推荐）` : ""}
+- 独立 BGM 配乐轨（你上传的音乐）` : ""}
 
 ## 还没自动应用的（Phase 6+）
 
 - 复杂转场（whip pan / match cut / 速度坡）
-- 调色（teal/orange grading 等）
-- 特效
+- 调色、特效
 
-打开 CapCut 后参考 Viral Reviewer 网站上的 globalDoNots 红色警告区，避免做坏事。
+运行脚本后这几个 setup 文件可以删掉。
 
 ---
 
@@ -122,6 +95,12 @@ export async function packageDraftAsZip(
   if (hasBgm) {
     materials.file(input.bgmFileName!, input.bgmBuffer!);
   }
+
+  // setup 脚本写 zip 根目录（和 <projectName>/ 文件夹并列）。
+  // setup.sh 标记可执行（0o755），macOS 解压后能直接 bash 运行。
+  zip.file("setup.bat", SETUP_BAT);
+  zip.file("setup.ps1", SETUP_PS1);
+  zip.file("setup.sh", SETUP_SH, { unixPermissions: 0o755 });
 
   return zip.generateAsync({
     type: "uint8array",
