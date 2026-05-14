@@ -1,7 +1,8 @@
 # 多视频素材改造 · technique-match 流程
 
 > 窗口 1（`worktree-capcut-link`）实施计划。2026-05-14 创建，经 Plan mode 三 agent 并行设计 + 用户审批。
-> 待窗口 3 review 后开始实施。串行 per-task 工作流，每个 task 完成 → push → 等 merge → `git pull origin main --no-rebase` → `/compact` → 下一个 task。
+> 2026-05-14 经窗口 3 review（C1/C2/I6 契约级修正 + I1-I5 已吸收，见下方各 task 标注）。
+> 串行 per-task 工作流，每个 task 完成 → push → 等 merge → `git pull origin main --no-rebase` → `/compact` → 下一个 task。
 
 ## Context
 
@@ -57,6 +58,9 @@ assemblyTimeline: AssemblyTimelineSchema.nullable().optional()  // ★ 必须 op
 - 转场挂在 clip 上（`incomingTransition`），不用独立 `transitions[]` 数组 —— 消除"转场下标对不齐 clip"的 bug 面。N 个 clip 有 N-1 个转场，第一个 clip 的 `incomingTransition = null`。
 - 源 in/out 用裸秒 `number`，不经过 `match-engine.ts` 的 walk()，编译层 `secToMicroseconds` 零换算直吃。
 - `incomingTransition.durationSec` 用秒（与 assemblyTimeline 整体的裸秒约定一致）；编译层负责秒→μs/帧换算，具体换算依据 Task 2 探测结论。
+- **【窗口3 review I6】`sourceVideoIndex` / `failedVideoIndexes` 一律以「上传全集」为索引基准** —— 6 个传、5 个成功时，index 不随成功子集偏移。Opus 在 prompt 里看到的是全集 index + 哪些 index 分析失败的明确清单，禁止 `assemblyTimeline` 引用失败的 index。编译层的 `VideoMaterial[]` 也按上传全集建（失败的视频仍占位还是剔除 → 在 Task 4/Task 7 定死并写明，但 index 基准恒为上传全集）。
+- **【窗口3 review I2】`assemblyTimeline` 所有字段命名必须避开 `match-engine.ts` 的 walk() 重写键**（`at` / `userVideoAt` / `sourceAt` / `fromAt` / `toAt`）—— walk() 会无差别重写这些 key。现有 `sourceStartSec` / `sourceEndSec` / `sourceVideoIndex` 安全；后续给 `assemblyTimeline` 加字段必须遵守此约束。
+- **【窗口3 review I4】两个文件名命名空间严格分离**：① workspace 内部临时文件名（`input-{i}.mp4`，仅落盘下载用，Task 7）；② 用户可见文件名（`dedupeFileNames(videoFileNames)[i]`，写进 `draft_content.json` 的 path / `draft_meta_info` 的 file_Path / zip 内文件名，Task 11）。两者不可混用。
 
 **向后兼容矩阵**：
 
@@ -72,12 +76,12 @@ assemblyTimeline: AssemblyTimelineSchema.nullable().optional()  // ★ 必须 op
 ## Task 拆分（端到端 · 串行执行顺序）
 
 ### Task 1 — 契约冻结 + 共享类型/schema
-**只改类型与 schema，不改运行逻辑。main 始终可 deploy。**
-- `lib/technique-matching/types.ts`：新增 `AssemblyClipSchema` / `AssemblyTimelineSchema`；`TechniqueMatchingResultSchema` 加 `assemblyTimeline`（`.nullable().optional()`）、`userVideoIds: z.array(z.string()).optional()`；`reports[].recommendations[].userVideoAt` 改 `.nullable().optional()`。
-- `app/api/technique-match/route.ts` + `app/api/compile-capcut/route.ts`：Zod schema `videoUrl` → `videoUrls: z.array(z.string().url()).min(1).max(6)`，`videoFileName` → `videoFileNames`；**保留旧单值字段做兼容层**（preprocess：有 `videoUrl` 就归一成 `[videoUrl]`）。运行逻辑暂不动（仍只用 `[0]`）。
-- `components/technique-match/useAnalyzeStream.ts`：`SubmitArgs` 与 `StreamEvent.partial` payload 数组化 + 加 `materialIndex/totalMaterials`；`AnalyzeResponseShape.userPotential` → `userPotentials[]`（同时保留 `userPotential = userPotentials[0]` 过渡字段）。
+**只做加性/放宽性的类型与 schema 改动，不改运行逻辑。`npx tsc --noEmit` 必须绿 —— 这是「main 始终可 deploy」的硬证明。**
+- `lib/technique-matching/types.ts`：新增 `AssemblyClipSchema` / `AssemblyTimelineSchema`；`TechniqueMatchingResultSchema` 加 `assemblyTimeline`（`.nullable().optional()`）、`userVideoIds: z.array(z.string()).optional()`；`reports[].recommendations[].userVideoAt` 改 `.nullable().optional()`。全部加性/放宽，安全。
+- `app/api/technique-match/route.ts` + `app/api/compile-capcut/route.ts` 的 Zod schema：**【窗口3 review C1】不能简单改字段名**。`compile-capcut/route.ts:67-90` 现在是 `const { videoUrl } = parsed.data` + `prepareAssets(videoUrl)`，`technique-match/route.ts` 同理直接解构 `videoUrl`。交付物必须是：新增 `videoUrls: z.array(z.string().url()).min(1).max(6).optional()` + `videoFileNames` 作为新 optional 字段；**同时把 `videoUrl` / `videoFileName` 保留为 `z.preprocess` 派生的 `.optional()` 输出字段**（preprocess 规则：传 `videoUrls` 则派生 `videoUrl = videoUrls[0]`；传旧 `videoUrl` 则原样保留并归一出 `videoUrls = [videoUrl]`）。这样未改的运行逻辑（`route.ts:67-90` 解构 `videoUrl` + `prepareAssets(videoUrl)`）**仍能编译运行**，运行逻辑本 task 一行不动。
+- `components/technique-match/useAnalyzeStream.ts`：**【窗口3 review C2】Task 1 完全不动 useAnalyzeStream.ts**。`SubmitArgs` / `videoUrl` state / `partial` 形状 / `AnalyzeResponseShape` 全部留到 Task 3（输入侧）与 Task 4（流事件侧）—— 只在「前端契约与后端实际运行行为同步」时才改，避免 Task 1 单方面改 `partial` 形状导致与线上仍发单数的 route 失配、生产流量错乱。
 - 依赖：无。**最先做**，解锁全部。
-- 验证：`npx tsc --noEmit` + `npx vitest run` 全绿；手写带/不带 `assemblyTimeline` 的 fixture 喂 `TechniqueMatchingResultSchema.parse` 都通过（向后兼容）。
+- 验证：`npx tsc --noEmit`（**必须绿，证明 C1 兼容层成立、运行逻辑未被破坏**）+ `npx vitest run` 全绿；手写带/不带 `assemblyTimeline` 的 fixture 喂 `TechniqueMatchingResultSchema.parse` 都通过（向后兼容）；旧形态请求体（只带 `videoUrl`）喂两个 route 的 Zod schema，`parsed.data.videoUrl` 仍有值。
 
 ### Task 2 — CapCut 转场结构逆向探测（PROBE，高不确定性）
 **整个方案风险最高的部分，提前做以尽早确认真转场是否可行。**
@@ -91,22 +95,25 @@ assemblyTimeline: AssemblyTimelineSchema.nullable().optional()  // ★ 必须 op
 
 ### Task 3 — 前端多视频上传层
 - `components/technique-match/InputPanel.tsx`：`videoFile: File|null` → `videoFiles: File[]`；`<input multiple>`；`addFiles` 追加语义（单文件 30MB 校验、`name+size` 去重、超 `MAX_FILES=6` 截断提示、`input.value=""` 复位）；已选文件列表 UI（序号 + 文件名 + 大小 + 删除按钮）；提交时 `Promise.allSettled` 并行 `upload()` N 个文件，**全有或全无**（任一失败不调 `onSubmit`、报哪些文件失败）；按输入顺序产出对齐的 `videoUrls[]` + `videoFileNames[]`。`onSubmit` props 契约数组化。
-- `components/technique-match/useAnalyzeStream.ts`：state 单值→数组；`partial: {...}|null` → `partials: MaterialPotential[]`（按 `materialIndex` 填充）。
+- `components/technique-match/useAnalyzeStream.ts`：**仅改输入侧** —— `SubmitArgs` 数组化（`videoUrl/videoFileName` → `videoUrls/videoFileNames`）+ `videoUrl/videoFileName` state → `videoUrls/videoFileNames`；POST body 发 `videoUrls`（Task 1 的 route 兼容层已能接）。**`partial` 形状与 `AnalyzeResponseShape` 本 task 不动** —— route 此时仍发单数 partial，留到 Task 4 与后端发射同步改（窗口3 review C2）。
 - `app/technique-match/page.tsx`：装配处同步（`stream.videoUrl` → `stream.videoUrls` 等）。
 - 依赖：Task 1。
 - 验证：`npm run dev -- -p 3001` 浏览器实测 —— 多选、删除、超 30MB 跳过、超 6 个截断、并行上传、部分失败提示。
 
 ### Task 4 — 分析层：N 视频输入 + 并行 Gemini + 逐视频 partial 流式
-- `app/api/technique-match/route.ts`：N 个视频并行下载到 `workDir/input-{i}.mp4`，各自 `probeVideoMeta`；**并行** `Promise.allSettled(videos.map(analyzeMaterialPotential))`；每个完成立即 `send partial`（带 `materialIndex/totalMaterials/videoId`），失败 `send stage`；`result` data 形状锁定为 `{ userVideoIds, userPotentials, userPotential(=[0] 过渡), failedVideoIndexes, referenceSource, referenceNotice, match }`。
+- `app/api/technique-match/route.ts`：N 个视频并行下载到 `workDir/input-{i}.mp4`（内部临时名，见契约段 I4），各自 `probeVideoMeta`；**并行** `Promise.allSettled(videos.map(analyzeMaterialPotential))`；每个完成立即 `send partial`（带 `materialIndex/totalMaterials/videoId`），失败 `send stage`；`result` data 形状锁定为 `{ userVideoIds, userPotentials, userPotential(=[0] 过渡), failedVideoIndexes, referenceSource, referenceNotice, match }`。`failedVideoIndexes` 按上传全集索引（契约段 I6）。
+- `components/technique-match/useAnalyzeStream.ts`：**【窗口3 review C2 — 与后端发射同步落地】** `StreamEvent.partial` payload 数组化 + 加 `materialIndex/totalMaterials`；`partial: {...}|null` → `partials: MaterialPotential[]`（按 `materialIndex` 填充）。
+- `components/technique-match/ResultsArea.tsx`：**【窗口3 review I5 — 纯类型改动，保 build 绿】** `AnalyzeResponseShape.userPotential` → `userPotentials: MaterialPotential[]`（+ 过渡保留 `userPotential = userPotentials[0]`）；ResultsArea 渲染逻辑暂只读 `userPotentials[0]` 维持单卡（编译能过即可），完整 N 卡渲染留 Task 13。
 - `lib/video/analyze-potential.ts`：file processing poll 上限参数化（`maxPollAttempts?`），route 传入收紧值（~120s）让卡死视频快速 fail。
 - `lib/technique-index/similarity.ts`：新增 `potentialsToDesiredTags(potentials[])`（不改旧 `potentialToDesiredTags` 签名，保护现有测试）；`loadReferenceCutPlans` 的 `userFormat` 取 N 个 `detectedFormat` 众数，`desiredTechniques` 聚合 N 个 potential，`limit` 保持 5。
 - 依赖：Task 1。**超时风险最大，先验证。**
-- 验证：probe 脚本本地传 2-3 个短视频，确认墙钟 < 300s、N 个 `MaterialPotential` parse 成功、N 个 partial 按完成顺序到达。
-- ⚠️ 探测点：Gemini N 路并行是否触发 429（决定是否加并发池上限 3-4）；并行后总墙钟能否真压进 300s（否则考虑合并 Gemini 两阶段调用 / 加总预算计时器，超 ~180s 用已完成的继续）。
+- 验证：probe 脚本本地传 2-3 个短视频，确认墙钟 < 300s、N 个 `MaterialPotential` parse 成功、N 个 partial 按完成顺序到达；`npx tsc --noEmit` 绿（ResultsArea 类型同步未破 build）。
+- ⚠️ 探测点：① Gemini N 路并行是否触发 429（决定是否加并发池上限 3-4）；② 并行后总墙钟能否真压进 300s（否则考虑合并 Gemini 两阶段调用 / 加总预算计时器，超 ~180s 用已完成的继续）；③ **【窗口3 review I1】Gemini Files 上传侧延迟与 generate 侧延迟分开测** —— N=6 并行可能撞 upload 侧限流，不只是 generate 的 429，两段延迟要分别观测。
 
 ### Task 5 — 分析层：Opus 编排引擎 + prompt + result 收口
 - `lib/technique-matching/match-engine.ts`：`MatchEngineInput.userPotential` → `userPotentials[]`；payload 给每个 potential 注入 `index` + 保留 `durationSec`；`assemblyTimeline` 后处理校验回填（`sourceVideoIndex ∈ [0,N)` 越界 clamp/丢弃、`sourceVideoId` 用 index 反查回填、`sourceEndSec <= durationSec` clamp、`order` 回填下标）；`raw.userVideoIds` 填充。
-- `lib/technique-matching/match-prompt.ts`：输入说明改为「N 份带 `index` 的 MaterialPotential」；**新增「跨视频编排时间线 assemblyTimeline」任务段** —— 要求 Opus 像剪辑师一样选段/排序/配转场/配动画，强制规则（clip 5-12 段、`sourceVideoIndex` 真实存在、`sourceEndSec > sourceStartSec` 且 `<= durationSec`、至少用到 2 个不同视频、转场服务叙事、第一个 clip `incomingTransition=null`、`estimatedDurationSec` = clip 时长和）；`reports` 段保留语义微调为「对素材池整体的可用性判断」；`trimRanges` 段标为「AI 编排模式下留空数组」；JSON 模板加 `assemblyTimeline` 完整示例。
+- `lib/technique-matching/match-prompt.ts`：输入说明改为「N 份带 `index` 的 MaterialPotential」；**新增「跨视频编排时间线 assemblyTimeline」任务段** —— 要求 Opus 像剪辑师一样选段/排序/配转场/配动画，强制规则（clip 5-12 段、`sourceVideoIndex` 真实存在、`sourceEndSec > sourceStartSec` 且 `<= durationSec`、至少用到 2 个不同视频、转场服务叙事、第一个 clip `incomingTransition=null`、`estimatedDurationSec` = clip 时长和）；**【窗口3 review I6】prompt 必须明确列出哪些 `sourceVideoIndex` 分析失败（来自 `failedVideoIndexes`，按上传全集索引），并硬性禁止 `assemblyTimeline` 引用这些 index**；`reports` 段保留语义微调为「对素材池整体的可用性判断」；`trimRanges` 段标为「AI 编排模式下留空数组」；JSON 模板加 `assemblyTimeline` 完整示例。
+- **【窗口3 review I2】硬约束**：本 task 若给 `assemblyTimeline` 加任何新字段，命名必须避开 `match-engine.ts` walk() 重写键（`at`/`userVideoAt`/`sourceAt`/`fromAt`/`toAt`）。现有字段已安全（见契约段）。
 - 依赖：Task 1、Task 4。**迭代最久。**
 - 验证：probe 脚本跑真实多视频，人工 review `assemblyTimeline` 合理性；parse 失败 dump 到 `data/probes/_debug/`，迭代 prompt 至稳定。
 - ⚠️ 探测点：Opus 能否稳定输出合法 `sourceVideoIndex`（多轮 prompt 调试）；`max_tokens`（现 16384）在 N=6 + 5 爆款 + reports + assemblyTimeline 下是否够（不够则提到 32000，或更激进压缩 `compactPotential`，最坏拆两次调用）。
@@ -132,8 +139,9 @@ assemblyTimeline: AssemblyTimelineSchema.nullable().optional()  // ★ 必须 op
 ### Task 9 — 编译层：build.ts 多 material 主体
 - `lib/capcut-compiler/build.ts`：`CompileInput` 的 `videoFileName/meta` → `videoFileNames[]/metas[]`；单条 `videoMaterial` → `videoMaterials: VideoMaterial[]`（`materials.videos = videoMaterials`）；`match.assemblyTimeline` 存在 → `planFromAssemblyTimeline`，否则 → 现有 `buildEditPlan`（兼容路径）；每个 plan → `VideoSegment` 且 **`material_id = videoMaterials[p.sourceVideoIndex].id`**；伴随 material 逻辑不变；`draft_materials` group0 放 N 个 `DraftMaterialEntry`（`id` 对齐对应 `videoMaterials[i].id`）。
 - **canvas 尺寸**：主视频 = `metas[0]`，canvas 用其 width/height/ratio；尺寸不一致的 segment 算 `fitScale`（默认 cover：`max(canvasW/segW, canvasH/segH)`）写入 `clip.scale`；**push_in/pull_out keyframe 的 scale 值要乘以 `fitScale` 基线**（`makeEasedScaleKeyframes` 调用前先乘）—— 易出 bug，需单测覆盖。
+- **【窗口3 review I3】兼容路径不是"优雅降级"，是必须保证不 crash**：`build.ts` 的 `videoMaterials[p.sourceVideoIndex].id`（现 build.ts:344 一带）若 `sourceVideoIndex` 为 `undefined` 会直接 crash。无 `assemblyTimeline` 的 fallback 路径必须确保每个 plan 都补了 `sourceVideoIndex: 0`（Task 8 已要求），本 task 实现时再确认一遍。
 - 依赖：Task 6、Task 7、Task 8。
-- 验证：`tests/capcut-compiler/build.test.ts` 扩充 —— N 视频→N material、segment `material_id` 正确分布、canvas 取主视频尺寸、尺寸不一致片段 `clip.scale`=fitScale 且 keyframe 基线相乘正确、draft_materials group0 含 N 条、无 assemblyTimeline 退回单视频路径输出与改造前一致（回归保护）。
+- 验证：`tests/capcut-compiler/build.test.ts` 扩充 —— N 视频→N material、segment `material_id` 正确分布、canvas 取主视频尺寸、尺寸不一致片段 `clip.scale`=fitScale 且 keyframe 基线相乘正确、draft_materials group0 含 N 条；**【窗口3 review I3 — blocking gate】「旧单视频 match（无 assemblyTimeline）→ 编译输出与改造前逐字段一致」必须作为阻塞性回归测试**，不只是回归保护，不过此 gate 不得 merge。
 
 ### Task 10 — 编译层：build.ts 接入真转场
 - `lib/capcut-compiler/build.ts` + `lib/capcut-compiler/transitions.ts`：每个 `incomingTransition` 造一个 `TransitionMaterial`（`effect_id` 查映射表、`duration` 秒→μs、`is_overlap` 按 Task 2 结论）push 进 `materials.transitions`；按 Task 2 结论把 transition material id 挂到对应 segment（`extra_material_refs` 或专门字段、挂前段还是后段）；未知 type 降级 cross_dissolve + `console.warn`，match_cut 无资源降级硬切。
