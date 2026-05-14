@@ -74,6 +74,15 @@ describe("writeSnapshot", () => {
     await writeSnapshot(SNAP);
     expect(putMock).not.toHaveBeenCalled();
   });
+
+  it("logs an error when both put attempts fail", async () => {
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    putMock.mockRejectedValue(new Error("persistent failure"));
+    await writeSnapshot(SNAP);
+    expect(putMock).toHaveBeenCalledTimes(2);
+    expect(consoleSpy).toHaveBeenCalledTimes(2);
+    consoleSpy.mockRestore();
+  });
 });
 
 describe("pruneOldSnapshots", () => {
@@ -172,5 +181,15 @@ describe("readLatestTwoSnapshots", () => {
     expect(current).toBeNull();
     expect(previous).toBeNull();
     expect(listMock).not.toHaveBeenCalled();
+  });
+
+  it("returns both null when a blob fetch throws", async () => {
+    listMock.mockResolvedValue({
+      blobs: [{ pathname: "trending/snapshot-2026-W20.json", url: "u20" }],
+    });
+    fetchMock.mockRejectedValue(new Error("network down"));
+    const { current, previous } = await readLatestTwoSnapshots();
+    expect(current).toBeNull();
+    expect(previous).toBeNull();
   });
 });

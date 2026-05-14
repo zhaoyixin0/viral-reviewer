@@ -38,7 +38,7 @@ export async function readLatestTwoSnapshots(): Promise<{
     return { current: null, previous: null };
   }
   try {
-    const { blobs } = await list({ prefix: `${PREFIX}/` });
+    const { blobs } = await list({ prefix: `${PREFIX}/`, limit: 52 });
     const sorted = [...blobs].sort((a, b) =>
       b.pathname.localeCompare(a.pathname),
     );
@@ -72,11 +72,13 @@ export async function writeSnapshot(snapshot: TrendingSnapshot): Promise<void> {
   try {
     await put(key, body, opts);
   } catch (e) {
-    console.error("[snapshot-store] write failed, retrying once:", (e as Error).message);
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error("[snapshot-store] write failed, retrying once:", msg);
     try {
       await put(key, body, opts);
     } catch (e2) {
-      console.error("[snapshot-store] write failed after retry:", (e2 as Error).message);
+      const msg2 = e2 instanceof Error ? e2.message : String(e2);
+      console.error("[snapshot-store] write failed after retry:", msg2);
     }
   }
 }
@@ -89,7 +91,7 @@ export async function writeSnapshot(snapshot: TrendingSnapshot): Promise<void> {
 export async function pruneOldSnapshots(keepWeeks = 8): Promise<void> {
   if (!process.env.BLOB_READ_WRITE_TOKEN) return;
   try {
-    const { blobs } = await list({ prefix: `${PREFIX}/` });
+    const { blobs } = await list({ prefix: `${PREFIX}/`, limit: 52 });
     const sorted = [...blobs].sort((a, b) =>
       b.pathname.localeCompare(a.pathname),
     );
@@ -97,7 +99,8 @@ export async function pruneOldSnapshots(keepWeeks = 8): Promise<void> {
     if (stale.length === 0) return;
     await del(stale.map((b) => b.url));
   } catch (e) {
-    console.error("[snapshot-store] prune failed:", (e as Error).message);
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error("[snapshot-store] prune failed:", msg);
   }
 }
 
