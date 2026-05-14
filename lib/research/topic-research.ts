@@ -7,6 +7,21 @@ import { generateHashtagsForTopic } from "./hashtag-generator";
 import { enrichBatch } from "./enrich-one";
 import type { ViralVideo } from "@/lib/review-engine/types";
 
+/** P0 时间窗:30 天。爆款"新鲜度"边界。 */
+const PUBLISH_WINDOW_MS = 30 * 24 * 60 * 60 * 1000;
+
+/**
+ * 判断一条视频是否落在"近 30 天"时间窗内。
+ * publishedAt 缺失或不可解析时返回 true —— 时间未知不丢,只丢明确过期的。
+ * @param now 注入当前时间戳便于测试,默认 Date.now()
+ */
+export function withinPublishWindow(v: ViralVideo, now: number = Date.now()): boolean {
+  if (!v.publishedAt) return true;
+  const ts = new Date(v.publishedAt).getTime();
+  if (Number.isNaN(ts)) return true;
+  return now - ts <= PUBLISH_WINDOW_MS;
+}
+
 export type ResearchProgress = {
   stage:
     | "hashtags"
@@ -74,6 +89,7 @@ export async function researchTopicLive(
       resultsPerPage: 8,
     });
     tiktokVideos = [...raw]
+      .filter((v) => withinPublishWindow(v))
       .sort((a, b) => b.views - a.views)
       .slice(0, 5);
   } catch (e) {
@@ -95,6 +111,7 @@ export async function researchTopicLive(
     });
     instagramVideos = [...raw]
       .filter((v) => v.views > 0 || v.likes > 0)
+      .filter((v) => withinPublishWindow(v))
       .sort((a, b) => b.views - a.views || b.likes - a.likes)
       .slice(0, 5);
   } catch (e) {
