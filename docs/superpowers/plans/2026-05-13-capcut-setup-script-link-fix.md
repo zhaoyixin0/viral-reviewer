@@ -24,6 +24,7 @@ CapCut 用「指向素材原始位置的绝对路径」引用素材，存在 `dr
 - 否决方案 (a)「附 setup.mjs 纯 Node」：引入"用户需装 Node"前提，目标用户是 CapCut 剪辑师不是开发者，绝大多数没装 Node。
 - 否决方案 (b)「.sh 内嵌 Node/Python」：macOS 默认无 `jq`、无 Node、自 macOS 12.3 起无可靠 `python3`（只剩 stub）；实现不对称且脆弱。
 - 选定方案 (c)：server 已有全部 ffprobe 元数据 → server 预构造**完整合法**的 `draft_content.json` / `draft_meta_info.json`，只在绝对路径处留唯一 token。脚本做字面 `String.Replace` / `sed` 替换。替换值用**正斜杠**路径（原生 `0203` 证明 CapCut 接受 `C:/Users/...` 正斜杠），彻底绕开 JSON 反斜杠转义问题。脚本会校验路径不含 `|` `&` 换行（sed 特殊字符 / JSON 破坏字符），含则 abort 并提示。
+- **字面替换的安全性靠 3 个守卫合力，缺一不可**：(1) route 的 `projectName` 正则 `^[^\\/:*?"<>|]+$`、(2) 脚本运行时对**项目所在路径**的 `&` `|` 换行检查、(3) `sanitizeVideoFileName` 清洗用户文件名。关键：route 正则**不挡 `&`**（`&` 不是 Windows 文件名非法字符），所以**脚本运行时的 `&`/`|` 检查是 load-bearing 的兜底**——它挡的是用户主目录路径里可能出现的 `&`（如 `C:\Users\Tom & Jerry\...`），route 正则管不到这层。implementer 不要把脚本里的这个检查当成"冗余"优化掉。
 
 **决策 2 — Windows 双击执行**：`.ps1` 双击默认被记事本打开、execution policy 默认 Restricted 会 block。附 `setup.bat`（双击能跑），内部 `powershell -NoProfile -ExecutionPolicy Bypass -File setup.ps1`。README 写明 Windows 用户双击 `setup.bat`。
 
@@ -41,10 +42,11 @@ CapCut 用「指向素材原始位置的绝对路径」引用素材，存在 `dr
 
 **新建：**
 - `lib/capcut-compiler/setup-scripts/tokens.ts` — 两个 token 常量。被 `build.ts`、`package.ts`、测试共享（DRY 单一来源）。
-- `lib/capcut-compiler/setup-scripts/index.ts` — `SETUP_BAT` / `SETUP_PS1` / `SETUP_SH` 三个脚本字符串常量。存为 `.ts` 而非真实脚本文件，是为了 Next.js serverless 打包可靠（避免 `fs.readFileSync` + `outputFileTracingIncludes` 的坑）。
+- `lib/capcut-compiler/setup-scripts/index.ts` — `SETUP_BAT` / `SETUP_PS1` / `SETUP_SH` 三个脚本字符串常量。存为 `.ts` 而非真实脚本文件，是为了 Next.js serverless 打包可靠（避免 `fs.readFileSync` + `outputFileTracingIncludes` 的坑）。脚本支持 `VR_SETUP_DRAFTS_DIR` 环境变量覆盖 drafts 目录探测——既让脚本可被 CI 测试，也顺带支持真实用户的自定义 CapCut 安装路径。
 - `tests/capcut-compiler/build.test.ts` — `buildDraftContent` 的 token 路径 + 七组 meta 测试。
 - `tests/capcut-compiler/package.test.ts` — zip 结构 + token 替换契约测试。
 - `tests/capcut-compiler/sanitize.test.ts` — `sanitizeVideoFileName` 单元测试。
+- `tests/capcut-compiler/setup-scripts.test.ts` — **真实执行** setup 脚本的 CI 测试：伪造 project dir + 假 drafts target，按 `process.platform` 跑 `.ps1` 或 `.sh`，断言 JSON token-free 且可 `JSON.parse`。不需要装 CapCut。
 
 **修改：**
 - `lib/capcut-compiler/schema.ts` — `DraftMaterialGroup` 类型 + 新增 `DraftMaterialEntry`；修正 `5db8fce` 错误注释。
@@ -514,11 +516,12 @@ git commit -m "feat(capcut): write path tokens + 7-group draft_materials in buil
  * zip 根目录附带的 setup 脚本。用户解压后运行，脚本：
  *   1. 找到同级唯一的项目文件夹
  *   2. 校验路径不含会破坏字面替换的字符（| & 换行）
- *   3. 探测 CapCut / 剪映 drafts 目录
+ *   3. 探测 CapCut / 剪映 drafts 目录（VR_SETUP_DRAFTS_DIR 环境变量可覆盖）
  *   4. 把项目文件夹搬进 drafts 目录（找不到则就地处理）
  *   5. 对 draft_content.json / draft_meta_info.json 做纯字面 token 替换
  * 脚本不解析 JSON —— 所以 PowerShell 和 bash 都能可靠实现。
- * 纯本地文件操作，零网络请求。
+ * 纯本地文件操作，零网络请求。VR_SETUP_DRAFTS_DIR 既支持 CI 测试，
+ * 也支持真实用户的自定义 CapCut 安装路径。
  */
 
 export const SETUP_BAT = `@echo off
@@ -547,12 +550,18 @@ if ($projectDir -match '[\\|&\\r\\n]') {
   exit 1
 }
 
-$candidates = @(
-  (Join-Path $env:LOCALAPPDATA "CapCut\\User Data\\Projects\\com.lveditor.draft"),
-  (Join-Path $env:LOCALAPPDATA "JianyingPro\\User Data\\Projects\\com.lveditor.draft")
-)
+# drafts 目录：VR_SETUP_DRAFTS_DIR 环境变量优先（CI 测试 / 自定义安装路径），
+# 否则探测 CapCut + 剪映 标准路径。
 $draftsDir = $null
-foreach ($c in $candidates) { if (Test-Path -LiteralPath $c) { $draftsDir = $c; break } }
+if ($env:VR_SETUP_DRAFTS_DIR -and (Test-Path -LiteralPath $env:VR_SETUP_DRAFTS_DIR)) {
+  $draftsDir = $env:VR_SETUP_DRAFTS_DIR
+} else {
+  $candidates = @(
+    (Join-Path $env:LOCALAPPDATA "CapCut\\User Data\\Projects\\com.lveditor.draft"),
+    (Join-Path $env:LOCALAPPDATA "JianyingPro\\User Data\\Projects\\com.lveditor.draft")
+  )
+  foreach ($c in $candidates) { if (Test-Path -LiteralPath $c) { $draftsDir = $c; break } }
+}
 
 if ($draftsDir) {
   $final = Join-Path $draftsDir $projectName
@@ -609,14 +618,20 @@ case "$projectDir" in
     exit 1 ;;
 esac
 
-candidates=(
-  "$HOME/Movies/CapCut/User Data/Projects/com.lveditor.draft"
-  "$HOME/Movies/JianyingPro/User Data/Projects/com.lveditor.draft"
-)
+# drafts 目录：VR_SETUP_DRAFTS_DIR 环境变量优先（CI 测试 / 自定义安装路径），
+# 否则探测 CapCut + 剪映 标准路径。
 draftsDir=""
-for c in "\${candidates[@]}"; do
-  if [ -d "$c" ]; then draftsDir="$c"; break; fi
-done
+if [ -n "\${VR_SETUP_DRAFTS_DIR:-}" ] && [ -d "$VR_SETUP_DRAFTS_DIR" ]; then
+  draftsDir="$VR_SETUP_DRAFTS_DIR"
+else
+  candidates=(
+    "$HOME/Movies/CapCut/User Data/Projects/com.lveditor.draft"
+    "$HOME/Movies/JianyingPro/User Data/Projects/com.lveditor.draft"
+  )
+  for c in "\${candidates[@]}"; do
+    if [ -d "$c" ]; then draftsDir="$c"; break; fi
+  done
+fi
 
 if [ -n "$draftsDir" ]; then
   final="$draftsDir/$projectName"
@@ -657,11 +672,145 @@ fi
 Run: `npx tsx -e "import('./lib/capcut-compiler/setup-scripts/index.ts').then(m => { const ok = m.SETUP_SH.includes('\${BASH_SOURCE[0]}') && m.SETUP_SH.includes('\${#subDirs[@]}') && !m.SETUP_PS1.includes(String.fromCharCode(96)) && m.SETUP_BAT.includes('%~dp0'); console.log(ok ? 'OK' : 'BAD'); process.exit(ok ? 0 : 1); })"`
 Expected: 输出 `OK`，EXIT 0（确认 bash `${...}` 被还原成字面、PS1 不含反引号、bat 含 `%~dp0`）
 
-- [ ] **Step 3: Commit**
+- [ ] **Step 3: 写脚本真实执行测试**
+
+创建 `tests/capcut-compiler/setup-scripts.test.ts`。这个测试**真实运行** setup 脚本（按 `process.platform` 跑 `.ps1` 或 `.sh`），用伪造的 project dir + 假 drafts target，断言脚本搬移正确、JSON token-free 且可 `JSON.parse`。不需要装 CapCut。它能抓 sed 分隔符 / `.Replace()` / rename 循环 / 路径正斜杠化的真 bug——~110 行跨平台脚本的唯一自动化执行覆盖。
+
+```ts
+import { describe, expect, it } from "vitest";
+import { execFileSync } from "node:child_process";
+import {
+  mkdtempSync,
+  mkdirSync,
+  writeFileSync,
+  readFileSync,
+  rmSync,
+  existsSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { SETUP_PS1, SETUP_SH } from "@/lib/capcut-compiler/setup-scripts";
+import { buildDraftContent, type CompileInput } from "@/lib/capcut-compiler/build";
+import {
+  TOKEN_PROJECT_DIR,
+  TOKEN_DRAFTS_DIR,
+} from "@/lib/capcut-compiler/setup-scripts/tokens";
+import type { VideoMeta } from "@/lib/video/ffprobe-meta";
+import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
+import type { TechniqueMatchingResult } from "@/lib/technique-matching/types";
+
+const META: VideoMeta = {
+  durationSec: 10,
+  fps: 30,
+  width: 1080,
+  height: 1920,
+  codec: "h264",
+  bitrate: 1_000_000,
+  hasAudio: true,
+};
+
+function makeInput(): CompileInput {
+  return {
+    projectName: "exec-test-project",
+    videoFileName: "my-video.mp4",
+    meta: META,
+    potential: { base: { actions: [] } } as unknown as MaterialPotential,
+    match: {
+      userVideoId: "u",
+      reports: [],
+      topPriorityActions: [],
+      globalDoNots: [],
+      recommendedBgms: [],
+      trimRanges: [],
+    } as unknown as TechniqueMatchingResult,
+  };
+}
+
+const isWindows = process.platform === "win32";
+
+describe("setup script — real execution (CI-able, no CapCut needed)", () => {
+  it("moves the project into the override drafts dir and resolves tokens to valid JSON", () => {
+    const extractRoot = mkdtempSync(join(tmpdir(), "vr-setup-extract-"));
+    const draftsTarget = mkdtempSync(join(tmpdir(), "vr-setup-drafts-"));
+    try {
+      const projectName = "exec-test-project";
+      const projectDir = join(extractRoot, projectName);
+      mkdirSync(projectDir);
+
+      const { draftContent, metaInfo } = buildDraftContent(makeInput());
+      writeFileSync(
+        join(projectDir, "draft_content.json"),
+        JSON.stringify(draftContent, null, 2),
+      );
+      writeFileSync(
+        join(projectDir, "draft_meta_info.json"),
+        JSON.stringify(metaInfo, null, 2),
+      );
+
+      // 把对应平台的脚本写到解压根（和 <projectName>/ 并列）
+      const scriptName = isWindows ? "setup.ps1" : "setup.sh";
+      const scriptBody = isWindows ? SETUP_PS1 : SETUP_SH;
+      const scriptPath = join(extractRoot, scriptName);
+      writeFileSync(scriptPath, scriptBody);
+
+      // 跑脚本，VR_SETUP_DRAFTS_DIR 指向假 drafts target
+      const env = { ...process.env, VR_SETUP_DRAFTS_DIR: draftsTarget };
+      if (isWindows) {
+        execFileSync(
+          "powershell",
+          ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", scriptPath],
+          { env, stdio: "pipe" },
+        );
+      } else {
+        execFileSync("bash", [scriptPath], { env, stdio: "pipe" });
+      }
+
+      // 项目应已搬进 draftsTarget，原位置应空
+      const movedDir = join(draftsTarget, projectName);
+      expect(existsSync(movedDir)).toBe(true);
+      expect(existsSync(projectDir)).toBe(false);
+
+      // 两个 JSON 都应 token-free 且可 JSON.parse
+      for (const f of ["draft_content.json", "draft_meta_info.json"]) {
+        const raw = readFileSync(join(movedDir, f), "utf-8");
+        expect(raw).not.toContain(TOKEN_PROJECT_DIR);
+        expect(raw).not.toContain(TOKEN_DRAFTS_DIR);
+        expect(() => JSON.parse(raw)).not.toThrow();
+      }
+
+      // 路径替换成了 draftsTarget 下的绝对路径（脚本统一用正斜杠）
+      const movedFwd = movedDir.replace(/\\/g, "/");
+      const dc = JSON.parse(
+        readFileSync(join(movedDir, "draft_content.json"), "utf-8"),
+      );
+      expect(dc.materials.videos[0].path).toBe(
+        `${movedFwd}/materials/my-video.mp4`,
+      );
+      const mi = JSON.parse(
+        readFileSync(join(movedDir, "draft_meta_info.json"), "utf-8"),
+      );
+      expect(mi.draft_fold_path).toBe(movedFwd);
+      expect(mi.draft_materials[0].value[0].file_Path).toBe(
+        `${movedFwd}/materials/my-video.mp4`,
+      );
+    } finally {
+      rmSync(extractRoot, { recursive: true, force: true });
+      rmSync(draftsTarget, { recursive: true, force: true });
+    }
+  });
+});
+```
+
+- [ ] **Step 4: 运行脚本执行测试**
+
+Run: `npx vitest run tests/capcut-compiler/setup-scripts.test.ts`
+Expected: PASS。若 FAIL —— 说明脚本有真 bug（sed 分隔符 / `.Replace()` / rename 循环 / 正斜杠化等），按 systematic-debugging 定位修 `index.ts` 里的脚本字符串，**不要**改测试迁就脚本。
+
+- [ ] **Step 5: Commit**
 
 ```bash
-git add lib/capcut-compiler/setup-scripts/index.ts
-git commit -m "feat(capcut): add setup.bat/ps1/sh script templates"
+git add lib/capcut-compiler/setup-scripts/index.ts tests/capcut-compiler/setup-scripts.test.ts
+git commit -m "feat(capcut): add setup.bat/ps1/sh scripts + CI execution test"
 ```
 
 ---
@@ -1365,7 +1514,7 @@ export function CapCutExport({
 - [ ] **Step 12: 验证类型编译 + 全量测试通过**
 
 Run: `npx tsc --noEmit && npx vitest run tests/capcut-compiler/`
-Expected: EXIT 0；vitest 全绿（build / package / sanitize / edit-plan 四个测试文件）
+Expected: EXIT 0；vitest 全绿（build / package / sanitize / setup-scripts / edit-plan 五个测试文件）
 
 - [ ] **Step 13: Commit**
 
@@ -1503,9 +1652,11 @@ git commit -m "docs(capcut): handover findings for setup-script link fix"
 
 | 决策点 / 需求 | 实现 task |
 |---|---|
-| 决策 1：跨平台 JSON 改写 = token + 字面替换 | Task 1（token 常量）+ Task 2（server 写 token）+ Task 3（脚本字面替换）+ Task 4（契约测试验证替换→合法 JSON） |
+| 决策 1：跨平台 JSON 改写 = token + 字面替换 | Task 1（token 常量）+ Task 2（server 写 token）+ Task 3（脚本字面替换 + 真实执行测试）+ Task 4（契约测试验证替换→合法 JSON） |
+| 决策 1：字面替换 3 守卫（route 正则 / 脚本 `&\|` 检查 / sanitize）| Task 5（route 正则 + sanitize）+ Task 3（脚本运行时 `&\|` 检查，load-bearing 兜底）|
 | 决策 2：Windows 双击执行（setup.bat + ExecutionPolicy Bypass）| Task 3 `SETUP_BAT` |
-| 决策 3：drafts 目录探测带 fallback，不静默失败 | Task 3 `SETUP_PS1` / `SETUP_SH`（探测 CapCut + JianyingPro，找不到就地修复 + 提示）|
+| 决策 3：drafts 目录探测带 fallback，不静默失败 | Task 3 `SETUP_PS1` / `SETUP_SH`（`VR_SETUP_DRAFTS_DIR` 覆盖 → 探测 CapCut + JianyingPro → 找不到就地修复 + 提示）|
+| 脚本有 CI-able 自动化执行覆盖 | Task 3 Step 3-4 `tests/capcut-compiler/setup-scripts.test.ts`（真实跑 .ps1/.sh，伪造 dir + 假 drafts target）|
 | 决策 4：安全（纯本地、零网络、可读）| Task 3 脚本内容（无网络调用）+ Task 4 README 说明 |
 | 决策 5：占位 token 选不冲突的串 | Task 1 `tokens.ts`（`__VR_PROJECT_DIR__` / `__VR_DRAFTS_DIR__`）|
 | 服务端：不再 hardcode videoFileName | Task 5（sanitize + route + 客户端串联）|
@@ -1529,7 +1680,7 @@ git commit -m "docs(capcut): handover findings for setup-script link fix"
 
 1. **bash `sed` 替换值含特殊字符**：替换值是用户主目录绝对路径，理论上可能含 `&`（sed 替换串特殊字符）。脚本已在 `case` 里校验 `|` 和 `&` 并 abort；`/` 用 `|` 作 sed 分隔符规避；macOS 路径无反斜杠。残留极小风险（路径含换行——不可能）。
 2. **setup.sh 可执行权限**：JSZip `unixPermissions: 0o755` 在标准 `unzip` / Finder 解压后应保留；若用户用某些工具解压丢权限，README 已写 `bash setup.sh` 兜底。
-3. **契约测试 ≠ 真实脚本执行**：`package.test.ts` 的 `applyTokens` 在 TS 里模拟字面替换，必须和 `setup.ps1` / `setup.sh` 的替换逻辑保持一致——测试注释已标注这一点。真实脚本执行由 Task 6 用户实测覆盖。
+3. **脚本执行覆盖**：`tests/capcut-compiler/setup-scripts.test.ts`（Task 3）按 `process.platform` 真实跑 `.ps1` 或 `.sh`，覆盖 token 替换 + 搬移 + 正斜杠化——能在不装 CapCut 的情况下抓 sed 分隔符 / `.Replace()` / rename 循环的真 bug。注意：每个 CI runner 只测自己平台的脚本（Windows 测 .ps1，mac/Linux 测 .sh），跨平台另一支靠 Task 6 用户实测。`package.test.ts` 的 `applyTokens` 是 TS 侧的契约镜像，必须和脚本替换逻辑一致——测试注释已标注。
 4. **BGM 的 draft_materials 条目结构**：视频条目对照原生 0203 验证过，BGM 条目（`metetype: "music"`）无本机原生纯音频项目的 `draft_materials` 样本对照。若 Task 6 实测 BGM 仍掉链接，按 systematic-debugging 重新定位（可能 `metetype` 或 type 组归属不同）。
 5. **technique-match 页面**：`AnalyzeResults` 的 `videoFileName` 设为可选 prop，`app/technique-match/page.tsx` 若也用 `AnalyzeResults` 而不传该 prop，仍能编译通过、行为不变（CapCutExport 退化为 input.mp4）。无需强制改 technique-match 页面。
 
