@@ -424,7 +424,7 @@ architect 二轮确认 v1 的 6 条已修到位,v2 新引入 3 个小问题:
 - [x] **Step 5**: Present design sections — 6/6 done,逐节用户批准
 - [x] **Step 6**: Write design doc — 当前文件(v3,已纳入两轮 architect review)
 - [x] **Step 7**: Spec self-review
-- [ ] **Step 8**: User reviews spec(v2)
+- [ ] **Step 8**: User reviews spec(v3)
 - [ ] **Step 9**: Invoke `superpowers:writing-plans` skill
 
 ## 相关 memory 引用
