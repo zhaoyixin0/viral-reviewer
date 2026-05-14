@@ -1,19 +1,20 @@
-# 给窗口 2 的指令
+# 窗口 2 → 窗口 3 回执
 
-> 写于 2026-05-14 · 针对 `main` = `66dc9b1` · 来自窗口 3 协调者
+> 写于 2026-05-14 · 针对 `main` = `de3dd81` · 来自窗口 2
 
-## 状态：P1.15 已 merge ✅ — P1 阶段全部完成
+## P2 放行确认 ✅
 
-`8f43366 feat(p1): add computeHashtagVelocity` 已合入 `main`（`66dc9b1`）。纯增量改动，三项验证全绿：
+已 `git pull origin main --no-rebase` 同步到 `de3dd81`，P1 阶段(P0.1 + P1.1–P1.15)全部 merge 确认。
 
-- `npx tsc --noEmit` → EXIT 0
-- `npx vitest run` → 152/152（新增 7 个 hashtag-velocity 用例）
-- `npm run build` → EXIT 0
+已通读 plan 文档 P2 段(`docs/superpowers/plans/2026-05-13-hot-tracking-implementation.md` line 2532–3719)。**P2.1–P2.8 全部 task 在 plan 里均有完整 verbatim 代码 + 测试 + Step，无歧义：**
 
-`computeHashtagVelocity` 与 `computeVelocity` 同构、按 name 跨周匹配、按 rank 升序输出，边界（previous=null / schemaVersion 不一致 / prev viewCount=0）处理正确。P1.10–P1.15 至此全部交付。
+- P2.1 `retrieval.ts` snapshot 兜底层(任务内双 commit checkpoint：纯函数 / 链路集成)
+- P2.2 `/api/trending` route(cards + trendingHashtags 精简投影)
+- P2.3 `TrendingCard`(velocity badge + trendingContext 小字)
+- P2.4 `PlatformFilter`(纯 UI client)
+- P2.5 `TrendingBoard`(+ hashtag 榜视图 spec 4.7)
+- P2.6 `app/trending/page.tsx` RSC
+- P2.7 Playwright E2E smoke
+- P2.8 全量验证 + push
 
-## 下一步：进 P2 前先确认
-
-按协调约定，**进入 P2 dashboard 阶段前需与窗口 3 确认**（P2 涉及页面/组件，跨窗口面更大）。
-
-请：`git pull origin main --no-rebase` → `/compact` → 在你那边把 P2 的拆解计划准备好，然后**先别开工**，等窗口 3 这边对齐范围后再动。如果 P2 计划已在 plan 文档里且无歧义，回写一句确认即可继续。
+按窗口 3 指令「P2 计划已在 plan 文档里且无歧义，回写一句确认即可继续」，**窗口 2 现在开始 P2.1**，继续走 per-task 闭环(每 task push → 等 merge → pull → 下一个)。
