@@ -10,7 +10,12 @@ type StreamEvent =
   | {
       type: "partial";
       phase: "potential";
-      data: { userVideoId: string; userPotential: MaterialPotential };
+      data: {
+        materialIndex: number;
+        totalMaterials: number;
+        userVideoId: string;
+        userPotential: MaterialPotential;
+      };
     }
   | { type: "result"; data: AnalyzeResponseShape }
   | { type: "error"; message: string };
@@ -26,7 +31,12 @@ export type AnalyzeStreamState = {
   loading: boolean;
   error: string | null;
   stages: StageEvent[];
-  partial: { userVideoId: string; userPotential: MaterialPotential } | null;
+  /**
+   * 按上传全集 materialIndex 索引的 partial 池。null = 该 index 还没分析完
+   * （或最终失败）。第一个 partial event 到达时按 totalMaterials 预填 null，
+   * 后续按 materialIndex 写入 —— Task 13 渲染 N 个 UserDiagnosis 时能直接遍历。
+   */
+  partials: (MaterialPotential | null)[];
   full: AnalyzeResponseShape | null;
   videoUrls: string[] | null;
   videoFileNames: string[] | null;
@@ -36,20 +46,17 @@ export type AnalyzeStreamState = {
 /**
  * 把 /api/technique-match 的 NDJSON SSE 流解开，分发到三个 state slot：
  *   - stages：每个 progress event
- *   - partial：Gemini 完成后的 fast-lane payload
+ *   - partials：Gemini 完成后的 fast-lane payload（按 materialIndex 索引）
  *   - full：Opus 完成后的最终结果
  *
- * Task 3：输入侧数组化（videoUrls / videoFileNames）。`partial` 与
- * `AnalyzeResponseShape` 仍是单数形态，等 Task 4 与后端发射侧同步落地
- * （见 plan 窗口3 review C2）。
+ * Task 4：partial / result / AnalyzeResponseShape 全部数组化，与后端 N 视频
+ * 并行分析的发射形态对齐（窗口3 review C2 follow-up）。
  */
 export function useAnalyzeStream(): AnalyzeStreamState {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [stages, setStages] = useState<StageEvent[]>([]);
-  const [partial, setPartial] = useState<
-    { userVideoId: string; userPotential: MaterialPotential } | null
-  >(null);
+  const [partials, setPartials] = useState<(MaterialPotential | null)[]>([]);
   const [full, setFull] = useState<AnalyzeResponseShape | null>(null);
   const [videoUrls, setVideoUrls] = useState<string[] | null>(null);
   const [videoFileNames, setVideoFileNames] = useState<string[] | null>(null);
@@ -58,7 +65,7 @@ export function useAnalyzeStream(): AnalyzeStreamState {
     setLoading(true);
     setError(null);
     setStages([]);
-    setPartial(null);
+    setPartials([]);
     setFull(null);
     setVideoUrls(args.videoUrls);
     setVideoFileNames(args.videoFileNames);
@@ -101,7 +108,19 @@ export function useAnalyzeStream(): AnalyzeStreamState {
               ]);
             } else if (event.type === "partial") {
               if (event.phase === "potential") {
-                setPartial(event.data);
+                const { materialIndex, totalMaterials, userPotential } =
+                  event.data;
+                setPartials((prev) => {
+                  const next =
+                    prev.length === totalMaterials
+                      ? [...prev]
+                      : Array.from(
+                          { length: totalMaterials },
+                          (_, i) => prev[i] ?? null,
+                        );
+                  next[materialIndex] = userPotential;
+                  return next;
+                });
               }
             } else if (event.type === "result") {
               setFull(event.data);
@@ -124,7 +143,7 @@ export function useAnalyzeStream(): AnalyzeStreamState {
     loading,
     error,
     stages,
-    partial,
+    partials,
     full,
     videoUrls,
     videoFileNames,

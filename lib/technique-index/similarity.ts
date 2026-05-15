@@ -23,6 +23,22 @@ export function potentialToDesiredTags(potential: DesiredFromPotential): string[
 }
 
 /**
+ * 多视频版本：把 N 个 MaterialPotential 的维度聚合成单一 desired tag list（去重）。
+ *
+ * 规则：任一视频在某维度有候选，desired tag 就上 —— 用户的"素材池整体期望"。
+ * 不改 `potentialToDesiredTags` 单视频签名，老 caller / 测试不受影响。
+ */
+export function potentialsToDesiredTags(
+  potentials: ReadonlyArray<DesiredFromPotential>,
+): string[] {
+  const acc = new Set<string>();
+  for (const p of potentials) {
+    for (const tag of potentialToDesiredTags(p)) acc.add(tag);
+  }
+  return [...acc];
+}
+
+/**
  * 给索引里每条候选打分：matched tag 数量越多分越高。
  */
 export function scoreCandidates(

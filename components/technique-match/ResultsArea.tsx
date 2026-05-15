@@ -14,8 +14,12 @@ import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
 import type { TechniqueMatchingResult } from "@/lib/technique-matching/types";
 
 export type AnalyzeResponseShape = {
-  userVideoId: string;
-  userPotential: MaterialPotential;
+  /** 按上传全集索引的视频 id 数组（Task 4 起 N 视频） */
+  userVideoIds: string[];
+  /** 按上传全集索引的 MaterialPotential 数组（成功 = MaterialPotential，失败 = null 占位） */
+  userPotentials: (MaterialPotential | null)[];
+  /** 失败的视频 index（按上传全集索引，I6 约束） */
+  failedVideoIndexes: number[];
   referenceSource: string;
   referenceNotice?: string;
   match: TechniqueMatchingResult;
@@ -25,7 +29,11 @@ export type AnalyzeResultsProps = {
   loading: boolean;
   error: string | null;
   stages: StageEvent[];
-  partial: { userVideoId: string; userPotential: MaterialPotential } | null;
+  /**
+   * 按上传全集 materialIndex 索引的 partial 池；null = 还没到达。
+   * Task 4 内部仍渲染 [0]（第一个成功的视频），Task 13 才 N 卡渲染。
+   */
+  partials: (MaterialPotential | null)[];
   full: AnalyzeResponseShape | null;
   videoUrl: string | null;
   /** 用户原始视频文件名；可选，缺失时 CapCutExport 退化为 input.mp4 */
@@ -48,14 +56,25 @@ export function AnalyzeResults({
   loading,
   error,
   stages,
-  partial,
+  partials,
   full,
   videoUrl,
   videoFileName,
   emptyTitle = "上传你的视频草稿",
   emptySubtitle = "AI 会看完整段视频，找出你的素材能学什么、不能学什么，输出具体到秒的剪辑改动建议。",
 }: AnalyzeResultsProps) {
-  const showFastLane = partial !== null || full !== null;
+  /**
+   * Task 4 过渡：fast lane / deep lane 仍按"首个成功素材"渲染单卡，
+   * Task 13 才换成 N 个 UserDiagnosis。
+   */
+  const firstFullPotential = full?.userPotentials.find(
+    (p): p is MaterialPotential => p !== null,
+  );
+  const firstPartial = partials.find(
+    (p): p is MaterialPotential => p !== null,
+  );
+  const primaryPotential = firstFullPotential ?? firstPartial ?? null;
+  const showFastLane = primaryPotential !== null || full !== null;
   const showDeepLane = full !== null;
   const showTimeline = loading && !showDeepLane;
 
@@ -129,9 +148,7 @@ export function AnalyzeResults({
                 </span>
               )}
             </div>
-            <UserDiagnosis
-              potential={(full?.userPotential ?? partial?.userPotential)!}
-            />
+            {primaryPotential && <UserDiagnosis potential={primaryPotential} />}
           </motion.div>
         )}
       </AnimatePresence>
@@ -162,11 +179,11 @@ export function AnalyzeResults({
             )}
             <PriorityActions match={full.match} />
             <BgmRecommendations bgms={full.match.recommendedBgms ?? []} />
-            {videoUrl && (
+            {videoUrl && primaryPotential && (
               <CapCutExport
                 videoUrl={videoUrl}
                 videoFileName={videoFileName ?? undefined}
-                userPotential={full.userPotential}
+                userPotential={primaryPotential}
                 match={full.match}
               />
             )}

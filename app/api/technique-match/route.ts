@@ -6,6 +6,7 @@ import { probeVideoMeta } from "@/lib/video/ffprobe-meta";
 import { analyzeMaterialPotential } from "@/lib/video/analyze-potential";
 import { loadReferenceCutPlans } from "@/lib/sample-references";
 import { matchTechniques } from "@/lib/technique-matching/match-engine";
+import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
 import { Schema } from "./schema";
 
 export const runtime = "nodejs";
@@ -20,6 +21,20 @@ type StreamEvent =
 function makeEncoder() {
   const enc = new TextEncoder();
   return (e: StreamEvent) => enc.encode(JSON.stringify(e) + "\n");
+}
+
+function modeOf(values: string[]): string {
+  const counter = new Map<string, number>();
+  for (const v of values) counter.set(v, (counter.get(v) ?? 0) + 1);
+  let best = values[0];
+  let bestCount = -1;
+  for (const [v, c] of counter) {
+    if (c > bestCount) {
+      best = v;
+      bestCount = c;
+    }
+  }
+  return best;
 }
 
 export async function POST(req: NextRequest) {
@@ -54,9 +69,17 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { videoUrl, topic, intent, videoId } = parsed.data;
-  const finalVideoId =
+  // C1 preprocess 保证 videoUrls 数组永远存在（旧客户端发 videoUrl 也会被归一）。
+  const { videoUrls: rawUrls, videoUrl, topic, intent, videoId } = parsed.data;
+  const videoUrls = rawUrls ?? [videoUrl];
+  const totalMaterials = videoUrls.length;
+
+  const baseVideoId =
     videoId ?? `user-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const userVideoIds = videoUrls.map((_, i) =>
+    totalMaterials === 1 ? baseVideoId : `${baseVideoId}-${i}`,
+  );
+
   const encode = makeEncoder();
 
   const stream = new ReadableStream({
@@ -65,68 +88,142 @@ export async function POST(req: NextRequest) {
       let workDir: string | null = null;
 
       try {
-        // ============ Stage 1: 下载视频 ============
+        // ============ Stage 1: 并行下载 N 个视频 ============
         send({
           type: "stage",
           stage: "download",
-          message: "下载视频到分析环境…",
+          message: `下载 ${totalMaterials} 个视频到分析环境…`,
+          data: { totalMaterials },
         });
-        workDir = join(tmpdir(), `tm-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`);
+        workDir = join(
+          tmpdir(),
+          `tm-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        );
         await mkdir(workDir, { recursive: true });
-        const videoPath = join(workDir, "input.mp4");
-        const res = await fetch(videoUrl);
-        if (!res.ok) {
-          throw new Error(`下载视频失败 (${res.status})`);
-        }
-        const buf = Buffer.from(await res.arrayBuffer());
-        await writeFile(videoPath, buf);
+        const videoPaths = videoUrls.map((_, i) =>
+          join(workDir as string, `input-${i}.mp4`),
+        );
+        await Promise.all(
+          videoUrls.map(async (url, i) => {
+            const res = await fetch(url);
+            if (!res.ok) {
+              throw new Error(
+                `下载视频 ${i + 1}/${totalMaterials} 失败 (${res.status})`,
+              );
+            }
+            const buf = Buffer.from(await res.arrayBuffer());
+            await writeFile(videoPaths[i], buf);
+          }),
+        );
 
-        // ============ Stage 2: ffprobe ============
+        // ============ Stage 2: 并行 ffprobe ============
         send({
           type: "stage",
           stage: "ffprobe",
-          message: "提取视频元数据 (fps / 分辨率 / 编码) …",
+          message: `提取 ${totalMaterials} 个视频元数据…`,
         });
-        const meta = await probeVideoMeta(videoPath);
+        const metas = await Promise.all(
+          videoPaths.map((p) => probeVideoMeta(p)),
+        );
         send({
           type: "stage",
           stage: "ffprobe",
-          message: `元数据: ${meta.durationSec.toFixed(1)}s · ${meta.fps}fps · ${meta.width}x${meta.height} · ${meta.codec}`,
-          data: meta,
+          message: `元数据完成: ${metas.map((m, i) => `素材 ${i + 1} ${m.durationSec.toFixed(1)}s/${m.fps}fps`).join("，")}`,
+          data: {
+            metas: metas.map((m) => ({
+              durationSec: m.durationSec,
+              fps: m.fps,
+              width: m.width,
+              height: m.height,
+              codec: m.codec,
+            })),
+          },
         });
 
-        // ============ Stage 3: Gemini MaterialPotential ============
+        // ============ Stage 3: 并行 Gemini MaterialPotential ============
         send({
           type: "stage",
           stage: "potential_stage1",
-          message: "Gemini 2.5 Pro 解析视频客观结构 (CutPlan)…",
+          message: `Gemini 2.5 Pro 并行解析 ${totalMaterials} 个素材…`,
+          data: { totalMaterials },
         });
-        const userPotential = await analyzeMaterialPotential({
-          videoPath,
-          videoId: finalVideoId,
-          meta,
-          hints: {
-            sourceUrl: videoUrl,
-            userTopic: topic || undefined,
-            userIntent: intent || undefined,
-          },
-        });
+
+        type AnalyzeOutcome =
+          | { ok: true; index: number; userPotential: MaterialPotential }
+          | { ok: false; index: number; error: string };
+
+        const analyzeResults: AnalyzeOutcome[] = await Promise.all(
+          videoPaths.map((videoPath, i): Promise<AnalyzeOutcome> =>
+            analyzeMaterialPotential({
+              videoPath,
+              videoId: userVideoIds[i],
+              meta: metas[i],
+              // 多视频路由：120s poll 上限让卡死视频快速 fail，避免拖累整批
+              maxPollAttempts: 24,
+              hints: {
+                sourceUrl: videoUrls[i],
+                userTopic: topic || undefined,
+                userIntent: intent || undefined,
+              },
+            }).then(
+              (userPotential): AnalyzeOutcome => {
+                // 渐进披露：完成一个立刻 send partial，前端按 materialIndex 填位
+                send({
+                  type: "partial",
+                  phase: "potential",
+                  data: {
+                    materialIndex: i,
+                    totalMaterials,
+                    userVideoId: userVideoIds[i],
+                    userPotential,
+                  },
+                });
+                return { ok: true, index: i, userPotential };
+              },
+              (err: Error): AnalyzeOutcome => {
+                send({
+                  type: "stage",
+                  stage: "analyze_error",
+                  message: `素材 ${i + 1}/${totalMaterials} 分析失败: ${err.message}`,
+                  data: {
+                    materialIndex: i,
+                    userVideoId: userVideoIds[i],
+                    error: err.message,
+                  },
+                });
+                return { ok: false, index: i, error: err.message };
+              },
+            ),
+          ),
+        );
+
+        // 按上传全集索引产出数组：成功 = MaterialPotential，失败 = null 占位（I6）
+        const userPotentials: (MaterialPotential | null)[] = analyzeResults.map(
+          (r) => (r.ok ? r.userPotential : null),
+        );
+        const failedVideoIndexes = analyzeResults
+          .filter((r) => !r.ok)
+          .map((r) => r.index);
+        const successful = analyzeResults.flatMap((r) =>
+          r.ok ? [{ index: r.index, userPotential: r.userPotential }] : [],
+        );
+
+        if (successful.length === 0) {
+          throw new Error("全部素材分析失败，无法继续匹配");
+        }
+
         send({
           type: "stage",
           stage: "potential_stage2",
-          message: `素材分析完成: ${userPotential.detectedFormat} · ${userPotential.potential.cutPoints.length} 切点 · ${userPotential.potential.metaphorHooks.length} 隐喻钩子`,
+          message: `素材分析完成: ${successful.length}/${totalMaterials} 成功${
+            failedVideoIndexes.length > 0
+              ? `（失败 index: ${failedVideoIndexes.join(", ")}）`
+              : ""
+          }`,
           data: {
-            detectedFormat: userPotential.detectedFormat,
-            cutPointsCount: userPotential.potential.cutPoints.length,
-            metaphorHooksCount: userPotential.potential.metaphorHooks.length,
+            successCount: successful.length,
+            failedVideoIndexes,
           },
-        });
-        // P0 渐进披露：用户素材分析（fast lane）做完立即推到客户端，前端能先把
-        // UserDiagnosis 渲染出来，不用等 90-120s 后的 Opus 匹配。
-        send({
-          type: "partial",
-          phase: "potential",
-          data: { userVideoId: finalVideoId, userPotential },
         });
 
         // ============ Stage 4: 加载爆款 CutPlan 池 ============
@@ -135,52 +232,63 @@ export async function POST(req: NextRequest) {
           stage: "load_refs",
           message: "加载爆款 CutPlan 参考池…",
         });
-        const { potentialToDesiredTags } = await import("@/lib/technique-index/similarity");
-        const desiredTechniques = potentialToDesiredTags({
-          pushInOpportunities: userPotential.potential.pushInOpportunities ?? [],
-          matchCutCandidates: userPotential.potential.matchCutCandidates ?? [],
-          sceneTransitionCandidates:
-            userPotential.potential.sceneTransitionCandidates ?? [],
-        });
+        const primary = successful[0].userPotential;
+        const userFormat = modeOf(
+          successful.map((s) => s.userPotential.detectedFormat),
+        );
+        const { potentialsToDesiredTags } = await import(
+          "@/lib/technique-index/similarity"
+        );
+        const desiredTechniques = potentialsToDesiredTags(
+          successful.map((s) => ({
+            pushInOpportunities:
+              s.userPotential.potential.pushInOpportunities ?? [],
+            matchCutCandidates:
+              s.userPotential.potential.matchCutCandidates ?? [],
+            sceneTransitionCandidates:
+              s.userPotential.potential.sceneTransitionCandidates ?? [],
+          })),
+        );
         const refs = await loadReferenceCutPlans({
-          userFormat: userPotential.detectedFormat,
+          userFormat,
           userTopic: topic || undefined,
           desiredTechniques,
           limit: 5,
-          // P3: 本地池不够时启用实时抓取兜底
           liveFallback: {
             draft: intent || undefined,
             videoFeatures: {
-              duration: userPotential.base.durationSec,
+              duration: primary.base.durationSec,
               frameSamples: [],
               transcript: "",
               detectedHook:
-                userPotential.base.dimensions.structure.hookFormat ?? "",
-              detectedPlayStyle: userPotential.detectedFormat,
+                primary.base.dimensions.structure.hookFormat ?? "",
+              detectedPlayStyle: primary.detectedFormat,
               detectedVisualStyle:
-                userPotential.base.dimensions.audiovisual.colorGrade ?? "",
+                primary.base.dimensions.audiovisual.colorGrade ?? "",
             },
           },
         });
         send({
           type: "stage",
           stage: "load_refs",
-          message: `已加载 ${refs.cutPlans.length} 条爆款 (source=${refs.source})`,
+          message: `已加载 ${refs.cutPlans.length} 条爆款 (source=${refs.source}, userFormat=${userFormat})`,
           data: {
             count: refs.cutPlans.length,
             source: refs.source,
             notice: refs.notice,
+            userFormat,
           },
         });
 
         // ============ Stage 5: Opus 匹配引擎 ============
+        // Task 4 暂用「首个成功素材」做单 potential 输入；Task 5 改 N potential 编排。
         send({
           type: "stage",
           stage: "match_engine",
           message: `Claude Opus 4.7 双向匹配推理 (约 90-120s) …`,
         });
         const matchResult = await matchTechniques({
-          userPotential,
+          userPotential: primary,
           referenceCutPlans: refs.cutPlans,
           userIntent: intent || undefined,
         });
@@ -189,8 +297,9 @@ export async function POST(req: NextRequest) {
         send({
           type: "result",
           data: {
-            userVideoId: finalVideoId,
-            userPotential,
+            userVideoIds,
+            userPotentials,
+            failedVideoIndexes,
             referenceSource: refs.source,
             referenceNotice: refs.notice,
             match: matchResult,
