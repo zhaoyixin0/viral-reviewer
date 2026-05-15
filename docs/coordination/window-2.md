@@ -1,89 +1,28 @@
 # 给窗口 2 的指令
 
-> 写于 2026-05-15 · 针对 `main` = `35c04db` · 来自窗口 3 协调者
+> 写于 2026-05-15 · 针对 `main` = `8bb32aa` · 来自窗口 3 协调者
 
-## P2.3 暂不 merge — XSS HIGH 必须先 fix（裁决：你的 ①）
+## P2.3 + safeHref XSS fix 已 merge ✅
 
-`feat/hot-tracking-p0-p2` tip `df457a4` 暂留 origin、不进 main。原因：
+`feat/hot-tracking-p0-p2` tip `2821140` 已合入 main（merge commit `8bb32aa`）。本次合入：
 
-**`<a href={card.url}>` 缺 URL scheme guard，`javascript:` URI XSS 是真的实施缺陷，不适用 graceful degradation 取舍**（与 P2.1 H2 性质不同 —— H2 是排序退化、影响等级噪音，本条是真 security vuln，渲染层一个 `javascript:` URI 就 RCE 等级）。`card.url` 来自 Apify scraped 数据、上游不可信，渲染边界必须自带 scheme guard。
+- `feacf38` — P2.3 TrendingCard 组件 + 测试
+- `8bbf852` — chore(vitest oxc JSX runtime)
+- `df457a4` — XSS HIGH escalation 文档（历史记录保留）
+- `2821140` — fix(p2) safeHref guard against non-http(s) schemes
 
-附带的 `8bbf852` chore（vitest oxc JSX runtime）可接受 —— vitest 4 / vite 8 在 `tsconfig.jsx: preserve` 下确实需要这个，最小化、仅影响 test runner、不影响 prod build，透明标 chore 也 OK。
+三项验证全绿：
+- `npx tsc --noEmit` → EXIT 0
+- `npx vitest run` → 175/175
+- `npm run build` → 编译成功（trending page 已静态预渲染）
 
-### 请按你的 ①（最小 fix + 一条测试）实施
+safeHref 实现严格按上轮 spec：`/^https?:\/\//i.test(url)` 锚定 + case-insensitive，4 组测试齐全（http/https pass · javascript: 大小写混合 blocked · data:/vbscript:/file:/about:/mailto:/ftp: blocked · empty/whitespace 防御性 blocked）。前导空白绕过 regex 锚定 → 仍返回 undefined，**过度严格但更安全**，符合"绝不给恶意空白 + javascript: 留口子"的取舍。
 
-新建一个 fix commit，**不要 amend `feacf38`、也不要 rebase 历史**，新增即可：
+## 下一步：P2.4 放行
 
-```ts
-// components/trending/TrendingCard.tsx 顶部，formatVelocityBadge 之前
-/**
- * 防御 javascript:/data: URI 等非 http(s) scheme 走进 <a href>。
- * card.url 来自 Apify scraped 数据,上游不可信 —— 渲染边界必须自带 scheme guard。
- * 非 http(s) → 返回 undefined,React 会 omit href 属性,a 标签退化为不可点击文本。
- */
-export function safeHref(url: string): string | undefined {
-  return /^https?:\/\//i.test(url) ? url : undefined;
-}
-```
+按 per-task 工作流：
+1. `git pull origin main --no-rebase` 同步到 main 最新（`8bb32aa`）
+2. 读本文件确认 SHA 是新的 + 消化上面的合入说明
+3. 开 P2.4
 
-```tsx
-// 渲染处:
-<a
-  href={safeHref(card.url)}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="..."
->
-```
-
-测试加在 `tests/trending/trending-card-format.test.ts`（已存在），新增一个 describe block：
-
-```ts
-import { safeHref } from "@/components/trending/TrendingCard";
-
-describe("safeHref", () => {
-  it("returns the url unchanged for http/https schemes", () => {
-    expect(safeHref("https://www.tiktok.com/@u/video/123")).toBe("https://www.tiktok.com/@u/video/123");
-    expect(safeHref("http://example.com")).toBe("http://example.com");
-  });
-  it("returns undefined for javascript: URIs", () => {
-    expect(safeHref("javascript:alert(1)")).toBeUndefined();
-    expect(safeHref("JaVaScRiPt:alert(1)")).toBeUndefined();
-  });
-  it("returns undefined for data: / file: / vbscript: / about: / mailto: / ftp:", () => {
-    expect(safeHref("data:text/html,<script>alert(1)</script>")).toBeUndefined();
-    expect(safeHref("vbscript:msgbox")).toBeUndefined();
-    expect(safeHref("file:///etc/passwd")).toBeUndefined();
-    expect(safeHref("about:blank")).toBeUndefined();
-    expect(safeHref("mailto:a@b.com")).toBeUndefined();
-    expect(safeHref("ftp://example.com")).toBeUndefined();
-  });
-  it("returns undefined for empty / whitespace url (defensive)", () => {
-    expect(safeHref("")).toBeUndefined();
-    expect(safeHref("   javascript:alert(1)")).toBeUndefined();
-  });
-});
-```
-
-> 注意第四组：前导空白会绕过 `^https?:` 锚定 —— `^https?:\/\//i.test("  javascript:...")` 也返回 false，所以测试通过。但 React 渲染时若 url 是 `"  https://..."`（带前导空白），`safeHref` 也会返回 undefined。这是过度严格但**更安全**的副作用，可接受。如想保留合法带空白 URL，可改为 `url.trim()` 后再 test —— 你定，但**绝不在 regex 里放 `\s*` 给恶意空白 + javascript: 留口子**。
-
-### 验证 + 推送
-
-完成后跑：
-```
-npx tsc --noEmit
-npx vitest run
-npm run build
-```
-
-三项全绿 → `git add -A && git commit -m "fix(p2): safeHref guard against non-http(s) schemes in TrendingCard"` → `git push origin feat/hot-tracking-p0-p2`。
-
-push 后**不必再回写本文件**，我收到 monitor 事件会自己 review + merge。届时一并把这条 XSS 修复 + 之前的 `8bbf852` / `feacf38` / `df457a4` 一起合入 main。
-
-### 关于 commit `df457a4`（XSS escalation 文档）
-
-merge 时正常并入即可 —— 它是有效的历史记录（窗口 2 标 HIGH 上报 + 窗口 3 拍板 ①），不需要 revert。
-
-## 不动 P2.4
-
-P2.3 没 merge 进 main 之前先不开 P2.4。等 fix push + merge 通知（本文件下次更新）后再启动。
+P2.4 - P2.8 串行，按既定 per-task 闭环。
