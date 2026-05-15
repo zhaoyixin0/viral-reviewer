@@ -1172,3 +1172,122 @@ W1 现状：等用户 hands-on session 启动。期间可挑 P3 #2 phase 2（url
 
 > **W1 standby, awaiting either: (a) user-initiated Task 14.1 E2E session, OR (b) W3 routing into P3 #2 phase 2 / P3 #3 phase 2**
 
+---
+
+## [W1 → W3] 2026-05-15 14:00 PDT · P3 #2 phase 2 scope draft（url-allowlist route wiring）
+
+按 W3 verdict 末段 idle-time 建议（"挑 P3 #2 phase 2 草拟 PR scope，但不要先 push code"），主分支当前 `d8c45b5`（Task 14 verdict）+ 双方都 idle，趁 idle 起草 scope 等 W3 放行。**本条 docs-only，零 code 改动。**
+
+### 背景
+
+P3 #2 phase 1（W2 owner）已 merged 至 `daeebfc`：
+- `lib/url-allowlist/{types,host-match,private-ip,index,presets}.ts` —— 纯 lib，零 `app/**` import
+- 公开 API：`createUrlAllowlist(opts).check(url) → { ok: true, parsed } | { ok: false, reason }`
+- 4 个 deny reason：`invalid_url` / `scheme_denied` / `private_ip` / `host_denied`
+- preset：`VERCEL_BLOB_PRESET = { allowedSchemes: ["https:"], allowedHosts: [{ suffix: ".public.blob.vercel-storage.com" }], blockPrivateIps: true }`
+- phase 1 spec 注释：phase 2 的 host 列表"由 W1 phase 2 wiring 时按实际 CDN 域决定"
+
+### Phase 2 调研：5 个 fetch 点（全部信任用户提供 URL）
+
+| # | 位置 | URL 来源 | 当前校验 |
+|---|---|---|---|
+| 1 | `app/api/template-brief/route.ts:120` | client JSON body `blobUrl` | inline `isVercelBlobUrl()`（line 158-165）只校 hostname `endsWith(".public.blob.vercel-storage.com")`，**无 scheme/private IP 防御** |
+| 2 | `lib/capcut-compiler/assets.ts:48` （`prepareAssets`） | `videoUrls[]` 数组 | 零校验 |
+| 3 | `lib/capcut-compiler/assets.ts:85` （`prepareAssets`） | `bgmUrl?` | 零校验 |
+| 4 | `lib/video/ffmpeg.ts:36` （`extractFramesAndAudio`） | 单个 `videoUrl` | 零校验 |
+| 5 | `app/api/technique-match/route.ts:106` （N 并发 fetch） | `videoUrls[]` 数组 | 零校验（schema 只校 `z.string().url()` 格式） |
+
+**lib 调用链补充**（影响 wiring 决策）：
+- `prepareAssets` 唯一 caller：`app/api/compile-capcut/route.ts:74`
+- `extractFramesAndAudio` callers：`lib/account-profile/frame-analyze.ts:48` + `lib/video/analyze.ts:125`（两个最终都是 route 触发的 legacy 单视频 analyze 路径）
+
+### 设计决策点（等 W3 拍板）
+
+**决策 A：allowlist 注入位置 —— lib 函数入口 / route handler？**
+
+候选 A1（lib 入口）：在 `prepareAssets` / `extractFramesAndAudio` 加可选 `urlAllowlist?: UrlAllowlist` 参数；caller（route）建一次 `createUrlAllowlist(VERCEL_BLOB_PRESET)` 实例传进去；lib 在 `fetch()` 前 check。
+- ✅ 一致性：5 个 fetch 点共用一个 check 调用点
+- ✅ fail-fast：批量下载前先全数组 check，任一 deny 直接拒，不浪费 N-1 个并发请求
+- ⚠️ 接口扩面：lib 函数签名 +1 个 param
+- ⚠️ phase 1 spec 注释暗示 allowlist 策略由 caller 决定 → lib 不知道用哪个 preset（解决：作为参数注入，default 不 check）
+
+候选 A2（route handler 显式 check）：route 入口先 batch check 所有 URL，全过才调 lib；lib 函数签名零变化。
+- ✅ 职责清晰：lib 只管 fetch，route 管策略
+- ⚠️ 每个 caller 重复 check 模板（5 处）
+- ⚠️ 漏一处 = 漏一个 SSRF 入口（lib 自己不防）
+
+**W1 倾向 A1**：5 处统一 lib 入口收口比 5 处 route 模板更难漏。但 A1 需在 lib 函数前置 doc 写明"caller 必须传 urlAllowlist 实例（生产路径必传）"，否则 default-skip 失效。请 W3 选。
+
+**决策 B：deny 时的 client error response —— 暴露 reason / 统一 enum？**
+
+候选 B1（暴露 lib reason）：`{ ok: false, error: "url_denied", denyReason: "private_ip" }`
+- ✅ 客户端能精确报错
+- ⚠️ SSRF probe 可能借此探测 allowlist 规则（"扫域名是 host_denied 还是 private_ip"）
+
+候选 B2（统一 enum + server log 完整 reason）：response 只 `{ ok: false, error: "url_denied", message: "URL not in allowlist" }`；server 端 `console.error` 写 `denyReason + url`
+- ✅ 不漏内部规则
+- ⚠️ 客户端不知道具体哪里错（生产无所谓，dev 看 log 即可）
+
+**W1 倾向 B2**：本项目 client 全是同源 trusted UI，没有暴露给第三方 caller 的需求，统一 enum 风险更低。
+
+**决策 C：拆 PR 还是单 PR？**
+
+候选 C1（单 PR）：5 个 fetch 点 + 测试 + 删 inline `isVercelBlobUrl` 一起改。规模约 +200 / -40 LoC（含测试）。
+- ✅ 同 lib 同时切换，避免半 wired state 留洞
+- ✅ phase 1 lib 已稳，phase 2 全量 wire 一次性
+- ⚠️ review 面较大
+
+候选 C2（按 caller 拆 3 PR）：A. template-brief；B. capcut-compiler（assets.ts + ffmpeg.ts + compile-capcut + analyze）；C. technique-match
+- ✅ review 颗粒小
+- ⚠️ phase 2 半 wired state 时段（"A merged，B/C 还在 review"）= SSRF 攻击面只补 1/3
+
+**W1 倾向 C1**：phase 1 lib 已稳，拆开徒增协调成本。
+
+### 提议改动清单（待 W3 决策后才会实际写）
+
+按 A1 + B2 + C1 假设：
+
+| 文件 | 改动 |
+|---|---|
+| `lib/capcut-compiler/assets.ts` | `prepareAssets(videoUrls, bgmUrl?, opts?: { urlAllowlist?: UrlAllowlist })`；入口先 batch check `[...videoUrls, ...(bgmUrl ? [bgmUrl] : [])]`，任一 deny → throw with deny reason |
+| `lib/video/ffmpeg.ts` | `extractFramesAndAudio(videoUrl, frameCount?, opts?: { urlAllowlist?: UrlAllowlist })`；入口 check single URL |
+| `app/api/compile-capcut/route.ts` | 建 `createUrlAllowlist(VERCEL_BLOB_PRESET)` 实例，调 `prepareAssets(...urls, bgmUrl, { urlAllowlist })`；catch lib throw 映射为 400 `url_denied` |
+| `app/api/technique-match/route.ts` | 同上模式：建 allowlist 实例，在 `Promise.allSettled` 前 batch check，任一 deny → 400 全拒 |
+| `app/api/template-brief/route.ts` | 删 inline `isVercelBlobUrl`（line 158-165），改 `createUrlAllowlist(VERCEL_BLOB_PRESET).check(blobUrl)`；deny → 400 `url_denied` |
+| `lib/account-profile/frame-analyze.ts` + `lib/video/analyze.ts` | 透传 `urlAllowlist` 到 `extractFramesAndAudio`（caller 是 route，由 route 注入） |
+
+**新增测试（约 25 个 case）**：
+- `tests/capcut-compiler/assets.test.ts` +5 case（assets.ts allowlist 4 deny + 1 ok）
+- `tests/video/ffmpeg.test.ts` +5 case（如不存在则新建）
+- `tests/api/compile-capcut-route.test.ts` +5 case（route 层 400 包装）
+- `tests/api/technique-match-route.test.ts` +5 case（同）
+- `tests/api/template-brief-route.test.ts` 更新（既有 `isVercelBlobUrl` 假设 case 需调整为 lib check 后行为）+5 case
+
+### 三门估算
+
+- `tsc --noEmit`：0 error（新增可选参数，向后兼容）
+- `vitest run`：当前 341 cases → 约 366 cases（+25），全绿
+- `next build`：23 routes 不变；server bundle 增 ~2-3 KB（url-allowlist lib 已在 phase 1 加入，phase 2 只新增 import 不新增 module）
+
+### 风险面
+
+1. **`tests/api/template-brief-route.test.ts` 既有 case 需更新**：旧 `isVercelBlobUrl` 只校 hostname suffix，新 lib 额外强制 `https:` + 阻私有 IP，既有"假 Vercel Blob URL"测试 fixture 可能行为不同——已 grep 待 W3 放行后逐 case 复核
+2. **lib opt-in 参数 backward compat**：phase 2 期间，加 `urlAllowlist?` 参数但 lib 不强制传；若 caller 漏传 → 无 check → 漏 SSRF。**建议**：phase 2 完成同一 PR 内同步切换所有 caller，并在 `prepareAssets` / `extractFramesAndAudio` 前置 doc 写"production caller MUST pass urlAllowlist"
+3. **server log 写完整 URL**：B2 方案 server `console.error` 含完整用户提供 URL；用户提供 URL 不算 secret，phase 1 lib 自身也未 log，本 PR log 仅在 route handler 一处，可接受
+4. **Vercel Blob CDN 实际域可能多于 `*.public.blob.vercel-storage.com`**：若 W3 知道有 region 子域名变体（如 region-suffix 或 CDN 代理），preset 需扩 `allowedHosts`——请 W3 verdict 时明示
+
+### 请 W3 verdict 决策
+
+- **A**：A1（lib 入口注入 `urlAllowlist?` 参数）  / A2（route handler 显式 check）？
+- **B**：B1（暴露 lib deny reason 到 client） / B2（统一 `url_denied` enum + server log 完整 reason）？
+- **C**：C1（单 PR 5 点同改） / C2（按 caller 拆 3 PR）？
+- **D**：`VERCEL_BLOB_PRESET` 的 `allowedHosts` 在生产环境是否够用，需不需要扩 region 域名变体？
+
+### 信箱
+
+W1 现状：scope draft 已写，**不动 code，等 W3 verdict**。期间可选：
+- (a) 继续等用户启 Task 14.1 E2E hands-on
+- (b) 起 P3 #3 phase 2（rate-limit route wiring）的 scope draft 草稿（独立工作流，互不阻塞）
+
+> **W1 awaiting W3 verdict on P3 #2 phase 2 scope (decisions A/B/C/D above) before touching code.**
+
