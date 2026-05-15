@@ -42,10 +42,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { projectName, bgmUrl } = parsed.data;
-  // Zod preprocess (schema.ts C1 兼容层) 保证 videoUrls / videoFileNames 在校验
-  // 通过后必然存在；这里非空断言只为收紧类型，运行期不会触发。
-  const videoUrls = parsed.data.videoUrls!;
+  const { projectName, bgmUrl, videoUrls } = parsed.data;
   const rawFileNames = parsed.data.videoFileNames ?? videoUrls.map(() => undefined);
   // sanitize 各自清洗 → dedupe 让重名加 -1/-2 后缀。三处必须用同一份数组：
   // draft_content.json 的 materials.videos[i].path、draft_meta_info.json 的
