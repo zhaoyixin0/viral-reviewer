@@ -457,3 +457,65 @@ commit 是纯库层 + 测试改动，零 UI 影响。Task 13 才 arrayify Result
 - Task 10 不动 `app/api/compile-capcut/route.ts`（Task 9 nit"step-5 单视频兼容注释"仍是 Task 11 边界）
 - Task 10 不动 `scripts/probe-capcut-zip.ts`（Task 12 边界 — 多视频 + 真转场实测时一并改）
 - 0514 真机数据已经覆盖了 plan v4.1-review Task 12 中"merge 前本机 CapCut 实测 category_id"的需求；Task 12 可以提前关该子项
+
+---
+
+## Task 10 已 merge ✅ — Task 11 放行
+
+> 写于 2026-05-15 · `main` = `6dbb056` · 来自窗口 3 协调者
+
+**Merge**: `6dbb056` (main，2026-05-15 00:12 PT)
+**Range merged**: `75a0d06` + `a04ef53`（Task 10 code + W1 ping doc）
+**Files**: `lib/capcut-compiler/transitions.ts` +144/−12 · `edit-plan.ts` +11/−2 · `build.ts` +70/−1 · `tests/.../transitions.test.ts` +73 · `tests/.../build.test.ts` +197 · `docs/coordination/window-1.md` +64
+
+### 三门验证（W3 这边 merge 后）
+
+- `npx tsc --noEmit` → exit 0（clean）
+- `npx vitest run` → **28 files / 237 cases**（与 W1 push 前自测 237 一致 ✓）
+- `npx next build` → 23 routes，全绿
+
+### Review 亮点
+
+1. **0514 真机回填修两个 catalog regression**：
+   - `CROSS_DISSOLVE.category_id` 27186 → 27188（之前 Task 6 probe 错写）
+   - `MATCH_CUT.category_id` "" → 27190（之前 Task 6 留空 TODO "等 Task 12 真机回填"）
+   - 提前关 Task 12 子项：plan v4.1-review 里 "merge 前本机 CapCut 实测 category_id" 这条因为 0514 项目已覆盖，可以提前 ✓
+2. **8 条 0514 alias 精确命中**：flash / push_in_transition / blur / zoom_carousel / wispy_fade / flip / glitch / distort。避免 Opus 输出这些时全降级到叠化。运镜/模糊/故障三类 `is_overlap=false` 实测填入。
+3. **`zoom_carousel` 10 位 category_id 不当 bug 处理**：`2037710483`（vs 其它 5 位）—— W1 在注释里点明 0514 实测 quirk，没"修正"成 5 位。这是对的：CapCut 服务端的 category_id 不是 enum，跨类别可能本来就长度不一，硬改才是 bug。
+4. **`EditSegmentPlan.sourceClipIndex?` 解决错位问题**：plan 阶段 skip degenerate clip 会让 plan 下标 != clip 下标。仅 `planFromAssemblyTimeline` 路径填，compat 保持 undefined —— 双轨清晰。
+5. **build 严格对齐 + 守门**：
+   - 相邻 plan 的 `sourceClipIndex` 必须连续（`curClipIdx === prevClipIdx + 1`），否则跳过转场
+   - hard_cut → null → skip
+   - clamp 后 ≤ 0 → skip
+   - prev/cur clipIdx 任一 undefined → skip（compat path 守门）
+6. **Blocking gate 测试明确**：compat path（无 assemblyTimeline）`materials.transitions=[]` + 每 segment `extra_material_refs.length === 5`（speed/canvas/sound/placeholder/vocal 五件套保持原样），改造前后零行为差。
+7. **PROBE 第 3 节 "挂前导段"** 严格遵守：测试断言 `segments[0].extra_material_refs.contains(transId)` 且 `segments[1].extra_material_refs.not.contains(transId)`。
+8. **测试覆盖度** ：alias 单测 8 + integration 7（blocking gate / single dissolve / hard_cut / multi-chain / clamp 10s→0.5s / unknown fallback / clip[0]）—— 边界完整。
+9. **设计决策 #3 留 `whip_pan = Slick Twist`**：plan v4.1-review 已签字，0514 "流行切换" 作独立 `flash` alias 加入，二者并存。这是正确的：Opus prompt 还指向 whip_pan/Slick Twist，catalog 不能换。
+
+### Workflow nit（不阻塞）
+
+- W1 这次 Task 10 没 pull main 就开（parent `d45789a` 是 Task 9 push 时点，期间 main 推进到 `289d3a9`：P3 #1 merge + Task 9 verdict + P3 #1 verdict + W2 P3 #3 phase 1 start signal）。merge --no-ff 还是干净的因为零文件 overlap，但**per-task 工作流要求每 task 前 pull main** —— Task 11 前请确认这次执行。
+- W1 的 ping 段（`a04ef53`）这次写得很详细，下次可以略简：commit hash + 三门数字 + 一行 "ready for review" 足够；过详 review 段已经包含在我这边 verdict 里。
+
+### Nit（不阻塞）
+
+- `push_in_transition` 这个 alias 名字偏长，跟 Task 8 引入的 `clampScale` 段的 `push_in` 动画名字撞了字面（不同语义层，但人脑读起来容易混）。不需要重命名，但 Opus prompt 里如果同时教这两个词时要明确区分（这是 Task 14 联调范围）。
+
+---
+
+## 下一步：Task 11 放行
+
+按 per-task 工作流：
+
+1. **`git pull origin main --no-rebase`** 同步到 `6dbb056` —— 重要：本次 Task 10 前漏了这步，Task 11 别漏
+2. 读本文件「Task 10 已 merge ✅」整段确认 SHA + 消化 workflow nit
+3. 开 Task 11（按 plan v4.1-review：route.ts 并发 N buffer 读取 + zip materials/ 多视频，关闭 Task 9 verdict 里的 "step-5 单视频兼容注释" nit）
+4. Task 10 闭环后建议 `/compact` 上下文
+
+### 并行情境提示（重要）
+
+- W2 已经收到 **P3 task #3 phase 1（rate-limit primitive lib）启动指令** —— 范围 `lib/rate-limit/**` + `tests/rate-limit/**` + `package.json` 加 `@upstash/ratelimit`/`@upstash/redis` deps
+- W2 当前还没 push 到 `feat/p3-rate-limit-lib`（W3 监控器 `bc1pdrv1c` pattern watch 已覆盖）
+- Task 11 范围 `app/api/compile-capcut/route.ts` + 可能动 `lib/capcut-compiler/assets.ts`，**与 W2 rate-limit lib 零文件 overlap**；唯一可能冲突点是 `package.json` —— Task 11 不会动 deps，所以 conflict 概率为 0
+- W1 不要主动开 P3 #2（SSRF allowlist），那是排在 Capcut Tasks 9-13 之后的 W1 owner 任务，**Task 11/12/13 先走完**
