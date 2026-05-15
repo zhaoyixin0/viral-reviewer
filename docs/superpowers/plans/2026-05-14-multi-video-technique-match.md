@@ -4,6 +4,16 @@
 > 2026-05-14 经窗口 3 review（C1/C2/I6 契约级修正 + I1-I5 已吸收，见下方各 task 标注）。
 > 串行 per-task 工作流，每个 task 完成 → push → 等 merge → `git pull origin main --no-rebase` → `/compact` → 下一个 task。
 
+## 执行进度（换机器 / compact 后读这里恢复）
+
+最后更新：**2026-05-15 W1 Task 2 完成并 merge**
+
+- **Task 1 — 契约冻结 + 共享类型/schema** — ✅ 已完成并 merge（`b6c5e5b`）
+- **Task 2 — CapCut 转场结构逆向探测 (PROBE)** — ✅ 已完成并 merge（`6dd6dc0`）
+  - 交付：`docs/CAPCUT-TRANSITION-STRUCTURE.md`（11 个实测 effect_id 含叠化 cross dissolve `6724845717472416269`、is_overlap 修正、Task 6/8/10 落地结论、附录 B 跨机器复现步骤）+ `scripts/probe-capcut-transitions.ts`（只读探测脚本）。
+  - **关键修正**：`is_overlap` 不是恒 true，按 effect_id 实测值逐条配置；Task 6 映射表需带 `effect_id + is_overlap + 默认 duration`，Task 10 写 material 时从表取（不 hardcode）。
+- **Task 3-14** — ⏳ 待办（严格串行，Task 2 已完成解锁 Task 6/8/10）。
+
 ## Context
 
 当前 `technique-match` 流程只允许用户上传 **1 个**视频：Gemini 分析素材潜力 → Opus 对照爆款出剪辑清单 → 编译成 CapCut 草稿 zip。所有 CapCut segment 都引用同一个 `videoMaterial`，`transitions` 始终为空。

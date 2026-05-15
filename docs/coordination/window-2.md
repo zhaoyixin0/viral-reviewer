@@ -1,43 +1,89 @@
-# 窗口 2 → 窗口 3 回执
+# 给窗口 2 的指令
 
-> 写于 2026-05-15 · 针对 `main` = `374a67a` · 来自窗口 2
+> 写于 2026-05-15 · 针对 `main` = `35c04db` · 来自窗口 3 协调者
 
-## P2.3 完成 ✅ + 一个 HIGH security finding 待协调者裁决
+## P2.3 暂不 merge — XSS HIGH 必须先 fix（裁决：你的 ①）
 
-P2.3（`TrendingCard.tsx` + `formatVelocityBadge` 纯函数测试）已实施，按 plan 双 commit：
+`feat/hot-tracking-p0-p2` tip `df457a4` 暂留 origin、不进 main。原因：
 
-- `8bbf852` chore: enable React automatic JSX runtime for vitest (oxc transformer) — 见下「附带修复」
-- `feacf38` feat(p2): TrendingCard renders trendingContext line for TikTok trending videos
+**`<a href={card.url}>` 缺 URL scheme guard，`javascript:` URI XSS 是真的实施缺陷，不适用 graceful degradation 取舍**（与 P2.1 H2 性质不同 —— H2 是排序退化、影响等级噪音，本条是真 security vuln，渲染层一个 `javascript:` URI 就 RCE 等级）。`card.url` 来自 Apify scraped 数据、上游不可信，渲染边界必须自带 scheme guard。
 
-验证：全量 171 测试 PASS（+5）、`tsc --noEmit` 干净。双 review：spec-compliance **PASS**（逐字对齐 plan，无任何偏离）；code-quality **BLOCK**（1 个 HIGH，详见下）。
+附带的 `8bbf852` chore（vitest oxc JSX runtime）可接受 —— vitest 4 / vite 8 在 `tsconfig.jsx: preserve` 下确实需要这个，最小化、仅影响 test runner、不影响 prod build，透明标 chore 也 OK。
 
-### 附带修复 `8bbf852`（不在 P2.3 plan 内）
+### 请按你的 ①（最小 fix + 一条测试）实施
 
-plan Step 1 测试 `import { formatVelocityBadge } from "@/components/trending/TrendingCard"` —— 这是首个 vitest 引用 `.tsx` 文件的测试。vite 8 / vitest 4 在 `tsconfig.jsx: "preserve"`（Next.js 编译需要）下默认不会转 JSX，跑测试时报「parse error … make sure to not set jsx to preserve」。最小修复：vitest.config.ts 加 `oxc: { jsx: { runtime: "automatic" } }`（vite 8 已把 esbuild 标 deprecated，转 oxc transformer）。只影响 vitest，不影响 Next.js prod build。**这不是 P2.3 范围**，是 plan 基础设施层面遗漏，单提一个 `chore:` commit 便于审。
+新建一个 fix commit，**不要 amend `feacf38`、也不要 rebase 历史**，新增即可：
 
-### code-quality review 的 HIGH —— 需要协调者裁决
+```ts
+// components/trending/TrendingCard.tsx 顶部，formatVelocityBadge 之前
+/**
+ * 防御 javascript:/data: URI 等非 http(s) scheme 走进 <a href>。
+ * card.url 来自 Apify scraped 数据,上游不可信 —— 渲染边界必须自带 scheme guard。
+ * 非 http(s) → 返回 undefined,React 会 omit href 属性,a 标签退化为不可点击文本。
+ */
+export function safeHref(url: string): string | undefined {
+  return /^https?:\/\//i.test(url) ? url : undefined;
+}
+```
 
-**HIGH: `<a href={card.url}>` 缺 URL scheme 校验，`javascript:` URI XSS 风险**
+```tsx
+// 渲染处:
+<a
+  href={safeHref(card.url)}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="..."
+>
+```
 
-plan Step 3 verbatim 写 `<a href={card.url} target="_blank" rel="noopener noreferrer">`。`card.url` 来自 Apify scraped 数据（TikTok / IG 拉取后写 Vercel Blob，没有 scheme 校验），用户点击卡片若 url 是 `javascript:void(...)` 等，React 不阻断、浏览器会执行。这是真 XSS，不是 graceful degradation。
+测试加在 `tests/trending/trending-card-format.test.ts`（已存在），新增一个 describe block：
 
-- **影响**：高。生产看板所有 card 受影响（不局限 P2.3，P2.5 `TrendingBoard` 列表也只调本组件）。攻击面是 Apify scraped data 信任链 —— 一旦 Apify 返回恶意 url（或上游被注入），点击即触发。
-- **最小 fix**（一行 guard，不引依赖）：
-  ```tsx
-  function safeHref(url: string): string | undefined {
-    return /^https?:\/\//.test(url) ? url : undefined;
-  }
-  <a href={safeHref(card.url)} ...>
-  ```
-  外加一条测试 `safeHref("javascript:alert(1)")` → undefined。
-- **我没有单方面改**（fix 偏离 plan verbatim，超出窗口 2 权限，逻辑同 P2.1 H2 处理）。
-- **建议**（按严重度排序）：
-  - **倾向**：① 本 PR 合并前就做 fix —— 把 `safeHref` 加进 TrendingCard.tsx + 一条测试，再做一次 review、push（这是 XSS 不是优化，不适合 follow-up）；
-  - 备选 ② 接受 + 立即开 follow-up task 在 P2.4/P2.5 之前补；
-  - 不建议 ③ 接受为已知降级（与 P2.1 H2 同类处理 ——XSS 严重度高于 H2 的 ranking 退化，不适用）。
+```ts
+import { safeHref } from "@/components/trending/TrendingCard";
 
-如选 ①，请回复指令，我直接补 fix（最小改动、不偏离 plan 其余部分）。
+describe("safeHref", () => {
+  it("returns the url unchanged for http/https schemes", () => {
+    expect(safeHref("https://www.tiktok.com/@u/video/123")).toBe("https://www.tiktok.com/@u/video/123");
+    expect(safeHref("http://example.com")).toBe("http://example.com");
+  });
+  it("returns undefined for javascript: URIs", () => {
+    expect(safeHref("javascript:alert(1)")).toBeUndefined();
+    expect(safeHref("JaVaScRiPt:alert(1)")).toBeUndefined();
+  });
+  it("returns undefined for data: / file: / vbscript: / about: / mailto: / ftp:", () => {
+    expect(safeHref("data:text/html,<script>alert(1)</script>")).toBeUndefined();
+    expect(safeHref("vbscript:msgbox")).toBeUndefined();
+    expect(safeHref("file:///etc/passwd")).toBeUndefined();
+    expect(safeHref("about:blank")).toBeUndefined();
+    expect(safeHref("mailto:a@b.com")).toBeUndefined();
+    expect(safeHref("ftp://example.com")).toBeUndefined();
+  });
+  it("returns undefined for empty / whitespace url (defensive)", () => {
+    expect(safeHref("")).toBeUndefined();
+    expect(safeHref("   javascript:alert(1)")).toBeUndefined();
+  });
+});
+```
 
-### 后续
+> 注意第四组：前导空白会绕过 `^https?:` 锚定 —— `^https?:\/\//i.test("  javascript:...")` 也返回 false，所以测试通过。但 React 渲染时若 url 是 `"  https://..."`（带前导空白），`safeHref` 也会返回 undefined。这是过度严格但**更安全**的副作用，可接受。如想保留合法带空白 URL，可改为 `url.trim()` 后再 test —— 你定，但**绝不在 regex 里放 `\s*` 给恶意空白 + javascript: 留口子**。
 
-窗口 2 按 per-task 闭环：已 push `feat/hot-tracking-p0-p2`，监控 `origin/main` 等裁决/merge。merge 后 `git pull origin main --no-rebase` → 读本文件看裁决 → 才开 P2.4。
+### 验证 + 推送
+
+完成后跑：
+```
+npx tsc --noEmit
+npx vitest run
+npm run build
+```
+
+三项全绿 → `git add -A && git commit -m "fix(p2): safeHref guard against non-http(s) schemes in TrendingCard"` → `git push origin feat/hot-tracking-p0-p2`。
+
+push 后**不必再回写本文件**，我收到 monitor 事件会自己 review + merge。届时一并把这条 XSS 修复 + 之前的 `8bbf852` / `feacf38` / `df457a4` 一起合入 main。
+
+### 关于 commit `df457a4`（XSS escalation 文档）
+
+merge 时正常并入即可 —— 它是有效的历史记录（窗口 2 标 HIGH 上报 + 窗口 3 拍板 ①），不需要 revert。
+
+## 不动 P2.4
+
+P2.3 没 merge 进 main 之前先不开 P2.4。等 fix push + merge 通知（本文件下次更新）后再启动。
