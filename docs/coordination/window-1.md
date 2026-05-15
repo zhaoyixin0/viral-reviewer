@@ -283,3 +283,66 @@ commit 不含 UI 改动 —— route.ts 改动是后端 N→1 接入扩展点，
 2. 读本文件「Task 7 已 merge ✅」整段确认 SHA + 消化 Task 7 nit（不阻塞）
 3. 开 Task 8（按 plan 既定阶段）
 4. Task 7 闭环后建议 `/compact` 上下文
+
+---
+
+## Task 8 已 merge ✅ — Task 9 放行
+
+> 写于 2026-05-14 · 针对 `main` = `bde36de` · 来自窗口 3 协调者
+
+### merge 内容
+
+`worktree-capcut-link` tip `7ca1a46` 已合入 main（merge commit `bde36de`）。本次合入：
+
+- `7ca1a46` — feat(capcut-compiler) Task 8 — edit-plan multi-video + transition timeline math（2 文件 / 395 行）
+  - `lib/capcut-compiler/edit-plan.ts` (+150)：
+    - `EditSegmentPlan` 新增 `sourceVideoIndex: number` 字段；单视频 `planEditSegments` compat 路径显式填 `0`（line 218，Task 9/11 下游无需分支）
+    - `planFromAssemblyTimeline(timeline, metas)`：linear target cursor 累加（**按 Task 2 PROBE §4：转场不缩 timeline，is_overlap 仅驱动 CapCut 渲染层视觉重叠**）
+    - 防御 clamping：`resolveSourceVideoIndex`（`Number.isInteger + 0 ≤ raw < totalVideos` → 越界 clamp to 0 + warn）；`clampToRange`（NaN/Infinity → lo）；degenerate clip (dur<1e-3) skip + warn 不让畸形段污染 timeline
+    - `resolveClipAnimation`：null → 兜底交替（与 pickAnimation 单视频路径一致，幅度 4%）；known type 走 clampScale；未知 type → "none" 防御性退化
+    - `clampScale` 范围 0.5-2.0（vs pickAnimation 0.9-1.1）—— 设计差异：assembly 路径允许用户自定义 scale
+    - `clampTransitionDurationSec(durSec, prevDur, curDur)`：Task 10 接入真转场时调用，NaN/Infinity/非正值 → 0，正常 case `min(durSec, halfShorter)`
+  - `tests/capcut-compiler/edit-plan.test.ts` (+245)：12 new cases — planFromAssemblyTimeline 8（空 clips / 单 clip / 多 clip linear / idx 越界 / source 越界 / degenerate skip / animation null / animation pass-through）+ clampTransitionDurationSec 4（正常 / NaN / prev/cur 0 / durSec 超 halfShorter）+ 1 sourceVideoIndex:0 backward-compat assertion 加在已有 planEditSegments case
+
+三项验证全绿：
+- `npx tsc --noEmit` → EXIT 0
+- `npx vitest run` → 27 files / **204/204 cases**（192 → 204，+12 Task 8 cases）
+- `npx next build` → 编译成功，23/23 静态预渲染（`/trending` 等 static route 未退化）
+
+### Task 8 review 亮点
+
+- **Linear target cursor 严格按 PROBE §4**：转场不参与 target_timerange 计算，转场只在 Task 10 写 TransitionMaterial.duration 时存在 —— `targetStartSec` / `targetEndSec` 通过 `targetCursor += dur` 累加，**无 overlap 数学**。这是 Task 2 PROBE 的核心结论落地，避免双重处理转场导致 timeline 漂移。
+- **Graceful clamp 而非 throw**：sourceVideoIndex 越界 / sourceStart-End 越 meta.durationSec / degenerate clip 全部 console.warn + 修正继续，不抛错中断 pipeline。与 Task 6 collector 模式 + Task 7 partial-state 防御一脉相承 —— 让 LLM 输出的小瑕疵被吸收，给开发者留 warn 排查口。
+- **`+1e-3` 浮点容差**：`clip.sourceEndSec > maxDur + 1e-3` 触发 clamp warn，避免 LLM 输出 9.0000001s 这种"轻微越界"被误报。1e-3 = 1ms，对秒级时长足够松。
+- **`Number.isInteger` 严格检查**：sourceVideoIndex 必须是非负整数，浮点（3.5）也被判越界。LLM 偶发输出 "3.0" 或 "3.5" 时不会被 silently 当成 3。
+- **`clampScale` 范围放宽合理**：用户在 assembly timeline 里可能指定 0.7 或 1.5 的特殊效果，0.5-2.0 给空间；但 pickAnimation 自动生成路径仍保守 0.9-1.1。两套范围共存，意图清晰。
+- **`clampTransitionDurationSec` 提前导出**：Task 10 还没开但工具已就位 —— Task 10 直接 `import { clampTransitionDurationSec } from "./edit-plan"` 调用，不会因为 helper 散在 Task 10 实现里而漏 clamp。这是 Task 8 → Task 10 的接口契约前置。
+- **Animation pass-through + alternating 兜底**：raw === null 时按 outputIndex 奇偶交替 push_in / pull_out（与 pickAnimation 一致），保持 LLM 不指定 animation 时的视觉节奏感。
+- **Backward compat**：planEditSegments 单视频路径 line 218 显式填 `sourceVideoIndex: 0`，Task 9/11/12 拿到的 plan 无论单视频还是多视频都有这字段，下游零分支。
+
+### 一条观察（不阻塞、不需要 fix）
+
+`planFromAssemblyTimeline` 在 `metas.length === 0` 时，所有 clip 都会触发 sourceVideoIndex clamp to 0 + 紧接 `metas[0]?.durationSec ?? 0 = 0` → 所有 clip degenerate skip → 返回 `[]`。Graceful 但路径稍绕。如果 Task 9/11 调用方在 `metas.length === 0` 时直接早退（route.ts 已经强制 `videoUrls.length >= 1`），其实进不到这条路径。**接受现状**，无需 fix。
+
+### follow-up（不阻塞 merge，与上轮统一）
+
+- **Opus 实弹探测（user 侧）**：plan §Task 5 探测点列表 4 项仍待用户实弹
+- **SSRF hardening (Task 4 carry-over)**：进 P3 #2（W1 owner，与 W2 P3 #1 boundary Zod 协同；W2 P3 #1 启动指令已在 window-2.md 末尾，main = `58a4094`）
+- **Task 6 nit (上上轮)**：Task 10/12 callsite 注入 collector，替换默认 `console.warn` —— Task 8 的 `console.warn` 后续会被 Task 10/12 注入的 collector 接管
+- **Task 7 nit (上轮)**：`DownloadError` 结构化错误类 —— 进 P3 #6 refactor scope
+- **Task 8 nit (本轮新增)**：metas.length=0 边界绕路（见上节），**不需要 fix**
+
+### 浏览器烟测试
+
+commit 是纯库层 + 测试改动，零 UI 影响。Task 13 才 arrayify ResultsArea。窗口 3 不阻塞 merge。
+
+## 下一步：Task 9 放行
+
+按 per-task 工作流：
+
+1. `git pull origin main --no-rebase` 同步到 `bde36de`
+2. 读本文件「Task 8 已 merge ✅」整段确认 SHA + 消化 Task 8 nit（不阻塞）
+3. 开 Task 9（按 plan v4.1-review 既定阶段：build 层接入 multi-video edit plan）
+4. Task 8 闭环后建议 `/compact` 上下文
+
+**并行情境提示**：W2 那边今晚刚启动 P3 #1（API boundary Zod validation），main `58a4094..bde36de` 是这次 Task 8 merge 落入 —— W2 当前应该在 `feat/p3-hardening` 分支动手，跟 W1 Task 9 在 `worktree-capcut-link` 互不冲突。如果 Task 9 触及 `app/api/compile-capcut/route.ts`（比如把 build 层接入），可能会与 W2 P3 #1 范围内 schema 改动有间接耦合 —— **建议 W1 在 Task 9 push 前 `git pull origin main --no-rebase`，吸纳 W2 的 schema 改动（如果到时候已 merge）**。
