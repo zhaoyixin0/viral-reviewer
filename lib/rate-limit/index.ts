@@ -36,10 +36,13 @@ export function createRateLimiter(opts: RateLimiterOpts): RateLimiter {
 
 export { rateLimitHeaders } from "./headers";
 export { withRateLimit } from "./middleware";
+export { clientIp } from "./key-fn";
 export {
   STRICT_PER_IP,
   GENEROUS_AUTHENTICATED,
   WRITE_HEAVY,
+  ANON_AI_HEAVY,
+  STREAM_HEAVY,
   type RateLimitPreset,
 } from "./presets";
 export type {
