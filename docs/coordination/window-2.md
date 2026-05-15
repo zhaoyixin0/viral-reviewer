@@ -617,3 +617,59 @@ W3 可按自己节奏（参考动作里 step 3 是等 W1 Task 8 push monitor 事
 4. 不通过 → 在 window-2.md 末尾写明确 changeset 让 W2 修
 
 > **W2 现在可以动手** —— 完整准入条件已满足（main 已含 P0-P2 全部闭环、verdict、kickoff plan、ready ack）。
+
+---
+
+## window 2 P3 task #1 done — pushed `feat/p3-hardening`，等 W3 review
+
+> 写于 2026-05-14 · `main` = `b970a71` · 来自窗口 2 · 分支 `feat/p3-hardening` tip = `0d3e7e0`
+
+### 三门验证（HEAD = `0d3e7e0`）
+
+| 检查 | 结果 |
+|---|---|
+| `npx tsc --noEmit` | ✅ EXIT 0 |
+| `npx vitest run` | ✅ **212/212**（28 files；template-brief-route.test.ts 新增 6 cases / trending-route.test.ts 新增 2 cases） |
+| `npx next build` | ✅ 23/23 routes，`/trending` Revalidate 1h Expire 1y |
+
+### Commits（按 W3 spec 拆 3 个）
+
+1. **`8145ce0`** `feat(api): validate trending query params with Zod`
+   - `app/api/trending/schema.ts`：`TrendingQuerySchema = z.object({ platform: z.enum(["tiktok","instagram"]).optional() })`
+   - route 内 `safeParse(Object.fromEntries(searchParams.entries()))` → 400 `invalid_query` + `detail: ZodFormattedError`
+   - **`app/api/cron/trending/route.ts`** 含豁免注释：POST body 不消费任何字段（auth 仅走 Authorization Bearer header），新增任何 body 字段消费必须先补 schema
+   - tests `tests/api/trending-route.test.ts`：扩 `platform=foo` → 400 / 缺失 platform → 200 全 cards
+2. **`f292e91`** `feat(api): validate template-brief JSON body with Zod`
+   - `app/api/template-brief/schema.ts`：`TemplateBriefJsonBodySchema = z.object({ blobUrl: z.string().url(), fileName: z.string().min(1).max(255).optional() })`
+   - `loadFromBlobUrl` 内 `req.json()` → safeParse → 400 `invalid_request`
+   - **SSRF**：保留 `isVercelBlobUrl` 严格 hostname allowlist（`.public.blob.vercel-storage.com`），比 W1 P3 #2 计划中的通用 SSRF allowlist 更严，**不依赖** W1 P3 #2，无 TODO 标注
+   - multipart 分支**未动**（File 对象自带 mime/size 校验，无隐式 input surface）
+   - tests 新建 `tests/api/template-brief-route.test.ts`：6 cases（empty body / non-string blobUrl / malformed URL / non-vercel hostname / oversized fileName / invalid JSON）
+3. **`0d3e7e0`** `feat(api): validate upload clientPayload with Zod`
+   - **Sweep 结论**：4 个 `upload()` callsite（`components/template-review/BriefUploader.tsx`、`components/technique-match/{InputPanel,CapCutExport}.tsx`、`components/review/InputPanel.tsx`）**都不传 `clientPayload`**，服务端 `onBeforeGenerateToken` 拿到的是 `null`（@vercel/blob 类型 `string | null`）
+   - W3 启动指令里写的「`clientPayload` 是 W2 自定义字符串（通常 `JSON.stringify(...)`）」**与现状不符**；采用**防御性 `z.null()` schema** 作为护栏：当前所有合法请求都过，任何字符串负载会被拒（throw → handleUpload 回 400），未来要消费 `clientPayload` 必须先扩 schema 加 `z.string()` / `JSON.parse` / 业务字段校验
+   - 两个 route（`upload/route.ts` + `template-brief-upload/route.ts`）各自就近 `schema.ts`，未集中（per W3 nice-to-have「不为了集中而 mass-rename」）
+   - `onUploadCompleted` 未消费 `tokenPayload`：因 onBeforeGenerateToken 已 schema 拒绝任何字符串，handleUpload 默认 tokenPayload = clientPayload = null，加注释说明
+
+### 与 W3 启动指令的偏离（明示）
+
+- **范围微调**：`feedback` endpoint 不存在 W3 自己已修正（指令第 2 段已明示），无偏离
+- **template-brief**：W3 写「`url` 字段」，实际字段名 `blobUrl`，按"按实际字段补全"原则用 `blobUrl`；W3 spec 提到的 SSRF TODO 没加，因为 `isVercelBlobUrl` 已是更严格的专用 allowlist，不依赖 W1 P3 #2
+- **upload clientPayload**：W3 spec 假设 callers 传 JSON 字符串，实际 0 callers 传 → 改为 defensive `z.null()` 护栏；非"按 spec 直字面实现"，待 W3 review 时裁决是否接受
+
+### 错误响应 shape
+
+按 W3 nice-to-have「在本任务改动的 endpoint 内统一」：
+- trending → `{ error: "invalid_query", detail: ZodFormattedError }`
+- template-brief → `{ ok: false, error: "invalid_request", message: ... }`（沿用既有 ErrorResponse shape，未改 envelope）
+- upload / template-brief-upload → throw Error → handleUpload 自己回 400（未触动 envelope）
+
+未顺手改其它已用 Zod 的 route（compile-capcut / technique-match / review 等），符合 W3「不顺手 mass-rename」红线。
+
+### 下一步
+
+- 等 W3 review 三门 + safeParse 用法 + SSRF 边界 + 测试覆盖 + clientPayload 防御性 schema 裁决
+- review 通过 → merge to main + verdict
+- 不通过 → 在本文件末写明确 changeset 让 W2 修
+
+**不主动开 P3 #2 / #3**（per kickoff plan，等 #1 merge 后 W3 重新分配）。
