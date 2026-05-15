@@ -11,9 +11,22 @@ import type {
   BrainstormResult,
 } from "@/lib/template-review/types";
 import type { DivergenceMethodId } from "@/lib/template-review/divergence-methods";
+import {
+  createRateLimiter,
+  clientIp,
+  rateLimitHeaders,
+  ANON_AI_HEAVY,
+} from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
+
+// P3 #3 phase 2: ANON_AI_HEAVY (10/10m sliding) —— Claude Opus brainstorm。
+// Inline check（stream 启动前），与 technique-match / account-profile 同模式。
+const RATE_LIMITER = createRateLimiter({
+  identifier: "template-brainstorm",
+  ...ANON_AI_HEAVY,
+});
 
 const METHOD_IDS = [
   "scamper",
@@ -100,6 +113,19 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // P3 #3 phase 2: rate-limit inline check — stream 启动前。
+  const rlResult = await RATE_LIMITER.check(clientIp(req));
+  const rlHeaders = rateLimitHeaders(rlResult);
+  if (!rlResult.success) {
+    return new Response(
+      JSON.stringify({ error: "rate_limited", limit: rlResult.limit }),
+      {
+        status: 429,
+        headers: { ...rlHeaders, "content-type": "application/json" },
+      },
+    );
+  }
+
   const input = parsed.data as BrainstormInput;
   const encode = makeEncoder();
 
@@ -166,6 +192,7 @@ export async function POST(req: NextRequest) {
 
   return new Response(stream, {
     headers: {
+      ...rlHeaders,
       "content-type": "application/x-ndjson; charset=utf-8",
       "cache-control": "no-cache, no-transform",
       "x-accel-buffering": "no",

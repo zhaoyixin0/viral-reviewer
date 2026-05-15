@@ -12,6 +12,12 @@ import {
   UrlAllowlistError,
 } from "@/lib/url-allowlist";
 import {
+  createRateLimiter,
+  withRateLimit,
+  clientIp,
+  WRITE_HEAVY,
+} from "@/lib/rate-limit";
+import {
   buildDraftContent,
   dedupeFileNames,
   sanitizeVideoFileName,
@@ -25,7 +31,13 @@ import { RequestSchema } from "./schema";
 export const runtime = "nodejs";
 export const maxDuration = 120;
 
-export async function POST(req: NextRequest) {
+// P3 #3 phase 2: WRITE_HEAVY (5/10m fixed) —— ffmpeg 抽帧 + zip 打包 + Blob 写。
+const RATE_LIMITER = createRateLimiter({
+  identifier: "compile-capcut",
+  ...WRITE_HEAVY,
+});
+
+async function impl(req: NextRequest) {
   let body: unknown;
   try {
     body = await req.json();
@@ -195,3 +207,5 @@ export async function POST(req: NextRequest) {
     if (workDir) await cleanupAssets(workDir);
   }
 }
+
+export const POST = withRateLimit(RATE_LIMITER, clientIp, impl);
