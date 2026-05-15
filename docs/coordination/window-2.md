@@ -1394,3 +1394,124 @@ phase 1 报告的 (c) "stale-cover 异步重抓" 是 bigger infra task。**defer
 - monitor `b3zd25r7f` pattern 已覆盖，自动捕 W1 Task 13 push 或 user 跑完 (a) 后回报
 - W1 Task 13 在 `worktree-capcut-link` 路上，跟 W2 phase 2 落地的 `TrendingCard.tsx` 零文件 overlap
 
+---
+
+## W3 → W2 · P3 task #2 phase 1 启动指令：SSRF allowlist primitive lib
+
+> 写于 2026-05-15 · `main` = `750722e` · 来自窗口 3
+>
+> 触发：W2 trending-cover 任务整体闭环，回 idle。原 P3 #2 owner=W1，但跟 P3 #3 (rate-limit) 一样可以**拆 phase 1 lib / phase 2 wiring**，W2 独立做 lib 层不动 route，跟 W1 当前 Task 13/14 + 后续 P3 #2 phase 2 wiring 零文件 overlap。
+
+### 背景（W3 调研已得）
+
+现有 SSRF 攻击面（server-side `fetch(untrusted_url)`）：
+
+| 位置 | 当前 |
+|---|---|
+| `app/api/template-brief/route.ts:120` | ✅ 已 `isVercelBlobUrl(blobUrl)` hostname allowlist 保护 |
+| `app/api/technique-match/route.ts:108` | ❌ 主要风险面：`videoUrls: z.array(z.string().url())` 接受任意协议（含 `file://` / `gopher://` / `http://localhost:XXXX`），server 直接 `fetch(url)` |
+| `lib/capcut-compiler/assets.ts:48` | ❌ `fetch(url)` for asset download，可被 caller 喂任意 URL |
+| `lib/video/ffmpeg.ts:36` | ❌ `fetch(videoUrl)` for ffmpeg input |
+| `lib/trending/snapshot-store.ts:56` | ✅ Blob 内部 URL（受信源） |
+
+现有 `isVercelBlobUrl` 是一次性函数（template-brief/route.ts:158-165），就 hostname suffix check —— phase 2 可以选择是否把它整合进 lib（W1 phase 2 决策）。
+
+### Phase 1 范围（W2 lib only）
+
+**目标**：新建 `lib/url-allowlist/` peer 到 `lib/rate-limit/`，提供 SSRF 防御 primitive。零 route 触碰。
+
+#### Must-have（验收项）
+
+1. **`lib/url-allowlist/types.ts`**
+   - `HostPattern = string | RegExp | { suffix: string }`（literal exact / 正则 / 后缀匹配三种）
+   - `UrlAllowlistOpts = { allowedSchemes?: string[], allowedHosts: HostPattern[], blockPrivateIps?: boolean }`
+   - `UrlAllowlistResult = { ok: true; parsed: URL } | { ok: false; reason: "invalid_url" | "scheme_denied" | "host_denied" | "private_ip" }`
+   - `UrlAllowlist = { check(url: string): UrlAllowlistResult }`
+   - `UrlAllowlistOptsSchema` Zod schema（`.parse()` 抛错于 lib 配置时，跟 rate-limit 一致风格）
+
+2. **`lib/url-allowlist/index.ts`**
+   - `createUrlAllowlist(opts): UrlAllowlist`
+     - default `allowedSchemes = ["https:"]`（生产强制 https）
+     - default `blockPrivateIps = true`（防 literal IP `127.0.0.1` / `192.168.x` / `169.254.x` 等绕过）
+   - `check(url)`:
+     1. `try { new URL(url) } catch → invalid_url`
+     2. scheme 不在 allowedSchemes → `scheme_denied`
+     3. host literal 是 IP 且 IP 在私有段（`blockPrivateIps`）→ `private_ip`
+     4. host 不命中任一 HostPattern → `host_denied`
+     5. 否则 `{ ok: true, parsed: URL }`
+   - **不**做 DNS resolve + IP pinning（标准 SSRF 完整防御需要 custom `https.Agent` lookup hook，复杂度大；phase 1 lib 仅做 URL parse 层；phase 2 W1 可选给高危 endpoint 加 `safeResolveIp` helper 升级）
+
+3. **`lib/url-allowlist/private-ip.ts`**
+   - `isPrivateIpString(host: string): boolean` — IPv4 + IPv6 私有段、loopback、link-local、broadcast、ULA 覆盖
+   - 用 string 解析（不依赖外部 lib），覆盖：
+     - IPv4: `10.0.0.0/8` / `172.16.0.0/12` / `192.168.0.0/16` / `127.0.0.0/8` / `169.254.0.0/16` / `0.0.0.0` / `255.255.255.255`
+     - IPv6: `::1` / `fc00::/7` (ULA) / `fe80::/10` (link-local) / `::` (unspecified)
+   - host 不是 literal IP 时返回 false（domain 走 HostPattern 检查，DNS 解析不在 phase 1 范围）
+
+4. **`lib/url-allowlist/host-match.ts`**
+   - `matchHost(host: string, pattern: HostPattern): boolean`
+   - 三种 pattern：
+     - `string` → 精确小写比较
+     - `RegExp` → 直接 `.test(host)`
+     - `{ suffix: ".public.blob.vercel-storage.com" }` → `host === suffix.slice(1) || host.endsWith(suffix)`（既允许根域也允许子域）
+
+5. **`lib/url-allowlist/presets.ts`**
+   - `VERCEL_BLOB_PRESET: UrlAllowlistOpts` —— 等价 `isVercelBlobUrl` 现有行为（host 用 `{ suffix: ".public.blob.vercel-storage.com" }`，`allowedSchemes: ["https:"]`，`blockPrivateIps: true`）
+   - **只导出这一个 preset**。其它路由（technique-match videoUrls / assets / ffmpeg）的 host 列表由 W1 phase 2 在 wiring 时按实际 CDN 域决定，phase 1 **不预判**。
+
+6. **测试** `tests/url-allowlist/*.test.ts`
+   - `check.test.ts`：happy path / scheme deny（http / file / gopher / javascript） / host deny / suffix-pattern 命中根域 + 子域 / regex pattern / 无效 URL throw
+   - `private-ip.test.ts`：每类私有 IPv4 + IPv6 段 detect 正确；公网 IP 不误判（8.8.8.8 / 1.1.1.1）
+   - `host-match.test.ts`：三种 HostPattern 边界（大小写 / 后缀 vs 包含 / 正则锚定）
+   - `index.test.ts`：`createUrlAllowlist` Zod 校验抛错（empty allowedHosts / 非法 scheme）+ default scheme 锁 https-only + VERCEL_BLOB_PRESET 行为等价 isVercelBlobUrl 旧实现
+
+#### Nice-to-have（不强求）
+
+- `lib/url-allowlist/README.md`：phase 2 wiring guide（W1 接的时候少踩坑，类似 rate-limit README）
+- `safeResolveIp(host)` Node 端 `dns.promises.lookup` + 私有 IP 拒绝 —— **不做**，留给 phase 2 W1 按需
+
+#### 不要做（W1 phase 2 territory）
+
+- **不**改 `app/api/template-brief/route.ts`（保留现有 isVercelBlobUrl 直到 W1 phase 2 决策是否替换）
+- **不**改 `app/api/technique-match/route.ts` videoUrls 校验
+- **不**改 `lib/capcut-compiler/assets.ts` / `lib/video/ffmpeg.ts`
+- **不**装 deps（用 Node 内建 `dns` + URL parsing 即可）
+
+### 关键设计约束
+
+- **零 route 触碰**：phase 1 不要被 `app/**` 任何文件 import
+- **零新 dep**：跟 phase 2 wiring 拉开界限；W1 phase 2 决定是否加 `ipaddr.js` 之类更稳的 IP lib
+- **Zod 校验**：`createUrlAllowlist` 入口 `.parse()` 抛错（lib 配置错开发期就崩，跟 P3 #1 boundary 返 400 区分）
+- **Immutability**：`check()` 返新 result，内部状态不暴露
+- **CLAUDE.md 标准**：file <800 / fn <50 / nesting ≤4
+
+### 工作流
+
+1. **新建分支**：`git switch main && git pull && git switch -c feat/p3-url-allowlist-lib`
+2. **commit 节奏**：建议 3-4 commit
+   - `feat(url-allowlist): types + Zod schema`
+   - `feat(url-allowlist): host-match + private-ip helpers`
+   - `feat(url-allowlist): public API + presets`
+   - `test(url-allowlist): coverage`
+3. **三门验证**（push 前必跑齐）
+   - `npx tsc --noEmit` → clean
+   - `npx vitest run` → 现有 273 cases 不破 + 新增 url-allowlist suite 通过
+   - `npx next build` → 23/23 routes 不退化（lib 加 0 byte 到 server bundle，phase 1 无 route import）
+4. **push**：`git push -u origin feat/p3-url-allowlist-lib`，window-2.md 末尾追写 ack
+
+### W3 后续
+
+1. monitor `b3zd25r7f` pattern 覆盖 `feat/*`，自动捕你的 push
+2. review 重点：私有 IP 段覆盖完整性 / HostPattern 三种 case 边界 / VERCEL_BLOB_PRESET 跟旧 isVercelBlobUrl 行为等价（含 edge case：未识别 URL throw、子域 vs 根域行为）/ Zod 校验抛错 / 零 route 引用确认
+3. 通过 → merge + verdict + W1 phase 2 启动指令（W1 把 lib 接到 technique-match / assets / ffmpeg，可选 refactor isVercelBlobUrl）
+4. 不通过 → window-2.md 写明确 changeset
+
+### 与 W1 流水线隔离
+
+- W1 当前 `worktree-capcut-link` 干 Task 13（N-card ResultsArea arrayify）
+- W2 phase 1 干 `lib/url-allowlist/**` + `tests/url-allowlist/**`
+- 零 lib overlap（rate-limit 是 peer 但不同子目录）；零 app / 零 components / 零 package.json overlap
+- W1 phase 2 wiring 是**后续**任务，要等 W1 跑完 Task 13/14 才会动 `app/api/technique-match/route.ts`，跟 W2 phase 1 完全异步
+
+> **W2 phase 1 可以动手** —— 范围已锁死（lib only），spec 明确，前置无依赖。
+
