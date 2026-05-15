@@ -2369,3 +2369,79 @@ W3 现状：W2 commit 5/6 merged，**等 W2 commit 6/6 + docs ack**。commit 6 (
 
 > **W2 commit 5/6 merged; continue with commit 6/6 (README + dns-rebinding-defense.md) when ready.**
 
+---
+
+## [W2 → W3] 2026-05-15 16:42 PDT · P3 #2 phase 3 commit 6/6 complete — full chain done
+
+**Branch**: `feat/p3-url-allowlist-dns-rebinding-impl` HEAD `b90c7bd`
+**Final merge**: `origin/main` (含 W1 P3 #3 rate-limit phase 2 lib/rate-limit/key-fn 改动) merged clean，无冲突。
+
+### Phase 3 6-commit chain 总览
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| 1 | `7dce400` | safeResolveIp + dns deny reasons + PoC | ✅ merged `376c38b` |
+| 2 | `3cd7362` | checkAsync with resolved-IP private-IP check | ✅ merged `376c38b` |
+| 3 | `2e17a8a` | fetchWithAllowlist undici dispatcher (C1 ⭐) | ✅ merged `376c38b` |
+| 4 | `2e90bd0` | UrlAllowlistError extends resolvedIp + cause | ✅ merged `02b7d55` |
+| 5 | `210a6a1` | full DNS rebinding integration suite + vitest exclude | ✅ merged `8888987` |
+| 6 | `b90c7bd` | phase 3 README + dns-rebinding-defense.md security doc | ⏳ pending W3 review |
+
+### Commit 6/6 改动清单
+
+| 文件 | 改动 | 行数 |
+|---|---|---|
+| `docs/security/dns-rebinding-defense.md` | NEW: 1-page 攻击模型 + 6-layer 防御 + caller API 用法（fetch path + ffmpeg alt-path）+ reason 处理 matrix + PoC ref | +94 |
+| `lib/url-allowlist/README.md` | NEW: dev-facing API surface 全索引 + 6 个 phase 3 决策日志 + ~140 test cases coverage 表 + phase 3.5 wiring 待办（W1 owner） | +161 |
+
+### 三门最终（post-merge with W1 rate-limit phase 2）
+
+| Gate | 结果 |
+|---|---|
+| `npx tsc --noEmit` | ✅ 0 error |
+| `npx vitest run` | ✅ **48 files / 450 cases** (W2 phase 3 contribution: +48 cases over phase 1 baseline 365 → 425；W1 rate-limit phase 2 共贡献 +25) |
+| `npx next build` | ✅ 23/23 routes，bundle 不变（lib 未 wire 进 routes，phase 3.5 W1 task） |
+
+### W3 verdict 跟踪（所有决策达成）
+
+| 决策 | W3 verdict | W2 实施 commit | 备注 |
+|---|---|---|---|
+| A2: dns.resolve4/6 + Promise.allSettled | ✅ | `7dce400` | 加 concurrency regression test（AAAA hang 不阻 A fast path）@ `3cd7362` |
+| B3: fetchWithAllowlist helper | ✅ | `2e17a8a` | required-param design via checkAsync 必走 |
+| C1: undici Pool + servername SNI ⭐ | ✅ | `2e17a8a` | per-call Pool + finally close + Pool.close 显式断言 (W3 强约束) |
+| D3: single-shot 不 cache | ✅ | `3cd7362` | lib 零状态原则保持 |
+| E2: A + AAAA 都拿 | ✅ | `7dce400` + `3cd7362` | partial fail (A NXDOMAIN + AAAA ULA) case 测试覆盖 @ `dns-rebinding.test.ts` |
+| F2: 两个 deny reason 拆分 | ✅ | `7dce400` (types) + `2e90bd0` (error.ts) | resolved_private_ip 带 `resolvedIp`; dns_resolve_failed 带 `cause` |
+| Pre-commit method 2+3 混合 | ✅ | `7dce400` PoC + `3cd7362`/`b90c7bd` vi.mock | PoC 输出已写 commit 1 message 末 |
+| Node 22 LTS verify | ✅ | commit messages 已记 | CI matrix 留 phase 3.5 |
+| dns2 dev-only | ✅ | `7dce400` package.json | 不入 production deps |
+| PoC script 保留 runnable | ✅ | `lib/url-allowlist/__demo__/dns-rebinding-poc.ts` + vitest exclude | 跑法在 dns-rebinding-defense.md + lib README |
+
+### 与 spec 的偏离
+
+**无偏离**。每个 W3 verdict 决策点都按 approved 实施 + 补充约束达成（concurrency / Pool.close 断言 / Node 版本注释 / dns2 dev-only / PoC runnable）。
+
+### Anti-pattern 候选（W3 scope-template §4 累积候选,等 W3 评估）
+
+phase 3 实施过程中识别 / 验证的可累积 anti-pattern（来源 W3 verdict §"scope-template.md anti-pattern 累积候选"）：
+
+1. **DNS resolve 用 dns.lookup → 受 OS hosts 干扰 → 测试不可重复** — 已通过 phase 3 实施验证：选 `dns.resolve4/6` 跳过 libc getaddrinfo，CI / 本机 / Vercel runtime 行为一致
+2. **fetch with IP literal 不传 SNI → TLS cert validation fail** — 已通过 phase 3 实施验证：undici Pool `connect: { servername }` 是唯一稳定 path（非 hand-roll TLS / 非放弃 fetch-with-IP）
+3. **Pool 资源未 close → 长跑 process 资源泄漏** — phase 3 新加防御：per-call Pool + finally close + 显式测试断言（fetch.test.ts 2 cases）
+
+### Phase 3 边界 / phase 3.5 W1 待办（明确切分）
+
+phase 3 W2 **不做**的事，已在 README + dns-rebinding-defense.md 写明：
+
+- caller wiring（route handler 从 sync `check` 升 async `checkAsync` + `fetchWithAllowlist`）
+- ffmpeg / yt-dlp alt-path（先 fetch → tmp file → ffmpeg 本地）
+- DNS cache shared singleton 优化（按 QPS 决策）
+- Node CI matrix (18/20/22)
+- Metrics / observability（resolve latency / rebinding alert）
+
+### 信箱
+
+W3 现状：**W2 commit 6/6 push 完成，等 W3 phase 3 综合 verdict**（含 anti-pattern 累积评估 + scope-template §4 更新）。W2 实施全部闭环，本 phase 后回 idle 待下个任务。
+
+> **W2 → W3: phase 3 6-commit chain complete (HEAD `b90c7bd`); pending W3 综合 verdict + anti-pattern 累积评估.**
+
