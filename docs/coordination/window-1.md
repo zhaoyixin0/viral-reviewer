@@ -171,3 +171,61 @@ Task 5-14 串行，按既定 per-task 闭环。
 3. 开 Task 6（按 plan 既定阶段）
 
 Task 6-14 串行，按既定 per-task 闭环。
+
+---
+
+## Task 6 已 merge ✅ — Task 7 放行
+
+> 写于 2026-05-15 · `main` = `6bf31c8` · 来自窗口 3 协调者
+
+### merge 内容
+
+`worktree-capcut-link` tip `6de31af` 已合入 main（merge commit `6bf31c8`）。本次合入：
+
+- `6de31af` — feat(capcut-compiler) Task 6 — `TransitionMaterial` schema + `effect_id` mapping（3 文件 / 240+ 行）
+  - `lib/capcut-compiler/schema.ts` (+38)：新增 `TransitionMaterial` type 覆盖 PROBE-observed 字段（id / type / name / effect_id / resource_id / third_resource_id:"0" / source_platform:1 / path / duration:μs / is_overlap / platform:"all" / category_id / category_name / request_id / is_ai_transition / video_path / task_id）；`materials.transitions: unknown[] → TransitionMaterial[]`
+  - `lib/capcut-compiler/transitions.ts` (+119, new)：`AssemblyTransitionType` union（cross_dissolve / fade / whip_pan / match_cut / hard_cut）+ `resolveTransitionConfig(type, onUnknown?)` + 3 个 PROBE-measured config 常量
+  - `tests/capcut-compiler/transitions.test.ts` (+84, new)：9 cases lock-down
+
+三项验证全绿：
+- `npx tsc --noEmit` → EXIT 0
+- `npx vitest run` → 184/184（26 files，+9 cases，从 175 → 184）
+- `npm run build` → 编译成功
+
+### Task 6 review 亮点
+
+- **`is_overlap` 非 hardcode true**：schema 写 `is_overlap: boolean`（非 literal `true`），test case "is_overlap 不能是 hardcode true: 三种命中类型都按映射表逐条配置" 是显式 regression guard ——doc §4 PROBE 实测发现 push_in / 模糊 / 色差故障 测出 false，未来引入 false 转场时 grammar 已就位
+- **PROBE 实测 effect_id lock-down**：3 个已知 effect_id 在测试硬断言（`6724845717472416269` 叠化 / `7627435157909261575` Slick Twist / `7626616498747985168` 替换）+ `default_duration_us` 同样硬断言 —— Task 10 改这里要明确说明 effect_id 变更原因，避免静默 drift
+- **`onUnknown` callback 可注入**：默认 `console.warn` 但接收 callback —— Task 10/12 跑批可注入收集器统计 Opus 自由发挥的 fallback 命中率，比 hardcoded console.warn 更可观测
+- **`hard_cut → null` 而非 sentinel config**：测试 "hard_cut 不触发 onUnknown" 是反例 guard，确保 hard_cut 不被误判为 unknown 走 fallback；caller 看 `null` 直接知道「不创建 material / 不写 ref」
+- **`fade` alias of `cross_dissolve`**：编排层枚举 union 列了 `fade`，但映射表归一到 `CROSS_DISSOLVE_CONFIG`，test `b.toEqual(a)` 锁定 alias 关系
+- **`effect_id` / `resource_id` 冗余双字段保持**：没有"我聪明地省一个" —— CapCut schema 实测需要两个字段都填同值
+- **`default_duration_us` 注释明确「caller 应优先用编排层 `durationSec` 转 μs」**：Task 8/10 接入时不会被默认值"魔法"误用
+
+### 一条 nit（不阻塞、不需要 fix）
+
+`defaultOnUnknown` 是 `console.warn` —— 用户全局规范 "No console.log in production code"，`console.warn` 同类。
+
+但这里是 **defensive default**，性质特殊：
+- 出现仅当 Opus 自由发挥（off-spec 字符串），是 rare path
+- Task 10/12 callsite 注释明确「可注入收集器」—— 设计上鼓励 callsite 用 collector 替换默认
+- `console.warn` 标准 ECMA API，不会被 lint 一般规则干掉
+
+**建议（Task 10/12）**：CapCut 编译入口（Task 10 接入真转场 / Task 12 跑批）调用 `resolveTransitionConfig(type, collector.onUnknown)` 时显式注入 collector，避免 production log noise；同时为 Opus drift rate 留 telemetry hook。
+
+### follow-up（不阻塞 merge，与上轮统一）
+
+- **Opus 实弹探测（user 侧）**：从 Task 5 carry-over，commit message 标注 "Not run (no Opus access / no headless)"，plan §Task 5 探测点列表 4 项仍待用户实弹（见上轮 follow-up）
+- **SSRF hardening (Task 4 carry-over)**：进 P3 "API boundary hardening" 同一改动（与 P2.5 follow-up 合流）
+- **Task 6 nit (本轮新增)**：Task 10/12 callsite 注入 collector，替换默认 console.warn
+
+## 下一步：Task 7 放行
+
+按 per-task 工作流：
+
+1. `git pull origin main --no-rebase` 同步到 `6bf31c8`
+2. 读本文件「Task 6 已 merge ✅」整段确认 SHA + 消化 Task 10/12 callsite collector 建议
+3. 开 Task 7（按 plan 既定阶段）
+4. Task 6 闭环后建议 `/compact` 上下文
+
+**建议起监听**：W1 这边监听 `origin/main` tip 前进（90s 轮询），触发后跑「pull → 读 README → 读 window-1.md 末段」，避免再次因未监听而 idle。
