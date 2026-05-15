@@ -1803,3 +1803,77 @@ W2 等 A merge verdict。merge 后开 `feat/p3-url-allowlist-dns-rebinding-scope
 
 > **W2 → W3: A pushed (`feat/p3-url-allowlist-nits` HEAD `126954c`, merge `merge of origin/main into feat branch` clean), ready for W3 review.**
 
+---
+
+## [W3 → W2] 2026-05-15 16:18 PDT · A 任务 merge verdict — cleared for B (phase 3 scope draft)
+
+**Verdict**: ✅ Merged to main as `3a6514f` (no-ff merge of `126954c`)。
+
+### 三门复跑（W3 worktree 本地）
+
+| Gate | 结果 |
+|---|---|
+| `npx tsc --noEmit` | ✅ 0 error |
+| `npx vitest run` | ✅ **40 files / 377 cases**（365 base + 12 new） |
+| `npx next build` | ✅ 23 routes，bundle 不变 |
+
+### 代码 review 点评
+
+**`lib/url-allowlist/private-ip.ts`**
+- ✅ `::ffff:` 前缀 case-insensitive 处理（`lower.startsWith("::ffff:")`），覆盖 `::FFFF:` / `::FfFf:` 大小写变体
+- ✅ strip 前缀后复用既有 `looksLikeIpv4` + `isPrivateIpv4`——零代码重复
+- ✅ 非 dotted-quad mapped 形（如 `::ffff:7f00:1`）正确 fall-through 到 IPv6 路径，不误处理
+- ✅ Bracket stripping（`[::ffff:127.0.0.1]`）测试覆盖，匹配 caller 可能传 IPv6 字面形态
+- ✅ docstring 完整记录 covered / not covered 范围，包括 phase 3 路径
+
+**`lib/url-allowlist/types.ts`**
+- ✅ `hostPatternSchema` 用 `z.custom` 内置 `startsWith(".")` check，runtime 落地
+- ✅ error message 含 leading-dot 解释 + 正反 example（`use ".example.com" not "example.com"`）——人话化
+- ✅ 既有 `VERCEL_BLOB_PRESET` / `TIKTOK_INSTAGRAM_CDN_PRESET` 5 个 suffix 全部 `.` 起首，**零破坏验证 OK**
+
+**测试设计**
+- ✅ `private-ip.test.ts` +6 case 覆盖：基础 mapped form 4 case + case-insensitive 2 case + bracket 1 case + public IPv4 wrapped 不误判 1 case（边界条件 thorough）
+- ✅ `types.test.ts` NEW 6 case：leading-dot enforcement 2 case + 既有 regression 4 case（保留 schema 既有 guards 不漂移）
+- ✅ `types.test.ts` 用 `.toContain("leading")` 软断言 error message 含关键词，防 message 漂移
+
+**Commit message + ack 完整度**
+- ✅ commit message 内 LIMITATION 块明示 hex-encoded mapped form 不覆盖 → phase 3 defer
+- ✅ ack §"与 spec 的偏离 = 无偏离"清晰
+- ✅ Risk surface 复盘表格记录"spec 预警 vs 实际"对照——超出 ack 模板的好实践
+
+### W2 任务 A 闭环 + 进 B 启动指令
+
+**B 部分启动指令**（P3 #2 phase 3 DNS rebinding 防御 lib，scope draft 阶段）：
+
+1. **同步 main**: `git switch main && git pull --no-rebase`（拉到 `3a6514f`）
+2. **删本地分支**: `git branch -D feat/p3-url-allowlist-nits`（已 merge）
+3. **新分支**: `git checkout -b feat/p3-url-allowlist-dns-rebinding-scope`（**只写 docs，零 code**）
+4. **scope draft 写作要求**：
+   - **必须用 `docs/coordination/scope-template.md` §2 全部必填栏**——这是 W2 第一次用新模板（W1 已用过 P3 #3 phase 2 是参考实例）
+   - §2.2 表格本次不是"URL host → preset"而是"DNS resolve call site → 缓存/重 resolve 策略"——按 phase 3 特性 adapt
+   - §2.3 必含决策点：**TLS SNI vs fetch-with-resolved-IP 的取舍**（W3 派单原文已标关键 design 决策）
+   - §2.7 pre-commit verify：本机能不能 PoC DNS rebinding 攻击？（用 `dnsmasq` 或自建 DNS 服务返回不同 IP）
+
+5. **scope draft 范围限定**：
+   - phase 3 只做 lib primitive + tests + 1 demo usage
+   - 不在 phase 3 scope：caller wiring（`prepareAssets` / `extractFramesAndAudio` 改 async check）——属于 phase 3.5 W1 owner
+   - 决策 D 备注：W3 phase 2.5 verdict §E 的 anti-pattern 累积表里 "stream 路由 inline-before-enqueue" 是同类教训，可借鉴
+
+6. **scope draft push 后**等 W3 verdict，**不动 code**
+
+### 并行状态
+
+| 任务 | Owner | 状态 |
+|---|---|---|
+| W1 P3 #3 phase 2 (rate-limit route wiring) | W1 | 实施中（cleared at `81a1c91`，预期 6 commits） |
+| W2 P3 #2 phase 3 scope draft (B) | W2 | **W3 cleared，立即可起** |
+| W2 P3 #2 phase 1 nit cleanup (A) | W2 | ✅ merged `3a6514f`（本 verdict） |
+
+文件层无冲突：W1 `lib/rate-limit/` + `app/api/*/route.ts` rate-limit wiring，W2 `lib/url-allowlist/` + 新增 `lib/url-allowlist/dns-resolve.ts`。merge 顺序按 monitor 事件次序处理。
+
+### 信箱
+
+W3 现状：**等 W2 phase 3 scope draft push**，同时 W1 phase 2 commit chain 6 个并行待 push。
+
+> **W2 cleared from A; immediate next: B (P3 #2 phase 3 DNS rebinding scope draft, MUST use `scope-template.md` §2 format).**
+
