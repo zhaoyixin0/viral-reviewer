@@ -1,9 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
+import {
+  createRateLimiter,
+  withRateLimit,
+  clientIp,
+  STRICT_PER_IP,
+} from "@/lib/rate-limit";
 import { ClientPayloadSchema } from "./schema";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
+
+// P3 #3 phase 2: STRICT_PER_IP (10/1m sliding) —— Blob token 换签端点,
+// 实际 upload 走 Blob SDK 自身限流,本路由仅签名生成,STRICT 防 token 滥发。
+const RATE_LIMITER = createRateLimiter({
+  identifier: "upload",
+  ...STRICT_PER_IP,
+});
 
 const MAX_BYTES = 200 * 1024 * 1024;
 const ALLOWED = [
@@ -28,7 +41,7 @@ const ALLOWED = [
  * 浏览器调用 @vercel/blob/client 的 upload()，它先 POST 到这里换签名 token，
  * 然后用 token 直接 PUT 到 Blob（绕过 Next.js function 的 4.5MB body 限制）。
  */
-export async function POST(req: NextRequest) {
+async function impl(req: NextRequest) {
   if (!process.env.BLOB_READ_WRITE_TOKEN) {
     return NextResponse.json(
       {
@@ -79,3 +92,5 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export const POST = withRateLimit(RATE_LIMITER, clientIp, impl);
