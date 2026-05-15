@@ -673,3 +673,75 @@ W3 可按自己节奏（参考动作里 step 3 是等 W1 Task 8 push monitor 事
 - 不通过 → 在本文件末写明确 changeset 让 W2 修
 
 **不主动开 P3 #2 / #3**（per kickoff plan，等 #1 merge 后 W3 重新分配）。
+
+---
+
+## P3 task #1 已 merge ✅ — W2 待命
+
+> 写于 2026-05-14 · `main` = `bcbdfb7` · 来自窗口 3
+
+**Merge**: `bcbdfb7` (main，2026-05-14 23:55 PT)
+**Branch tips merged**: `8145ce0` + `f292e91` + `0d3e7e0` + `a998e99`
+**Files**: 11 changed（4 个 schema.ts 新增 + 5 个 route 修改 + 2 个测试文件）
+
+### 三门验证（W3 这边 merge 后）
+
+- `npx tsc --noEmit` → exit 0（clean）
+- `npx vitest run` → **28 files / 222 cases**（W2 在 `b970a71` base 看到 212；merge 到 `5e1ad59` (含 Task 9 的 214) 之上 = 222 ✓）
+- `npx next build` → 23 routes，全绿
+
+### Review 亮点
+
+1. **trending schema 抽到 `schema.ts`** —— 正确，避免污染 route module 的 reserved exports（Next.js App Router `route.ts` 只允许导出 HTTP 方法 + 路由段配置）。`Object.fromEntries(searchParams.entries())` + `safeParse` + 400 `invalid_query` 标准用法。
+2. **cron-trending 豁免注释** —— body 不消费任何字段，auth Bearer-only。注释写明「新增任何 body 字段消费必须先补 schema」，建立明确升级路径。
+3. **template-brief `blobUrl: z.string().url()` + `fileName.min(1).max(255).optional()`** —— `req.json()` try/catch 包住 + safeParse → 400 `invalid_request`。multipart 分支未动是正确决策（`File` 对象自带 mime/size 校验，无隐式 input surface）。
+4. **`isVercelBlobUrl` hostname allowlist 保留** —— 比 W1 P3 #2 计划中的通用 SSRF allowlist 更严，**不依赖 W1 P3 #2 follow-up**。Zod url() 校验语法 + hostname allowlist 校验目标域，两层防御。
+5. **upload defensive `z.null()`** —— sweep 4 个 callsite（`BriefUploader.tsx` / `InputPanel.tsx` × 2 / `CapCutExport.tsx`）确认 0 caller 传 `clientPayload`，server 收 `null`。`z.null()` 作为护栏：未来字符串负载 throw → handleUpload 拒绝。注释写明升级路径（要消费先扩 schema 加 `z.string()` + `JSON.parse` + 业务字段）。
+6. **`onUploadCompleted` 注释 tokenPayload 是 null** —— 跟 onBeforeGenerateToken 的拒绝形成闭环说明，未来读者不会误以为 tokenPayload 可信任。
+7. **测试覆盖**：trending +2 (invalid_platform / missing_platform + 验证 schema 在 readLatestTwoSnapshots 之前) / template-brief +6（empty body / non-string blobUrl / malformed URL / non-vercel hostname / oversized fileName / invalid JSON）。良好的边界覆盖。
+8. **错误 envelope 一致性**：trending 用 `{ error, detail }`、template-brief 沿用既有 `{ ok: false, error, message }`、upload throw 让 handleUpload 自己回 —— 在改动 endpoint 内统一，**没顺手改 compile-capcut / review / technique-match 等已有 zod 路由**，符合 nice-to-have 红线。
+
+### 三处偏离裁决
+
+| W3 启动指令 | W2 实际实现 | 裁决 |
+|---|---|---|
+| trending / feedback / compile 三处加 zod | feedback endpoint 不存在；W3 自己 sweep 后已修正 | ✅ 接受（zero work needed） |
+| template-brief 字段名 `url` | 实际字段名 `blobUrl`，按 codebase 真实字段命名 | ✅ 接受（指令措辞误差，W2 用实际字段是对的） |
+| upload `clientPayload` 用 `z.object` 校验 fileName/sizeBytes/mimeType | sweep 4 callsite → 0 caller 传，改 defensive `z.null()` 护栏 | ✅ 接受（yagni 原则；不为想象中的字段写 schema，但留升级路径明确） |
+
+**所有偏离都不阻塞 merge**。W2 在 ack 段明示偏离 + 给裁决依据，工作流满分。
+
+### Nit（不阻塞，记录待 follow-up）
+
+- W2 ack 段写「@vercel/blob handleUpload 在 onBeforeGenerateToken throw 时回 400」—— @vercel/blob SDK 行为未在本次 review 内查证；如果实测 throw 后 status 不是 400 而是 500，需要在 catch outer block 内手工 map 一下。**不阻塞本次 merge**（语义"拒绝任何非 null 负载"已达成），但建议 P3 #2 / #3 期间 W2 实测确认一次。
+
+### 注释 nit（不要求修复）
+
+- 4 个新 `schema.ts` 顶部 doc 注释里都写「截至 2026-05-14 sweep」—— 这是用 sweep 时点 ground truth 立 invariant，没问题；如果后续 callsite 改动需要更新此 sweep 时点。
+
+---
+
+## 下一步：P3 task #2 / #3 分配
+
+P3 hardening 三件套现状：
+
+| Task | Owner | 状态 |
+|---|---|---|
+| #1 API boundary Zod validation | W2 | ✅ merged `bcbdfb7` |
+| #2 SSRF allowlist for external URL fetches | W1 | ⏳ 计划中（不阻塞 W1 当前 Task 9-13 Capcut 多视频流水线） |
+| #3 Rate limiting + abuse vectors review | W1 + W2 协作 | ⏳ 待 #1 + #2 都落地后 W3 重新评估 scope |
+
+**W2 当前动作**：
+
+1. `git switch main && git pull --no-rebase`（同步到 `bcbdfb7`）
+2. `git branch -D feat/p3-hardening`（本地分支已 merge，可删）
+3. **回主 worktree 切回 main**，本任务结束
+4. **不主动开 P3 #2**（owner=W1，W1 当前在 Task 9-13 Capcut 流水线，P3 #2 排在那之后）
+5. **`/compact`**（per `feedback_compact_after_merge.md`）
+6. 待 W3 触发下一个 P3 任务时再启动
+
+### 监控状态
+
+- W3 监控器 `bmg6cvvnz` 继续盯 W1/W2/main 三 ref
+- W2 监控器 `baox0x2yu` 等 origin/main 移动 → 本 verdict commit push 完会触发，W2 拉新即可
+- W1 当前在 Task 10 路上（main 已含 `5e1ad59` Task 9 verdict + 现在加上 `bcbdfb7` 的 P3 #1 merge —— W1 pull main 前如果 Task 10 已动手要小心 conflict，但 P3 #1 改的都是 API route + schema.ts，跟 Task 10 的 `lib/capcut-compiler/transitions.ts` + `build.ts` 零重叠）
