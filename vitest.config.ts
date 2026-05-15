@@ -2,6 +2,11 @@ import { defineConfig } from "vitest/config";
 import { resolve } from "path";
 
 export default defineConfig({
+  // tsconfig.json jsx="preserve"(Next.js 编译需要),vite/vitest 自己不能 preserve,
+  // 这里告诉 oxc transformer(vite 8 默认)用 React automatic runtime,让测试可 import .tsx 组件。
+  oxc: {
+    jsx: { runtime: "automatic" },
+  },
   test: {
     include: ["tests/**/*.test.ts"],
     environment: "node",
