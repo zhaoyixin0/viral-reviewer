@@ -16,8 +16,13 @@
  * 优先使用结构化的 match.trimRanges（LLM 显式输出），fallback 用 regex 从自由文本里抽。
  */
 
-import type { TechniqueMatchingResult } from "@/lib/technique-matching/types";
+import type {
+  AssemblyClip,
+  AssemblyTimeline,
+  TechniqueMatchingResult,
+} from "@/lib/technique-matching/types";
 import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
+import type { VideoMeta } from "@/lib/video/ffprobe-meta";
 import type { Keyframe } from "./schema";
 
 export type TrimRange = {
@@ -37,6 +42,9 @@ export type EditAnimation =
   | { type: "none" };
 
 export type EditSegmentPlan = {
+  /** 该段来自上传全集里第几个用户视频（0-based，对齐 videoUrls[] / metas[]）。
+   *  单视频兼容路径（planEditSegments）一律填 0。Task 8。 */
+  sourceVideoIndex: number;
   sourceStartSec: number;
   sourceEndSec: number;
   targetStartSec: number;
@@ -207,6 +215,7 @@ export function planEditSegments(
         continue;
       }
       plans.push({
+        sourceVideoIndex: 0, // 单视频兼容路径 — Task 8 起多视频走 planFromAssemblyTimeline
         sourceStartSec: sStart,
         sourceEndSec: sEnd,
         targetStartSec: targetCursor,
@@ -294,6 +303,145 @@ export function pickAnimation(
 
 function clamp(x: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, x));
+}
+
+// ===== Task 8 · 多视频编排（assemblyTimeline 路径）=====
+
+/**
+ * 把 AI 产出的 AssemblyTimeline 翻译成 EditSegmentPlan[]（多视频路径）。
+ *
+ * 与 planEditSegments（单视频兼容）的区别：
+ *   - clip 可跨多个用户视频，每段记 sourceVideoIndex
+ *   - 没有 trim/keep/cut 阶段，clip 已是 AI 选定的最终段
+ *   - target_timerange 纯线性累加 — 转场不参与（Task 2 PROBE 第 4 节实测）
+ *
+ * 防御策略：
+ *   - sourceVideoIndex 越界 → clamp 到 0 + console.warn
+ *   - sourceStart/EndSec 越过 meta.durationSec → clamp
+ *   - clamp 后退化为零/负时长 → skip + console.warn（不让畸形段污染 timeline）
+ *   - clip.animation 为 null → 兜底交替 push_in / pull_out（按输出 index）
+ *
+ * 转场时长 clamp 工具见 clampTransitionDurationSec —— Task 10 接入真转场时调用。
+ */
+export function planFromAssemblyTimeline(
+  timeline: AssemblyTimeline,
+  metas: ReadonlyArray<VideoMeta>,
+): EditSegmentPlan[] {
+  if (!timeline.clips || timeline.clips.length === 0) return [];
+
+  const plans: EditSegmentPlan[] = [];
+  let targetCursor = 0;
+
+  for (const clip of timeline.clips) {
+    const idx = resolveSourceVideoIndex(clip, metas.length);
+    const maxDur = Math.max(0, metas[idx]?.durationSec ?? 0);
+
+    const overranSource =
+      clip.sourceEndSec > maxDur + 1e-3 || clip.sourceStartSec > maxDur + 1e-3;
+    const sStart = clampToRange(clip.sourceStartSec, 0, maxDur);
+    const sEnd = clampToRange(clip.sourceEndSec, 0, maxDur);
+    if (overranSource) {
+      console.warn(
+        `[edit-plan] clip clamped to meta.durationSec=${maxDur}: ` +
+          `sourceVideoIndex=${idx} requested [${clip.sourceStartSec}, ${clip.sourceEndSec}]`,
+      );
+    }
+
+    const dur = sEnd - sStart;
+    if (dur < 1e-3) {
+      console.warn(
+        `[edit-plan] degenerate clip after clamping (dur=${dur.toFixed(3)}s), skipping: ` +
+          `sourceVideoIndex=${idx}, requested=[${clip.sourceStartSec}, ${clip.sourceEndSec}], ` +
+          `meta.durationSec=${maxDur}`,
+      );
+      continue;
+    }
+
+    plans.push({
+      sourceVideoIndex: idx,
+      sourceStartSec: sStart,
+      sourceEndSec: sEnd,
+      targetStartSec: targetCursor,
+      targetEndSec: targetCursor + dur,
+      animation: resolveClipAnimation(clip.animation, plans.length),
+    });
+    targetCursor += dur;
+  }
+
+  return plans;
+}
+
+function resolveSourceVideoIndex(
+  clip: AssemblyClip,
+  totalVideos: number,
+): number {
+  const raw = clip.sourceVideoIndex;
+  if (!Number.isInteger(raw) || raw < 0 || raw >= totalVideos) {
+    console.warn(
+      `[edit-plan] sourceVideoIndex out of range: got ${raw}, ` +
+        `expected 0..${Math.max(0, totalVideos - 1)} — clamping to 0`,
+    );
+    return 0;
+  }
+  return raw;
+}
+
+function clampToRange(x: number, lo: number, hi: number): number {
+  if (!Number.isFinite(x)) return lo;
+  return Math.max(lo, Math.min(hi, x));
+}
+
+function resolveClipAnimation(
+  raw: AssemblyClip["animation"],
+  outputIndex: number,
+): EditAnimation {
+  if (raw === null) {
+    // 兜底交替（与 pickAnimation 单视频兜底一致，幅度 4%）
+    return outputIndex % 2 === 0
+      ? { type: "push_in", scaleFrom: 1.0, scaleTo: 1.04 }
+      : { type: "pull_out", scaleFrom: 1.04, scaleTo: 1.0 };
+  }
+  if (raw.type === "none") return { type: "none" };
+  if (raw.type === "push_in") {
+    return {
+      type: "push_in",
+      scaleFrom: clampScale(raw.scaleFrom ?? 1.0),
+      scaleTo: clampScale(raw.scaleTo ?? 1.06),
+    };
+  }
+  if (raw.type === "pull_out") {
+    return {
+      type: "pull_out",
+      scaleFrom: clampScale(raw.scaleFrom ?? 1.06),
+      scaleTo: clampScale(raw.scaleTo ?? 1.0),
+    };
+  }
+  // 未知 type — 退化为 none，避免畸形 keyframes
+  return { type: "none" };
+}
+
+function clampScale(x: number): number {
+  if (!Number.isFinite(x)) return 1.0;
+  return Math.max(0.5, Math.min(2.0, x));
+}
+
+/**
+ * 转场时长防御性 clamp —— 不超过相邻较短段的一半。
+ *
+ * 不影响 target_timerange 数学（按 PROBE 第 4 节，CapCut 转场 is_overlap 仅驱动渲染层
+ * 视觉重叠，不缩短/重叠 timeline）。但写进 TransitionMaterial.duration 时还是要 clamp，
+ * 避免转场比片段还长的畸形值。Task 10 接入真转场时调用本函数。
+ */
+export function clampTransitionDurationSec(
+  durSec: number,
+  prevSegDurSec: number,
+  curSegDurSec: number,
+): number {
+  if (!Number.isFinite(durSec) || durSec <= 0) return 0;
+  if (!Number.isFinite(prevSegDurSec) || prevSegDurSec <= 0) return 0;
+  if (!Number.isFinite(curSegDurSec) || curSegDurSec <= 0) return 0;
+  const halfShorter = Math.min(prevSegDurSec, curSegDurSec) / 2;
+  return Math.min(durSec, halfShorter);
 }
 
 // ===== Eased keyframes =====
