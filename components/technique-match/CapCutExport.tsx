@@ -7,9 +7,11 @@ import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
 import type { TechniqueMatchingResult } from "@/lib/technique-matching/types";
 
 type Props = {
-  videoUrl: string;
-  /** 用户原始视频文件名；可选，缺失时 server 退化为 input.mp4 */
-  videoFileName?: string;
+  /** 按上传全集索引的视频 URL 数组；N=1 也是单元素数组。POST body 同步发数组，
+   *  schema 的 C1 兼容层（preprocess）会回填 videoUrl 单字段。 */
+  videoUrls: string[];
+  /** 与 videoUrls 同序对齐的用户原始文件名；缺失元素由服务端退化为 input.mp4。 */
+  videoFileNames?: ReadonlyArray<string | undefined>;
   userPotential: MaterialPotential;
   match: TechniqueMatchingResult;
   defaultProjectName?: string;
@@ -26,8 +28,8 @@ const STAGE_TEXT: Record<Stage, string> = {
 const MAX_BGM_BYTES = 30 * 1024 * 1024;
 
 export function CapCutExport({
-  videoUrl,
-  videoFileName,
+  videoUrls,
+  videoFileNames,
   userPotential,
   match,
   defaultProjectName,
@@ -70,13 +72,28 @@ export function CapCutExport({
       }
 
       setStage("compiling");
+      // 同时发数组 + 单值 —— schema preprocess 会双向归一，但发齐对 server 端
+      // 兼容旧/新 route 实现都安全。videoFileNames 全 undefined 时不发，让
+      // server 端走 input.mp4 退化逻辑。
+      const cleanFileNames = videoFileNames?.filter(
+        (n): n is string => typeof n === "string" && n.length > 0,
+      );
+      const hasFileNames =
+        cleanFileNames !== undefined &&
+        cleanFileNames.length === videoUrls.length;
       const res = await fetch("/api/compile-capcut", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           projectName: projectName.trim() || fallbackName,
-          videoUrl,
-          videoFileName,
+          videoUrl: videoUrls[0],
+          videoUrls,
+          ...(hasFileNames
+            ? {
+                videoFileName: cleanFileNames[0],
+                videoFileNames: cleanFileNames,
+              }
+            : {}),
           bgmUrl,
           userPotential,
           match,
@@ -122,8 +139,12 @@ export function CapCutExport({
       </div>
 
       <p className="text-xs text-white/65 mb-4 leading-relaxed">
-        把上面的剪辑清单直接编译成 CapCut 桌面项目。zip 里包含你的视频、按时间轴排好的切镜点、push-in/pull-out
-        动画、字幕轨{`，可选 BGM 配乐`}。解压后运行 setup 脚本即可一键打开。
+        把上面的剪辑清单直接编译成 CapCut 桌面项目。zip 里包含
+        {videoUrls.length > 1
+          ? `你上传的 ${videoUrls.length} 段视频`
+          : "你的视频"}
+        、按时间轴排好的切镜点、push-in/pull-out 动画、字幕轨
+        {`，可选 BGM 配乐`}。解压后运行 setup 脚本即可一键打开。
       </p>
 
       <div className="space-y-4">

@@ -52,8 +52,8 @@ export default function AnalyzePage() {
               stages={stream.stages}
               partials={stream.partials}
               full={stream.full}
-              videoUrl={stream.videoUrls?.[0] ?? null}
-              videoFileName={stream.videoFileNames?.[0] ?? null}
+              videoUrls={stream.videoUrls}
+              videoFileNames={stream.videoFileNames}
               emptyTitle="上传你的视频素材"
               emptySubtitle="Gemini 先 30 秒给你素材诊断，Opus 再 2 分钟给你完整的爆款对标 + 可执行剪辑清单。"
             />
