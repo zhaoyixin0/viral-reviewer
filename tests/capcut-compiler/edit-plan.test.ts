@@ -1,11 +1,18 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
+  clampTransitionDurationSec,
   computeKeepRanges,
   extractTrimRanges,
   makeEasedScaleKeyframes,
   planEditSegments,
+  planFromAssemblyTimeline,
 } from "@/lib/capcut-compiler/edit-plan";
-import type { TechniqueMatchingResult } from "@/lib/technique-matching/types";
+import type {
+  AssemblyClip,
+  AssemblyTimeline,
+  TechniqueMatchingResult,
+} from "@/lib/technique-matching/types";
+import type { VideoMeta } from "@/lib/video/ffprobe-meta";
 
 function makeMatch(over: Partial<TechniqueMatchingResult> = {}): TechniqueMatchingResult {
   return {
@@ -142,6 +149,8 @@ describe("planEditSegments", () => {
       targetStartSec: 2.9,
       targetEndSec: 7.4,
     });
+    // 兼容路径：单视频 fallback 一律记 sourceVideoIndex:0（Task 8）
+    expect(plan.every((p) => p.sourceVideoIndex === 0)).toBe(true);
   });
 
   it("subdivides keep ranges by cut points", () => {
@@ -196,5 +205,237 @@ describe("makeEasedScaleKeyframes", () => {
     for (let i = 1; i < kfs.length; i++) {
       expect(kfs[i].values[0]).toBeLessThanOrEqual(kfs[i - 1].values[0]);
     }
+  });
+});
+
+// ===== Task 8 · 多视频编排 =====
+
+function makeMeta(over: Partial<VideoMeta> = {}): VideoMeta {
+  return {
+    durationSec: 10,
+    fps: 30,
+    width: 1080,
+    height: 1920,
+    codec: "h264",
+    bitrate: 2_000_000,
+    hasAudio: true,
+    ...over,
+  };
+}
+
+function makeClip(over: Partial<AssemblyClip> = {}): AssemblyClip {
+  return {
+    sourceVideoIndex: 0,
+    sourceVideoId: "vid-0",
+    order: 0,
+    sourceStartSec: 0,
+    sourceEndSec: 2,
+    animation: null,
+    incomingTransition: null,
+    reason: "",
+    ...over,
+  } as AssemblyClip;
+}
+
+function makeTimeline(clips: AssemblyClip[]): AssemblyTimeline {
+  const est = clips.reduce(
+    (s, c) => s + Math.max(0, c.sourceEndSec - c.sourceStartSec),
+    0,
+  );
+  return {
+    clips,
+    estimatedDurationSec: est,
+    narrativeSummary: "",
+    rationale: "",
+  };
+}
+
+describe("planFromAssemblyTimeline", () => {
+  let warnSpy: ReturnType<typeof vi.spyOn>;
+
+  // vi.spyOn 的泛型签名拿不到精确 mock.calls 元组，统一在用的地方收口
+  const collectWarnMessages = (): string[] =>
+    (warnSpy.mock.calls as ReadonlyArray<ReadonlyArray<unknown>>).map((c) =>
+      String(c[0]),
+    );
+
+  beforeEach(() => {
+    warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+  });
+  afterEach(() => {
+    warnSpy.mockRestore();
+  });
+
+  it("returns [] for empty clips", () => {
+    const plan = planFromAssemblyTimeline(makeTimeline([]), [makeMeta()]);
+    expect(plan).toEqual([]);
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+
+  it("maps a single clip with correct sourceVideoIndex and linear target", () => {
+    const tl = makeTimeline([
+      makeClip({
+        sourceVideoIndex: 0,
+        sourceStartSec: 1,
+        sourceEndSec: 3.5,
+        animation: { type: "push_in", scaleFrom: 1.0, scaleTo: 1.05 },
+      }),
+    ]);
+    const plan = planFromAssemblyTimeline(tl, [makeMeta({ durationSec: 10 })]);
+    expect(plan).toHaveLength(1);
+    expect(plan[0]).toMatchObject({
+      sourceVideoIndex: 0,
+      sourceStartSec: 1,
+      sourceEndSec: 3.5,
+      targetStartSec: 0,
+      targetEndSec: 2.5,
+      animation: { type: "push_in", scaleFrom: 1.0, scaleTo: 1.05 },
+    });
+  });
+
+  it("accumulates target linearly across multi-video clips (transitions do NOT shrink/overlap)", () => {
+    // PROBE 第 4 节：转场不影响 target_timerange，纯线性累加
+    const tl = makeTimeline([
+      makeClip({
+        sourceVideoIndex: 0,
+        sourceStartSec: 0,
+        sourceEndSec: 2,
+      }),
+      makeClip({
+        sourceVideoIndex: 2,
+        sourceVideoId: "vid-2",
+        order: 1,
+        sourceStartSec: 1,
+        sourceEndSec: 4,
+        incomingTransition: { type: "cross_dissolve", durationSec: 0.4, reason: "" },
+      }),
+      makeClip({
+        sourceVideoIndex: 1,
+        sourceVideoId: "vid-1",
+        order: 2,
+        sourceStartSec: 0.5,
+        sourceEndSec: 2.5,
+        incomingTransition: { type: "whip_pan", durationSec: 0.3, reason: "" },
+      }),
+    ]);
+    const metas = [
+      makeMeta({ durationSec: 10 }),
+      makeMeta({ durationSec: 10 }),
+      makeMeta({ durationSec: 10 }),
+    ];
+    const plan = planFromAssemblyTimeline(tl, metas);
+    expect(plan.map((p) => p.sourceVideoIndex)).toEqual([0, 2, 1]);
+    expect(plan.map((p) => p.targetStartSec)).toEqual([0, 2, 5]);
+    expect(plan.map((p) => p.targetEndSec)).toEqual([2, 5, 7]);
+  });
+
+  it("clamps out-of-range sourceVideoIndex to 0 and warns", () => {
+    const tl = makeTimeline([
+      makeClip({ sourceVideoIndex: 5, sourceStartSec: 0, sourceEndSec: 2 }),
+    ]);
+    const plan = planFromAssemblyTimeline(tl, [makeMeta(), makeMeta()]);
+    expect(plan).toHaveLength(1);
+    expect(plan[0].sourceVideoIndex).toBe(0);
+    expect(warnSpy).toHaveBeenCalled();
+    const msgs = collectWarnMessages();
+    expect(msgs.some((m) => m.includes("sourceVideoIndex") && m.includes("5"))).toBe(true);
+  });
+
+  it("clamps sourceEndSec to meta.durationSec and warns when overrun", () => {
+    const tl = makeTimeline([
+      makeClip({
+        sourceVideoIndex: 0,
+        sourceStartSec: 0,
+        sourceEndSec: 999,
+      }),
+    ]);
+    const plan = planFromAssemblyTimeline(tl, [makeMeta({ durationSec: 5 })]);
+    expect(plan).toHaveLength(1);
+    expect(plan[0].sourceEndSec).toBeCloseTo(5);
+    expect(plan[0].targetEndSec).toBeCloseTo(5);
+    expect(warnSpy).toHaveBeenCalled();
+  });
+
+  it("skips degenerate clips (sourceStartSec >= clamped sourceEndSec) and warns", () => {
+    // sourceStartSec 已超过 meta.durationSec，clamp 后退化为零时长 → skip
+    const tl = makeTimeline([
+      makeClip({
+        sourceVideoIndex: 0,
+        sourceStartSec: 0,
+        sourceEndSec: 2,
+      }),
+      makeClip({
+        sourceVideoIndex: 0,
+        order: 1,
+        sourceStartSec: 99,
+        sourceEndSec: 100,
+      }),
+      makeClip({
+        sourceVideoIndex: 0,
+        order: 2,
+        sourceStartSec: 3,
+        sourceEndSec: 5,
+      }),
+    ]);
+    const plan = planFromAssemblyTimeline(tl, [makeMeta({ durationSec: 6 })]);
+    expect(plan).toHaveLength(2);
+    expect(plan.map((p) => p.sourceStartSec)).toEqual([0, 3]);
+    expect(plan.map((p) => p.targetStartSec)).toEqual([0, 2]);
+    expect(warnSpy).toHaveBeenCalled();
+  });
+
+  it("falls back to alternating push_in / pull_out when clip.animation is null", () => {
+    const tl = makeTimeline([
+      makeClip({ sourceVideoIndex: 0, sourceStartSec: 0, sourceEndSec: 2, animation: null }),
+      makeClip({
+        sourceVideoIndex: 0,
+        order: 1,
+        sourceStartSec: 2,
+        sourceEndSec: 4,
+        animation: null,
+      }),
+    ]);
+    const plan = planFromAssemblyTimeline(tl, [makeMeta({ durationSec: 10 })]);
+    expect(plan).toHaveLength(2);
+    expect(plan[0].animation.type).toBe("push_in");
+    expect(plan[1].animation.type).toBe("pull_out");
+  });
+
+  it("treats animation.type=='none' as no animation, not fallback", () => {
+    const tl = makeTimeline([
+      makeClip({
+        sourceVideoIndex: 0,
+        sourceStartSec: 0,
+        sourceEndSec: 2,
+        animation: { type: "none" },
+      }),
+    ]);
+    const plan = planFromAssemblyTimeline(tl, [makeMeta({ durationSec: 10 })]);
+    expect(plan[0].animation).toEqual({ type: "none" });
+  });
+});
+
+describe("clampTransitionDurationSec", () => {
+  it("returns input duration when comfortably under half of both adjacent segments", () => {
+    expect(clampTransitionDurationSec(0.4, 3, 3)).toBeCloseTo(0.4);
+  });
+
+  it("clamps to half of the shorter neighbor when transition is too long", () => {
+    // 前段 1s, 当前段 4s → 上限 0.5s
+    expect(clampTransitionDurationSec(2, 1, 4)).toBeCloseTo(0.5);
+    // 前段 5s, 当前段 0.8s → 上限 0.4s
+    expect(clampTransitionDurationSec(1.5, 5, 0.8)).toBeCloseTo(0.4);
+  });
+
+  it("clamps negative / zero / NaN input to 0", () => {
+    expect(clampTransitionDurationSec(-1, 3, 3)).toBe(0);
+    expect(clampTransitionDurationSec(0, 3, 3)).toBe(0);
+    expect(clampTransitionDurationSec(Number.NaN, 3, 3)).toBe(0);
+  });
+
+  it("clamps to 0 when either neighbor has zero / invalid duration", () => {
+    expect(clampTransitionDurationSec(0.5, 0, 3)).toBe(0);
+    expect(clampTransitionDurationSec(0.5, 3, 0)).toBe(0);
+    expect(clampTransitionDurationSec(0.5, Number.NaN, 3)).toBe(0);
   });
 });
