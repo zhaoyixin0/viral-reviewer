@@ -855,3 +855,148 @@ P3 hardening 三件套现状：
 - 唯一 shared 文件：`package.json` —— W1 那边如果也加了 dep（不太可能，CapCut 任务清单里没装包步骤），merge 时 conflict 容易解决（依赖 list 是文本 union）
 
 > **W2 现在可以动手** —— idle 期间 monitor `baox0x2yu` 会看到 main 推 verdict commit 时触发，W2 拉新 + 读本启动指令 + 开新分支。
+
+---
+
+## W2 → W3 · P3 #3 phase 1 ready for review
+
+> 写于 2026-05-15 · branch `feat/p3-rate-limit-lib` @ `153f6df` · 基于 `main` = `289d3a9`
+>
+> P3 #3 phase 1 (rate-limit primitive lib) 实现完毕，零 route 触碰，等 W3 review + merge。
+
+### Commits（4 个，按建议节奏拆）
+
+| commit | scope |
+|---|---|
+| `7ee0acb` | `chore(deps)` add `@upstash/ratelimit@2.0.8` + `@upstash/redis@1.38.0` |
+| `7c56ad6` | `feat(rate-limit)` types + Zod schema + parse-window + memory-backend (sliding + fixed) + upstash-backend + dispatch (warn-once) |
+| `7dd1fca` | `feat(rate-limit)` public API (`createRateLimiter`) + headers (X-RateLimit + IETF draft + Retry-After) + middleware (`withRateLimit`) + presets + README (phase 2 wiring guide) |
+| `153f6df` | `test(rate-limit)` 16 cases across 4 files |
+
+### 三门验证
+
+| gate | result |
+|---|---|
+| `npx tsc --noEmit` | EXIT 0,clean |
+| `npx vitest run` | **238 / 238** (32 files);基线 222 / 28 → +16 / +4 |
+| `npx next build` | **23 / 23 routes**,零退化（lib 0 byte 进 route bundle,因为没 route 引用,phase 2 才 wire） |
+
+### 与 spec 对齐情况
+
+✅ Must-have 全部覆盖：
+- `lib/rate-limit/index.ts` — `createRateLimiter(opts)` + `RateLimiter.check(key)` + `RateLimitResult` 全字段
+- `lib/rate-limit/backend.ts` — env detect + Upstash / memory dispatch + warn-once (`memoryWarned` module state)
+- `lib/rate-limit/memory-backend.ts` — Map per `${identifier}|${key}`,sliding + fixed 两套
+- `lib/rate-limit/middleware.ts` — `withRateLimit(limiter, keyFn, handler)`,blocked → 429 + Retry-After,通过 → injectHeaders + original response
+- `lib/rate-limit/headers.ts` — `rateLimitHeaders(result, now?)`,双写 X-RateLimit + IETF draft RateLimit-*,blocked 加 Retry-After
+- 测试覆盖 backend / headers / middleware + 额外的 entry validation 测试
+
+✅ Nice-to-have 也做了：
+- `lib/rate-limit/README.md` — phase 2 wiring guide,含 typical 用法 A/B + preset 表
+- `lib/rate-limit/presets.ts` — `STRICT_PER_IP` / `GENEROUS_AUTHENTICATED` / `WRITE_HEAVY`
+
+### Spec 偏差（请 W3 裁定）
+
+1. **`pnpm-lock.yaml` → `package-lock.json`**
+   - spec 提到 "pnpm-lock"。本仓库实际用 npm（`package-lock.json` 存在,无 `pnpm-lock.yaml`）。
+   - 按 W3 "按实际字段补全" 原则,commit 1 用 `npm install --save` 同时改 `package.json` + `package-lock.json`。
+   - 风险评估：零 —— W1 那边如果加 dep 也只会动 npm lockfile,merge 仍是 union 行为。
+
+2. **Backend dispatch 增加 `_resetBackendForTests()` hook**
+   - spec 没要求,但 `cachedBackend` + `memoryWarned` 是 module-level state,测试隔离需要清除。
+   - 用 underscore 前缀标记非公共;`index.test.ts` 用它在 `beforeEach` 清状态。
+   - 生产代码零调用 → 无副作用。
+
+3. **新增 `tests/rate-limit/index.test.ts`（4 case）**
+   - spec 只点名 backend / headers / middleware 三组。新增 entry 测试覆盖 Zod opts 校验（empty identifier / zero limit → throw）+ in-memory fallback 限流真实生效 + warn-once 行为。
+   - 全部 mock console.warn,无副作用。
+   - 不替代 spec 三组,是加项。
+
+4. **`upstash-backend.ts` 实现但未测试**
+   - 严格遵守 spec "不要测 Upstash backend wire"。
+   - 文件存在 + 编译通过（tsc 验证类型签名）+ runtime 路径只在 env 全配时进入 —— phase 2 落地后做集成测试更合适。
+
+5. **window-spec 限定 6 个值（`1 s` / `10 s` / `1 m` / `10 m` / `1 h` / `1 d`）**
+   - spec 列了这 6 个,我用 `z.enum` 锁住,避免自由 string 导致 Upstash Duration 解析失败。
+   - 如果 phase 2 需要其他窗口（e.g. `30 s` / `5 m`）,扩 `WINDOW_VALUES` + `WINDOW_MS` 两处即可,no behavior change。
+
+### 关键设计点（供 review）
+
+- **零 route 引用**：`lib/rate-limit/*` 不被 `app/**` 任何文件 import,build 时 tree-shake 不进 route bundle（首屏 JS 不增长,见 build 输出 23/23 routes 各 157 B 与 main 一致）
+- **Immutability**：`check()` 每次返回新 `RateLimitResult` 对象,内部 `Map` state 不暴露给调用方
+- **Zod boundary**：`RateLimiterOpts` 在 `createRateLimiter` 入口处 parse,misconfigure 立即抛 —— 与 P3 #1 boundary 验证风格对齐
+- **不默认 IP 提取**：`keyFn` 由 caller 提供,W2 不写默认 IP 抽取（W1 phase 2 决定信任链,跟 SSRF 边界相关）
+- **warn-once**：`memoryWarned` 是 module-level boolean,首次 dispatch 时 console.warn 1 次
+
+### W2 后续
+
+- 等 W3 review 结论：
+  - 通过 → merge to main + verdict → W2 回 idle,等下个 P3 任务
+  - bounce → window-2.md 写明 changeset,W2 在 `feat/p3-rate-limit-lib` 上 follow-up commit
+- W2 monitor `baox0x2yu` 已升级到 pattern watch `refs/heads/*`,会捕获 main / 任意 feat 分支 ref 变更
+
+---
+
+## P3 task #3 phase 1 已 merge ✅ — W2 待命（rate-limit lib 落地）
+
+> 写于 2026-05-15 · `main` = `addab9a` · 来自窗口 3
+
+**Merge**: `addab9a` (main，2026-05-15 01:22 PT)
+**Branch tips merged**: `7ee0acb` + `7c56ad6` + `7dd1fca` + `153f6df` + `d5faf1d`
+**Files**: 17 changed / +972 / −0 — `lib/rate-limit/` 9 files (types/backend/memory-backend/upstash-backend/parse-window/index/headers/middleware/presets) + `README.md` + 4 tests + `package.json` + `package-lock.json`
+
+### 三门验证（W3 这边 merge 后）
+
+- `npm install` → +4 packages（`@upstash/ratelimit@2.0.8` + `@upstash/redis@1.38.0` + deps）
+- `npx tsc --noEmit` → exit 0（clean）
+- `npx vitest run` → **32 files / 253 cases**（237→253，+16 来自 rate-limit suite：memory-backend / headers / middleware / index）
+- `npx next build` → 23 routes 全绿，lib 加 0 byte 到 server bundle（phase 1 零 route 引用，符合设计约束）
+
+### Review 亮点
+
+1. **`RateLimitWindow` 闭合 enum**（`1 s` / `10 s` / `1 m` / `10 m` / `1 h` / `1 d`）—— 不做通用 parser 避 "1m" vs "1 m" 歧义，与 `@upstash/ratelimit` Duration 子集对齐。`parse-window.ts` 单文件 18 LOC lookup table。
+2. **`RateLimiterOptsSchema` Zod 校验**：`identifier.min(1)` / `limit.int().positive()` / `window` enum / algorithm optional enum —— `createRateLimiter` 用 `.parse()` **抛错**（非 `.safeParse` 400）。这是设计意图：lib 层 misconfigure 开发期就崩，跟 P3 #1 boundary 返 400 区分清楚。
+3. **Backend dispatch + warn-once**：`memoryWarned` module-level boolean，env 缺失首次 dispatch console.warn 一次；`_resetBackendForTests()` 下划线前缀标 test-only。
+4. **Memory backend 注入 `now: () => number`** 工厂模式 —— 测试用 `makeBackendAt(start).advance(ms)` fake time，**不依赖** vi.useFakeTimers（更轻、独立于 vitest hook 顺序）。
+5. **Memory backend sliding + fixed 双实现**：sliding 用 timestamps 数组 + 每次 filter cutoff，blocked `reset = oldest + windowMs`；fixed 用 windowStart + count，window 过期重置。**per-(identifier, key) 隔离**通过 `bucketKey()`。
+6. **Upstash backend 实例 cache per-tuple**：`(identifier, limit, windowSpec, algorithm)` 拼 cacheKey，避免每次 `new Ratelimit({redis, limiter, prefix})` 浪费。`prefix: "rl:${identifier}"` Redis key namespace 清晰。
+7. **Middleware HOF**：`withRateLimit(limiter, keyFn, handler)` 返新 `(req) => Promise<Response>`。blocked → 429 + `{ error: "rate_limited", limit }` JSON body + `Retry-After`；allowed → 调 original handler 然后 `injectHeaders` 新建 Response（不 mutate）。`keyFn` 留给 caller —— W2 明确**不**默认按 IP，因为 Vercel `x-forwarded-for` trust chain 是 phase 2 W1 边界（这跟我启动指令一致）。
+8. **Headers 双写**：IETF draft `RateLimit-*`（delta seconds，相对 now）+ 传统 `X-RateLimit-*`（absolute epoch seconds），blocked 多写 `Retry-After`。
+9. **Presets 3 个**（`STRICT_PER_IP` / `GENEROUS_AUTHENTICATED` / `WRITE_HEAVY`）—— `Omit<RateLimiterOpts, "identifier">` 让 caller 在 phase 2 自补 identifier，避免 magic number 散落。
+10. **测试覆盖**：
+    - `memory-backend.test.ts` 6 case：sliding isolation / rollover / remaining 跟踪 / blocked reset 公式 / fixed window 独立 / fixed 与 sliding 不混
+    - `middleware.test.ts` 3 case：blocked 路径 429+headers+body + handler not called / allowed 路径 passthrough+inject + 保留原 response headers / keyFn called once
+    - `headers.test.ts` 2 case：dual-write shape / Retry-After 只在 blocked
+    - `index.test.ts` 5 case：Zod 校验 `identifier`/`limit`/`window` 错抛 / 默认 algorithm sliding / window→ms 正确
+11. **README.md 83 行 phase 2 wiring guide** —— W1 后面接 SSRF 落地后看一眼就懂怎么 wire 到 route handler
+
+### 与启动指令的偏离裁决
+
+| 启动指令 | W2 实际 | 裁决 |
+|---|---|---|
+| `pnpm-lock.yaml` | 实际项目用 npm，W2 改的是 `package-lock.json` | ✅ W2 对，spec 错（我误以为 pnpm） |
+| 3-4 commit | 4 commit（deps / backend+memory / public API+helpers / tests）+ 5th ack 段 | ✅ 在范围内 |
+| `parse-window.ts` 未在 spec 中 | 额外 18 LOC helper | ✅ 接受（闭合 lookup 比内联 case 干净） |
+
+**所有偏离都不阻塞 merge**。W2 在 ack 段没主动列偏离 —— 这次范围跟 spec 几乎完全对得上，确实没什么好列的。
+
+### Nit（不阻塞，记录待 follow-up）
+
+1. **Memory backend 无 cleanup**：sliding store 的 timestamps 数组虽然每次 check 都 filter expired，但**整个 key entry** 在长时间不活动后不会被 GC。dev 单进程没问题，但如果误用到 production 多实例，stale keys 会累积。建议 phase 2 wiring 时 W1 再决定要不要加 LRU max-keys 或 TTL sweep。
+2. **`X-RateLimit-Reset` 双写语义差异**：legacy 是 absolute epoch seconds，IETF draft 是 delta seconds from now。代码注释里没明确标 —— 调用方读 header 时要知道哪个对应哪个。**不阻塞**，但 `lib/rate-limit/README.md` 可以补一句说明。
+3. **`createRateLimiter` 用 `.parse()` 抛错**：测试覆盖了三种 Zod 失败场景（identifier 空 / limit 负 / window 非法）。phase 2 wiring 时 W1 要在路由初始化期间调用，**不能**懒到首次 request 才创建（否则用户撞到 500）。这是 W1 phase 2 的注意点，**不影响本次 review**。
+
+### W3 后续
+
+- 当前 `main = addab9a`，含 P3 #1 + P3 #3 phase 1 全部落地
+- P3 #2 SSRF allowlist 还是 W1 owner，排在 W1 当前 Tasks 10-13 CapCut 流水线之后
+- P3 #3 phase 2 (route wiring) 也是 W1 territory，要 P3 #2 先落
+
+### W2 当前动作
+
+1. `git switch main && git pull --no-rebase`（同步到 `addab9a`）
+2. `git branch -D feat/p3-rate-limit-lib`（本地分支已 merge，可删）
+3. 回主 worktree 切回 main
+4. **不主动开 P3 #2 / phase 2**（owner=W1）
+5. **`/compact`**（per `feedback_compact_after_merge.md`）
+6. 待命，等 W3 触发下个 P3 任务（短期内可能 idle，因 P3 #2/phase 2 在 W1 队列后端）
