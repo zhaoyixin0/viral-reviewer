@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
+import { ClientPayloadSchema } from "./schema";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -34,12 +35,22 @@ export async function POST(req: NextRequest) {
     const json = await handleUpload({
       body,
       request: req,
-      onBeforeGenerateToken: async () => ({
-        allowedContentTypes: ["application/pdf"],
-        maximumSizeInBytes: MAX_BYTES,
-        addRandomSuffix: true,
-      }),
+      onBeforeGenerateToken: async (_pathname, clientPayload) => {
+        // P3 hardening #1：clientPayload 防御性校验。当前 schema 强制为 null —— 任何
+        // 字符串负载会 throw，handleUpload 回 400。未来要消费 clientPayload 必须先扩 schema。
+        const parsed = ClientPayloadSchema.safeParse(clientPayload);
+        if (!parsed.success) {
+          throw new Error("clientPayload not accepted by this endpoint");
+        }
+        return {
+          allowedContentTypes: ["application/pdf"],
+          maximumSizeInBytes: MAX_BYTES,
+          addRandomSuffix: true,
+        };
+      },
       onUploadCompleted: async ({ blob }) => {
+        // tokenPayload 未消费：onBeforeGenerateToken 已通过 schema 拒绝任何字符串
+        // 负载，handleUpload 默认 tokenPayload = clientPayload = null。
         console.log("[brief-upload] completed:", blob.url);
       },
     });

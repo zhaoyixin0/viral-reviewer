@@ -4,6 +4,7 @@ import {
   BriefExtractException,
   type ExtractedBrief,
 } from "@/lib/template-review/brief-extract";
+import { TemplateBriefJsonBodySchema } from "./schema";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -84,9 +85,9 @@ async function loadFromMultipart(req: NextRequest): Promise<LoadResult> {
 }
 
 async function loadFromBlobUrl(req: NextRequest): Promise<LoadResult> {
-  let body: { blobUrl?: unknown; fileName?: unknown };
+  let raw: unknown;
   try {
-    body = await req.json();
+    raw = await req.json();
   } catch {
     return {
       ok: false,
@@ -95,19 +96,17 @@ async function loadFromBlobUrl(req: NextRequest): Promise<LoadResult> {
       message: "expected JSON with blobUrl and fileName",
     };
   }
-  const blobUrl = typeof body.blobUrl === "string" ? body.blobUrl : "";
-  const fileName =
-    typeof body.fileName === "string" && body.fileName.length > 0
-      ? body.fileName
-      : "brief.pdf";
-  if (!blobUrl) {
+  const parsed = TemplateBriefJsonBodySchema.safeParse(raw);
+  if (!parsed.success) {
     return {
       ok: false,
       status: 400,
-      error: "missing_blob_url",
-      message: "blobUrl is required",
+      error: "invalid_request",
+      message: "request body failed schema validation",
     };
   }
+  const { blobUrl } = parsed.data;
+  const fileName = parsed.data.fileName ?? "brief.pdf";
   if (!isVercelBlobUrl(blobUrl)) {
     return {
       ok: false,

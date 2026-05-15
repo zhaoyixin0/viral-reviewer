@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { readLatestTwoSnapshots } from "@/lib/trending/snapshot-store";
 import { computeVelocity, computeHashtagVelocity } from "@/lib/trending/velocity";
+import { TrendingQuerySchema } from "./schema";
 
 export const runtime = "nodejs";
 
@@ -37,7 +38,16 @@ export type TrendingHashtagCard = {
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const platform = searchParams.get("platform"); // "tiktok" | "instagram" | null(=all)
+  const parsed = TrendingQuerySchema.safeParse(
+    Object.fromEntries(searchParams.entries()),
+  );
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "invalid_query", detail: parsed.error.format() },
+      { status: 400 },
+    );
+  }
+  const { platform } = parsed.data;
 
   const { current, previous } = await readLatestTwoSnapshots();
   if (!current) {
@@ -46,10 +56,9 @@ export async function GET(request: Request) {
 
   // 视频 velocity
   const withVelocity = computeVelocity(current, previous);
-  const filtered =
-    platform === "tiktok" || platform === "instagram"
-      ? withVelocity.filter((v) => v.platform === platform)
-      : withVelocity;
+  const filtered = platform
+    ? withVelocity.filter((v) => v.platform === platform)
+    : withVelocity;
 
   const cards: TrendingCard[] = filtered.map((v) => ({
     id: v.id,
