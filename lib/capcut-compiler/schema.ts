@@ -79,6 +79,41 @@ export type VocalSeparationMaterial = {
   time_range: { duration: 0; start: 0 };
 };
 
+/**
+ * 转场 material —— Task 2 PROBE 逆向（docs/CAPCUT-TRANSITION-STRUCTURE.md 第 1 节）。
+ *
+ * 字段含义：
+ *   - id：UUID，被前导 segment 的 `extra_material_refs` 引用（第 3 节挂法）
+ *   - effect_id / resource_id：CapCut 服务端稳定资源 ID（数字字符串，跨机器一致）
+ *   - duration：转场名义时长（μs）；不影响 segment target_timerange 数学（第 4 节）
+ *   - is_overlap：转场视觉重叠属性，**由转场类型决定**（非恒 true，第 4 节实测）。
+ *     CapCut 渲染层用它决定是否做视觉重叠；timeline 数据仍是纯线性累加
+ *   - path：本机 effect cache 绝对路径；server 写空字符串，CapCut 用 effect_id 重拉
+ *
+ * 编排枚举 → effect_id / is_overlap / 默认 duration 的映射见 transitions.ts。
+ */
+export type TransitionMaterial = {
+  id: string; // UUID
+  type: "transition";
+  name: string; // 人类可读名（"叠化" / "Slick Twist" / ...）
+  effect_id: string; // 数字字符串
+  resource_id: string; // = effect_id
+  third_resource_id: "0";
+  source_platform: 1;
+  /** 本机 effect cache 路径；server 端写空字符串，CapCut 自动从 effect_id 重新拉 */
+  path: string;
+  duration: number; // μs，转场名义时长
+  /** 转场视觉重叠属性，按转场类型固有（非恒 true），见 transitions.ts 映射表 */
+  is_overlap: boolean;
+  platform: "all";
+  category_id: string;
+  category_name: string;
+  request_id: string;
+  is_ai_transition: boolean;
+  video_path: "";
+  task_id: "";
+};
+
 // ===== Segments =====
 
 export type Keyframe = {
@@ -203,7 +238,8 @@ export type DraftContent = {
     /** Phase 5+ 字段：material_animations / audio_fades / transitions / video_effects */
     material_animations: unknown[];
     audio_fades: unknown[];
-    transitions: unknown[];
+    /** Task 6 起：真实 TransitionMaterial[]（Task 10 由编译层写入） */
+    transitions: TransitionMaterial[];
     video_effects: unknown[];
   };
   /** 创建时间戳，CapCut 用 100-nanosecond ticks 自 1601-01-01 */
