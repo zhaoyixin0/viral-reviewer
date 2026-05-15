@@ -3,6 +3,18 @@ import { readFile } from "fs/promises";
 import { basename } from "path";
 import { tmpdir } from "os";
 import { cleanupAssets, prepareAssets } from "@/lib/capcut-compiler/assets";
+import { createUrlAllowlist } from "@/lib/url-allowlist";
+
+/**
+ * 测试 fixture URL 域 `example.test` —— P3 #2 phase 2 后 prepareAssets 入口 SSRF
+ * check 需要 allowlist 实例。这里用宽松 preset 让既有 fixture 通过；新增 SSRF
+ * deny 路径在 tests/url-allowlist/*.test.ts 已覆盖。
+ */
+const PERMISSIVE_TEST_ALLOWLIST = createUrlAllowlist({
+  allowedSchemes: ["https:"],
+  allowedHosts: [{ suffix: ".example.test" }],
+  blockPrivateIps: false,
+});
 
 /**
  * Task 7：prepareAssets 多视频并发下载用例。
@@ -50,16 +62,18 @@ describe("prepareAssets (Task 7 multi-video)", () => {
   });
 
   it("rejects empty videoUrls", async () => {
-    await expect(prepareAssets([])).rejects.toThrow(
-      "videoUrls must be a non-empty array",
-    );
+    await expect(
+      prepareAssets([], undefined, { urlAllowlist: PERMISSIVE_TEST_ALLOWLIST }),
+    ).rejects.toThrow("videoUrls must be a non-empty array");
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it("downloads a single video to input-0.mp4 under a fresh workDir", async () => {
     fetchMock.mockResolvedValueOnce(makeOkResponse(TEXT_BYTES("video-0")));
 
-    const ws = await prepareAssets(["https://example.test/a.mp4"]);
+    const ws = await prepareAssets(["https://example.test/a.mp4"], undefined, {
+      urlAllowlist: PERMISSIVE_TEST_ALLOWLIST,
+    });
     trackedWorkDirs.push(ws.workDir);
 
     expect(ws.workDir.startsWith(tmpdir())).toBe(true);
@@ -83,7 +97,9 @@ describe("prepareAssets (Task 7 multi-video)", () => {
       "https://example.test/v.mp4?idx=2",
     ];
 
-    const ws = await prepareAssets(urls);
+    const ws = await prepareAssets(urls, undefined, {
+      urlAllowlist: PERMISSIVE_TEST_ALLOWLIST,
+    });
     trackedWorkDirs.push(ws.workDir);
 
     expect(ws.videoPaths.map((p) => basename(p))).toEqual([
@@ -109,11 +125,15 @@ describe("prepareAssets (Task 7 multi-video)", () => {
       });
 
       await expect(
-        prepareAssets([
-          "https://example.test/v.mp4?idx=0",
-          "https://example.test/v.mp4?idx=1",
-          "https://example.test/v.mp4?idx=2",
-        ]),
+        prepareAssets(
+          [
+            "https://example.test/v.mp4?idx=0",
+            "https://example.test/v.mp4?idx=1",
+            "https://example.test/v.mp4?idx=2",
+          ],
+          undefined,
+          { urlAllowlist: PERMISSIVE_TEST_ALLOWLIST },
+        ),
       ).rejects.toThrow(/Failed to download videos: #1/);
 
       const calls = errSpy.mock.calls.map((c) => String(c[0]));
@@ -136,11 +156,15 @@ describe("prepareAssets (Task 7 multi-video)", () => {
       });
 
       await expect(
-        prepareAssets([
-          "https://example.test/v.mp4?idx=0",
-          "https://example.test/v.mp4?idx=1",
-          "https://example.test/v.mp4?idx=2",
-        ]),
+        prepareAssets(
+          [
+            "https://example.test/v.mp4?idx=0",
+            "https://example.test/v.mp4?idx=1",
+            "https://example.test/v.mp4?idx=2",
+          ],
+          undefined,
+          { urlAllowlist: PERMISSIVE_TEST_ALLOWLIST },
+        ),
       ).rejects.toThrow(/#0, #2 \(2\/3\)/);
 
       const errMsgs = errSpy.mock.calls.map((c) => String(c[0]));
@@ -162,10 +186,14 @@ describe("prepareAssets (Task 7 multi-video)", () => {
       });
 
       await expect(
-        prepareAssets([
-          "https://example.test/v.mp4?idx=0",
-          "https://example.test/v.mp4?idx=1",
-        ]),
+        prepareAssets(
+          [
+            "https://example.test/v.mp4?idx=0",
+            "https://example.test/v.mp4?idx=1",
+          ],
+          undefined,
+          { urlAllowlist: PERMISSIVE_TEST_ALLOWLIST },
+        ),
       ).rejects.toThrow(/#0/);
 
       const errMsgs = errSpy.mock.calls.map((c) => String(c[0]));
@@ -186,6 +214,7 @@ describe("prepareAssets (Task 7 multi-video)", () => {
     const ws = await prepareAssets(
       ["https://example.test/v.mp4"],
       "https://example.test/bgm.mp3",
+      { urlAllowlist: PERMISSIVE_TEST_ALLOWLIST },
     );
     trackedWorkDirs.push(ws.workDir);
 
@@ -208,6 +237,7 @@ describe("prepareAssets (Task 7 multi-video)", () => {
         prepareAssets(
           ["https://example.test/v.mp4"],
           "https://example.test/bgm.mp3",
+          { urlAllowlist: PERMISSIVE_TEST_ALLOWLIST },
         ),
       ).rejects.toThrow(/Failed to download BGM/);
 

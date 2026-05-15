@@ -7,6 +7,11 @@ import {
   probeBgmDurationSec,
 } from "@/lib/capcut-compiler/assets";
 import {
+  createUrlAllowlist,
+  VERCEL_BLOB_PRESET,
+  UrlAllowlistError,
+} from "@/lib/url-allowlist";
+import {
   buildDraftContent,
   dedupeFileNames,
   sanitizeVideoFileName,
@@ -69,9 +74,14 @@ export async function POST(req: NextRequest) {
   }
 
   let workDir: string | null = null;
+  // P3 #2 phase 2：SSRF allowlist —— `prepareAssets` 入口 batch check 全部 URL
+  // （videoUrls + optional bgmUrl），任一 deny → 抛 UrlAllowlistError 走 400。
+  const urlAllowlist = createUrlAllowlist(VERCEL_BLOB_PRESET);
   try {
     // 1) 下载视频 (N 个并发) + (可选) BGM
-    const assets = await prepareAssets(videoUrls, bgmUrl ?? undefined);
+    const assets = await prepareAssets(videoUrls, bgmUrl ?? undefined, {
+      urlAllowlist,
+    });
     workDir = assets.workDir;
 
     // 2) ffprobe 视频元数据 — 并发探测，得到 metas 与 videoPaths 同序数组。
@@ -157,6 +167,21 @@ export async function POST(req: NextRequest) {
       );
     }
   } catch (e) {
+    // P3 #2 phase 2：SSRF allowlist 拒绝 → 400 url_denied
+    // W3 verdict B2：response 不暴露 deny reason 防 probe；server 用 console.warn
+    // （不是 error）写完整 url + reason 方便后续 grep 看真实流量
+    if (e instanceof UrlAllowlistError) {
+      console.warn(
+        `[url-allowlist] denied url=${e.url} reason=${e.reason} route=compile-capcut`,
+      );
+      return new Response(
+        JSON.stringify({
+          error: "url_denied",
+          message: "提供的 URL 不在允许列表中",
+        }),
+        { status: 400, headers: { "content-type": "application/json" } },
+      );
+    }
     // 详情只进日志，不回客户端 —— 避免泄露文件系统路径 / 内部服务名
     console.error("[compile-capcut] error:", e);
     return new Response(

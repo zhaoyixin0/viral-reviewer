@@ -3,6 +3,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
 import { createReadStream } from "fs";
 import type { ReviewInputVideo } from "@/lib/review-engine/types";
+import type { UrlAllowlist } from "@/lib/url-allowlist";
 import { extractFramesAndAudio, cleanupWorkspace } from "./ffmpeg";
 
 const VISION_SYSTEM = `你是 TikTok 视频内容分析师。我会给你 N 张按时间顺序排列的抽样帧（来自一条短视频），你需要分析整支视频的：
@@ -120,9 +121,12 @@ export type AnalyzeVideoArgs = {
 
 export async function analyzeVideo(
   args: AnalyzeVideoArgs,
+  opts: { urlAllowlist: UrlAllowlist },
 ): Promise<ReviewInputVideo> {
   const { framesBase64, audioPath, duration, workDir } =
-    await extractFramesAndAudio(args.videoUrl, 6);
+    await extractFramesAndAudio(args.videoUrl, 6, {
+      urlAllowlist: opts.urlAllowlist,
+    });
 
   try {
     const [vision, transcript] = await Promise.all([

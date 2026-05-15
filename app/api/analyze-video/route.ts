@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { analyzeVideo } from "@/lib/video/analyze";
+import {
+  createUrlAllowlist,
+  VERCEL_BLOB_PRESET,
+  UrlAllowlistError,
+} from "@/lib/url-allowlist";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -35,10 +40,22 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // P3 #2 phase 2: SSRF allowlist —— analyzeVideo 内部 extractFramesAndAudio
+  // 在入口 check videoUrl，deny → 抛 UrlAllowlistError 到此处映射 400
+  const urlAllowlist = createUrlAllowlist(VERCEL_BLOB_PRESET);
   try {
-    const reviewInput = await analyzeVideo(parsed.data);
+    const reviewInput = await analyzeVideo(parsed.data, { urlAllowlist });
     return NextResponse.json(reviewInput);
   } catch (e) {
+    if (e instanceof UrlAllowlistError) {
+      console.warn(
+        `[url-allowlist] denied url=${e.url} reason=${e.reason} route=analyze-video`,
+      );
+      return NextResponse.json(
+        { error: "url_denied", message: "提供的 URL 不在允许列表中" },
+        { status: 400 },
+      );
+    }
     console.error("[analyze-video] error:", e);
     return NextResponse.json(
       { error: "analyze_failed", message: (e as Error).message },

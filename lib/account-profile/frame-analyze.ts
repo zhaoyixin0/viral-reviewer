@@ -1,6 +1,7 @@
 import "server-only";
 import Anthropic from "@anthropic-ai/sdk";
 import { extractFramesAndAudio, cleanupWorkspace } from "@/lib/video/ffmpeg";
+import type { UrlAllowlist } from "@/lib/url-allowlist";
 import type { AccountFrameInsight } from "./types";
 
 const FRAME_VISION_SYSTEM = `你是 TikTok / Instagram Reels 创作者画像分析师。
@@ -39,13 +40,15 @@ function stripCodeFence(text: string): string {
 export async function analyzeAccountTopVideo(
   videoUrl: string,
   videoId: string,
-  frameCount = 5,
+  opts: { urlAllowlist: UrlAllowlist; frameCount?: number },
 ): Promise<AccountFrameInsight | null> {
   if (!process.env.ANTHROPIC_API_KEY) return null;
 
   let workDir: string | null = null;
   try {
-    const result = await extractFramesAndAudio(videoUrl, frameCount);
+    const result = await extractFramesAndAudio(videoUrl, opts.frameCount ?? 5, {
+      urlAllowlist: opts.urlAllowlist,
+    });
     workDir = result.workDir;
 
     if (result.framesBase64.length === 0) {
