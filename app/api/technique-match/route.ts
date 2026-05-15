@@ -8,10 +8,23 @@ import { loadReferenceCutPlans } from "@/lib/sample-references";
 import { matchTechniques } from "@/lib/technique-matching/match-engine";
 import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
 import { createUrlAllowlist, VERCEL_BLOB_PRESET } from "@/lib/url-allowlist";
+import {
+  createRateLimiter,
+  clientIp,
+  rateLimitHeaders,
+  STREAM_HEAVY,
+} from "@/lib/rate-limit";
 import { Schema } from "./schema";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
+
+// P3 #3 phase 2: STREAM_HEAVY (3/10m fixed) —— NDJSON stream + multi-video
+// Claude analyze + frame extract，单请求 20-60s。Inline check **stream 启动前**。
+const RATE_LIMITER = createRateLimiter({
+  identifier: "technique-match",
+  ...STREAM_HEAVY,
+});
 
 type StreamEvent =
   | { type: "stage"; stage: string; message: string; data?: unknown }
@@ -72,6 +85,21 @@ export async function POST(req: NextRequest) {
 
   const { videoUrls, topic, intent, videoId } = parsed.data;
   const totalMaterials = videoUrls.length;
+
+  // P3 #3 phase 2: rate-limit inline check —— **必须**在 stream 启动前 + 在 SSRF
+  // batch check 之前。两个 check 的失败 shape 都是 wrapper-equivalent Response，
+  // 一旦 stream 启动就回不去（同 SSRF 设计语义）。
+  const rlResult = await RATE_LIMITER.check(clientIp(req));
+  const rlHeaders = rateLimitHeaders(rlResult);
+  if (!rlResult.success) {
+    return new Response(
+      JSON.stringify({ error: "rate_limited", limit: rlResult.limit }),
+      {
+        status: 429,
+        headers: { ...rlHeaders, "content-type": "application/json" },
+      },
+    );
+  }
 
   // P3 #2 phase 2：SSRF allowlist batch check —— **必须**在 stream 启动前做。
   // 本路由返回 NDJSON stream，一旦 controller 开始 enqueue 就 HTTP 200，
@@ -351,6 +379,7 @@ export async function POST(req: NextRequest) {
 
   return new Response(stream, {
     headers: {
+      ...rlHeaders,
       "content-type": "application/x-ndjson; charset=utf-8",
       "cache-control": "no-cache, no-transform",
       "x-accel-buffering": "no",

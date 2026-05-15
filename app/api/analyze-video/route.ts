@@ -6,6 +6,12 @@ import {
   VERCEL_BLOB_PRESET,
   UrlAllowlistError,
 } from "@/lib/url-allowlist";
+import {
+  createRateLimiter,
+  withRateLimit,
+  clientIp,
+  ANON_AI_HEAVY,
+} from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -17,7 +23,13 @@ const RequestSchema = z.object({
   scene: z.string().max(200).optional().default(""),
 });
 
-export async function POST(req: NextRequest) {
+// P3 #3 phase 2: ANON_AI_HEAVY (10/10m sliding) —— Claude analyze + frame extract。
+const RATE_LIMITER = createRateLimiter({
+  identifier: "analyze-video",
+  ...ANON_AI_HEAVY,
+});
+
+async function impl(req: NextRequest) {
   if (!process.env.ANTHROPIC_API_KEY) {
     return NextResponse.json(
       { error: "anthropic_key_missing" },
@@ -63,3 +75,5 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export const POST = withRateLimit(RATE_LIMITER, clientIp, impl);

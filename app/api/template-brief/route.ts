@@ -5,6 +5,12 @@ import {
   type ExtractedBrief,
 } from "@/lib/template-review/brief-extract";
 import { createUrlAllowlist, VERCEL_BLOB_PRESET } from "@/lib/url-allowlist";
+import {
+  createRateLimiter,
+  withRateLimit,
+  clientIp,
+  ANON_AI_HEAVY,
+} from "@/lib/rate-limit";
 import { TemplateBriefJsonBodySchema } from "./schema";
 
 /**
@@ -13,6 +19,12 @@ import { TemplateBriefJsonBodySchema } from "./schema";
  * `*.public.blob.vercel-storage.com` 后缀匹配（含根域 + 子域）。
  */
 const URL_ALLOWLIST = createUrlAllowlist(VERCEL_BLOB_PRESET);
+
+// P3 #3 phase 2: ANON_AI_HEAVY (10/10m sliding) —— Claude PDF brief extract。
+const RATE_LIMITER = createRateLimiter({
+  identifier: "template-brief",
+  ...ANON_AI_HEAVY,
+});
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -170,7 +182,7 @@ async function loadFromBlobUrl(req: NextRequest): Promise<LoadResult> {
   return { ok: true, buffer, fileName, sizeBytes: buffer.length };
 }
 
-export async function POST(
+async function impl(
   req: NextRequest,
 ): Promise<NextResponse<SuccessResponse | ErrorResponse>> {
   const contentType = req.headers.get("content-type") || "";
@@ -224,3 +236,5 @@ export async function POST(
     return errResponse(500, "internal", (e as Error).message);
   }
 }
+
+export const POST = withRateLimit(RATE_LIMITER, clientIp, impl);

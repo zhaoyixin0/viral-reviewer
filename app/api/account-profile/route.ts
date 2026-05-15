@@ -8,6 +8,12 @@ import {
   TIKTOK_INSTAGRAM_CDN_PRESET,
 } from "@/lib/url-allowlist";
 import {
+  createRateLimiter,
+  clientIp,
+  rateLimitHeaders,
+  STREAM_HEAVY,
+} from "@/lib/rate-limit";
+import {
   buildAccountCacheKey,
   readAccountProfileCache,
   writeAccountProfileCache,
@@ -21,6 +27,15 @@ import {
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
+
+// P3 #3 phase 2: STREAM_HEAVY (3/10m fixed) —— NDJSON stream + Apify scrape +
+// Claude analyze + frame extract，单请求 30-60s 长占用。
+// Inline check（**stream 启动前**）—— 一旦 controller.enqueue 开始，HTTP 200
+// 已 commit，无法再回 429。参考 P3 #2 phase 2 SSRF 同模式（f59080f）。
+const RATE_LIMITER = createRateLimiter({
+  identifier: "account-profile",
+  ...STREAM_HEAVY,
+});
 
 const Schema = z.object({
   platform: z.enum(["tiktok", "instagram"]),
@@ -70,6 +85,21 @@ export async function POST(req: NextRequest) {
         details: parsed.error.format(),
       }),
       { status: 400, headers: { "content-type": "application/json" } },
+    );
+  }
+
+  // P3 #3 phase 2: rate-limit inline check —— 必须在 stream 启动前。
+  // W3 verdict §D：失败响应 shape 与 wrapper (lib/rate-limit/middleware.ts:24)
+  // 完全一致，方便客户端统一 429 handling。
+  const rlResult = await RATE_LIMITER.check(clientIp(req));
+  const rlHeaders = rateLimitHeaders(rlResult);
+  if (!rlResult.success) {
+    return new Response(
+      JSON.stringify({ error: "rate_limited", limit: rlResult.limit }),
+      {
+        status: 429,
+        headers: { ...rlHeaders, "content-type": "application/json" },
+      },
     );
   }
 
@@ -194,6 +224,7 @@ export async function POST(req: NextRequest) {
 
   return new Response(stream, {
     headers: {
+      ...rlHeaders,
       "content-type": "application/x-ndjson; charset=utf-8",
       "cache-control": "no-cache, no-transform",
       "x-accel-buffering": "no",
