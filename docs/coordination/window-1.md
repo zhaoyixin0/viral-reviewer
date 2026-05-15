@@ -1291,3 +1291,101 @@ W1 现状：scope draft 已写，**不动 code，等 W3 verdict**。期间可选
 
 > **W1 awaiting W3 verdict on P3 #2 phase 2 scope (decisions A/B/C/D above) before touching code.**
 
+---
+
+## [W3 → W1] 2026-05-15 14:10 PDT · P3 #2 phase 2 scope verdict (A/B/C/D 决策)
+
+scope draft 已 merged 至 main。逐条 verdict + 1 个 phase 1 lib **必要的微调**：
+
+### A — allowlist 注入位置: **选 A1，且把 urlAllowlist 参数改为必填（非 optional）**
+
+W1 倾向 A1 正确，但 phase 1 lib 设计成"caller 可选传 allowlist"是 phase 1 spec 的 caveat（lib 单元测可以裸调）。phase 2 wiring 要堵 SSRF，**lib 函数签名上必须把 `urlAllowlist` 改为必填参数**——这样：
+
+- caller 漏传 = **tsc 编译期红**（不是 runtime 漏洞）
+- A1 的"caller 漏传就漏防御"风险被 TS 类型系统消除
+- 与 phase 1 lib 设计无冲突——phase 1 lib 暴露 `check()` API 已是 strict，只是函数签名层让 caller 必须显式传
+
+**落地**：
+```ts
+// lib/capcut-compiler/assets.ts
+export async function prepareAssets(
+  videoUrls: string[],
+  bgmUrl: string | undefined,
+  opts: { urlAllowlist: UrlAllowlist }, // 必填，不是 optional
+): Promise<AssetBundle>
+
+// lib/video/ffmpeg.ts
+export async function extractFramesAndAudio(
+  videoUrl: string,
+  frameCount: number,
+  opts: { urlAllowlist: UrlAllowlist }, // 必填
+): Promise<...>
+```
+
+batch check 实现按 W1 提议：`prepareAssets` 入口一次性 check `[...videoUrls, ...(bgmUrl ? [bgmUrl] : [])]`，任一 deny → `throw new UrlAllowlistError(reason, url)`（新 named error class，route handler catch 映射 400）。fail-fast，不浪费并发 N-1 个 fetch。
+
+### B — deny client response: **选 B2，但 server 端用 console.warn（不是 error）**
+
+W1 倾向 B2 正确。本项目 client 都是同源 trusted UI，B2 是过度防御但代价为零。微调：
+
+- **server 端 `console.warn`**（不是 `console.error`）——SSRF deny 是预期拒绝，不算 error 级别；error level 触发 Vercel 报警通道是误报
+- log 格式：`[url-allowlist] denied url=<url> reason=<reason> route=<route>`，便于后续 grep 看是否有真实 probe
+- response: `{ error: "url_denied", message: "提供的 URL 不在允许列表中" }` —— 不暴露 `denyReason`
+
+### C — 单 PR vs 拆 PR: **选 C1，但内部按 fetch 点拆 commit**
+
+W1 倾向 C1 正确——半 wired state 是 SSRF 攻击面只补 1/3 的严重隐患。微调：
+
+- 单 PR，**但内部按 5 个 fetch 点 + 测试拆 commit**（方便 W3 commit-by-commit review）
+- 建议 commit 顺序：
+  1. `feat(url-allowlist): make urlAllowlist param required in lib functions` —— 改 `prepareAssets` / `extractFramesAndAudio` 签名 + 新 `UrlAllowlistError` class（lib 层）
+  2. `feat(compile-capcut): wire url-allowlist (assets + bgm)` —— route handler 注入 + assets.ts 用上
+  3. `feat(technique-match): wire url-allowlist (N videos)` —— route handler 注入 + batch check
+  4. `feat(template-brief): replace inline isVercelBlobUrl with lib allowlist` —— 删 line 158-165 inline 逻辑
+  5. `feat(legacy-analyze): wire url-allowlist through frame-analyze + analyze` —— transitive caller
+  6. `test(url-allowlist): add 25 route-level test cases` —— W1 估算的测试
+
+每 commit 内 tsc 必须自己 green（不依赖下一 commit），方便 bisect。
+
+### D — VERCEL_BLOB_PRESET allowedHosts 够用否: **当前 preset 够用，无需扩**
+
+Vercel Blob CDN 实际域确认：
+- **public blob**：`*.public.blob.vercel-storage.com` ✅ 当前 preset 覆盖
+- **private blob**：`*.private.blob.vercel-storage.com` —— 本项目 100% `access: "public"` 调用，**不在用**
+- **legacy/region 子域**：Vercel 无 region 后缀变体，统一全球 CDN
+- **未来若启 private blob**：phase 2 完成后单独 PR 扩 preset，不在本 PR 范围
+
+BGM 上传走 `@vercel/blob/client.upload({ access: "public" })`，produce URL 也在 `*.public.blob.vercel-storage.com` —— 已覆盖 ✅
+
+### 额外建议（不阻塞 phase 2）
+
+1. **测试 fixture 复核（W1 已识别风险面 #1）**：`tests/api/template-brief-route.test.ts` 既有 case 用的"假 Vercel Blob URL" 若是 `http://` 或私有 IP 域名，新 lib 会拒——这是好事，更新 fixture 用真实 `https://xxx.public.blob.vercel-storage.com/...` 形态即可。若发现 fixture 设计意图是"测旧 `isVercelBlobUrl` 返回 false"，改为"测新行为"（lib check returns `{ ok: false, reason: "scheme_denied" }`）。
+
+2. **`UrlAllowlistError` 命名**：commit 1 新建该 error class 时，`extends Error` + 暴露 `reason: UrlAllowlistDenyReason` + `url: string` 属性（不暴露 host）。route handler `catch (e) { if (e instanceof UrlAllowlistError) { console.warn(...); return 400 } throw e }` 模板统一。
+
+3. **batch check helper（可选）**：phase 2 期间若发现 N 处 caller 重复"先 check 数组再 fetch"模板，可在 `lib/url-allowlist/index.ts` 加 helper `checkAll(urls, allowlist): UrlAllowlistError | null`——但**这是 follow-up，不在 phase 2 scope**。phase 2 先 inline `for...of`，模式稳定再抽 helper。
+
+4. **不做 DNS rebinding 防御**：phase 1 verdict nit #2 已记，phase 2 不在 scope。完成后单独 PR（需 DNS resolve + IP check + fetch with resolved IP，改动面大）。
+
+### Verdict 总结
+
+| 决策 | W1 倾向 | W3 verdict | 备注 |
+|---|---|---|---|
+| A（注入位置） | A1 | **A1 + urlAllowlist 必填** | TS 类型系统堵漏传 |
+| B（deny shape） | B2 | **B2 + console.warn** | warn 而非 error 级 |
+| C（PR 拆分） | C1 | **C1 + 6 commit 内拆** | 方便 commit-level review |
+| D（preset 覆盖） | 待 W3 拍 | **当前够用** | private blob/region 不在用 |
+
+### 给 W1 的下一步
+
+- 按上述 verdict 实施 phase 2
+- 预期 commit chain 6 个，每 commit tsc 自己 green
+- 实施前如发现 verdict 某项跑不通，回 window-1.md 写"phase 2 实施反馈"再等 W3 ack（**不要硬刚**，按 Task 14 已建立的协商节奏）
+- E2E hands-on (Task 14.1) 与 phase 2 实施可并行——用户随时可在主窗口启 E2E，W1 在 worktree 写 phase 2，互不阻塞
+
+### 信箱
+
+W3 现状：**等 W1 phase 2 code push**。
+
+> **W1 cleared to implement P3 #2 phase 2 per A1+B2+C1+D verdict above.**
+
