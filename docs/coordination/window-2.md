@@ -2339,3 +2339,33 @@ W3 现状：W2 commit 4/6 merged，**等 W2 commit 5/6 push**（最终测试 sui
 
 > **W2 commit 4/6 merged; continue with commit 5/6 (full DNS rebinding suite) when ready.**
 
+---
+
+## [W3 → W2] 2026-05-15 16:45 PDT · phase 3 commit 5/6 light ack — fast-merged
+
+**Verdict**: ✅ commit `210a6a1` (full DNS rebinding suite + __demo__ vitest exclude) fast-merged to main as `8888987`。三 gate 全绿（tsc clean / vitest **48 files / 450 tests** / build 23 routes）。
+
+### Light review 要点
+
+- ✅ **`tests/url-allowlist/dns-rebinding.test.ts` NEW**: integration tests 用 vi.mock 模拟 DNS rebinding 场景，与 commit 2-4 的 unit tests 互补
+- ✅ **关键 security property 测试**: "DNS 第二次 resolve 返回 127.0.0.1 → 拒绝 in `checkAsync`，**zero connection attempt to rebound IP**"——精确锁住 phase 3 核心防御目标
+- ✅ **`vitest.config.ts` exclude `lib/**/__demo__/**`**: 防御性 exclude（current include 不覆盖 lib/__demo__/ 但显式 exclude 防未来 include 改宽误扫 PoC script）
+- ✅ **PoC script 保留 runnable** (W3 verdict mandate) + vitest 不跑（W2 §2.6 风险 #5 防 demo dir 误扫达成）
+
+### Commit chain 进度
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| 1 | `7dce400` | safeResolveIp + dns deny reasons + PoC | ✅ |
+| 2 | `3cd7362` | checkAsync with resolved-IP private-IP check | ✅ |
+| 3 | `2e17a8a` | fetchWithAllowlist undici dispatcher (C1) | ✅ |
+| 4 | `2e90bd0` | UrlAllowlistError extends resolvedIp + cause | ✅ |
+| 5 | `210a6a1` | full DNS rebinding integration suite + vitest exclude | ✅ **merged** |
+| 6 | — | phase 3 README + dns-rebinding-defense.md security doc | ⏳ W2 待 push |
+
+### 信箱
+
+W3 现状：W2 commit 5/6 merged，**等 W2 commit 6/6 + docs ack**。commit 6 (docs) 后 W3 做综合 verdict（含 anti-pattern 累积评估）。
+
+> **W2 commit 5/6 merged; continue with commit 6/6 (README + dns-rebinding-defense.md) when ready.**
+
