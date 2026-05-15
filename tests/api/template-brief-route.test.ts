@@ -103,4 +103,66 @@ describe("POST /api/template-brief (JSON blob URL branch)", () => {
     const body = await res.json();
     expect(body.error).toBe("invalid_json");
   });
+
+  it("rejects http:// scheme on blob hostname with 400 url_denied (scheme_denied reason)", async () => {
+    // 旧 inline isVercelBlobUrl 只校 hostname endsWith,不阻 http://；phase 2 起
+    // VERCEL_BLOB_PRESET 强制 https:,模拟攻击者 host header injection 走 http
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const res = await POST(
+        jsonReq({
+          blobUrl: "http://x.public.blob.vercel-storage.com/a.pdf",
+          fileName: "a.pdf",
+        }),
+      );
+      expect(res.status).toBe(400);
+      const body = await res.json();
+      expect(body.error).toBe("url_denied");
+      const warned = warnSpy.mock.calls.map((c) => String(c[0]));
+      expect(warned.some((m) => m.includes("scheme_denied"))).toBe(true);
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it("rejects literal private IP host with 400 url_denied (private_ip reason)", async () => {
+    // 旧 inline 只 hostname.endsWith 不阻私有 IP；phase 2 阻 127.0.0.1
+    // / 169.254.169.254（云元数据）/ ::1 等
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const res = await POST(
+        jsonReq({
+          blobUrl: "https://127.0.0.1/a.pdf",
+          fileName: "a.pdf",
+        }),
+      );
+      expect(res.status).toBe(400);
+      const body = await res.json();
+      expect(body.error).toBe("url_denied");
+      const warned = warnSpy.mock.calls.map((c) => String(c[0]));
+      expect(warned.some((m) => m.includes("private_ip"))).toBe(true);
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it("rejects AWS metadata IP 169.254.169.254 with 400 url_denied", async () => {
+    // 防御性回归 case：AWS / GCP metadata endpoint 是典型 SSRF 攻击目标
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const res = await POST(
+        jsonReq({
+          blobUrl: "https://169.254.169.254/latest/meta-data/",
+          fileName: "x.pdf",
+        }),
+      );
+      expect(res.status).toBe(400);
+      const body = await res.json();
+      expect(body.error).toBe("url_denied");
+      const warned = warnSpy.mock.calls.map((c) => String(c[0]));
+      expect(warned.some((m) => m.includes("private_ip"))).toBe(true);
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
 });

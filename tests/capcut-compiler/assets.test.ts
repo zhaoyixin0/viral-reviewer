@@ -3,7 +3,11 @@ import { readFile } from "fs/promises";
 import { basename } from "path";
 import { tmpdir } from "os";
 import { cleanupAssets, prepareAssets } from "@/lib/capcut-compiler/assets";
-import { createUrlAllowlist } from "@/lib/url-allowlist";
+import {
+  createUrlAllowlist,
+  VERCEL_BLOB_PRESET,
+  UrlAllowlistError,
+} from "@/lib/url-allowlist";
 
 /**
  * 测试 fixture URL 域 `example.test` —— P3 #2 phase 2 后 prepareAssets 入口 SSRF
@@ -250,5 +254,104 @@ describe("prepareAssets (Task 7 multi-video)", () => {
     } finally {
       errSpy.mockRestore();
     }
+  });
+});
+
+/**
+ * P3 #2 phase 2：`prepareAssets` 入口 SSRF allowlist check 覆盖。
+ *
+ * 全部用真实 `VERCEL_BLOB_PRESET`（与生产路径一致），不 mock fetch ——
+ * deny 必须在任何 fetch 发起前发生，断言 `fetchMock` zero call 守住 fail-fast。
+ */
+describe("prepareAssets · P3 #2 phase 2 SSRF allowlist gate", () => {
+  let fetchMock: ReturnType<typeof vi.fn>;
+  const VERCEL_BLOB_ALLOWLIST = createUrlAllowlist(VERCEL_BLOB_PRESET);
+
+  beforeEach(() => {
+    fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("throws UrlAllowlistError with reason=invalid_url when videoUrl unparseable", async () => {
+    await expect(
+      prepareAssets(["not-a-url"], undefined, {
+        urlAllowlist: VERCEL_BLOB_ALLOWLIST,
+      }),
+    ).rejects.toMatchObject({
+      name: "UrlAllowlistError",
+      reason: "invalid_url",
+      url: "not-a-url",
+    });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("throws UrlAllowlistError with reason=scheme_denied when videoUrl uses http://", async () => {
+    await expect(
+      prepareAssets(["http://x.public.blob.vercel-storage.com/a.mp4"], undefined, {
+        urlAllowlist: VERCEL_BLOB_ALLOWLIST,
+      }),
+    ).rejects.toMatchObject({
+      name: "UrlAllowlistError",
+      reason: "scheme_denied",
+    });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("throws UrlAllowlistError with reason=private_ip when videoUrl host is 127.0.0.1", async () => {
+    await expect(
+      prepareAssets(["https://127.0.0.1/a.mp4"], undefined, {
+        urlAllowlist: VERCEL_BLOB_ALLOWLIST,
+      }),
+    ).rejects.toMatchObject({
+      name: "UrlAllowlistError",
+      reason: "private_ip",
+    });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("throws UrlAllowlistError with reason=host_denied when videoUrl host not in preset", async () => {
+    await expect(
+      prepareAssets(["https://evil.com/a.mp4"], undefined, {
+        urlAllowlist: VERCEL_BLOB_ALLOWLIST,
+      }),
+    ).rejects.toMatchObject({
+      name: "UrlAllowlistError",
+      reason: "host_denied",
+      url: "https://evil.com/a.mp4",
+    });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("fail-fast: 1st denied URL aborts before checking next URLs", async () => {
+    await expect(
+      prepareAssets(
+        [
+          "https://evil-1.com/a.mp4",
+          "https://x.public.blob.vercel-storage.com/b.mp4",
+        ],
+        undefined,
+        { urlAllowlist: VERCEL_BLOB_ALLOWLIST },
+      ),
+    ).rejects.toBeInstanceOf(UrlAllowlistError);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("throws on denied bgmUrl even if all videoUrls pass", async () => {
+    await expect(
+      prepareAssets(
+        ["https://x.public.blob.vercel-storage.com/v.mp4"],
+        "https://evil.com/bgm.mp3",
+        { urlAllowlist: VERCEL_BLOB_ALLOWLIST },
+      ),
+    ).rejects.toMatchObject({
+      name: "UrlAllowlistError",
+      reason: "host_denied",
+      url: "https://evil.com/bgm.mp3",
+    });
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 });
