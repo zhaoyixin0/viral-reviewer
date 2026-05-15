@@ -1583,3 +1583,68 @@ phase 1 报告的 (c) "stale-cover 异步重抓" 是 bigger infra task。**defer
 
 > 范围严守 spec：lib only，零 route，零新 dep，零 DNS resolve。等 W3。
 
+---
+
+## P3 #2 phase 1 已 merge ✅ — W2 待命
+
+> 写于 2026-05-15 · `main` = `daeebfc` · 来自窗口 3
+
+**Merge**: `daeebfc` (main，2026-05-15 13:27 PT)
+**Branch tips merged**: `1639d11 + 95bd1ac + 74993d9 + 1560176 + d05d5ed + 3910f0f`（4 code + 1 main-sync merge + 1 ack）
+**Files**: 9 changed (`lib/url-allowlist/` 5 + 4 tests) + ack 段 = +791 lines
+
+### 三门验证（W3 这边 merge 后）
+
+- `npx tsc --noEmit` → exit 0
+- `npx vitest run` → **37 files / 336 cases**（273→336，+63 url-allowlist suite）
+- `npx next build` → 23 routes 全绿，server bundle 加 0 byte
+
+### Review 亮点
+
+1. **`reason` 闭合 enum + 优先级正确**：`invalid_url → scheme_denied → private_ip → host_denied → ok`。test 验证 `allowedHosts=/.*/` 通配 host 下 `169.254.169.254` cloud metadata 仍被 `private_ip` 优先拒
+2. **私有 IP 段全覆盖**：IPv4 7 段 + IPv6 4 段；`fec0::1`（RFC 3879 废弃）显式不视作私有
+3. **suffix substring attack 防护**：`evil.example.com.attacker.test` 在 `{ suffix: ".example.com" }` allowlist 下被拒
+4. **`createUrlAllowlist` 用 `.parse()` 抛错**：misconfigure 开发期就崩，跟 rate-limit 一致
+5. **`VERCEL_BLOB_PRESET` 注释透明列出旧 `isVercelBlobUrl` 2 个 gap**（拒根域 / 未校验 scheme）
+6. **零 route 触碰** 已自验
+
+### 偏离裁决
+
+| W2 偏离 | 裁决 |
+|---|---|
+| **`VERCEL_BLOB_PRESET` 接受根域** | ✅ 接受。W2 正确捉到我 spec 内部矛盾（写"等价旧实现"但 pattern 定义不等价）。按 spec pattern 走比 mimic 旧 fn 更稳。phase 2 W1 wiring 如需 1:1 兼容用 `RegExp(/^.+\.public\.blob\.vercel-storage\.com$/)` 还原 |
+| scheme "https" / "https:" 都接受 | ✅ 接受 |
+| re-export `matchHost` / `isPrivateIpString` | ✅ 接受 |
+| **W2 帮我捉 spec 内部不一致**（`catch → invalid_url` vs spec "throw" 措辞） | ✅ 致谢，spec 表述自相矛盾 |
+| `fec0::/10` 不视作私有 | ✅ 接受（RFC 3879 废弃） |
+
+### Nit（不阻塞，phase 2 升级路径）
+
+1. **IPv4-mapped IPv6 (`::ffff:127.0.0.1`) 未覆盖** —— W2 ack 已明示 phase 2 加 `ipaddr.js`
+2. **DNS rebinding 防护未做** —— phase 2 W1 决策加 `safeResolveIp(hostname)`
+3. **`{ suffix }` 必带前导点** 靠 review 把关而非 Zod 强校验 —— preset 内用对了
+
+---
+
+## 下一步：W2 回 idle，phase 2 wiring 排在 W1 Task 14 之后
+
+P3 hardening pass 当前总进展：
+
+| Task | Owner | 状态 |
+|---|---|---|
+| P3 #1 API boundary Zod | W2 | ✅ merged `bcbdfb7` |
+| P3 #2 SSRF allowlist phase 1 (lib) | W2 | ✅ merged `daeebfc`（**本轮**） |
+| P3 #2 phase 2 (route wiring) | W1 | ⏳ 排在 W1 Task 14 后 |
+| P3 #3 rate-limit phase 1 (lib) | W2 | ✅ merged `addab9a` |
+| P3 #3 phase 2 (route wiring) | W1 | ⏳ 排在 P3 #2 phase 2 之后 |
+
+W1 当前在 Task 14。Task 14 完成后 W3 issue **P3 #2 phase 2 wiring** 启动指令：lib 接到 `app/api/technique-match/route.ts` videoUrls fetch / `lib/capcut-compiler/assets.ts` / `lib/video/ffmpeg.ts`；可选 refactor `isVercelBlobUrl` → `VERCEL_BLOB_PRESET`（注意根域语义差异）。
+
+### W2 当前动作
+
+1. `git switch main && git pull --no-rebase`（同步到 `daeebfc`）
+2. `git branch -D feat/p3-url-allowlist-lib`（本地分支已 merge）
+3. 回主 worktree，切 main
+4. **回 idle 态**，等下个任务（短期内可能继续 idle —— 剩余 P3 任务都是 W1 owner）
+5. **`/compact`**（per `feedback_compact_after_merge.md`）
+
