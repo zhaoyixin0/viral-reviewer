@@ -7,6 +7,7 @@ import { analyzeMaterialPotential } from "@/lib/video/analyze-potential";
 import { loadReferenceCutPlans } from "@/lib/sample-references";
 import { matchTechniques } from "@/lib/technique-matching/match-engine";
 import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
+import { createUrlAllowlist, VERCEL_BLOB_PRESET } from "@/lib/url-allowlist";
 import { Schema } from "./schema";
 
 export const runtime = "nodejs";
@@ -71,6 +72,27 @@ export async function POST(req: NextRequest) {
 
   const { videoUrls, topic, intent, videoId } = parsed.data;
   const totalMaterials = videoUrls.length;
+
+  // P3 #2 phase 2：SSRF allowlist batch check —— **必须**在 stream 启动前做。
+  // 本路由返回 NDJSON stream，一旦 controller 开始 enqueue 就 HTTP 200，
+  // 无法再回 400。fail-fast 在 stream 创建前，比错 deny URL 才发现晚。
+  // 与 prepareAssets 入口 check 同语义（W3 verdict B2：response 不暴露 reason）。
+  const urlAllowlist = createUrlAllowlist(VERCEL_BLOB_PRESET);
+  for (const url of videoUrls) {
+    const result = urlAllowlist.check(url);
+    if (!result.ok) {
+      console.warn(
+        `[url-allowlist] denied url=${url} reason=${result.reason} route=technique-match`,
+      );
+      return new Response(
+        JSON.stringify({
+          error: "url_denied",
+          message: "提供的 URL 不在允许列表中",
+        }),
+        { status: 400, headers: { "content-type": "application/json" } },
+      );
+    }
+  }
 
   const baseVideoId =
     videoId ?? `user-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
