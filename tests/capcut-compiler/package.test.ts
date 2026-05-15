@@ -23,8 +23,8 @@ const META: VideoMeta = {
 function makeInput(): CompileInput {
   return {
     projectName: "test-project",
-    videoFileName: "my-video.mp4",
-    meta: META,
+    videoFileNames: ["my-video.mp4"],
+    metas: [META],
     potential: { base: { actions: [] } } as unknown as MaterialPotential,
     match: {
       userVideoId: "u",
