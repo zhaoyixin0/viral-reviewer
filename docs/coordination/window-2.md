@@ -1000,3 +1000,111 @@ P3 hardening 三件套现状：
 4. **不主动开 P3 #2 / phase 2**（owner=W1）
 5. **`/compact`**（per `feedback_compact_after_merge.md`）
 6. 待命，等 W3 触发下个 P3 任务（短期内可能 idle，因 P3 #2/phase 2 在 W1 队列后端）
+
+---
+
+## W3 → W2 · trending 封面图缺失任务启动指令
+
+> 写于 2026-05-15 · `main` = `41e4ce9` · 来自窗口 3
+>
+> 触发：W2 idle 期间用户报告 trending 看板有封面图缺失。本任务在 W2 hot-tracking 专家区（P0-P2 你自己写的代码），跟 W1 当前 CapCut 流水线（Tasks 12-13）+ P3 #2/#3 phase 2 零文件 overlap。
+
+### 背景（W3 调研已得，直接给你省时间）
+
+封面流程：
+
+```
+Apify scraper raw item
+  → lib/apify/normalize.ts (extract `cover`)
+  → lib/trending/snapshot-store.ts (snapshot 落盘)
+  → app/api/trending/route.ts (投影 TrendingCard.cover)
+  → components/trending/TrendingCard.tsx (<img src={card.cover}>)
+```
+
+关键代码点：
+
+1. **TT cover 字段提取**（`lib/apify/normalize.ts:22-25`）：
+   ```ts
+   const cover = (raw.videoMeta as ...)?.coverUrl
+     ?? raw.coverUrl
+     ?? raw.thumbnailUrl
+     ?? "";
+   ```
+2. **IG cover 字段提取**（`lib/apify/normalize.ts:99-103`）：
+   ```ts
+   const cover = (raw.displayUrl
+     ?? raw.thumbnailUrl
+     ?? raw.imageUrl
+     ?? raw.thumbnailSrc
+     ?? "") as string;
+   ```
+3. **UI 渲染**（`components/trending/TrendingCard.tsx:58-70`）：
+   - `cover === ""` → 显示文本 "无封面"
+   - `cover` 非空但加载失败 → 浏览器显示破图标，**无 onError fallback**
+
+### 根因未知，必须先诊断
+
+至少 4 个可能：
+
+| 根因 | 检测办法 | 修法方向 |
+|---|---|---|
+| Apify scraper actor schema 升级，字段名变了 | 看现存 snapshot 里前 5 条缺 cover 的 raw item 实际字段 | 扩 `normalize.ts` fallback chain |
+| TikTok / IG CDN URL 过期（有 token / TTL） | 对前 50 个非空 cover URL 跑 HEAD 请求，看 404 / 403 比例 | UI `onError` fallback + 可选 stale snapshot 重抓 |
+| 防盗链（Referer 阻挡） | `<img referrerPolicy="no-referrer">` 试一遍看是否复活 | 加 `referrerPolicy` 或走 Next.js Image proxy |
+| 部分 item 真无封面 | 缺失率与平台 / topic 是否相关 | UI 层接受空 cover，但**Card 不要破样式**（已经有"无封面"占位，但视觉粗糙） |
+
+### Phase 1：诊断脚本（验收项）
+
+**必做**：写 `scripts/diagnose-trending-covers.ts`（参照 `scripts/probe-*.ts` 模板）：
+
+1. **扫现有 snapshot**（`lib/trending/snapshot-store.readLatestTwoSnapshots()` 或直接读 `data/trending-snapshots/`）
+   - 统计 cover 空字符串率（按平台分桶）
+   - 统计 cover 长度异常率（非空但短于 10 字符 / 不含 `http`）
+2. **采样 HEAD 请求**前 N=50 个非空 cover：
+   - 区分 200 / 3xx / 404 / 403 / network error
+   - **不要并发太狠**（concurrency=5，避免 CDN ban），用 Promise pool 或 `for..of await` 串行
+   - User-Agent 用一个真实浏览器（不要 `node-fetch` 默认）；再分别试 `Referer:` 加与不加，验证防盗链假说
+3. **dump 前 5 个缺 cover 的 raw item**：这要求 snapshot 里能拿到原 raw（如果 snapshot 已经过 normalize，只能从 actor logs 拿；如果 normalize 之前的 raw 在 `data/` 留了 dump，从那读）—— 如果两条都没有，加一个 `--with-raw` 模式临时跑一次 Apify scraper 拿 5 条 raw（**只用 5 条节省 quota**）
+4. **输出 markdown 报告** → `docs/diagnose-trending-covers-2026-05-15.md`：
+   - 缺失率 + HEAD 失败率（按平台 + 按错误码分桶）
+   - 前 5 条缺 cover 的真实 raw item 字段 dump
+   - 根因 ranking（最可能 → 最不可能）+ 推荐修法
+
+**不要做**：phase 1 不要改 `normalize.ts` / `TrendingCard.tsx` / `snapshot-store.ts` 任何代码。仅诊断脚本 + 报告。
+
+### Phase 2：定向修复（根据诊断报告选）
+
+诊断报告出来后我（W3）会发 phase 2 启动指令，**phase 2 不要主动开**。可能的方向预告（让你心里有数）：
+
+- 如果 scraper 漏字段 → 扩 fallback chain + `tests/apify/normalize.test.ts` 加新字段映射 case
+- 如果 CDN 过期 → `TrendingCard.tsx` 加 `onError` 占位 fallback
+- 如果防盗链 → `<img referrerPolicy="no-referrer">` 全局加
+- 如果 stale snapshot → 加 `lib/trending/snapshot-store.ts` 的 cover-revive 异步任务（cron 触发，只重抓 head 失败的）
+
+### 工作流
+
+1. **新建分支**：`git switch main && git pull && git switch -c feat/trending-cover-diagnose`
+2. **commit 节奏**：建议 1-2 commit
+   - `chore(scripts): add diagnose-trending-covers.ts`
+   - `docs(diagnose): trending cover availability report 2026-05-15`
+3. **三门验证**（push 前必跑齐）
+   - `npx tsc --noEmit` → clean
+   - `npx vitest run` → 268 cases 不退化（phase 1 不加测试也不破测试）
+   - `npx next build` → 23 routes 不退化（脚本 + docs，零 route 影响）
+4. **push**：`git push -u origin feat/trending-cover-diagnose`，window-2.md 末尾追写 ack 段
+5. **不要在 phase 1 commit 里改任何 production 代码** —— normalize.ts / TrendingCard / snapshot-store 全部留给 phase 2
+
+### 与 W1 流水线的隔离保证
+
+- W1 当前 `worktree-capcut-link` 干 Task 12（capcut 实测 / 多视频项目验证）
+- W2 phase 1 干 `scripts/diagnose-trending-covers.ts` + `docs/diagnose-trending-covers-2026-05-15.md`
+- 零 lib / 零 app / 零 components overlap
+
+### W3 后续
+
+1. monitor `bc1pdrv1c` pattern watch 已覆盖 `feat/*`，自动捕你的 push
+2. review 重点：诊断脚本的采样可信度（concurrency 限速、Referer 双跑、按平台分桶）+ 报告质量（根因排序有理有据，不是"啥都可能"）
+3. 通过 → merge to main + phase 2 启动指令
+4. 不通过 → window-2.md 写明确 changeset 让你修
+
+> **W2 现在可以动手** —— 诊断阶段无前置依赖，main 已含 P0-P2 + P3 #1/#3 phase 1 + Tasks 7-11 全套。
