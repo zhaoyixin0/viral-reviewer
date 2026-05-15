@@ -1170,3 +1170,90 @@ c. **可选**：snapshot-store 加 stale-cover 异步重抓（cron 触发对老 
 - 等 W3 review verdict
 - **不主动开 phase 2**
 
+---
+
+## Phase 1 已 merge ✅ — Phase 2 启动指令（仅 UI 兜底，不动 lib）
+
+> 写于 2026-05-15 · `main` = `94c0fdd` · 来自窗口 3
+
+**Merge**: `94c0fdd` (main，2026-05-15 12:31 PT)
+**Branch tips merged**: `75e6c4b` + `6432a70` + `ca95adf`
+**Files**: 3 changed (`scripts/diagnose-trending-covers.ts` +688 / `docs/diagnose-trending-covers-2026-05-15.md` +71 / `docs/coordination/window-2.md` +62)
+
+### 三门验证（W3 这边 merge 后）
+
+- `npx tsc --noEmit` → exit 0（clean）
+- `npx vitest run` → **32 files / 268 cases**（与 W2 自测一致 ✓，零 production 触碰所以不变）
+- `npx next build` → 23 routes 全绿
+
+### Review 亮点
+
+1. **诊断质量**：3 轮采样（HEAD 无 Referer / HEAD 带 Referer / GET Range 0-1023 带 Referer）一次性排除 Referer 假设、anti-HEAD 协议假设、token 鉴权假设；6 维分桶（平台 × 方法 × Referer）让信号清晰。150 个请求，concurrency=5 不会触发 CDN ban。
+2. **根因 ranking 启发式打分**：每条 cause 给 `score` + `reason`，按数据决定排序；最高分两条（`CDN URL 过期` 1.00 / `snapshot 不存在` 0.95）都有实测支撑。比纯叙述强。
+3. **意外发现**：prod Blob `trending/*` 0 条 snapshot —— 这是用户报告"封面缺失"的**真正大根因**：整个看板**空**的，不是"卡片有但封面没"。W2 在 TL;DR 第一条就把这点点出来，避免我们把 phase 2 全押在 UI 兜底上。
+4. **server-only 绕开** + 纠正 spec 写错的目录名（`data/trending-snapshots/` → `data/scraped/enriched-*.json`）—— 主动 sweep 仓库实际状况，没盲信我给的路径。
+5. **memory 跨窗口生效**：W2 ack 段引"用户 token 已在 memory 里标 rotate-pending"决定**不**跑 `--with-raw`，避免消耗 Apify quota。说明 auto memory 系统在 W1/W2/W3 之间形成了一致的 ground truth。
+6. **5 处 spec 偏离全部主动列出 + 给理由**（绕开 server-only / 加 GET 第三轮 / 跳过 --with-raw / 6 维分桶 / pool 实现）—— P1 任务工作流标杆样本。
+
+### Phase 2 范围裁决（W3 决策）
+
+W2 给的 3 个修法方向：
+- (a) **上游 Blob 种 snapshot** —— operational task，user 侧手跑 `fetchTrendingSnapshot + writeSnapshot` 或开 cron。**W2 不做**，user 决策（W3 会单独提示）。
+- (b) **UI `<img onError>` 兜底** —— code task，surgical 小改。**W2 phase 2 唯一范围。**
+- (c) **stale-cover cron 异步重抓** —— bigger infra task。**defer**，phase 2 不做。等 (a) 种完 + (b) 兜住后，再看是否还需要 (c)。
+
+### Phase 2 spec：UI hardening for cover fallback
+
+**目标**：`components/trending/TrendingCard.tsx` 加 `onError` 占位 + `referrerPolicy="no-referrer"`，让卡片在 cover URL 失效时**不破样式**。
+
+#### Must-have
+
+1. **`<img onError>` 占位**：URL 加载失败 → 切到现有"无封面"占位（同样的文本 / 同样的容器尺寸 / 同样的 `aspect-[9/16]`）
+   - React state `imgFailed`，onError 设 true，渲染分支跟 `cover === ""` 同一占位
+   - **不要**preemptive HEAD 探测（浪费带宽 + 反 CDN ban）；只在浏览器实际渲染失败时切
+2. **`referrerPolicy="no-referrer"`**：诊断证明 Referer 不是根因，但**防御性加**（cheap belt-and-suspenders）—— 跨 TikTok / IG / 未来其它 CDN 都适用，零代价。
+3. **测试**：`tests/components/trending/TrendingCard.test.tsx`（先看 `components/` 下是否已有测试模板；若项目无 RTL 配置请在 ack 段告诉我，phase 2 spec 可改成纯 vitest unit + jsdom render，不强求 RTL）
+   - cover 空 → 显示"无封面"占位
+   - cover 非空 + img onError 触发 → 切到"无封面"占位（`fireEvent.error(img)`）
+   - `referrerPolicy="no-referrer"` 落 DOM 属性
+
+#### Nice-to-have（不强求）
+
+- 占位文案抽常量（`COVER_PLACEHOLDER_TEXT = "无封面"` 在文件顶层）
+- 占位视觉略升级（加 `lucide-react` 的 `ImageOff` icon），保持极简
+
+#### 不要做
+
+- **不**改 `lib/apify/normalize.ts`（诊断证明 normalize 没漏字段）
+- **不**改 `lib/trending/snapshot-store.ts`（重抓属 phase 3 范围）
+- **不**触 `app/api/trending/route.ts` 或 `app/trending/page.tsx`（cover 已透传，无逻辑修改）
+- **不**做 preemptive HEAD 探测
+- **不**改样式系统（保持现有 glass-card + tailwind 类）
+
+### 工作流
+
+1. **继续在 `feat/trending-cover-diagnose` 分支**（reuse，phase 1 已 merge 后继续 commit），或开新分支 `feat/trending-cover-ui-fallback` —— 你自选
+2. **commit 节奏**：建议 1-2 commit
+   - `feat(trending): cover fallback on img error + referrerPolicy=no-referrer`
+   - `test(trending): TrendingCard cover fallback cases`
+3. **三门验证**（push 前必跑齐）
+   - `npx tsc --noEmit` → clean
+   - `npx vitest run` → 现有 268 cases 不破 + 新增 TrendingCard.test.tsx case 通过
+   - `npx next build` → 23/23 不退化
+4. **push** + window-2.md 末尾追写 ack
+
+### W3 后续
+
+1. monitor `bc1pdrv1c` pattern 已覆盖，自动捕你的 push
+2. review 重点：onError 状态 reset 逻辑（cover URL 变化时 imgFailed 是否要重置）/ 占位视觉不破样式 / 测试覆盖 / referrerPolicy 落 DOM
+3. 通过 → merge + verdict + 给 user 关于 (a) Blob 种子的 runbook 提示
+4. 不通过 → window-2.md 写明确 changeset
+
+### 与 W1 流水线隔离
+
+- W1 当前 Task 12（capcut 实测），workspace 在 `worktree-capcut-link`
+- W2 phase 2 范围：`components/trending/TrendingCard.tsx` + `tests/components/trending/TrendingCard.test.tsx`
+- 零 overlap
+
+> **W2 phase 2 可以动手** —— 范围已锁死（UI only），spec 明确，前置无依赖。
+
