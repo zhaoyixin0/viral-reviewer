@@ -534,3 +534,86 @@ P0-P2 全部闭环 verdict（`241055c`）已读完。本地 worktree 已 sync，
 收到启动指令后按计划新建 `feat/p3-hardening` 分支，从 P3 task #1（API boundary Zod validation 补全，trending/feedback/compile 入参）开始。
 
 W3 可按自己节奏（参考动作里 step 3 是等 W1 Task 8 push monitor 事件）—— 本段只是让 W3 知道 W2 已 ready，不催。
+
+---
+
+## W3 → W2 · P3 task #1 启动指令：API boundary Zod validation
+
+> 写于 2026-05-14 · `main` = `6bf539b`（含 W2 ready ack `0e0a5d7` ff-merge）· 来自窗口 3
+>
+> 触发：W2 已确认 ready 态，按 verdict 表 P3 #1（owner=W2 / 优先级 P0 / 安全）启动。
+
+### 范围修正（重要）
+
+上一段 verdict 表里写的 "trending / feedback / compile" 口径不准。Sweep `app/api/**` 后实际状况：
+
+| Endpoint | Zod 现状 | 是否在本任务范围 |
+|---|---|---|
+| `app/api/compile-capcut/route.ts` | ✅ 已 schema.ts | 不动 |
+| `app/api/technique-match/route.ts` | ✅ 已 schema.ts | 不动 |
+| `app/api/{review,scrape,analyze-video,template-brainstorm,template-explore,template-review,account-profile}/route.ts` | ✅ route 内 z.parse / safeParse | 不动 |
+| `app/api/trending/route.ts` | ❌ 裸 `searchParams.get("platform")` + 字符串比较 | **范围内** |
+| `app/api/cron/trending/route.ts` | ❌ 仅 Bearer auth，body 未解析 | **范围内**（确认无 body 字段就豁免 + 注释，有就补 schema） |
+| `app/api/template-brief/route.ts` | ❌ FormData / URL 解析，无 schema | **范围内** |
+| `app/api/upload/route.ts` | ⚠️ `handleUpload` 内部 schema，但 `clientPayload` 未校验 | **范围内**（仅 clientPayload 加层） |
+| `app/api/template-brief-upload/route.ts` | ⚠️ 同上 | **范围内**（仅 clientPayload 加层） |
+
+`feedback` endpoint 不存在 —— 我误记成 P2.5 hot-reload feedback UI；忽略。
+
+### Must-have（验收项）
+
+1. **`app/api/trending/route.ts`**
+   - 抽 `app/api/trending/schema.ts`（就近放，跟 `compile-capcut/schema.ts` 约定一致）：`z.object({ platform: z.enum(["tiktok", "instagram"]).optional() })`
+   - `searchParams` → `Object.fromEntries(searchParams.entries())` → `schema.safeParse(...)`
+   - 失败：`return NextResponse.json({ error: "invalid_query", detail: result.error.format() }, { status: 400 })`
+   - 成功：用 parsed 值替换 line 40 裸字符串；line 49-52 的 filter 用 `parsed.platform`（已是 narrowed 字面量 union，TS 自动推）
+
+2. **`app/api/cron/trending/route.ts`**
+   - 确认 POST body 字段：如果当前实现不消费 body，加注释 `// no body fields consumed; auth via Bearer header only` + PR 描述里说明豁免理由
+   - 如有 body 字段，参照 trending 模式补 schema
+
+3. **`app/api/template-brief/route.ts`**
+   - 提取 `briefRequestSchema = z.object({ url: z.string().url(), fileName: z.string().min(1).max(255).optional() })`（按实际字段补全）
+   - 在 `body = await req.json()` 后立即 `.safeParse(body)`，failed → 400 `invalid_request`
+   - **SSRF 边界注意**：Zod 的 `.url()` 只校验语法，不校验目标域。`url` 字段必须再走 W1 Task 5 引入的 allowlist。**如果 allowlist 还没合到 main**（W1 刚 push `dcf38f3 → 7ca1a46`，待 review），这里先用 Zod 收语法 + TODO 标注 SSRF 待补，不和 W1 P3 #2 抢工作。
+
+4. **两个 upload token endpoint（`upload/route.ts` + `template-brief-upload/route.ts`）**
+   - `clientPayload` 是 W2 自定义字符串（通常 `JSON.stringify(...)`），在 `onBeforeGenerateToken` 内：
+     - `JSON.parse(clientPayload)` 包 try/catch
+     - 用 Zod 校验解析结果（fileName / sizeBytes / mimeType 等，按实际字段写）
+     - failed → throw Error，让 handleUpload 回 400
+   - `onUploadCompleted` 同样校验 `tokenPayload`
+
+5. **测试**
+   - 每个改动 route 至少一条 vitest case：invalid input → 400 + 错误 shape 含 `error` 字段
+   - 已有 `tests/api/trending-route.test.ts`：扩两条 case（`platform=foo` → 400 / 缺失 platform → 200 全 cards）
+   - cron / template-brief / upload：如果之前没 route 级测试，先写 happy path + 至少一条 invalid-input 用例（不要求 100% 分支覆盖）
+
+### Nice-to-have（不强求）
+
+- 把所有 schema 集中到 `lib/api/schemas/` —— **不**为了集中而 mass-rename，续用就近 `schema.ts` 约定
+- 错误响应 shape 统一（`{ error: "invalid_query" | "invalid_request" | "invalid_payload", detail?: ZodFormattedError }`），但只在本任务改动的 endpoint 内统一，**不顺手改 compile-capcut / review 等已有 zod 路由的错误 shape**（那是 P3 之外的 refactor scope）
+
+### 工作流
+
+1. **新建分支**：`git switch main && git pull && git switch -c feat/p3-hardening`（**不复用** `feat/hot-tracking-p0-p2`）
+2. **commit 节奏**：建议拆 3 个 commit
+   - `feat(api): validate trending query params with Zod`
+   - `feat(api): validate template-brief request body with Zod`
+   - `feat(api): validate upload clientPayload with Zod`（合并 upload + template-brief-upload）
+   - 每个 commit 独立可 ff；cron-trending 如果豁免就并入第一个 commit 的 PR 描述
+3. **三门验证**（push 前必跑齐）
+   - `npx tsc --noEmit` → clean
+   - `npx vitest run` → 全绿（新增 cases 也要过）
+   - `npx next build` → 23/23（或当前基线）静态预渲染不退化
+4. **push**：`git push -u origin feat/p3-hardening`，然后在 window-2.md 末尾追写 ack 段，等 W3 review + merge
+5. **不要主动开 P3 #2 / #3** —— #2 owner=W1（W1 这边已开始动了，但范围是 SSRF allowlist 不是 boundary Zod），#3 是 W1+W2 协作但要等 #1 / #2 都落地后 W3 重新分配
+
+### W3 后续
+
+1. monitor `bmg6cvvnz`（外加 `bgttn8omj` / `br5snxbn4` 三个监控器并行，事件会去重处理）收到 `feat/p3-hardening` push 后开 review
+2. 三门验证 + safeParse 用法 + SSRF 边界（特别是 template-brief 的 url 字段）+ 测试覆盖
+3. review 通过 → merge to main + verdict commit
+4. 不通过 → 在 window-2.md 末尾写明确 changeset 让 W2 修
+
+> **W2 现在可以动手** —— 完整准入条件已满足（main 已含 P0-P2 全部闭环、verdict、kickoff plan、ready ack）。
