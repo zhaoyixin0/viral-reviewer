@@ -2369,3 +2369,98 @@ W3 现状：W2 commit 5/6 merged，**等 W2 commit 6/6 + docs ack**。commit 6 (
 
 > **W2 commit 5/6 merged; continue with commit 6/6 (README + dns-rebinding-defense.md) when ready.**
 
+---
+
+## [W3 → W2] 2026-05-15 16:45 PDT · P3 #2 phase 3 综合 verdict — 6 commits 全 merged + scope-template §4 累积
+
+**Verdict**: ✅ commit `b90c7bd` (final docs) fast-merged to main as `7c81bcb`。**phase 3 commit chain 6/6 全部完成 + merged**。
+
+### 三门最终（W3 本地，main 含 W1 phase 2 + W2 phase 3 全部 6 commits）
+
+| 门 | 结果 |
+|---|---|
+| `npx tsc --noEmit` | **0 error** ✅ |
+| `npx vitest run` | **48 files / 450 tests**（402 base 含 W1 phase 2 + W2 phase 3 +48 new = 450） ✅ |
+| `npx next build` | 23 routes 稳定 ✅ |
+
+### Commit chain 总览（按 W3 verdict 9154701 commit 顺序落地）
+
+| # | SHA | 摘要 | 关键 verdict 落地 |
+|---|---|---|---|
+| 1 | `7dce400` | safeResolveIp + dns deny reasons + PoC | A2 (resolve4+6 并发) / F2 (拆 2 reason) / pre-commit method 2 PoC 实际跑通 |
+| 2 | `3cd7362` | checkAsync with resolved-IP private-IP check | E2 (A+AAAA 都过 isPrivateIpString) |
+| 3 | `2e17a8a` | fetchWithAllowlist undici dispatcher | **C1 ⭐** (undici Pool + servername SNI) + per-call Pool close 强制断言 |
+| 4 | `2e90bd0` | UrlAllowlistError extends resolvedIp + cause | F2 补充约束 (security event 附 IP / transient 附 cause) + 既有 caller 兼容 |
+| 5 | `210a6a1` | full DNS rebinding integration suite + vitest exclude | "zero connection attempt to rebound IP" security invariant 测试 |
+| 6 | `b90c7bd` | phase 3 README + dns-rebinding-defense.md | 1-page security doc + dev API surface + 6 decisions log |
+
+### W3 综合 review 总评
+
+**实施质量**: ⭐ **超 W1 phase 2** ——
+- 每 commit message 都引 W3 verdict SHA + 决策标签（A2/B3/C1/D3/E2/F2）做溯源
+- commit 3 (fetchWithAllowlist) 是 phase 3 核心，undici Pool + servername SNI + per-call close 实现完美——完全按 GitHub SSRF defense lib 主流方案
+- commit 5 的 **"zero connection attempt to rebound IP"** 安全 invariant 测试是 phase 3 防御目标的精确锁定
+- commit 6 docs 含 6-layer defense ordering + reason handling matrix + 限制清单 + runnable PoC ref
+
+**deviation 主动报告**: 无（W2 严格按 W3 verdict 落地，零偏离）
+
+**Pre-commit verify mandate 落地**:
+- ✅ 方案 2（dns2 + setServers）PoC 在 commit 1 message 末附运行结果（实际拦截 DNS rebinding）
+- ✅ 方案 3（vi.mock）在 commit 5 unit test 落地
+- ✅ Windows port 切换（5353→15353）+ rationale 文档化（务实合理）
+
+### scope-template.md §4 anti-pattern 累积（W3 follow-up 完成）
+
+phase 2.5 verdict §E mandate 累积 anti-pattern。本轮 W3 一次性更新 §4 加 **3 条新 anti-pattern**：
+
+| 新条 | 出处 | 防御机制 |
+|---|---|---|
+| Scope 列 route 模式但未复核 stream 实际行为 | P3 #3 phase 2 commit 3 W1 deviation | scope §2.1 加 "route mode" 必填栏 + `grep ReadableStream` 复核 |
+| DNS resolve 用 `dns.lookup` 受 OS hosts 干扰 → 不可重复 | P3 #2 phase 3 commit 1 | SSRF lib 必用 `dns.promises.resolve4` + `resolve6` |
+| Fetch with IP literal 不传 SNI → cert fail + virtual host 错路由 | P3 #2 phase 3 commit 3 | `fetchWithAllowlist` undici Pool with `connect.servername` |
+| Lib 不显式 close 资源 → 长期泄漏 | P3 #2 phase 3 commit 3 (W3 verdict 强制断言) | `try { } finally { resource.close() }` + 测试显式断言 |
+
+scope-template.md §4 已从 4 条 → **8 条**。下一个 hardening scope draft 起 W1/W2 必须 cross-check 全部 8 条。
+
+### 累积 P3 + Task 14 状态（phase 3 全部完成后）
+
+| 项 | 状态 |
+|---|---|
+| P3 #1 rate-limit phase 1+2 | ✅ merged |
+| P3 #2 url-allowlist phase 1 / 2 / 2.5 + nit cleanup | ✅ merged |
+| Task 14 A+B | ✅ merged `6c2627b` |
+| P3 #3 rate-limit phase 2（route wiring） | ✅ merged `810c588` |
+| **P3 #2 url-allowlist phase 3（DNS rebinding lib）** | ✅ **merged `7c81bcb`** |
+| P3 #2 phase 3.5（caller async-ify wiring） | 待 W1 接手（scope draft 必走 `scope-template.md` 8 条 anti-pattern cross-check） |
+| Task 14.1 E2E hands-on | 待用户启动 |
+
+### 下一步建议
+
+W1 当前 idle（P3 #3 phase 2 完成后等用户启 E2E 或起 phase 3.5 scope）。W2 phase 3 lib 全 merged → **W1 现在可以起 P3 #2 phase 3.5 scope draft**（async-ify `prepareAssets` / `extractFramesAndAudio` / `analyzeAccountTopVideo` 用 `checkAsync` + `fetchWithAllowlist`）。
+
+**phase 3.5 scope draft 写作要求**（W3 转交 W1）：
+- 必须用 `scope-template.md` §2 全部必填栏
+- §2.1 改动清单加 **"route mode (stream/non-stream)" 必填栏**（新 anti-pattern §4 #5 防御）
+- §2.2 表格列每个 caller 的 "URL 来源 / host pattern / 用 sync check 或 checkAsync" 决策
+- §2.6 风险面必须 cross-check §4 全部 8 条 anti-pattern
+- §2.7 pre-commit verify：phase 3.5 实施前**本机跑** `lib/url-allowlist/__demo__/dns-rebinding-poc.ts` 确认 phase 3 lib 仍可用（防 main 漂移破 PoC）
+
+### 不阻塞建议（不在 phase 3 scope，留 phase 4+）
+
+1. **Node CI matrix (18/20/22)**: phase 3.5 W1 wire 时再加
+2. **DNS cache shared singleton**: phase 3.5 caller-side 按 QPS 决策
+3. **observability metrics**（rebinding alert count / resolve latency）: phase 4
+4. **hex-encoded IPv4-mapped IPv6** (`::ffff:7f00:1`): phase 3 nit cleanup 已暴露但未做，phase 4 或独立 PR
+
+### W2 任务收口
+
+W2 phase 3 commit chain 6/6 完成。可选下一任务：
+- **(a) idle** 等下个 W3 派单（短期可能 idle —— W1 接 phase 3.5）
+- **(b) 起草 phase 4+ 候选**：scope-template §4 #8 (`UrlAllowlistError` cause/resolvedIp log 监控接入 / observability) 的 lib-level scope draft
+
+### 信箱
+
+W3 现状：phase 3 全部 merged + scope-template §4 累积更新，**等用户启 Task 14.1 E2E** 或 **W1 起 phase 3.5 scope draft**。
+
+> **W2 phase 3 全部 6/6 commits merged; W2 cleared from phase 3 task chain. Next: W1 owns phase 3.5 scope draft (when ready); W2 idle until next assignment.**
+
