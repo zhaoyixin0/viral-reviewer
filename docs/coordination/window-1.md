@@ -45,3 +45,67 @@ commit message 里你已经标注「Not verified in browser (no headless env)」
 3. 开 Task 4「后端多视频接收 + 并行 Gemini 分析」（按 plan 的 backend 接收侧改动）
 
 Task 4-14 串行，按既定 per-task 闭环。
+
+---
+
+# Task 4 已 merge ✅ — Task 5 放行
+
+> 写于 2026-05-15 · `main` = `8c00597` · 来自窗口 3 协调者
+
+## merge 内容
+
+`worktree-capcut-link` tip `14f78de` 已合入 main（merge commit `8c00597`）。本次合入：
+
+- `14f78de` — feat(technique-match) Task 4：N-video parallel analysis + per-video partial stream
+
+三项验证全绿：
+- `npx tsc --noEmit` → EXIT 0
+- `npx vitest run` → 175/175
+- `npm run build` → 编译成功（technique-match / analyze 路由静态预渲染保留）
+
+## review 笔记（亮点）
+
+**Task 3 follow-up 完整落实，没拖到 Task 13** —— useAnalyzeStream + AnalyzeResponseShape 一起 arrayify 落地，Task 13 留给纯 N-card 渲染。这是上次 review 期望的边界，干得漂亮。
+
+其他实现亮点：
+
+- **schema preprocess 双向归一**：`videoUrl` 旧字段保留，`videoUrls` 新数组双向补全，旧客户端零迁移 ship 即生效；C1 兼容层注释 + JSDoc 清晰。
+- **per-promise catch 内嵌 `.then(onFulfilled, onRejected)`**：`Promise.all` 永不 reject，per-video 失败发 `analyze_error` stage，分析成功立即发 `partial`。`AnalyzeOutcome` 联合类型 + `flatMap` 提取 successful 用得很 idiomatic。
+- **failedVideoIndexes 索引语义清晰**：按上传全集 0-based，I6 契约严格遵守；`userPotentials` 同样按 superset index 留 null 占位 —— Task 13 渲染时遍历更简单。
+- **`maxPollAttempts` 默认 60 keeps legacy / 多视频路由 24**：default 参数保留旧 caller 行为，test-safe；卡死视频 120s 内 fail 而不是 300s 拖整批。
+- **`potentialsToDesiredTags` 新增不动单 potential 签名**：兼容 existing tests，N 视频 Set-union 去重逻辑 4 行干净。
+- **modeOf 用 Map 保插入顺序**：`bestCount = -1` 初始保证首元素即使全 1 票也能正确返回（JS Map iteration order is insertion order，行为确定）。
+- **useAnalyzeStream race 处理**：第一个 partial 到达时按 totalMaterials 预填 null，后续 spread 写入 —— 多个 partial 同 React batch 也安全。
+- **ResultsArea 砍掉 `!` non-null assertion**：改用 type-predicate `find` + conditional render `{primaryPotential && <UserDiagnosis />}`，type-safe，CapCutExport 同步加 guard。
+- **finally 块 `rm workDir recursive force`**：N 视频 input-{i}.mp4 都在 workDir 下，cleanup 一次到底。
+
+## 一个 follow-up（不阻塞 merge，潜在 hardening）
+
+`POST` 的 `videoUrls: z.array(z.string().url())` —— `z.string().url()` 接受任何合法 URL 协议（含 `http://localhost:XXXX/...`、`file://`、`gopher://`），server 端 `fetch(url)` 是 SSRF 攻击面。**这不是 Task 4 引入的**，Task 3 之前已存在，Task 4 只是 N 倍化了攻击面。
+
+记一个 follow-up：
+
+- 校验侧加 scheme allowlist：`videoUrl.startsWith("https://")` 或 `new URL(url).protocol === "https:"`
+- 限定 host 为已知 blob storage / CDN domain（如果你的 `/api/upload` 始终生成同 origin blob URL）
+
+不阻塞 Task 5/Task 4 闭环，但**进入 P3 review 前必须收口**（plan 的 P3 hardening pass 自然消化点）。
+
+## 浏览器烟测试
+
+commit message 标注「Not verified in browser (no headless env)」。窗口 3 也无 headless 浏览器。用户那边方便时跑一下 plan 探测点：
+
+- N=6 Gemini 并行是否 429
+- 总耗时 < 300s
+- Gemini upload-side / generate-side 延迟分别观察
+- 一个素材失败时前端 partials 渲染（null 占位） + analyze_error stage 消息显示
+- 全失败时显示 "全部素材分析失败" error event
+
+## 下一步：Task 5 放行
+
+按 per-task 工作流：
+
+1. `git pull origin main --no-rebase` 同步到 main 最新（`8c00597`）
+2. 读本文件确认 SHA 是新的 + 消化上面的 follow-up（SSRF hardening 留 P3）
+3. 开 Task 5「N potential 编排进 matchTechniques 输入」
+
+Task 5-14 串行，按既定 per-task 闭环。
