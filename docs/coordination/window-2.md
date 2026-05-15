@@ -1108,3 +1108,65 @@ Apify scraper raw item
 4. 不通过 → window-2.md 写明确 changeset 让你修
 
 > **W2 现在可以动手** —— 诊断阶段无前置依赖，main 已含 P0-P2 + P3 #1/#3 phase 1 + Tasks 7-11 全套。
+
+---
+
+## W2 → W3 · phase 1 ack（trending 封面诊断）
+
+> 写于 2026-05-15 · 分支 `feat/trending-cover-diagnose` · base = `df7ed5d`
+>
+> 2 commits：
+> - `75e6c4b chore(scripts): add diagnose-trending-covers.ts ...`
+> - `6432a70 docs(diagnose): trending cover availability report 2026-05-15`
+
+### 三门验证
+
+| 门 | 结果 |
+|---|---|
+| `npx tsc --noEmit` | EXIT 0 |
+| `npx vitest run` | 268 / 268 cases, 32 files (与 main baseline 一致) |
+| `npx next build` | 23 / 23 routes 全过,无新增/退化 |
+
+### 关键诊断信号（详见 `docs/diagnose-trending-covers-2026-05-15.md`）
+
+1. **prod Blob 中 0 条 `trending/*` snapshot** —— `BLOB_READ_WRITE_TOKEN` 已配置但 `list({prefix:"trending/"})` 返回 `count=0`。即 `/trending` 端点目前必然返回 `{cards:[], trendingHashtags:[]}`，**整个看板空**，不只是封面缺失。
+2. **本地 fallback dump (`data/scraped/enriched-2026-04-29.json`, 17 天前) 里 cover 字段 100% 都有值**（TT 180/180、IG 119/119,空率 0.0%），但 **HEAD + GET、带/不带 Referer 共 150 个请求 → 全部 403/404**。这是典型的 **CDN signed URL 过期**（`_nc_ohc` / `oe` 等 token 的 TTL 已到）。
+3. normalize fallback chain 没有漏字段信号（空率 = 0）；防盗链假说被排除（带 Referer 没救活）；反 HEAD 假说被排除（GET 也 403）。
+
+### Phase 2 推荐顺序（写在报告 §6 + 结论 TL;DR，供 W3 决策）
+
+a. **上游**：先让 Blob 攒到当周新 snapshot —— 触发一次 `fetchTrendingSnapshot + writeSnapshot`（手动/cron 种子），让 `/trending` 有数据可投影；
+b. **UI 兜底**：`TrendingCard.tsx` `<img>` 加 `onError` 占位，统一现有「无封面」样式，做到「无论上游何时坏 UI 都不破样式」；
+c. **可选**：snapshot-store 加 stale-cover 异步重抓（cron 触发对老 snapshot 死 URL 重 normalize）。
+
+### Spec 偏离说明
+
+| # | 偏离点 | 实际做法 | 原因 |
+|---|---|---|---|
+| 1 | spec：「读 snapshot 用 `lib/trending/snapshot-store.readLatestTwoSnapshots()` 或直接读 `data/trending-snapshots/`」 | 脚本绕开 `snapshot-store.ts`（带 `import "server-only"`,在 `tsx` 直跑会抛），改为直接 `@vercel/blob.list({prefix:"trending/"})` + `fetch(blob.url)` | server-only 模块在 tsx 默认 export resolution 抛 throw,绕开更干净;同时 spec 提到的 `data/trending-snapshots/` 目录在仓库里**不存在**,fallback 改读已存在的 `data/scraped/enriched-*.json` |
+| 2 | spec：「HEAD 50 个 cover 两轮（无 Referer + 带 Referer）」 | 实际跑了 **3 轮**：HEAD 无 Referer / HEAD 带 Referer / **GET 带 Referer (Range 0-1023)** | 排除「CDN 反 HEAD 协议但 GET 正常」的假阴性。结果证明加这一轮是值得的 —— GET 也 403 锁定了「鉴权过期」而非「反 HEAD」根因 |
+| 3 | spec：「dump 5 个缺 cover raw item，否则跑 `--with-raw`」 | 缺 cover 数 = 0，没 dump；`--with-raw` 默认关，报告里给了 opt-in 命令 | 0 空率，dump 没有意义；同时 Apify quota 不必要消耗（用户 token 已在 memory 里标 rotate-pending） |
+| 4 | spec：「按平台分桶」 | 报告按 **平台 × 方法 × Referer** 6 组分桶 | 三轮叠加后必须三维细分,二维不够 |
+| 5 | spec：「concurrency=5，串行 or pool」 | pool（promise 池实现）,并发 5 | spec 也给了 pool 选项,直接采用 |
+
+### 未触代码
+
+- `lib/apify/normalize.ts` —— 未改
+- `lib/trending/snapshot-store.ts` —— 未改
+- `components/trending/TrendingCard.tsx` —— 未改
+- 任何 `app/`、`tests/` —— 未改
+
+`test-results/` 是 Playwright 跑 P2 时遗留的本地 artifact, untracked, 不在 commit 里。
+
+### W3 review 重点（spec 列出的项,自检结论）
+
+- **采样可信度**：concurrency=5 限速; 真实 Chrome UA; 三轮（HEAD/HEAD+Ref/GET+Ref); 平台间均匀采样 25 TT + 25 IG = 50 个 URL; 共 150 请求 ✓
+- **根因排序有理有据**：每条 cause 都给 score + 触发条件,不是穷举「啥都可能」; 排在前面的 2 条都有 0.9+ score 且实测数据支撑 ✓
+- **报告质量**：TL;DR 段直接讲结论;§5 启发式打分; §6 phase 2 推荐顺序;附录列采样参数 ✓
+
+### W2 当前动作
+
+- 已 push `feat/trending-cover-diagnose`（待 push 后此段才能算闭环;push 紧跟此 commit 之后）
+- 等 W3 review verdict
+- **不主动开 phase 2**
+
