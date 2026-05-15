@@ -16,8 +16,8 @@ type StreamEvent =
   | { type: "error"; message: string };
 
 export type SubmitArgs = {
-  videoUrl: string;
-  videoFileName: string;
+  videoUrls: string[];
+  videoFileNames: string[];
   topic: string;
   intent: string;
 };
@@ -28,8 +28,8 @@ export type AnalyzeStreamState = {
   stages: StageEvent[];
   partial: { userVideoId: string; userPotential: MaterialPotential } | null;
   full: AnalyzeResponseShape | null;
-  videoUrl: string | null;
-  videoFileName: string | null;
+  videoUrls: string[] | null;
+  videoFileNames: string[] | null;
   submit: (args: SubmitArgs) => Promise<void>;
 };
 
@@ -38,6 +38,10 @@ export type AnalyzeStreamState = {
  *   - stages：每个 progress event
  *   - partial：Gemini 完成后的 fast-lane payload
  *   - full：Opus 完成后的最终结果
+ *
+ * Task 3：输入侧数组化（videoUrls / videoFileNames）。`partial` 与
+ * `AnalyzeResponseShape` 仍是单数形态，等 Task 4 与后端发射侧同步落地
+ * （见 plan 窗口3 review C2）。
  */
 export function useAnalyzeStream(): AnalyzeStreamState {
   const [loading, setLoading] = useState(false);
@@ -47,8 +51,8 @@ export function useAnalyzeStream(): AnalyzeStreamState {
     { userVideoId: string; userPotential: MaterialPotential } | null
   >(null);
   const [full, setFull] = useState<AnalyzeResponseShape | null>(null);
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
-  const [videoFileName, setVideoFileName] = useState<string | null>(null);
+  const [videoUrls, setVideoUrls] = useState<string[] | null>(null);
+  const [videoFileNames, setVideoFileNames] = useState<string[] | null>(null);
 
   const submit = async (args: SubmitArgs) => {
     setLoading(true);
@@ -56,8 +60,8 @@ export function useAnalyzeStream(): AnalyzeStreamState {
     setStages([]);
     setPartial(null);
     setFull(null);
-    setVideoUrl(args.videoUrl);
-    setVideoFileName(args.videoFileName);
+    setVideoUrls(args.videoUrls);
+    setVideoFileNames(args.videoFileNames);
 
     try {
       const res = await fetch("/api/technique-match", {
@@ -122,8 +126,8 @@ export function useAnalyzeStream(): AnalyzeStreamState {
     stages,
     partial,
     full,
-    videoUrl,
-    videoFileName,
+    videoUrls,
+    videoFileNames,
     submit,
   };
 }
