@@ -4,6 +4,18 @@
 > 2026-05-14 经窗口 3 review（C1/C2/I6 契约级修正 + I1-I5 已吸收，见下方各 task 标注）。
 > 串行 per-task 工作流，每个 task 完成 → push → 等 merge → `git pull origin main --no-rebase` → `/compact` → 下一个 task。
 
+## 执行进度（换机器 / compact 后读这里恢复）
+
+最后更新：**2026-05-14 收工**
+
+- **Task 1 — 契约冻结 + 共享类型/schema** — ✅ 已完成并 merge（`b6c5e5b`，main 已到 `6c34173`）
+- **Task 2 — CapCut 转场结构逆向探测 (PROBE)** — 🔧 **进行中，未 merge**
+  - 已完成：核心结构全部逆向 —— `scripts/probe-capcut-transitions.ts`（探测脚本）+ `docs/CAPCUT-TRANSITION-STRUCTURE.md`（结论文档：transition 字段结构、挂载方式、`is_overlap` 时间轴语义、filter/effect 附录）。
+  - **唯一卡点**：只实测到 2 种转场 effect_id（Slick Twist / Filmstrip x2），缺「叠化 / cross dissolve」—— 它是 Task 6 降级策略的落点，必须补。
+  - **恢复方式（换机器）**：见 `docs/CAPCUT-TRANSITION-STRUCTURE.md` 附录 B。需在 Windows CapCut 8.5.0 建/打开带「叠化」转场的项目，跑 `npx tsx scripts/probe-capcut-transitions.ts <项目目录>` 补 effect_id → 文档去掉 WIP 标注 → Task 2 完成 → 走 per-task 工作流（push / 等 merge）。
+  - ⚠️ 当前 worktree 已 push 的 Task 2 commit 是 **WIP，请窗口 3 勿 merge**，等补完叠化转场的完成态 commit。
+- **Task 3-14** — ⏳ 待办（严格串行，Task 2 完成后继续）。
+
 ## Context
 
 当前 `technique-match` 流程只允许用户上传 **1 个**视频：Gemini 分析素材潜力 → Opus 对照爆款出剪辑清单 → 编译成 CapCut 草稿 zip。所有 CapCut segment 都引用同一个 `videoMaterial`，`transitions` 始终为空。
