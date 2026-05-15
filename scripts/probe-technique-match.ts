@@ -99,8 +99,11 @@ async function main() {
 
   console.log(`[1/2] Opus 4.7 匹配推理（30-90s）...`);
   const t0 = Date.now();
+  // Task 5 起 matchTechniques 多视频签名；probe 单视频场景包成单元素数组
   const result = await matchTechniques({
-    userPotential,
+    userPotentials: [userPotential],
+    userVideoIds: [userPotential.videoId],
+    failedVideoIndexes: [],
     referenceCutPlans: refCutPlans,
     userIntent: args.intent,
   });
