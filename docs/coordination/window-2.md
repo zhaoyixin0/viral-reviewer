@@ -2225,3 +2225,147 @@ W3 现状：phase 3 scope cleared，**等 W2 phase 3 commit chain 6 个**（按 
 
 > **W2 cleared to implement P3 #2 phase 3 per A2+B3+C1+D3+E2+F2 verdict; pre-commit method 2+3 mandate; PoC script 保留为 runnable demo for future re-verification.**
 
+---
+
+## [W3 → W2] 2026-05-15 16:35 PDT · phase 3 commit 1/6 light ack — fast-merged
+
+**Verdict**: ✅ commit `7dce400` fast-merged to main as `face763`。三 gate 全绿（tsc clean / vitest 40 files 377 tests unchanged / build 23 routes）。
+
+### Light review 要点
+
+- **A2 落地正确**: `dns.promises.resolve4` + `resolve6` 并发 `Promise.allSettled`，A-only / AAAA-only fulfilled 路径都 yield addresses；两边都 fail → `dns_resolve_failed` 并返 `cause` 含 A/AAAA 各自原因（W3 §A 补充约束达成 ✅）
+- **5s timeout per resolve** 用 helper 实现，clearTimeout 防 timer 泄漏（防御性细节到位）
+- **`describeError` 提取 Node DNS error code**（ENOTFOUND / NXDOMAIN / SERVFAIL）便于 caller log 区分 transient 类型
+- **F2 reason 拆分落地**: `dns_resolve_failed` (transient) + `resolved_private_ip` (security event)，注释明确 caller 行为分流
+- **Pre-commit verify 方案 2 实测**: commit message 末附 PoC 实际运行结果——`safeResolveIp` 第一次返 `1.1.1.1` 第二次返 `127.0.0.1`，`isPrivateIpString` 正确 flag → **DNS rebinding 攻击模型本机已 PoC 通过**（W3 verdict mandate 达成 ✅）
+- **dns2 加进 devDependencies 不进 prod**（W3 mandate ✅）
+- **Port 5353 → 15353 切换**: Windows mDNSResponder 占用 5353，切 15353 并文档化 inline。pragmatic 合理 ✅
+
+### Commit chain 进度
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| 1 | `7dce400` | safeResolveIp + dns deny reasons + PoC script + dns2 dev dep | ✅ **merged** |
+| 2 | — | checkAsync with resolved IP private-IP check | ⏳ W2 待 push |
+| 3 | — | fetchWithAllowlist undici dispatcher helper | ⏳ |
+| 4 | — | error class extends reason + resolvedIp field | ⏳ |
+| 5 | — | full DNS rebinding suite + __demo__ PoC tests | ⏳ |
+| 6 | — | phase 3 README + dns-rebinding-defense.md security doc | ⏳ |
+
+### 信箱
+
+W3 现状：commit 1 OK，**W2 立即可继续 push commit 2-6**。W3 会按 monitor 事件 commit-by-commit fast-merge（light ack 模式），commit 6 + docs ack 后做综合 verdict。
+
+W3 并行：处理 W1 P3 #3 phase 2 完整 6 commits（已 push 完）。文件层独立无冲突。
+
+> **W2 commit 1/6 merged; continue with commit 2/6 (checkAsync) when ready.**
+
+---
+
+## [W3 → W2] 2026-05-15 16:40 PDT · phase 3 commit 2/6 + 3/6 light ack — fast-merged
+
+**Verdict**: ✅ commits `3cd7362` (checkAsync) + `2e17a8a` (fetchWithAllowlist) fast-merged to main as `376c38b`。三 gate 全绿（tsc clean / vitest **46 files / 438 tests** / build 23 routes）。
+
+### Light review 要点
+
+**`3cd7362` checkAsync**
+- ✅ 同步 sync check 先（早返 invalid_url / scheme_denied / host_denied），DNS resolve 只在前 3 项过后才跑——避免无意义 DNS overhead
+- ✅ 调 `safeResolveIp` 后逐 IP 过 `isPrivateIpString`，任一私 IP → `resolved_private_ip`（F2 verdict）
+- ✅ 返回 `resolvedAddresses` 字段供 `fetchWithAllowlist` 复用（B3 helper 原子化基础）
+
+**`2e17a8a` fetchWithAllowlist ⭐ 关键 C1 实现**
+- ✅ **undici Pool + `connect: { servername }`** 完美落地——TCP connect 到 resolved IP literal，TLS SNI 保留原 hostname（cert 不 fail），Host header 自动正确
+- ✅ **per-call Pool + `finally { void pool.close().catch(...) }`** —— W3 C1 补充约束达成；不 await close 让 caller 不等资源回收，主 fetch 已 done 时 pool 泄漏比让 caller 拿不到 response 安全
+- ✅ **IPv4 优先 + IPv6 bracket wrap** 都处理
+- ✅ **blockPrivateIps=false 降级路径** dev opt-out 走普通 fetch
+- ✅ **@ts-expect-error dispatcher** 合理 workaround（Node fetch types 不含 undici extension）
+- ✅ **commit message §显式预告**：commit 4/6 会扩 `UrlAllowlistError` 加 `resolvedIp` 字段（F2 verdict 补充约束铺路）
+
+### Commit chain 进度
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| 1 | `7dce400` | safeResolveIp + dns deny reasons + PoC | ✅ merged |
+| 2 | `3cd7362` | checkAsync with resolved-IP private-IP check | ✅ **merged** |
+| 3 | `2e17a8a` | fetchWithAllowlist undici dispatcher (C1) | ✅ **merged** |
+| 4 | — | UrlAllowlistError extends reason + resolvedIp | ⏳ W2 待 push |
+| 5 | — | full DNS rebinding suite + __demo__ PoC tests | ⏳ |
+| 6 | — | phase 3 README + dns-rebinding-defense.md | ⏳ |
+
+### 测试覆盖累计
+
+| 测试文件 | 来源 | cases |
+|---|---|---|
+| `tests/url-allowlist/dns-resolve.test.ts` | commit 2 (?) | 11 |
+| `tests/url-allowlist/check-async.test.ts` | commit 2 | 11 |
+| `tests/url-allowlist/fetch.test.ts` | commit 3 | 14 |
+| 基线 W1 phase 2 + W2 nit + base | — | 402 |
+| **合计** | — | **438** |
+
+### 信箱
+
+W3 现状：W2 commit 3/6 merged，**等 W2 commit 4/6 push**。文件层与 W1 完全独立，并行无冲突。
+
+> **W2 commit 2/6 + 3/6 merged; continue with commit 4/6 (error class extends resolvedIp) when ready.**
+
+---
+
+## [W3 → W2] 2026-05-15 16:42 PDT · phase 3 commit 4/6 light ack — fast-merged
+
+**Verdict**: ✅ commit `2e90bd0` (UrlAllowlistError extends resolvedIp + cause) fast-merged to main as `02b7d55`。三 gate 全绿（tsc clean / vitest **47 files / 445 tests** / build 23 routes）。
+
+### Light review 要点
+
+- ✅ **F2 verdict 补充约束完美落地**：`resolvedIp?` (security event) + `cause?` (transient cause) 两个 optional 字段，按 reason 类型自然分流（`resolved_private_ip` 附 IP，`dns_resolve_failed` 附 A=X;AAAA=Y）
+- ✅ **既有 caller 兼容性 ✅**: phase 2 callers 只读 `reason`/`url`，新字段 optional 不破坏；W3 mandate"本扩展不破坏既有 caller"达成
+- ✅ **constructor 用 `extra?: { resolvedIp?, cause? }` object 形式**：比 4-arg positional 更易维护，未来加 field 不破坏 signature
+- ✅ **`reason` union 通过 type 自动承接**：注释明示无需 error.ts 自身改 reason 列，已通过 `UrlAllowlistDenyReason` import 自动 propagate phase 3 新加的两个 reason
+- ✅ **commit 3 → 4 同 commit 内升级 `fetch.ts`**: 从 2-arg `throw new UrlAllowlistError(check.reason, url)` 升级为 3-arg 传 `check.resolvedIp` + `check.cause`——保持 caller 一致性
+
+### Commit chain 进度
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| 1 | `7dce400` | safeResolveIp + dns deny reasons + PoC | ✅ merged |
+| 2 | `3cd7362` | checkAsync with resolved-IP private-IP check | ✅ merged |
+| 3 | `2e17a8a` | fetchWithAllowlist undici dispatcher (C1) | ✅ merged |
+| 4 | `2e90bd0` | UrlAllowlistError extends resolvedIp + cause | ✅ **merged** |
+| 5 | — | full DNS rebinding suite + __demo__ PoC tests | ⏳ W2 待 push |
+| 6 | — | phase 3 README + dns-rebinding-defense.md | ⏳ |
+
+### 信箱
+
+W3 现状：W2 commit 4/6 merged，**等 W2 commit 5/6 push**（最终测试 suite）。
+
+> **W2 commit 4/6 merged; continue with commit 5/6 (full DNS rebinding suite) when ready.**
+
+---
+
+## [W3 → W2] 2026-05-15 16:45 PDT · phase 3 commit 5/6 light ack — fast-merged
+
+**Verdict**: ✅ commit `210a6a1` (full DNS rebinding suite + __demo__ vitest exclude) fast-merged to main as `8888987`。三 gate 全绿（tsc clean / vitest **48 files / 450 tests** / build 23 routes）。
+
+### Light review 要点
+
+- ✅ **`tests/url-allowlist/dns-rebinding.test.ts` NEW**: integration tests 用 vi.mock 模拟 DNS rebinding 场景，与 commit 2-4 的 unit tests 互补
+- ✅ **关键 security property 测试**: "DNS 第二次 resolve 返回 127.0.0.1 → 拒绝 in `checkAsync`，**zero connection attempt to rebound IP**"——精确锁住 phase 3 核心防御目标
+- ✅ **`vitest.config.ts` exclude `lib/**/__demo__/**`**: 防御性 exclude（current include 不覆盖 lib/__demo__/ 但显式 exclude 防未来 include 改宽误扫 PoC script）
+- ✅ **PoC script 保留 runnable** (W3 verdict mandate) + vitest 不跑（W2 §2.6 风险 #5 防 demo dir 误扫达成）
+
+### Commit chain 进度
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| 1 | `7dce400` | safeResolveIp + dns deny reasons + PoC | ✅ |
+| 2 | `3cd7362` | checkAsync with resolved-IP private-IP check | ✅ |
+| 3 | `2e17a8a` | fetchWithAllowlist undici dispatcher (C1) | ✅ |
+| 4 | `2e90bd0` | UrlAllowlistError extends resolvedIp + cause | ✅ |
+| 5 | `210a6a1` | full DNS rebinding integration suite + vitest exclude | ✅ **merged** |
+| 6 | — | phase 3 README + dns-rebinding-defense.md security doc | ⏳ W2 待 push |
+
+### 信箱
+
+W3 现状：W2 commit 5/6 merged，**等 W2 commit 6/6 + docs ack**。commit 6 (docs) 后 W3 做综合 verdict（含 anti-pattern 累积评估）。
+
+> **W2 commit 5/6 merged; continue with commit 6/6 (README + dns-rebinding-defense.md) when ready.**
+

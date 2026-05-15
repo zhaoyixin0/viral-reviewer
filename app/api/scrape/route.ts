@@ -4,6 +4,12 @@ import {
   scrapeInstagramByHashtag,
   scrapeTikTokByHashtag,
 } from "@/lib/apify/scrapers";
+import {
+  createRateLimiter,
+  withRateLimit,
+  clientIp,
+  WRITE_HEAVY,
+} from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -26,7 +32,14 @@ const RequestSchema = z.object({
   limit: z.number().int().min(1).max(30).optional().default(10),
 });
 
-export async function POST(req: NextRequest) {
+// P3 #3 phase 2: WRITE_HEAVY (5/10m fixed) —— Apify scrape 计费 API，
+// 严控频次防止刷库。
+const RATE_LIMITER = createRateLimiter({
+  identifier: "scrape",
+  ...WRITE_HEAVY,
+});
+
+async function impl(req: NextRequest) {
   if (!process.env.APIFY_TOKEN) {
     return NextResponse.json(
       { error: "apify_token_missing" },
@@ -83,3 +96,5 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json(out);
 }
+
+export const POST = withRateLimit(RATE_LIMITER, clientIp, impl);

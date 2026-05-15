@@ -1,9 +1,22 @@
 import { NextResponse } from "next/server";
 import { readLatestTwoSnapshots } from "@/lib/trending/snapshot-store";
 import { computeVelocity, computeHashtagVelocity } from "@/lib/trending/velocity";
+import {
+  createRateLimiter,
+  withRateLimit,
+  clientIp,
+  STRICT_PER_IP,
+} from "@/lib/rate-limit";
 import { TrendingQuerySchema } from "./schema";
 
 export const runtime = "nodejs";
+
+// P3 #3 phase 2: STRICT_PER_IP (10/1m sliding) —— 公网匿名 GET 看板,
+// ISR 1h revalidate 已兜底，rate-limit 防异常突发 (爬虫 / bot 探测)。
+const RATE_LIMITER = createRateLimiter({
+  identifier: "trending-get",
+  ...STRICT_PER_IP,
+});
 
 /** 卡片精简投影 —— 只含看板渲染需要的字段,不返回完整富化快照(spec 4.2 M1)。 */
 export type TrendingCard = {
@@ -36,7 +49,7 @@ export type TrendingHashtagCard = {
   };
 };
 
-export async function GET(request: Request) {
+async function impl(request: Request) {
   const { searchParams } = new URL(request.url);
   const parsed = TrendingQuerySchema.safeParse(
     Object.fromEntries(searchParams.entries()),
@@ -85,3 +98,5 @@ export async function GET(request: Request) {
 
   return NextResponse.json({ week: current.week, cards, trendingHashtags });
 }
+
+export const GET = withRateLimit(RATE_LIMITER, clientIp, impl);

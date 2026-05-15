@@ -21,6 +21,7 @@ vi.mock("@/lib/technique-matching/match-engine", () => ({
 
 import { POST } from "@/app/api/technique-match/route";
 import { NextRequest } from "next/server";
+import { _resetBackendForTests } from "@/lib/rate-limit/backend";
 
 const originalEnv = { ...process.env };
 
@@ -29,6 +30,10 @@ beforeEach(() => {
   // gate 早于 stream 启动，实际不会调任何外部 API）
   process.env.GOOGLE_API_KEY = "test-google-key";
   process.env.ANTHROPIC_API_KEY = "test-anthropic-key";
+  // P3 #3 phase 2: rate-limit 在 stream 启动前 check（早于 SSRF batch check）。
+  // memory backend 跨 test case 累积同一 "anon" IP 桶 → 第 4 case 起 429。
+  // 每 case reset 让 SSRF / happy path 期望不漂移。
+  _resetBackendForTests();
 });
 
 afterEach(() => {
@@ -114,8 +119,13 @@ describe("POST /api/technique-match · P3 #2 phase 2 SSRF allowlist gate", () =>
       const body = await res.json();
       expect(body.error).toBe("url_denied");
       // 只 warn 一次（第一个 deny 就 return）
-      expect(warnSpy.mock.calls.length).toBe(1);
-      expect(String(warnSpy.mock.calls[0][0])).toContain("evil-1.com");
+      // P3 #3 phase 2: rate-limit memory backend warn-once 也命中 spy，
+      // 这里只统计 url-allowlist 的 warn 行
+      const urlAllowlistWarns = warnSpy.mock.calls.filter((c) =>
+        String(c[0]).includes("[url-allowlist]"),
+      );
+      expect(urlAllowlistWarns.length).toBe(1);
+      expect(String(urlAllowlistWarns[0][0])).toContain("evil-1.com");
     } finally {
       warnSpy.mockRestore();
     }

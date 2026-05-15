@@ -1,6 +1,6 @@
-# `lib/rate-limit/` — phase 2 wiring guide
+# `lib/rate-limit/` — primitive lib + route wiring (phase 2 complete)
 
-Phase 1 (W2) 落了 lib 层 primitive,本目录**零 route 引用**。Phase 2 (W1, P3 #2 SSRF 落地后) 在路由层 wire。
+Phase 1 (W2) 落了 lib 层 primitive；**phase 2 (W1) 完成 13 路由 wire + 1 cron 豁免**。
 
 ## 公共 API
 
@@ -9,75 +9,131 @@ import {
   createRateLimiter,
   withRateLimit,
   rateLimitHeaders,
+  clientIp,
   STRICT_PER_IP,
+  GENEROUS_AUTHENTICATED,
+  WRITE_HEAVY,
+  ANON_AI_HEAVY,   // P3 #3 phase 2 新增
+  STREAM_HEAVY,    // P3 #3 phase 2 新增
 } from "@/lib/rate-limit";
 ```
 
-## 典型用法 A — `withRateLimit` 包 handler
+## 典型用法 A — `withRateLimit` 包 handler（非 stream 路由）
 
 ```ts
 // app/api/foo/route.ts
 import { NextRequest } from "next/server";
-import { createRateLimiter, withRateLimit, STRICT_PER_IP } from "@/lib/rate-limit";
+import {
+  createRateLimiter,
+  withRateLimit,
+  clientIp,
+  STRICT_PER_IP,
+} from "@/lib/rate-limit";
 
-const limiter = createRateLimiter({
+const RATE_LIMITER = createRateLimiter({
   identifier: "foo-get",
   ...STRICT_PER_IP,
 });
 
-function clientIp(req: Request): string {
-  // W1 在 phase 2 决定信任链(x-forwarded-for / vercel-ip 等)
-  return req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anon";
-}
-
-async function getImpl(_req: NextRequest): Promise<Response> {
+async function impl(_req: NextRequest): Promise<Response> {
   return new Response(JSON.stringify({ ok: true }), {
     headers: { "Content-Type": "application/json" },
   });
 }
 
-export const GET = withRateLimit(limiter, clientIp, getImpl);
+export const GET = withRateLimit(RATE_LIMITER, clientIp, impl);
 ```
 
-blocked → 自动 429 + `Retry-After` + `X-RateLimit-*` headers;通过 → 原 handler 输出 + headers 注入。
+blocked → 自动 429 + `Retry-After` + `X-RateLimit-*` headers；通过 → 原 handler 输出 + headers 注入。
 
-## 典型用法 B — 手动 check + 注入 headers
+## 典型用法 B — inline check（stream 路由必用）
+
+stream 路由**必须**用 inline check：一旦 `controller.enqueue` 开始就 HTTP 200 commit，无法再回 429。inline check 在 stream 创建前 fail-fast，shape 与 wrapper 完全一致：
 
 ```ts
-// 适合需要在 handler 内做条件逻辑(白名单 / 不同 cost 计费)的场景
-const result = await limiter.check(clientIp(req));
-if (!result.success) {
-  return new Response("rate limited", {
-    status: 429,
-    headers: rateLimitHeaders(result),
+// app/api/foo-stream/route.ts
+const RATE_LIMITER = createRateLimiter({
+  identifier: "foo-stream",
+  ...STREAM_HEAVY,
+});
+
+export async function POST(req: NextRequest) {
+  // ... schema parse, env check ...
+
+  const rlResult = await RATE_LIMITER.check(clientIp(req));
+  const rlHeaders = rateLimitHeaders(rlResult);
+  if (!rlResult.success) {
+    return new Response(
+      JSON.stringify({ error: "rate_limited", limit: rlResult.limit }),
+      {
+        status: 429,
+        headers: { ...rlHeaders, "content-type": "application/json" },
+      },
+    );
+  }
+
+  const stream = new ReadableStream({ async start(controller) { /* ... */ } });
+  return new Response(stream, {
+    headers: { ...rlHeaders, "content-type": "application/x-ndjson; charset=utf-8" },
   });
 }
-// ...real work...
-const res = NextResponse.json(data);
-for (const [k, v] of Object.entries(rateLimitHeaders(result))) {
-  res.headers.set(k, v);
-}
-return res;
 ```
+
+## `clientIp` keyFn
+
+Vercel canonical IP 信任链（P3 #3 phase 2 W3 verdict §B）：
+1. `x-real-ip` 优先（Vercel 注入 single value，难伪造）
+2. fallback `x-forwarded-for` left-most（Vercel canonical 客户端 IP）
+3. fallback `"anon"`（dev / test / 无 IP 落同桶，可预测）
 
 ## Backend dispatch
 
 - env 含 `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` → Upstash sliding/fixed
-- 否则 → in-memory,首次 fallback 时 `console.warn` 一次
+- 否则 → in-memory，首次 fallback 时 `console.warn` 一次
 
-> Vercel 生产必须配 Upstash —— 多实例下 in-memory 各算各的,limit 实际 ×N。
+> **⚠️ 部署提醒**：Vercel 生产**必须**配 Upstash 两个 env。否则多 worker 各算各的 bucket，限流上限实际 ×N 失效。在 Vercel Dashboard → Project → Settings → Environment Variables 设置。
 
 ## 预置 preset
 
 | preset | limit | window | algorithm | 适用 |
 |---|---|---|---|---|
-| `STRICT_PER_IP` | 10 | 1 m | sliding | 匿名 GET |
-| `GENEROUS_AUTHENTICATED` | 100 | 1 m | sliding | 已登录用户 |
-| `WRITE_HEAVY` | 5 | 10 m | fixed | 写操作 / 计费 |
+| `STRICT_PER_IP` | 10 | 1 m | sliding | 匿名 GET / Blob token 端点 |
+| `GENEROUS_AUTHENTICATED` | 100 | 1 m | sliding | 已登录用户（未来） |
+| `WRITE_HEAVY` | 5 | 10 m | fixed | Apify scrape / ffmpeg / zip 重 IO |
+| `ANON_AI_HEAVY` | 10 | 10 m | sliding | Claude analyze / brainstorm / review |
+| `STREAM_HEAVY` | 3 | 10 m | fixed | NDJSON stream + Apify + Claude（长占用） |
 
-## 不在 phase 1 范围
+数字保守起步；上线 1 周后看 Vercel Logs 429 命中率调整（follow-up PR）。
 
-- IP 提取(W1 phase 2 边界,跟 SSRF 信任链相关)
-- 具体路由 limit 数值(谁 wire 谁定,基于实际流量)
-- Upstash REST credentials env(部署侧操作)
-- 跨进程持久化(memory 仅 dev,Upstash 生产)
+## Phase 2 路由 wire 表（13 wired + 1 cron 豁免）
+
+| 路由 | preset | 模式 |
+|---|---|---|
+| `GET /api/trending` | `STRICT_PER_IP` | wrapper |
+| `POST /api/upload` | `STRICT_PER_IP` | wrapper |
+| `POST /api/template-brief-upload` | `STRICT_PER_IP` | wrapper |
+| `POST /api/scrape` | `WRITE_HEAVY` | wrapper |
+| `POST /api/compile-capcut` | `WRITE_HEAVY` | wrapper |
+| `POST /api/analyze-video` | `ANON_AI_HEAVY` | wrapper |
+| `POST /api/template-brief` | `ANON_AI_HEAVY` | wrapper |
+| `POST /api/template-brainstorm` | `ANON_AI_HEAVY` | inline (stream) |
+| `POST /api/template-explore` | `ANON_AI_HEAVY` | inline (stream) |
+| `POST /api/template-review` | `ANON_AI_HEAVY` | inline (stream) |
+| `POST /api/review` | `ANON_AI_HEAVY` | inline (stream) |
+| `POST /api/account-profile` | `STREAM_HEAVY` | inline (stream) |
+| `POST /api/technique-match` | `STREAM_HEAVY` | inline (stream) |
+| `POST /api/cron/trending` | **豁免** | Bearer auth 双认证 |
+
+## 测试
+
+测试用 `_resetBackendForTests()` per case 清桶：
+
+```ts
+import { _resetBackendForTests } from "@/lib/rate-limit/backend";
+
+beforeEach(() => {
+  _resetBackendForTests();
+});
+```
+
+route-level 抽样测试见 `tests/api/rate-limit-route.test.ts`（4 路由 × happy/429/headers = 10 cases），含 stream 路由 inline-before-enqueue invariant 显式断言。
