@@ -237,4 +237,51 @@ W2 self-report 倾向 ③ 论据正确，采纳。
 2. 读本文件确认 SHA 是新的 + 消化裁决方案 ③ + follow-up 收口节点
 3. 开 P2.6（按 plan v4.1-review 既定 `app/trending/page.tsx` RSC + `/api/trending` JSON route 整段 verbatim 实现）
 
+---
+
+## P2.6 已 merge ✅ — P2.7 放行
+
+> 写于 2026-05-15 · `main` = `5372b2c` · 来自窗口 3 协调者
+
+### merge 内容
+
+`feat/hot-tracking-p0-p2` tip `226a9bd` 已合入 main（merge commit `5372b2c`）。本次合入：
+
+- `226a9bd` — feat(p2) RSC `app/trending/page.tsx` 接 `computeHashtagVelocity` + 透传 `initialTrendingHashtags`（73 行新文件）
+
+三项验证全绿：
+- `npx tsc --noEmit` → EXIT 0
+- `npx vitest run` → 175/175
+- `npm run build` → 编译成功；`/trending` 显示 `1h` ISR cache + `1y` 期限（`revalidate = 3600` 生效）
+
+### 对接验证
+
+三个对接点 W3 端复核齐：
+
+| 对接点 | RSC 调用 | 实现侧 | 状态 |
+|---|---|---|---|
+| TrendingBoard prop | `<TrendingBoard initialTrendingHashtags={...} />` | P2.5 `TrendingBoard` 接受 `initialTrendingHashtags: TrendingHashtagCard[]` prop（注释明确「来自 P2.6 RSC / `/api/trending`」） | ✅ |
+| 函数签名 | `computeHashtagVelocity(current, previous)` | `lib/trending/velocity.ts:79` 签名 `(TrendingSnapshot, TrendingSnapshot \| null) → TrendingHashtagWithVelocity[]` | ✅ |
+| 类型导出 | `import type { TrendingHashtagCard } from "@/app/api/trending/route"` | route 已导出 `TrendingHashtagCard` | ✅ |
+
+### P2.6 review 笔记（亮点）
+
+- **精简投影裁掉 raw 字段**：`{name, rank, viewCount, videoCount, velocity}` 五字段投影 —— `rankDiff / industryName` 等 hashtag raw 字段不外泄，与 P2.4/2.5 spec 4.7 精简投影约定一致
+- **trendingContext 条件透传**：`...(v.trendingContext ? { trendingContext: v.trendingContext } : {})` —— TT trending 视频带此字段、IG 视频不带，对象散布只在有值时注入，避免 `trendingContext: undefined` 在 JSON 序列化时进 wire
+- **`if (current)` 兜底**：snapshot store 空盘时 `week=null` / `cards=[]` / `initialTrendingHashtags=[]`，TrendingBoard 端 `showHashtagBoard` 守卫（`length > 0`）+ cards 空状态文案双重 fallback
+- **`revalidate = 3600`**：spec「按周更新」时 1h ISR cache 是合理 tradeoff —— 不等到 168h 才刷新、也不每秒重算；上游 cron 周抓后 1h 内可见
+- **显式 `runtime = "nodejs"`**：fluid compute / RSC 兼容声明，避免 edge runtime 默认推断歧义（与 spec / plan default 一致）
+
+**零 finding**。RSC 是纯 read 路径（无用户输入、无外部 fetch、内部 snapshot 数据源），不进入 P3 hardening pass。
+
+### 下一步：P2.7 放行
+
+按 per-task 工作流：
+
+1. `git pull origin main --no-rebase` 同步到 `5372b2c`
+2. 读本文件「P2.6 已 merge ✅」整段确认 SHA + 零 finding
+3. 开 P2.7（按 plan v4.1-review 既定 E2E / SSR 验证阶段）
+   - **建议**：P2.7 spec 若覆盖屏幕阅读器导航 / status announce 用例，可顺手把 P2.5 MEDIUM #2 a11y follow-up（`<section aria-labelledby>` + `aria-live="polite"`）也覆盖进测试断言，避免 P3 hardening 又改一遍 TrendingBoard
+4. P2.6 闭环后建议 `/compact` 上下文
+
 P2.6 - P2.8 串行，按既定 per-task 闭环。**不在 P2.6 / P2.7 / P2.8 单点处理上面 5 项 follow-up**，统一进 P3 hardening pass。
