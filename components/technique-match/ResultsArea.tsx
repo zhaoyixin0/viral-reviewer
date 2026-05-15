@@ -1,13 +1,14 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Scissors, Info, Sparkles } from "lucide-react";
+import { Scissors, Info, Sparkles, AlertTriangle, Film } from "lucide-react";
 import { UserDiagnosis } from "@/components/technique-match/UserDiagnosis";
 import { PriorityActions } from "@/components/technique-match/PriorityActions";
 import { ReferenceReports } from "@/components/technique-match/ReferenceReports";
 import { GlobalDoNots } from "@/components/technique-match/GlobalDoNots";
 import { CapCutExport } from "@/components/technique-match/CapCutExport";
 import { BgmRecommendations } from "@/components/technique-match/BgmRecommendations";
+import { AssemblySummary } from "@/components/technique-match/AssemblySummary";
 import { ProgressTimeline } from "@/components/review/ProgressTimeline";
 import type { StageEvent } from "@/app/review/page";
 import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
@@ -30,25 +31,32 @@ export type AnalyzeResultsProps = {
   error: string | null;
   stages: StageEvent[];
   /**
-   * 按上传全集 materialIndex 索引的 partial 池；null = 还没到达。
-   * Task 4 内部仍渲染 [0]（第一个成功的视频），Task 13 才 N 卡渲染。
+   * 按上传全集 materialIndex 索引的 partial 池；null = 该 index 还没分析完
+   * （或最终失败）。Task 13 起按 superset index 渲染 N 张 UserDiagnosis。
    */
   partials: (MaterialPotential | null)[];
   full: AnalyzeResponseShape | null;
-  videoUrl: string | null;
-  /** 用户原始视频文件名；可选，缺失时 CapCutExport 退化为 input.mp4 */
-  videoFileName?: string | null;
+  /** 按上传全集索引的视频 URL 数组。N=1 时仍是单元素数组。 */
+  videoUrls: string[] | null;
+  /** 与 videoUrls 同序对齐的用户文件名数组；元素缺失时由后端退化为 input.mp4。 */
+  videoFileNames?: (string | null)[] | null;
   /** 文案：empty state 标题/副标题 */
   emptyTitle?: string;
   emptySubtitle?: string;
 };
 
+function pickPrimary(
+  potentials: ReadonlyArray<MaterialPotential | null>,
+): MaterialPotential | null {
+  return potentials.find((p): p is MaterialPotential => p !== null) ?? null;
+}
+
 /**
  * 渐进披露的结果展示区：
  *   - loading + 没数据 → ProgressTimeline
- *   - partial 到来（Gemini 完成 userPotential）→ 立即显示 UserDiagnosis（fast lane）
- *   - full 到来（Opus 匹配完成）→ 追加显示 PriorityActions / BgmRecommendations /
- *     GlobalDoNots / ReferenceReports / CapCutExport（deep lane）
+ *   - partial 到来（Gemini 完成 userPotential）→ 立即显示 N 张 UserDiagnosis
+ *   - full 到来（Opus 完成）→ 追加 PriorityActions / AssemblySummary /
+ *     BgmRecommendations / GlobalDoNots / ReferenceReports / CapCutExport
  *
  * 同时被 /technique-match 和 /analyze 两个 page 复用。
  */
@@ -58,25 +66,46 @@ export function AnalyzeResults({
   stages,
   partials,
   full,
-  videoUrl,
-  videoFileName,
+  videoUrls,
+  videoFileNames,
   emptyTitle = "上传你的视频草稿",
   emptySubtitle = "AI 会看完整段视频，找出你的素材能学什么、不能学什么，输出具体到秒的剪辑改动建议。",
 }: AnalyzeResultsProps) {
-  /**
-   * Task 4 过渡：fast lane / deep lane 仍按"首个成功素材"渲染单卡，
-   * Task 13 才换成 N 个 UserDiagnosis。
-   */
-  const firstFullPotential = full?.userPotentials.find(
-    (p): p is MaterialPotential => p !== null,
+  // superset 长度：partials / userPotentials / videoUrls / videoFileNames 都
+  // 按上传全集索引对齐；取最大值确保 N=0/1/M 三种场景都能正确展开。
+  const supersetLen = Math.max(
+    partials.length,
+    full?.userPotentials.length ?? 0,
+    videoUrls?.length ?? 0,
+    videoFileNames?.length ?? 0,
   );
-  const firstPartial = partials.find(
-    (p): p is MaterialPotential => p !== null,
-  );
-  const primaryPotential = firstFullPotential ?? firstPartial ?? null;
-  const showFastLane = primaryPotential !== null || full !== null;
+
+  const potentialAt = (i: number): MaterialPotential | null => {
+    // 优先 full.userPotentials[i]（Opus 完成后的最终数据），fallback partials[i]
+    return full?.userPotentials[i] ?? partials[i] ?? null;
+  };
+
+  const fileNameAt = (i: number): string | null =>
+    videoFileNames?.[i] ?? null;
+
+  const fastLaneCards = Array.from({ length: supersetLen }, (_, i) => ({
+    index: i,
+    potential: potentialAt(i),
+    fileName: fileNameAt(i),
+  }));
+  const hasAnyPotential = fastLaneCards.some((c) => c.potential !== null);
+  const primaryPotential =
+    pickPrimary(full?.userPotentials ?? []) ?? pickPrimary(partials);
+
+  const showFastLane = hasAnyPotential || full !== null;
   const showDeepLane = full !== null;
   const showTimeline = loading && !showDeepLane;
+  const showSingleHeader = supersetLen <= 1;
+
+  const exportVideoUrls = videoUrls ?? [];
+  const exportVideoFileNames = (videoFileNames ?? [])
+    .map((n) => n ?? undefined)
+    .slice(0, exportVideoUrls.length);
 
   return (
     <div className="space-y-6">
@@ -127,7 +156,7 @@ export function AnalyzeResults({
         )}
       </AnimatePresence>
 
-      {/* Fast lane: 用户素材诊断（Gemini Stage 1 后立即显示） */}
+      {/* Fast lane: N 张 UserDiagnosis（按上传全集索引） */}
       <AnimatePresence>
         {showFastLane && (
           <motion.div
@@ -148,12 +177,43 @@ export function AnalyzeResults({
                 </span>
               )}
             </div>
-            {primaryPotential && <UserDiagnosis potential={primaryPotential} />}
+            <div className="space-y-4">
+              {fastLaneCards.map(({ index, potential, fileName }) => (
+                <div key={`diag-${index}`} className="space-y-2">
+                  {!showSingleHeader && (
+                    <div className="flex items-center gap-2 text-xs text-white/70">
+                      <Film className="w-3.5 h-3.5 text-[#22d3ee]" />
+                      <span className="font-medium">
+                        素材 {index + 1}
+                        {fileName ? (
+                          <span className="text-white/45 font-normal">
+                            {" "}
+                            · {fileName}
+                          </span>
+                        ) : null}
+                      </span>
+                    </div>
+                  )}
+                  {potential ? (
+                    <UserDiagnosis potential={potential} />
+                  ) : (
+                    <div className="glass-card p-4 border border-[#f59e0b]/30 flex items-center gap-2">
+                      <AlertTriangle className="w-4 h-4 text-[#f59e0b] shrink-0" />
+                      <span className="text-xs text-white/70">
+                        {loading
+                          ? "等待 Gemini 分析完成…"
+                          : "这段素材分析失败，已跳过；其它素材正常输出。"}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Deep lane: 爆款对标 + 优先级 + 配乐 + 导出（Opus 完成后） */}
+      {/* Deep lane: 爆款对标 + 优先级 + 编排清单 + 配乐 + 导出（Opus 完成后） */}
       <AnimatePresence>
         {showDeepLane && full && (
           <motion.div
@@ -178,11 +238,21 @@ export function AnalyzeResults({
               </div>
             )}
             <PriorityActions match={full.match} />
+            {full.match.assemblyTimeline && (
+              <AssemblySummary
+                timeline={full.match.assemblyTimeline}
+                videoFileNames={videoFileNames ?? undefined}
+              />
+            )}
             <BgmRecommendations bgms={full.match.recommendedBgms ?? []} />
-            {videoUrl && primaryPotential && (
+            {exportVideoUrls.length > 0 && primaryPotential && (
               <CapCutExport
-                videoUrl={videoUrl}
-                videoFileName={videoFileName ?? undefined}
+                videoUrls={exportVideoUrls}
+                videoFileNames={
+                  exportVideoFileNames.length > 0
+                    ? exportVideoFileNames
+                    : undefined
+                }
                 userPotential={primaryPotential}
                 match={full.match}
               />
