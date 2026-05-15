@@ -133,6 +133,32 @@ function pickFromTopicPool(
   return diversifyByCluster(pool, topK);
 }
 
+/** snapshot 兜底层：高置信题材标签的最低阈值。低于此值的视频不进 /analyze 匹配。 */
+const SNAPSHOT_CONFIDENCE_THRESHOLD = 0.6;
+/** snapshot 兜底层：canonicalTopic 与视频 topic 的 jaccard 模糊匹配最低分。 */
+const SNAPSHOT_TOPIC_MATCH_THRESHOLD = 0.2;
+
+/**
+ * 从全局 trending snapshot 里按用户题材模糊匹配采样。
+ * 纯函数：先按 topicConfidence 过滤（只信高置信标签，architect M3），
+ * 再用已有的 jaccard 对 canonicalTopic 与 v.topic 算重叠分，
+ * 取超阈值的、按 views 降序的 top-K。全部不命中 → 返回空数组（调用方据此走 live）。
+ */
+export function pickSnapshotMatches(
+  snapshotVideos: ViralVideo[],
+  canonicalTopic: string,
+  topK: number,
+): ViralVideo[] {
+  const topicTokens = tokens(canonicalTopic);
+  return snapshotVideos
+    .filter((v) => (v.topicConfidence ?? 0) >= SNAPSHOT_CONFIDENCE_THRESHOLD)
+    .map((v) => ({ v, score: jaccard(topicTokens, tokens(v.topic)) }))
+    .filter((x) => x.score >= SNAPSHOT_TOPIC_MATCH_THRESHOLD)
+    .sort((a, b) => b.v.views - a.v.views)
+    .slice(0, topK)
+    .map((x) => x.v);
+}
+
 export type RetrievalSource = "local" | "cache" | "live" | "fallback";
 
 export type RetrievalResult = {
