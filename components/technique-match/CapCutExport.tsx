@@ -7,8 +7,8 @@ import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
 import type { TechniqueMatchingResult } from "@/lib/technique-matching/types";
 
 type Props = {
-  /** 按上传全集索引的视频 URL 数组；N=1 也是单元素数组。POST body 同步发数组，
-   *  schema 的 C1 兼容层（preprocess）会回填 videoUrl 单字段。 */
+  /** 按上传全集索引的视频 URL 数组；N=1 也是单元素数组。Task 14 起 schema
+   *  收紧为纯数组，无单值兼容层。 */
   videoUrls: string[];
   /** 与 videoUrls 同序对齐的用户原始文件名；缺失元素由服务端退化为 input.mp4。 */
   videoFileNames?: ReadonlyArray<string | undefined>;
@@ -72,9 +72,9 @@ export function CapCutExport({
       }
 
       setStage("compiling");
-      // 同时发数组 + 单值 —— schema preprocess 会双向归一，但发齐对 server 端
-      // 兼容旧/新 route 实现都安全。videoFileNames 全 undefined 时不发，让
-      // server 端走 input.mp4 退化逻辑。
+      // Task 14: schema 已收紧为纯数组，POST body 只发数组。videoFileNames
+      // 全 undefined / 长度对不上 videoUrls 时不发，让 server 端走 input.mp4
+      // 退化逻辑（避免触发等长 refine 拒绝）。
       const cleanFileNames = videoFileNames?.filter(
         (n): n is string => typeof n === "string" && n.length > 0,
       );
@@ -86,14 +86,8 @@ export function CapCutExport({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           projectName: projectName.trim() || fallbackName,
-          videoUrl: videoUrls[0],
           videoUrls,
-          ...(hasFileNames
-            ? {
-                videoFileName: cleanFileNames[0],
-                videoFileNames: cleanFileNames,
-              }
-            : {}),
+          ...(hasFileNames ? { videoFileNames: cleanFileNames } : {}),
           bgmUrl,
           userPotential,
           match,

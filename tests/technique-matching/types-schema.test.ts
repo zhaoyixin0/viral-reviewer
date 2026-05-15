@@ -97,20 +97,8 @@ describe("AssemblyTimelineSchema", () => {
   });
 });
 
-describe("technique-match route Schema · C1 兼容层", () => {
-  it("旧形态请求体（只带 videoUrl）仍能解析出 videoUrl", () => {
-    const r = TechniqueMatchRequestSchema.safeParse({
-      videoUrl: "https://blob.example.com/a.mp4",
-    });
-    expect(r.success).toBe(true);
-    if (r.success) {
-      const data = r.data as { videoUrl: string; videoUrls?: string[] };
-      expect(data.videoUrl).toBe("https://blob.example.com/a.mp4");
-      expect(data.videoUrls).toEqual(["https://blob.example.com/a.mp4"]);
-    }
-  });
-
-  it("新形态请求体（videoUrls 数组）派生出 videoUrl = videoUrls[0]", () => {
+describe("technique-match route Schema · Task 14 纯数组收紧", () => {
+  it("videoUrls 数组合法时通过", () => {
     const r = TechniqueMatchRequestSchema.safeParse({
       videoUrls: [
         "https://blob.example.com/a.mp4",
@@ -119,41 +107,43 @@ describe("technique-match route Schema · C1 兼容层", () => {
     });
     expect(r.success).toBe(true);
     if (r.success) {
-      const data = r.data as { videoUrl: string; videoUrls?: string[] };
-      expect(data.videoUrl).toBe("https://blob.example.com/a.mp4");
-      expect(data.videoUrls).toHaveLength(2);
+      expect(r.data.videoUrls).toHaveLength(2);
+      expect(r.data.videoUrls[0]).toBe("https://blob.example.com/a.mp4");
     }
   });
 
-  it("既无 videoUrl 也无 videoUrls 时校验失败", () => {
+  it("只发旧的 videoUrl 单字段（无 videoUrls）→ 失败", () => {
+    const r = TechniqueMatchRequestSchema.safeParse({
+      videoUrl: "https://blob.example.com/a.mp4",
+    });
+    expect(r.success).toBe(false);
+  });
+
+  it("videoUrls 缺失 → 失败", () => {
     expect(TechniqueMatchRequestSchema.safeParse({ topic: "x" }).success).toBe(
       false,
     );
   });
-});
 
-describe("compile-capcut route RequestSchema · C1 兼容层", () => {
-  it("旧形态请求体（videoUrl + videoFileName）仍能解析出单值字段", () => {
-    const r = CompileCapcutRequestSchema.safeParse({
-      projectName: "demo",
-      videoUrl: "https://blob.example.com/a.mp4",
-      videoFileName: "a.mp4",
-    });
-    expect(r.success).toBe(true);
-    if (r.success) {
-      const data = r.data as {
-        videoUrl: string;
-        videoUrls?: string[];
-        videoFileName?: string;
-        videoFileNames?: string[];
-      };
-      expect(data.videoUrl).toBe("https://blob.example.com/a.mp4");
-      expect(data.videoUrls).toEqual(["https://blob.example.com/a.mp4"]);
-      expect(data.videoFileNames).toEqual(["a.mp4"]);
-    }
+  it("videoUrls 空数组 → 失败（min 1）", () => {
+    expect(
+      TechniqueMatchRequestSchema.safeParse({ videoUrls: [] }).success,
+    ).toBe(false);
   });
 
-  it("新形态请求体（videoUrls + videoFileNames 数组）派生出单值字段", () => {
+  it("videoUrls 长度 > 6 → 失败（max 6）", () => {
+    const urls = Array.from(
+      { length: 7 },
+      (_, i) => `https://blob.example.com/${i}.mp4`,
+    );
+    expect(
+      TechniqueMatchRequestSchema.safeParse({ videoUrls: urls }).success,
+    ).toBe(false);
+  });
+});
+
+describe("compile-capcut route RequestSchema · Task 14 纯数组收紧", () => {
+  it("videoUrls + videoFileNames 数组等长合法时通过", () => {
     const r = CompileCapcutRequestSchema.safeParse({
       projectName: "demo",
       videoUrls: [
@@ -164,13 +154,29 @@ describe("compile-capcut route RequestSchema · C1 兼容层", () => {
     });
     expect(r.success).toBe(true);
     if (r.success) {
-      const data = r.data as { videoUrl: string; videoFileName?: string };
-      expect(data.videoUrl).toBe("https://blob.example.com/a.mp4");
-      expect(data.videoFileName).toBe("a.mp4");
+      expect(r.data.videoUrls).toHaveLength(2);
+      expect(r.data.videoFileNames).toEqual(["a.mp4", "b.mp4"]);
     }
   });
 
-  it("videoUrls 与 videoFileNames 长度不一致时校验失败", () => {
+  it("只发旧的 videoUrl + videoFileName 单字段 → 失败", () => {
+    const r = CompileCapcutRequestSchema.safeParse({
+      projectName: "demo",
+      videoUrl: "https://blob.example.com/a.mp4",
+      videoFileName: "a.mp4",
+    });
+    expect(r.success).toBe(false);
+  });
+
+  it("videoFileNames 缺失（只 videoUrls）→ 通过（数组 optional，下游退化为 input.mp4）", () => {
+    const r = CompileCapcutRequestSchema.safeParse({
+      projectName: "demo",
+      videoUrls: ["https://blob.example.com/a.mp4"],
+    });
+    expect(r.success).toBe(true);
+  });
+
+  it("videoUrls 与 videoFileNames 长度不一致 → 失败（refine 等长不变量）", () => {
     const r = CompileCapcutRequestSchema.safeParse({
       projectName: "demo",
       videoUrls: [
@@ -178,6 +184,26 @@ describe("compile-capcut route RequestSchema · C1 兼容层", () => {
         "https://blob.example.com/b.mp4",
       ],
       videoFileNames: ["a.mp4"],
+    });
+    expect(r.success).toBe(false);
+  });
+
+  it("videoUrls 空数组 → 失败（min 1）", () => {
+    const r = CompileCapcutRequestSchema.safeParse({
+      projectName: "demo",
+      videoUrls: [],
+    });
+    expect(r.success).toBe(false);
+  });
+
+  it("videoUrls 长度 > 6 → 失败（max 6）", () => {
+    const urls = Array.from(
+      { length: 7 },
+      (_, i) => `https://blob.example.com/${i}.mp4`,
+    );
+    const r = CompileCapcutRequestSchema.safeParse({
+      projectName: "demo",
+      videoUrls: urls,
     });
     expect(r.success).toBe(false);
   });

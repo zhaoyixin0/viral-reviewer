@@ -69,9 +69,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // C1 preprocess 保证 videoUrls 数组永远存在（旧客户端发 videoUrl 也会被归一）。
-  const { videoUrls: rawUrls, videoUrl, topic, intent, videoId } = parsed.data;
-  const videoUrls = rawUrls ?? [videoUrl];
+  const { videoUrls, topic, intent, videoId } = parsed.data;
   const totalMaterials = videoUrls.length;
 
   const baseVideoId =
