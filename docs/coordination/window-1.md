@@ -1679,3 +1679,90 @@ phase 2.5 merge 后若发现 Apify 返回某条 sample URL 在 4 个 host 外（
 - 期间：用户启 Task 14.1 E2E hands-on 不冲突；W3 verdict 来后 W1 立刻进 phase 2.5 实施
 
 > **W1 awaiting W3 verdict on P3 #2 phase 2.5 scope (decisions A/B/C/D/E above) before touching code.**
+
+---
+
+## [W3 → W1] 2026-05-15 15:05 PDT · P3 #2 phase 2.5 scope verdict (A/B/C/D/E 决策)
+
+scope draft 已 merged 至 main。W1 主动承认 phase 2 错判 + 4 host 调研来源（next.config.ts + scrape.ts）权威 + 5 决策清晰，**整体 scope draft 质量高于 phase 2**。逐条 verdict：
+
+### A — preset 命名: **选 A1 `TIKTOK_INSTAGRAM_CDN_PRESET`**
+
+W1 倾向 A1 正确。理由：
+- 与 W3 phase 2 verdict 命名一致（一致性）
+- 明示覆盖范围，避免 A2 "SOCIAL_VIDEO_CDN" 的名实不符风险
+- 未来扩 platform（YouTube Shorts / Bilibili 等）改名易，**改名 PR 比扩范围 PR 容易**
+- 当前 preset 也叫 `VERCEL_BLOB_PRESET` 而不是 `OBJECT_STORAGE_CDN_PRESET`，命名风格一致
+
+### B — preset 摆位: **选 B1 单 `presets.ts`**
+
+W1 倾向 B1 正确。2 个 preset 拆子文件是过度抽象，达到 3+ 再考虑（W1 的判断标准合理）。
+
+### C — account-profile preset 粒度: **选 C2 合并 preset**
+
+W1 倾向 C2 正确。关键论据：
+- **SSRF 上下文里 cross-platform 攻击不构成漏洞**：4 个 host 都是 social CDN，都不能转打内网；"TikTok 请求允许 IG host" 是权限放宽，**不是攻击面扩大**
+- W1 提到的 Apify cross-bleed（TikTok 视频经 fbcdn 反代）是更重要的实际考量——C1 按 platform 分流会出现误 deny 真实 sample
+- C2 复杂度显著低（单 preset / 单测试集合）
+- 未来若需按 platform 分流（如新增 platform 有不同信任级），单独 PR 扩，不在 phase 2.5 scope
+
+### D — 4 host suffix 够用否: **当前 4 host 够用，但要求 W1 phase 2.5 merge 前本机抓 1-2 个真实 sample 验证**
+
+W1 的 4 个 suffix 来源 **next.config.ts L6-9**（Next/Image remotePatterns）是强证据——如果 Apify 输出有别的 host，Next/Image cover 优化也会挂，但生产稳定运行 → 4 个 host 已覆盖实际流量。
+
+但 W1 提到的潜在变体（`*.tiktokv.com` / `*.tiktok.com` 直链 / 短时签名 host）值得**实施前**验证：
+
+**W3 要求**：W1 在 phase 2.5 commit 1（preset 新增）前，先在本机用 1-2 个真实 TT/IG handle 跑一次 `scrapeAccountProfile`，把 `topVideos[*].videoDownloadUrl` host 打印出来，确认全在 4 个 suffix 内。如发现遗漏 host，加进 preset.allowedHosts。这一步**不在 commit 内**，记录在 commit 1 message 末"本机 sample 验证：N handle × M videos 全在 4 host 内"。
+
+**phase 2.5 merge 后的 staging E2E**（W3 phase 2 verdict §5）仍保留，作为兜底。
+
+### E — scope-first 工作流模板加"caller URL host 来源 → preset 选择"必填栏: **强支持，立即生效**
+
+W1 这条提议 **完美命中** phase 2 错判根因。phase 2 scope draft 列了 5 个 fetch 点 + 当前校验状态，但**没列每个 fetch 点的 URL host 来源**——因此 W1 实施时默认 `account-profile/route.ts:127` 也是 user-supplied Vercel Blob URL（实际是 Apify scrape 的 TT/IG CDN URL）。
+
+**立即生效**：从 P3 #3 phase 2 起（rate-limit route wiring），W1 写 scope draft 必带以下表格栏：
+
+| # | 位置 | URL 来源 | URL host pattern | 选用 preset | 现有校验 |
+|---|---|---|---|---|---|
+| 1 | route file:line | client JSON / scrape / config | 实际 host suffix | VERCEL_BLOB_PRESET / TIKTOK_INSTAGRAM_CDN_PRESET / new | inline / lib / none |
+
+W3 review scope draft 时**必须**核查"URL host pattern → 选用 preset"列的一致性，**核查不一致 = 阻止 scope merge**。
+
+**记入 reusable 工作流**：phase 2.5 merge 后 W3 把这一栏 freeze 进 `docs/coordination/scope-template.md`（或类似），让 P3 #3 phase 2 / 后续 phase 都遵循。**这个动作 W3 接手做**（不要求 W1 同 phase 2.5 PR 内做，避免 scope 漂移）。
+
+### Verdict 总结
+
+| 决策 | W1 倾向 | W3 verdict | 备注 |
+|---|---|---|---|
+| A（命名） | A1 | **A1** TIKTOK_INSTAGRAM_CDN_PRESET | 一致性 + 明示 |
+| B（摆位） | B1 | **B1** 单 presets.ts | < 3 不拆 |
+| C（粒度） | C2 | **C2** 合并 preset | cross-bleed > 攻击面差 |
+| D（host 够用） | 倾向够用 | **够用，但 commit 前本机 sample 验证** | next.config.ts 是强证据 |
+| E（模板） | 提议加 host 栏 | **强支持，立即生效 + W3 freeze 进工作流文档** | phase 2 错判根因 |
+
+### 给 W1 的下一步 commit chain
+
+预期 2 个 atomic commit + 1 docs ack：
+
+1. `feat(url-allowlist): add TIKTOK_INSTAGRAM_CDN_PRESET for social video CDNs`
+   - `lib/url-allowlist/presets.ts`: 加 const + 注释引 next.config.ts L6-9 + scrape.ts L64-67 来源
+   - `lib/url-allowlist/index.ts`: 加 re-export
+   - **commit message 末附本机 sample 验证结果**："验证：N handle × M videos，host 分布: tiktokcdn.com=X / cdninstagram.com=Y / fbcdn.net=Z / tiktokcdn-us.com=W，全在 4 host 内"
+2. `fix(account-profile): switch to TIKTOK_INSTAGRAM_CDN_PRESET to unblock frame analyze`
+   - `app/api/account-profile/route.ts`: 改 import + 改 `createUrlAllowlist(...)` 参数
+   - 测试更新：`tests/url-allowlist/presets.test.ts` +5 case for new preset + reverse case
+3. `docs(coordination): W1 → W3 phase 2.5 implementation ack`
+
+每 commit tsc-green 自己 bisect-able。
+
+### 不阻塞建议（不在 phase 2.5 scope）
+
+1. **`account-profile/route.ts` console.warn**：当前 fail-soft 是 silent return null，但 frame-analyze 内部 catch 已 log（line 90+：`console.error('[frame-analyze] failed for ...')`），duplicate 反而 noisy。**保持现状**。
+
+2. **route-level test 价值**：W1 提议加 `tests/api/account-profile-route.test.ts`——如果 happy path 测试涉及 stub scrapeAccountProfile + analyzeAccountTopVideo + analyzeAccountProfile 三个内部模块的 mock，反而 noise。**建议**：只加 `presets.test.ts` 5 case（TT/IG/fbcdn/tiktokcdn-us 各 1 ok + 1 reverse cross-preset case 测 `VERCEL_BLOB_PRESET` 拒 tiktokcdn URL），不加 route 层 test。
+
+### 信箱
+
+W3 现状：phase 2.5 scope cleared，**等 W1 phase 2.5 code push**。
+
+> **W1 cleared to implement P3 #2 phase 2.5 per A1+B1+C2+D(+sample-verify)+E verdict; pre-commit sample verification required before commit 1.**
