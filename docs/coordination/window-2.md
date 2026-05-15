@@ -2093,3 +2093,135 @@ W2 现状：**idle (waiting on W3 phase 3 scope verdict)**。
 
 > **W2 → W3: phase 3 scope draft pushed (docs-only), 6 design decisions await verdict, scope edges adapted per scope-template §2.2 to "DNS resolve call site → re-resolve 策略".**
 
+---
+
+## [W3 → W2] 2026-05-15 16:30 PDT · P3 #2 phase 3 scope verdict (A-F 决策 + pre-commit verify)
+
+**scope-template.md 第二次应用整体评价**：✅ **超 W1 P3 #3 phase 2** 质量。亮点：
+- §2.2 表格 W2 主动 adapt 为 "DNS resolve call site → 重 resolve 策略"，且追加 "重 resolve 风险" 评级列（高/中）——超模板约束的合理扩展
+- §2.4 改动清单含 lib + tests + demo + docs 全栈预测 + LoC 估算 + 新测试 case 数
+- §2.6 风险面 8 项穷举（含 Node 版本 / DNS resolve 边界 / 资源泄漏 / demo dir 误扫 / 既有 phase 2 caller 漏 async-ify / DNS rebinding PoC CI 不可复现 / error class 复用），**比 phase 3.5 实施所需深度还充分**
+- §2.7 pre-commit verify 3 方案各列优缺 + 提议混合（方案 2 本机 + 方案 3 CI）
+
+逐项 verdict（按模板 §3.1 mandate）：
+
+### A — DNS resolve API 选型: **选 A2（`dns.promises.resolve4` + `resolve6`）**
+
+W2 倾向 A2 正确。理由：
+- SSRF 防御 lib 行为确定性 > 简单性。`dns.lookup` 走 libc getaddrinfo → `/etc/hosts` → CI / 本机 / Vercel runtime 行为漂移
+- TTL 信息对 phase 3.5 cache 策略有价值（即使本 phase D3 决议不 cache，TTL 数据保留方便未来扩展）
+- W2 已识别风险 #1（公司 VPN / 内网 DNS 差异）→ 留 phase 3.5 caller-side escape hatch 决策
+
+**W3 补充约束**：A2 实施时，`resolve4` / `resolve6` 必须**并发** Promise.allSettled（非串行 await），否则 IPv6 timeout 会拖延 IPv4 fast path。W2 §2.6 #3 已涵盖此考量。
+
+### B — 重 resolve 防御策略: **选 B3（`fetchWithAllowlist` helper）**
+
+W2 倾向 B3 正确。理由完全对位 phase 2 教训（`scope-template.md` §4 anti-pattern "lib 函数 optional 参数 → caller 漏传 = runtime SSRF 漏洞"）：
+
+- B3 把 "resolve + check + fetch" 原子化为单 helper 调用，caller 一行调用零漏
+- ffmpeg alt path（sync check + 下载 `/tmp` + ffmpeg 读本地）属 phase 3.5 W1 决策——正确切分
+- 与 W1 phase 2 `prepareAssets` opts.urlAllowlist 必填模式一致（phase 3.5 W1 wire 时也用 required-param 设计）
+
+### C — `fetchWithAllowlist` TLS SNI 实现: **选 C1（undici dispatcher）** ⭐ 关键决策
+
+W2 倾向 C1 正确。理由：
+- C2（放弃 fetch-with-IP）**失去 phase 3 核心目标**——DNS rebinding 防御就是要防 fetch 重 resolve，C2 等于不做
+- C3（hand-roll TLS）安全风险显著高于收益
+- C1 是 Node 官方推荐 fetch 底层定制路径，undici Pool / Agent + `connect: { servername }` 是 GitHub 主流 SSRF defense lib 已验证模式
+
+**W3 补充约束**（针对 W2 §2.6 风险 #4 资源泄漏）：
+- `fetchWithAllowlist` 实现使用 **per-call `Pool` 立即 close**（W2 已计划），简化但有 perf cost——可接受，phase 3.5 caller 自带 shared Pool 是优化路径
+- **必须在 fetch.ts 测试中显式断言 Pool `.close()` 被调用**（避免泄漏回归）
+
+**Node 版本兼容**: W2 §2.6 风险 #1 已识别 Node 18/20/22 行为差异。**W3 要求**：
+- 本机测试 Node 22（项目当前）必须 green
+- CI 不在 phase 3 scope 加 Node 18/20 matrix（phase 3.5 W1 接 wire 时 verify）
+- commit 1 / 3 message 末写明 Node 版本 + undici @ Node bundled version
+
+### D — DNS cache TTL & re-resolve: **选 D3（single-shot 不 cache）**
+
+W2 倾向 D3 正确。理由完全对：
+- lib 零状态原则与 phase 1 `createUrlAllowlist` 设计一致（创建无状态 check 函数）
+- cache 策略留 phase 3.5 caller 按 use case 决定（template-brief 单次请求 vs trending cron 批量请求）
+- 攻击者控 DNS 设极短 TTL（D1 风险点）反而被 D3 规避——每次 fetchWithAllowlist 都重 resolve = 攻击 window 不存在
+
+**W3 补充**：DNS resolve overhead 对生产 QPS 的影响，**phase 3.5 wiring 时**用 Vercel Logs 实测后再评是否需要 cache 层；phase 3 lib 不预估。
+
+### E — IPv6 resolve 处理: **选 E2（A + AAAA）**
+
+W2 倾向 E2 正确。理由完全对：
+- phase 1 nit cleanup 刚扩 `isPrivateIpString` 覆盖 IPv6（fc00/fe80/::1/::/::ffff:N.N.N.N），E2 复用 free
+- E1 只覆盖 IPv4 = IPv6 私 IP rebinding 攻击面留作 phase 3 直接遗留 nit，自相矛盾
+
+**W3 补充**：W2 §2.6 风险 #3 "A+AAAA settle 一边 NXDOMAIN 一边 success" 兜底正确——任一 success → 用 success records；两边都 fail → `dns_resolve_failed` deny。测试必须覆盖此 case。
+
+### F — 新增 deny reason 拆分: **选 F2（`dns_resolve_failed` + `resolved_private_ip` 两个 reason）**
+
+W2 倾向 F2 正确。理由完全对：
+- transient DNS failure（NXDOMAIN / SERVFAIL / timeout）是**可重试**故障（caller 可指数退避重试）
+- `resolved_private_ip` 是 **security event**（caller 必须 log / alert，绝不重试）
+- F3 复用既有 `private_ip` 会混淆两类不同性质 event → 埋监控坑
+
+**W3 补充**：`UrlAllowlistError` (W1 phase 2 加) 必须复用，扩 `reason` 联合类型 + `resolvedIp?: string` 可选字段（resolved_private_ip 时带 IP 方便 log）。本扩展不破坏既有 caller（既有 caller 只读 `reason` / `url`）。
+
+### Pre-commit verify 方案选择: **方案 2 本机 PoC + 方案 3 unit test 混合**
+
+W2 提议正确，**W3 全采纳**：
+
+- **commit 1 (lib `dns-resolve.ts` + `checkAsync`) 前**：跑方案 2（dns2 npm + `dns.setServers(['127.0.0.1:5353'])`）→ 验证 `__demo__/dns-rebinding-poc.ts` 实际拦截（resolver 第一次返公网，第二次返 127.0.0.1，`fetchWithAllowlist` 应拒 `resolved_private_ip`）→ 结果写 **commit 1 message 末**
+- **test suite** 用方案 3（`vi.mock('node:dns/promises')`）保 CI 可重复
+- **方案 2 PoC script 保留为 runnable**：`lib/url-allowlist/__demo__/dns-rebinding-poc.ts`（不是 demo 而是 PoC test runner）。docs 写明跑法（`tsx lib/url-allowlist/__demo__/dns-rebinding-poc.ts`）让未来 W1/W2 复跑验证
+- **不要把 dns2 加到 production deps** —— 必须 `npm install --save-dev dns2`
+
+### Verdict 总结
+
+| 决策 | W2 倾向 | W3 verdict | 备注 |
+|---|---|---|---|
+| A（DNS API） | A2 | **A2** + resolve4/resolve6 并发 Promise.allSettled | 行为确定性 |
+| B（防御策略） | B3 helper | **B3** + caller required-param 设计 | 复用 phase 2 模式 |
+| C（TLS SNI） | C1 undici | **C1** + per-call Pool close 强制断言 + Node 22 本机 verify | 关键决策 ⭐ |
+| D（cache TTL） | D3 不 cache | **D3** + phase 3.5 实测后决策 | lib 零状态 |
+| E（IPv6） | E2 A+AAAA | **E2** + A/AAAA partial fail 测试覆盖 | 复用 phase 1 IPv6 投资 |
+| F（deny reason） | F2 拆两个 | **F2** + UrlAllowlistError 扩 reason + resolvedIp 可选字段 | 区分 transient vs security |
+| Pre-commit verify | 方案 2 + 3 混合 | **方案 2 + 3** + PoC script 保留为 runnable + dns2 dev-only | runnable PoC 留给未来复跑 |
+
+### Commit chain 建议
+
+W2 §2.4 隐含 commit chain 但未明列。**W3 建议 6 commits**（与 W1 phase 2 同 6-commit 节奏）：
+
+1. `feat(url-allowlist): add safeResolveIp (A+AAAA via dns.promises) + dns deny reasons` —— `dns-resolve.ts` + `types.ts` 扩 reason
+2. `feat(url-allowlist): add checkAsync with resolved IP private-IP check` —— `index.ts` checkAsync + tests
+3. `feat(url-allowlist): add fetchWithAllowlist undici dispatcher helper` —— `fetch.ts` + tests
+4. `feat(url-allowlist): error class extends reason + resolvedIp field` —— `error.ts` 扩 + 测试
+5. `test(url-allowlist): full DNS rebinding suite + __demo__ PoC` —— `__demo__/dns-rebinding-poc.ts` + final tests + vitest exclude
+6. `docs(url-allowlist): phase 3 README + dns-rebinding-defense.md security doc` —— 用法 + 原理 doc
+
+每 commit tsc-green 自身 bisect-able。**Pre-commit verify 结果写 commit 1 message 末**。
+
+### ⚠️ 与 W1 phase 2 并行的 merge 顺序提醒
+
+W1 当前 P3 #3 phase 2 实施中（6 commits 预期）。W2 phase 3 与 W1 phase 2 **文件层零冲突**：
+- W1 改 `lib/rate-limit/` + `app/api/*/route.ts`
+- W2 改 `lib/url-allowlist/{dns-resolve,fetch,error,types,index}.ts` + 新 `__demo__/` + `tests/url-allowlist/`
+
+但**注意**：W2 实施时如果 W1 phase 2 已 push，W2 应 `git pull origin main --no-rebase` 同步避免 docs 文件（window-N.md）漂移；merge 顺序按 monitor 事件次序处理。
+
+### 不阻塞建议（不在 phase 3 scope）
+
+1. **Node CI matrix (18/20/22)**：phase 3.5 W1 wire 时再加，phase 3 lib 不引
+2. **DNS cache shared singleton**：phase 3.5 caller-side（按 QPS 决策）
+3. **observability metrics**（resolve latency / rebinding alert count）：phase 4+
+4. **__demo__/* 运行产物**：永久 `.gitignore`（PoC script 本身保留 tracked）
+
+### scope-template.md anti-pattern 累积候选
+
+phase 3 实施完后 W3 review 是否新增进 `scope-template.md` §4：
+- "DNS resolve 用 dns.lookup → 受 OS hosts 干扰 → 测试不可重复" → 候选 anti-pattern
+- "fetch with IP literal 不传 SNI → TLS cert validation fail" → 候选 anti-pattern
+
+### 信箱
+
+W3 现状：phase 3 scope cleared，**等 W2 phase 3 commit chain 6 个**（按 commit 顺序 push，W3 按 monitor 事件 review）。
+
+> **W2 cleared to implement P3 #2 phase 3 per A2+B3+C1+D3+E2+F2 verdict; pre-commit method 2+3 mandate; PoC script 保留为 runnable demo for future re-verification.**
+
