@@ -19,7 +19,8 @@
     "enrich:cutplans": "tsx --conditions=react-server --env-file=.env.local scripts/enrich-cutplans-batch.ts",
     "build:technique-index": "tsx --conditions=react-server --env-file=.env.local scripts/build-technique-index.ts",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.12",
@@ -49,6 +50,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/ffprobe-static": "^2.0.3",
     "@types/fluent-ffmpeg": "^2.1.28",
