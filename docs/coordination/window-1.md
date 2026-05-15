@@ -109,3 +109,65 @@ commit message 标注「Not verified in browser (no headless env)」。窗口 3 
 3. 开 Task 5「N potential 编排进 matchTechniques 输入」
 
 Task 5-14 串行，按既定 per-task 闭环。
+
+---
+
+# Task 5 已 merge ✅ — Task 6 放行
+
+> 写于 2026-05-15 · `main` = `deddf04` · 来自窗口 3 协调者
+
+## merge 内容
+
+`worktree-capcut-link` tip `5f8128c` 已合入 main（merge commit `deddf04`）。本次合入：
+
+- `5f8128c` — feat(technique-match) Task 5：N-potential Opus matching + assemblyTimeline
+
+三项验证全绿：
+- `npx tsc --noEmit` → EXIT 0
+- `npx vitest run` → 175/175
+- `npm run build` → 22/22 pages OK，technique-match 路由保留静态预渲染
+
+## review 笔记（亮点）
+
+**双层 assemblyTimeline 防御** —— Opus prompt 把 `at / userVideoAt / sourceAt / fromAt / toAt` 写成硬禁字段（I2 命名契约），服务端 `sanitizeAssemblyTimeline` 再做 belt-and-suspenders：
+
+- drop sourceVideoIndex 越界 / 引用 failedVideoIndexes / 引用 null potential 的 clip
+- drop sourceStartSec ≥ sourceEndSec 的畸形（防 Zod refine 整次 reject）
+- clamp sourceStartSec ≥ 0、sourceEndSec ≤ base.durationSec
+- 反查回填 sourceVideoId（按 userVideoIds[index]）
+- re-index `order` 为最终下标
+- 首 clip 强制 incomingTransition = null
+- recompute estimatedDurationSec = Σ(end - start)
+
+**单点 clip 畸形再也撂不倒整次 parse** —— 这是「LLM 输出宽松、服务端兜底」的标准做法。比 Task 4 的 stage1/stage2 分离更主动。
+
+其他实现亮点：
+
+- **MatchEngineInput N-array I6 契约一致**：`userPotentials.length !== userVideoIds.length` runtime check 早抛，三数组 superset-indexed 不会跑出位移
+- **零成功素材早抛**：`if (!primary) throw new Error("matchTechniques 需要至少一个成功的 MaterialPotential")` —— 上游 route.ts 已经在「全失败」时发 error stage，这里再 defensive 一次
+- **`primary = find((p): p is MaterialPotential => p !== null)`**：与 Task 4 同模式，type-predicate find 取首个成功 potential 用于 fps / debug-dump path / raw.userVideoId 回填，**零 `!` non-null assertion**
+- **`max_tokens` 16384 → 32000**：注释引「§Task 5 探测点」，N=6 + 5 refs + reports + assemblyTimeline + recommendedBgms 头部预算；不会再 Opus 中途 trunctate
+- **payload 把 superset `index` 注入每个成功 potential**：Opus 编排时拿 index 当主键，与服务端 sanitizer 反查回填 sourceVideoId 闭环
+- **prompt 多素材模式 reasoning 标 `素材 #<index>`**：避免 Opus 含糊提「用户的」导致跨素材汇总错位（reasoning 字段必须引用某份 potential 的字段）
+- **trimRanges 多素材模式留空 []**：assemblyTimeline 已经表达「哪些段被保留」，trim 在多素材路径上交给 assemblyTimeline；CapCut compiler 在多视频路径以 timeline 为准（Task 7-8 切换）
+- **probe-script 单视频 1-element 数组 wrap**：`userPotentials: [userPotential]` / `userVideoIds: [userPotential.videoId]` / `failedVideoIndexes: []` —— 单视频 probe 仍能离线跑，向后兼容 0 破坏
+- **`raw.userVideoIds = userVideoIds`** 新字段：兼容 Task 13 N-card 渲染层；raw.userVideoId 仍保留指向 primary 兼容旧 client
+
+## follow-up（不阻塞 merge）
+
+- **SSRF hardening (Task 4 carry-over)**：`videoUrls: z.array(z.string().url())` 的 scheme allowlist + host pinning，建议与 P2 那边 trending UI 的 API boundary Zod / `res.ok` / a11y enhancement 一起，合并到 plan v4.1-review **P3 hardening pass** 同一改动里（API boundary hardening）。详见 docs/coordination/window-2.md 末段 P2.5 裁决「follow-up 收口节点」
+- **Opus 实弹探测（user 侧）**：commit message 标注 "Not run (no Opus access / no headless)"，plan §Task 5 探测点列表：
+  1. sourceVideoIndex 在多 successful potentials 时的稳定性（是否真用到 ≥2 个不同 index）
+  2. 32k token budget 是否够（N=6 + 5 refs 真实场景下输出量观测）
+  3. sanitize-vs-Opus drop rate（如果 sanitizer drop ≥30% clips，prompt 还需迭代）
+  4. wall-clock 是否在 300s 内（maxDuration cap）
+
+## 下一步：Task 6 放行
+
+按 per-task 工作流：
+
+1. `git pull origin main --no-rebase` 同步到 main 最新（`deddf04`）
+2. 读本文件确认 SHA 是新的 + 消化上面的 follow-up（SSRF 与 P2 hardening 合并进 P3 pass）
+3. 开 Task 6（按 plan 既定阶段）
+
+Task 6-14 串行，按既定 per-task 闭环。
