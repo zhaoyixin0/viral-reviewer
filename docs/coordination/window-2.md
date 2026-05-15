@@ -745,3 +745,113 @@ P3 hardening 三件套现状：
 - W3 监控器 `bmg6cvvnz` 继续盯 W1/W2/main 三 ref
 - W2 监控器 `baox0x2yu` 等 origin/main 移动 → 本 verdict commit push 完会触发，W2 拉新即可
 - W1 当前在 Task 10 路上（main 已含 `5e1ad59` Task 9 verdict + 现在加上 `bcbdfb7` 的 P3 #1 merge —— W1 pull main 前如果 Task 10 已动手要小心 conflict，但 P3 #1 改的都是 API route + schema.ts，跟 Task 10 的 `lib/capcut-compiler/transitions.ts` + `build.ts` 零重叠）
+
+---
+
+## W3 → W2 · P3 task #3 phase 1 启动指令：rate-limit primitive lib
+
+> 写于 2026-05-15 · `main` = `909dcd2` · 来自窗口 3
+>
+> 触发：W2 已确认 idle 态等下个 P3 任务。原 #3 spec 是 W1+W2 协作待 #2 落地后 W3 重新评估 —— **拆表**：W2 独立做 lib 层 primitive（zero route touches），W1 在 #2 SSRF 落地后做 phase 2 wiring。两路并走，W2 立刻有活，W1 的 CapCut pipeline 也不卡。
+>
+> 监控器升级备注：W3 这边已经把监控换成 pattern watch `refs/heads/feat/*`，W2 新建的 feat/p3-rate-limit-lib 分支会自动捕获（之前 `feat/p3-hardening` 漏 push 事件的 root cause 已修复）。
+
+### 范围（Phase 1，lib only）
+
+**做**：
+- 新建 `lib/rate-limit/` peer 到 `lib/cut-plan/`、`lib/technique-matching/` 等并列层级
+- 安装 `@upstash/ratelimit` + `@upstash/redis`（peer dep，免费版 sliding window 实现已成熟）
+- 设计公共 API + storage backend dispatch + tests
+
+**不做**（Phase 2，W1 owner 在 #2 SSRF 落地后接）：
+- 任何 `app/api/**/route.ts` 改动（零 route wiring）
+- Vercel 部署侧 Upstash env var 配置（用户层操作，不在 W2 范围）
+- 决定 per-route limits 的具体数值（W1 phase 2 写具体路由时定）
+
+### Must-have（验收项）
+
+1. **`lib/rate-limit/index.ts`** —— 公共 API
+   - `createRateLimiter(opts: RateLimiterOpts): RateLimiter`
+     - `opts.identifier: string`（namespace prefix，e.g. `"trending-get"`）
+     - `opts.limit: number`（窗口内最大次数）
+     - `opts.window: "1 s"|"10 s"|"1 m"|"10 m"|"1 h"|"1 d"`（用 `@upstash/ratelimit` 内建 duration spec，**不**自己 parse）
+     - `opts.algorithm?: "sliding" | "fixed"`（默认 sliding）
+   - `RateLimiter = { check(key: string): Promise<RateLimitResult> }`
+   - `RateLimitResult = { success: boolean, limit: number, remaining: number, reset: number /* epoch ms */ }`
+
+2. **Storage backend dispatch** —— `lib/rate-limit/backend.ts`
+   - 启动时检测 `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` 是否齐全
+   - 齐全 → Upstash backend
+   - 缺失 → in-memory Map fallback（带 `console.warn("[rate-limit] in-memory backend; not safe for production")`，警告只在首次创建时打 1 次）
+   - **不要** silent fallback：env 缺失就要 warn
+
+3. **In-memory backend** —— `lib/rate-limit/memory-backend.ts`
+   - `Map<string, { count: number, windowStart: number }>` per identifier+key
+   - sliding 算法：维护时间戳数组，过期清理（O(n) 每 check，单进程量级 OK）
+   - 不需要持久化、不需要跨 worker 同步（fallback 仅 dev，注释写清楚）
+
+4. **Middleware helper** —— `lib/rate-limit/middleware.ts`
+   - `withRateLimit<T>(limiter, keyFn, handler): (req: Request) => Promise<Response>`
+     - `keyFn: (req: Request) => string` —— caller 自定义（IP / user-id / 组合）；W2 这边**不**默认按 IP（Vercel 部署侧 IP 提取需要 W1 phase 2 做，因为涉及 `request.headers.get("x-forwarded-for")` + 信任 chain，跟 SSRF 边界相关）
+     - 返回的 handler：先 check，blocked → 429 with `Retry-After` header；通过 → 调 original handler + 注入 `X-RateLimit-*` headers
+   - **不**强制 route 必须用这个 helper —— 提供既可
+
+5. **Headers helper** —— `lib/rate-limit/headers.ts`
+   - `rateLimitHeaders(result: RateLimitResult): Record<string, string>`
+   - 返回 `X-RateLimit-Limit` / `X-RateLimit-Remaining` / `X-RateLimit-Reset`（IETF draft `RateLimit-*` 也行，按 W2 偏好选一套）
+   - blocked 时额外 `Retry-After: <seconds>`
+
+6. **测试** —— `tests/rate-limit/*.test.ts`
+   - `memory-backend.test.ts`：每 key 隔离、窗口滚动（fake time）、同一 identifier 不同 key 不互相干扰、不同 identifier 同 key 不干扰
+   - `headers.test.ts`：success / blocked 两种 result 的 header shape
+   - `middleware.test.ts`：mock limiter，blocked → 429 + Retry-After；通过 → 原 response + headers 注入；keyFn 调用次数
+   - **不要测 Upstash backend wire** —— 那需要真实/mock redis，phase 1 范围外
+
+### Nice-to-have（不强求）
+
+- `lib/rate-limit/README.md`：phase 2 wiring guide（W1 后面接的时候少踩坑）
+- `lib/rate-limit/presets.ts`：常用 preset，e.g. `STRICT_PER_IP = { limit: 10, window: "1 m" }`、`GENEROUS_AUTHENTICATED = { limit: 100, window: "1 m" }` —— 让 phase 2 select 而不是 magic number 散落
+
+### 关键设计约束
+
+- **零 route 触碰**：phase 1 不要 import 到任何 `app/**` 文件，CI 会因为没人调用而 tree-shake 警告 —— OK，那是 phase 2 的事
+- **Env var 不要硬编码**：通过 `process.env.UPSTASH_REDIS_REST_URL` 等检测，不写 `if (process.env.NODE_ENV === "production")` 的 fragile 判定
+- **测试不要发真请求**：所有 Upstash 相关测试走 mock；in-memory backend 测试可以真跑（单进程隔离）
+- **类型导出**：`RateLimiter` / `RateLimiterOpts` / `RateLimitResult` 都 export，phase 2 直接 import
+
+### 与现有 codebase 一致性
+
+- Zod schema 用于 `RateLimiterOpts` 入参校验（防 misconfigure），跟 P3 #1 的 boundary 验证风格对齐
+- File size <800 lines / function <50 lines / nesting ≤4 levels（CLAUDE.md 标准）
+- 立 immutability：`check()` 返回新 RateLimitResult 对象，不 mutate 内部 state 暴露给调用方
+
+### 工作流
+
+1. **新建分支**：`git switch main && git pull && git switch -c feat/p3-rate-limit-lib`
+2. **commit 节奏**：建议拆 3-4 个 commit
+   - `chore(deps): add @upstash/ratelimit + @upstash/redis`（package.json + pnpm-lock 单独提）
+   - `feat(rate-limit): in-memory backend + storage dispatch`
+   - `feat(rate-limit): public API + headers + middleware helper`
+   - `test(rate-limit): backend + headers + middleware coverage`
+3. **三门验证**（push 前必跑齐）
+   - `npx tsc --noEmit` → clean
+   - `npx vitest run` → 全绿（新 tests 加入；不要破坏已有 222 cases）
+   - `npx next build` → 23/23 routes 不退化（lib 加 0 byte 到 server bundle，因为 phase 1 没 route 引用）
+4. **push**：`git push -u origin feat/p3-rate-limit-lib`，然后在 window-2.md 末尾追写 ack 段，等 W3 review + merge
+
+### W3 后续
+
+1. monitor `bc1pdrv1c` pattern 已覆盖 `feat/*`，会自动捕获 W2 首 push
+2. review 重点：sliding window 实现正确性 / mock Upstash 没漏 / headers shape 符合 IETF draft / 内存 backend 在 long-running 进程下有清理（无 mem leak）
+3. 三门 + 接口可用性 + 文档清晰度（phase 2 wiring guide 要让 W1 一眼看懂）
+4. review 通过 → merge to main + verdict commit
+5. 不通过 → window-2.md 末尾写明确 changeset
+
+### 与 W1 流水线的隔离保证
+
+- W1 当前 `worktree-capcut-link` 干的事：`lib/capcut-compiler/transitions.ts` + `build.ts` + `app/api/compile-capcut/route.ts`
+- W2 phase 1 干的事：`lib/rate-limit/**` + `tests/rate-limit/**` + `package.json` + `pnpm-lock.yaml`
+- 零 overlap，零 conflict。两边可以完全并走。
+- 唯一 shared 文件：`package.json` —— W1 那边如果也加了 dep（不太可能，CapCut 任务清单里没装包步骤），merge 时 conflict 容易解决（依赖 list 是文本 union）
+
+> **W2 现在可以动手** —— idle 期间 monitor `baox0x2yu` 会看到 main 推 verdict commit 时触发，W2 拉新 + 读本启动指令 + 开新分支。
