@@ -5,6 +5,7 @@ import ffmpeg from "fluent-ffmpeg";
 import { mkdir, readFile, rm } from "fs/promises";
 import { join } from "path";
 import { tmpdir } from "os";
+import { UrlAllowlistError, type UrlAllowlist } from "@/lib/url-allowlist";
 
 if (ffmpegStatic) ffmpeg.setFfmpegPath(ffmpegStatic);
 if (ffprobeStatic?.path) ffmpeg.setFfprobePath(ffprobeStatic.path);
@@ -19,12 +20,27 @@ export type ExtractResult = {
 /**
  * 从远程 URL 下载视频到 /tmp，抽 N 帧 + 抽音轨。
  *
+ * **SSRF 防御（P3 #2 phase 2）**：函数入口 `opts.urlAllowlist.check(videoUrl)`，
+ * deny → 抛 `UrlAllowlistError`，未发起任何 fetch / workDir 创建。
+ *
+ * @param videoUrl   远程视频 URL
+ * @param frameCount 抽帧数量（default 6）
+ * @param opts.urlAllowlist  **必填** SSRF allowlist 实例（W3 phase 2 verdict A：TS
+ *   编译期强制 caller 传，避免漏防御）
+ *
  * Returns a workspace handle. 调用方使用完毕后必须调 cleanupWorkspace。
  */
 export async function extractFramesAndAudio(
   videoUrl: string,
-  frameCount = 6,
+  frameCount: number,
+  opts: { urlAllowlist: UrlAllowlist },
 ): Promise<ExtractResult> {
+  // SSRF 防御：进入工作目录创建 / 网络请求前先 check
+  const allowlistResult = opts.urlAllowlist.check(videoUrl);
+  if (!allowlistResult.ok) {
+    throw new UrlAllowlistError(allowlistResult.reason, videoUrl);
+  }
+
   const id = `vr-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const workDir = join(tmpdir(), id);
   await mkdir(workDir, { recursive: true });

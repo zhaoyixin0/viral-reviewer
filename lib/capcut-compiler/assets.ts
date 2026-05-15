@@ -4,6 +4,7 @@ import ffmpeg from "fluent-ffmpeg";
 import { mkdir, readFile, writeFile, rm } from "fs/promises";
 import { join } from "path";
 import { tmpdir } from "os";
+import { UrlAllowlistError, type UrlAllowlist } from "@/lib/url-allowlist";
 
 if (ffmpegStatic) ffmpeg.setFfmpegPath(ffmpegStatic);
 if (ffprobeStatic?.path) ffmpeg.setFfprobePath(ffprobeStatic.path);
@@ -23,19 +24,37 @@ type DownloadFailure = { index: number; status: number | "fetch_error"; message:
  * 下载 N 个用户视频 + 可选下载 BGM 文件。
  *
  * 行为：
+ *   - **SSRF 防御（P3 #2 phase 2）**：函数入口对 `[...videoUrls, ...(bgmUrl ? [bgmUrl] : [])]`
+ *     全量过 `opts.urlAllowlist.check()`，任一 deny → 抛 `UrlAllowlistError`；
+ *     fail-fast 在任何 fetch 之前，不浪费并发 N-1 个网络请求
  *   - 视频并发下载到 `input-${i}.mp4`，BGM 与视频组并行
  *   - 任一视频或 BGM 失败 → 抛错并标注失败 index，避免 partial 状态进入下游 build
  *     （编译每段都要齐才能产出 zip）
  *   - 单个失败原因写 console.error 带 index，主错误也带 index 列表
  *
  * 调用方用完必须调 cleanupAssets。
+ *
+ * @param videoUrls 待下载视频 URL 数组（>=1）
+ * @param bgmUrl    可选 BGM URL
+ * @param opts.urlAllowlist  **必填**——SSRF allowlist 实例（W3 phase 2 verdict A
+ *   "required-param tightening"：TS 编译期强制 caller 传 allowlist，杜绝漏防御）
  */
 export async function prepareAssets(
   videoUrls: string[],
-  bgmUrl?: string,
+  bgmUrl: string | undefined,
+  opts: { urlAllowlist: UrlAllowlist },
 ): Promise<AssetWorkspace> {
   if (!Array.isArray(videoUrls) || videoUrls.length === 0) {
     throw new Error("prepareAssets: videoUrls must be a non-empty array");
+  }
+
+  // SSRF 防御：函数入口 batch check，任一 deny 直接抛错（任何 fetch 都未发起）
+  const urlsToCheck = bgmUrl ? [...videoUrls, bgmUrl] : videoUrls;
+  for (const url of urlsToCheck) {
+    const result = opts.urlAllowlist.check(url);
+    if (!result.ok) {
+      throw new UrlAllowlistError(result.reason, url);
+    }
   }
 
   const id = `capcut-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;

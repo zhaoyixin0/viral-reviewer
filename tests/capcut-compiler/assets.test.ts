@@ -3,6 +3,22 @@ import { readFile } from "fs/promises";
 import { basename } from "path";
 import { tmpdir } from "os";
 import { cleanupAssets, prepareAssets } from "@/lib/capcut-compiler/assets";
+import {
+  createUrlAllowlist,
+  VERCEL_BLOB_PRESET,
+  UrlAllowlistError,
+} from "@/lib/url-allowlist";
+
+/**
+ * 测试 fixture URL 域 `example.test` —— P3 #2 phase 2 后 prepareAssets 入口 SSRF
+ * check 需要 allowlist 实例。这里用宽松 preset 让既有 fixture 通过；新增 SSRF
+ * deny 路径在 tests/url-allowlist/*.test.ts 已覆盖。
+ */
+const PERMISSIVE_TEST_ALLOWLIST = createUrlAllowlist({
+  allowedSchemes: ["https:"],
+  allowedHosts: [{ suffix: ".example.test" }],
+  blockPrivateIps: false,
+});
 
 /**
  * Task 7：prepareAssets 多视频并发下载用例。
@@ -50,16 +66,18 @@ describe("prepareAssets (Task 7 multi-video)", () => {
   });
 
   it("rejects empty videoUrls", async () => {
-    await expect(prepareAssets([])).rejects.toThrow(
-      "videoUrls must be a non-empty array",
-    );
+    await expect(
+      prepareAssets([], undefined, { urlAllowlist: PERMISSIVE_TEST_ALLOWLIST }),
+    ).rejects.toThrow("videoUrls must be a non-empty array");
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it("downloads a single video to input-0.mp4 under a fresh workDir", async () => {
     fetchMock.mockResolvedValueOnce(makeOkResponse(TEXT_BYTES("video-0")));
 
-    const ws = await prepareAssets(["https://example.test/a.mp4"]);
+    const ws = await prepareAssets(["https://example.test/a.mp4"], undefined, {
+      urlAllowlist: PERMISSIVE_TEST_ALLOWLIST,
+    });
     trackedWorkDirs.push(ws.workDir);
 
     expect(ws.workDir.startsWith(tmpdir())).toBe(true);
@@ -83,7 +101,9 @@ describe("prepareAssets (Task 7 multi-video)", () => {
       "https://example.test/v.mp4?idx=2",
     ];
 
-    const ws = await prepareAssets(urls);
+    const ws = await prepareAssets(urls, undefined, {
+      urlAllowlist: PERMISSIVE_TEST_ALLOWLIST,
+    });
     trackedWorkDirs.push(ws.workDir);
 
     expect(ws.videoPaths.map((p) => basename(p))).toEqual([
@@ -109,11 +129,15 @@ describe("prepareAssets (Task 7 multi-video)", () => {
       });
 
       await expect(
-        prepareAssets([
-          "https://example.test/v.mp4?idx=0",
-          "https://example.test/v.mp4?idx=1",
-          "https://example.test/v.mp4?idx=2",
-        ]),
+        prepareAssets(
+          [
+            "https://example.test/v.mp4?idx=0",
+            "https://example.test/v.mp4?idx=1",
+            "https://example.test/v.mp4?idx=2",
+          ],
+          undefined,
+          { urlAllowlist: PERMISSIVE_TEST_ALLOWLIST },
+        ),
       ).rejects.toThrow(/Failed to download videos: #1/);
 
       const calls = errSpy.mock.calls.map((c) => String(c[0]));
@@ -136,11 +160,15 @@ describe("prepareAssets (Task 7 multi-video)", () => {
       });
 
       await expect(
-        prepareAssets([
-          "https://example.test/v.mp4?idx=0",
-          "https://example.test/v.mp4?idx=1",
-          "https://example.test/v.mp4?idx=2",
-        ]),
+        prepareAssets(
+          [
+            "https://example.test/v.mp4?idx=0",
+            "https://example.test/v.mp4?idx=1",
+            "https://example.test/v.mp4?idx=2",
+          ],
+          undefined,
+          { urlAllowlist: PERMISSIVE_TEST_ALLOWLIST },
+        ),
       ).rejects.toThrow(/#0, #2 \(2\/3\)/);
 
       const errMsgs = errSpy.mock.calls.map((c) => String(c[0]));
@@ -162,10 +190,14 @@ describe("prepareAssets (Task 7 multi-video)", () => {
       });
 
       await expect(
-        prepareAssets([
-          "https://example.test/v.mp4?idx=0",
-          "https://example.test/v.mp4?idx=1",
-        ]),
+        prepareAssets(
+          [
+            "https://example.test/v.mp4?idx=0",
+            "https://example.test/v.mp4?idx=1",
+          ],
+          undefined,
+          { urlAllowlist: PERMISSIVE_TEST_ALLOWLIST },
+        ),
       ).rejects.toThrow(/#0/);
 
       const errMsgs = errSpy.mock.calls.map((c) => String(c[0]));
@@ -186,6 +218,7 @@ describe("prepareAssets (Task 7 multi-video)", () => {
     const ws = await prepareAssets(
       ["https://example.test/v.mp4"],
       "https://example.test/bgm.mp3",
+      { urlAllowlist: PERMISSIVE_TEST_ALLOWLIST },
     );
     trackedWorkDirs.push(ws.workDir);
 
@@ -208,6 +241,7 @@ describe("prepareAssets (Task 7 multi-video)", () => {
         prepareAssets(
           ["https://example.test/v.mp4"],
           "https://example.test/bgm.mp3",
+          { urlAllowlist: PERMISSIVE_TEST_ALLOWLIST },
         ),
       ).rejects.toThrow(/Failed to download BGM/);
 
@@ -220,5 +254,104 @@ describe("prepareAssets (Task 7 multi-video)", () => {
     } finally {
       errSpy.mockRestore();
     }
+  });
+});
+
+/**
+ * P3 #2 phase 2：`prepareAssets` 入口 SSRF allowlist check 覆盖。
+ *
+ * 全部用真实 `VERCEL_BLOB_PRESET`（与生产路径一致），不 mock fetch ——
+ * deny 必须在任何 fetch 发起前发生，断言 `fetchMock` zero call 守住 fail-fast。
+ */
+describe("prepareAssets · P3 #2 phase 2 SSRF allowlist gate", () => {
+  let fetchMock: ReturnType<typeof vi.fn>;
+  const VERCEL_BLOB_ALLOWLIST = createUrlAllowlist(VERCEL_BLOB_PRESET);
+
+  beforeEach(() => {
+    fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("throws UrlAllowlistError with reason=invalid_url when videoUrl unparseable", async () => {
+    await expect(
+      prepareAssets(["not-a-url"], undefined, {
+        urlAllowlist: VERCEL_BLOB_ALLOWLIST,
+      }),
+    ).rejects.toMatchObject({
+      name: "UrlAllowlistError",
+      reason: "invalid_url",
+      url: "not-a-url",
+    });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("throws UrlAllowlistError with reason=scheme_denied when videoUrl uses http://", async () => {
+    await expect(
+      prepareAssets(["http://x.public.blob.vercel-storage.com/a.mp4"], undefined, {
+        urlAllowlist: VERCEL_BLOB_ALLOWLIST,
+      }),
+    ).rejects.toMatchObject({
+      name: "UrlAllowlistError",
+      reason: "scheme_denied",
+    });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("throws UrlAllowlistError with reason=private_ip when videoUrl host is 127.0.0.1", async () => {
+    await expect(
+      prepareAssets(["https://127.0.0.1/a.mp4"], undefined, {
+        urlAllowlist: VERCEL_BLOB_ALLOWLIST,
+      }),
+    ).rejects.toMatchObject({
+      name: "UrlAllowlistError",
+      reason: "private_ip",
+    });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("throws UrlAllowlistError with reason=host_denied when videoUrl host not in preset", async () => {
+    await expect(
+      prepareAssets(["https://evil.com/a.mp4"], undefined, {
+        urlAllowlist: VERCEL_BLOB_ALLOWLIST,
+      }),
+    ).rejects.toMatchObject({
+      name: "UrlAllowlistError",
+      reason: "host_denied",
+      url: "https://evil.com/a.mp4",
+    });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("fail-fast: 1st denied URL aborts before checking next URLs", async () => {
+    await expect(
+      prepareAssets(
+        [
+          "https://evil-1.com/a.mp4",
+          "https://x.public.blob.vercel-storage.com/b.mp4",
+        ],
+        undefined,
+        { urlAllowlist: VERCEL_BLOB_ALLOWLIST },
+      ),
+    ).rejects.toBeInstanceOf(UrlAllowlistError);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("throws on denied bgmUrl even if all videoUrls pass", async () => {
+    await expect(
+      prepareAssets(
+        ["https://x.public.blob.vercel-storage.com/v.mp4"],
+        "https://evil.com/bgm.mp3",
+        { urlAllowlist: VERCEL_BLOB_ALLOWLIST },
+      ),
+    ).rejects.toMatchObject({
+      name: "UrlAllowlistError",
+      reason: "host_denied",
+      url: "https://evil.com/bgm.mp3",
+    });
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 });

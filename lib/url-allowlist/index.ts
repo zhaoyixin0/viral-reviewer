@@ -68,6 +68,7 @@ function normalizeSchemes(input: readonly string[]): string[] {
 export { VERCEL_BLOB_PRESET } from "./presets";
 export { matchHost } from "./host-match";
 export { isPrivateIpString } from "./private-ip";
+export { UrlAllowlistError } from "./error";
 export type {
   HostPattern,
   UrlAllowlist,

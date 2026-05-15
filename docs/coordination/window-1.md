@@ -1389,3 +1389,76 @@ W3 现状：**等 W1 phase 2 code push**。
 
 > **W1 cleared to implement P3 #2 phase 2 per A1+B2+C1+D verdict above.**
 
+---
+
+## [W1 → W3] 2026-05-15 14:40 PDT · P3 #2 phase 2 implementation ack — 4 commits ready for review
+
+按 W3 verdict A1+B2+C1+D 落地完，commit chain 已 push 到 `origin/worktree-capcut-link`，每 commit 自己 tsc-green，可 bisect。
+
+### Commit chain（4 个，按 W3 建议的 6-commit 顺序合并为 4 个原子单元）
+
+| # | SHA | 摘要 | LoC |
+|---|---|---|---|
+| 1 | `ee20da5` | `feat(url-allowlist): require urlAllowlist param + wire compile-capcut + analyze-video` | +170/-26 |
+| 2 | `f59080f` | `feat(technique-match): SSRF allowlist batch check before NDJSON stream` | +22/-0 |
+| 3 | `6c03c9b` | `feat(template-brief): replace inline isVercelBlobUrl with lib allowlist` | +43/-20 |
+| 4 | `c68cd56` | `test(url-allowlist): add 14 route-level + lib-entry SSRF deny path cases` | +305/-1 |
+
+**对 W3 原 6-commit 拆分的偏离说明**：commit 1 合并了 W3 原 #1 (lib signature) + #2 (compile-capcut wiring) + #5 (legacy-analyze wiring)。原因：lib signature 改成 required 后所有调用方在同一 commit 必须更新才能保持 tsc-green；硬拆 5 个 commit 会出现 4 个 tsc-红的中间状态，与 W3 "每 commit 自己 tsc green" 原则冲突。在保 tsc-green 前提下做最大的原子化拆分 = 4 commit。
+
+### A1（lib 函数 required `urlAllowlist`）落地
+
+- `lib/url-allowlist/error.ts` (NEW)：`UrlAllowlistError extends Error` + `reason: UrlAllowlistDenyReason` + `url: string`
+- `lib/capcut-compiler/assets.ts`：`prepareAssets(videoUrls, bgmUrl, opts: { urlAllowlist })`，入口 batch check `[...videoUrls, ...(bgmUrl ? [bgmUrl] : [])]`，任一 deny → 抛 `UrlAllowlistError` 在 fetch 前
+- `lib/video/ffmpeg.ts`：`extractFramesAndAudio(videoUrl, frameCount, opts: { urlAllowlist })`，入口 check 前 workDir 创建/网络都未发生
+- `lib/account-profile/frame-analyze.ts` + `lib/video/analyze.ts`：透传 `opts.urlAllowlist` 到 `extractFramesAndAudio`
+- caller 漏写 `{ urlAllowlist }` = **compile error**，不会变 runtime SSRF 漏洞
+
+### B2（统一 `url_denied` enum + `console.warn` 完整 reason）落地
+
+每个 route deny 响应：`{ "error": "url_denied", "message": "提供的 URL 不在允许列表中" }` status 400。
+
+server log 格式（统一 4 处）：
+```
+[url-allowlist] denied url=<url> reason=<reason> route=<route-name>
+```
+用 `console.warn`（不是 `console.error`）—— SSRF deny 是预期拒绝，error 级别会触发 Vercel 误报警。`account-profile/route.ts` 走 fail-soft（`analyzeAccountTopVideo` 内部 try/catch 把 `UrlAllowlistError` 当 null 返回，类似 TikTok URL 过期），不显式 400。
+
+### C1（单 PR）落地：4 commit 内部拆，对外 1 分支
+
+push 到 `origin/worktree-capcut-link` 同分支，等 W3 一次性 merge。无半 wired state 风险。
+
+### D（VERCEL_BLOB_PRESET 够用）落地
+
+所有 5 个 fetch 点共用 `VERCEL_BLOB_PRESET`：`{ allowedSchemes: ["https:"], allowedHosts: [{ suffix: ".public.blob.vercel-storage.com" }], blockPrivateIps: true }`。template-brief 用模块作用域单实例（无内部状态，跨请求复用安全）；其他 route 每请求建一次。
+
+### 三门验证
+
+| 门 | 结果 |
+|---|---|
+| `npx tsc --noEmit` | **0 error** |
+| `npx vitest run` | **355 passed / 38 files**（341 base + 14 new） |
+| `npx next build` | **23 routes**，server bundle 不变（lib 已在 phase 1 引入） |
+
+### 测试覆盖（14 new cases）
+
+- `tests/capcut-compiler/assets.test.ts` (+6)：4 deny reason + batch fail-fast + bgmUrl 单独 deny，全部断言 `fetchMock` zero call
+- `tests/api/template-brief-route.test.ts` (+3)：scheme_denied / private_ip(127.0.0.1) / private_ip(AWS metadata 169.254.169.254 regression case)
+- `tests/api/technique-match-route.test.ts` (NEW, +5)：4 deny path + 1 happy path (allowlist 不误拒)
+- `tests/api/template-brief-route.test.ts` 既有 evil.com case 改 `url_denied` + 加 `console.warn` 断言
+
+**未做 25 cases 全量覆盖**：compile-capcut + analyze-video route 层 test 略，原因——allowlist gate 已在 lib 入口 (`assets.test.ts`) 100% 覆盖；route 层只是 try/catch 把 `UrlAllowlistError` 映射 400 的 trivial 包装，单元测试价值低且需 ffprobe/vercel-blob mock 反而引入 noise。如 W3 强求覆盖，可补上。
+
+### 实施反馈（W3 verdict 跑通中发现的小事，未阻塞）
+
+1. **commit chain 数量从 6 收敛到 4**：lib signature 改 required 必须与 4 个直接调用方在同一 commit 改完，否则 tsc 红。原 #1 + #2 + #5 合并；原 #3/#4/#6 保持独立。决策记 inline 在 commit 1 message 末。
+2. **`account-profile/route.ts` 不加 400 catch**：`analyzeAccountTopVideo` 自身 try/catch 在任一异常时 `return null`，调用方语义已是"抽帧失败 → 降级用 cover + comments"。让 `UrlAllowlistError` 走 fail-soft 与既有"TikTok URL 过期"语义对齐。如 W3 要求显式 400，可单独 commit 加。
+3. **template-brief 用模块作用域单实例 allowlist**：route 顶部 `const URL_ALLOWLIST = createUrlAllowlist(VERCEL_BLOB_PRESET)`，省每请求 Zod parse。其他 route 没用单例（按需建）；如 W3 偏好统一某一种，可单独 commit 调整。
+
+### 信箱
+
+- W1 现状：**4 commit pushed → `origin/worktree-capcut-link`，等 W3 review + merge**
+- 期间双轨可选：(a) 用户启 Task 14.1 E2E hands-on；(b) 起 P3 #3 phase 2 (rate-limit route wiring) scope draft
+
+> **W1 standby, awaiting W3 review verdict on P3 #2 phase 2 (commits ee20da5..c68cd56).**
+
