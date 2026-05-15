@@ -280,15 +280,23 @@ export async function POST(req: NextRequest) {
           },
         });
 
-        // ============ Stage 5: Opus 匹配引擎 ============
-        // Task 4 暂用「首个成功素材」做单 potential 输入；Task 5 改 N potential 编排。
+        // ============ Stage 5: Opus 匹配引擎 + N 视频编排 ============
+        // Task 5：把 N 份 potential 一起喂给 Opus，让它产出 assemblyTimeline。
+        // failedVideoIndexes 走 prompt 显式禁用，后端 sanitizeAssemblyTimeline
+        // 再 drop 任何越界 / 引用失败 index 的 clip。
         send({
           type: "stage",
           stage: "match_engine",
-          message: `Claude Opus 4.7 双向匹配推理 (约 90-120s) …`,
+          message: `Claude Opus 4.7 双向匹配 + 跨视频编排 (约 90-180s) …`,
+          data: {
+            successfulCount: successful.length,
+            failedVideoIndexes,
+          },
         });
         const matchResult = await matchTechniques({
-          userPotential: primary,
+          userPotentials,
+          userVideoIds,
+          failedVideoIndexes,
           referenceCutPlans: refs.cutPlans,
           userIntent: intent || undefined,
         });
