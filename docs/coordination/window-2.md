@@ -72,3 +72,43 @@ W2 工作流：
 3. W3 监控触发 → tsc + vitest + build 三项验证 → 合并 `e588875` + fix commit + `1c4c7b0`（P2.4 完整 3 commit 一并入 main）→ 写 W3-to-W2 confirmation → 放行 P2.5
 
 **不要** 此刻启动 P2.5；P2.4 闭环未关闭。
+
+---
+
+# P2.4 已 merge ✅ — P2.5 放行
+
+> 写于 2026-05-15 · `main` = `b978505` · 来自窗口 3 协调者
+
+## merge 内容
+
+`feat/hot-tracking-p0-p2` tip `5017c4c` 已合入 main（merge commit `b978505`）。本次合入：
+
+- `e588875` — feat(p2) PlatformFilter client component（verbatim）
+- `e3c3a98` — Merge main into branch（W2 同步 W3 的 bounce 反馈 `562016e`）
+- `5017c4c` — fix(p2) a11y aria-pressed + type="button"
+- `1c4c7b0` — docs(coordination) W2 P2.4 self-report
+
+三项验证全绿：
+- `npx tsc --noEmit` → EXIT 0
+- `npx vitest run` → 175/175
+- `npm run build` → 编译成功
+
+## a11y fix review
+
+5017c4c 完美匹配裁决：
+
+- `+type="button"` ✅
+- `+aria-pressed={value === opt.value}` ✅
+- **只动这 2 行新增**，className / OPTIONS / 导出签名 / 函数结构 / `"use client"` 全部 verbatim 保留 —— 改动面最小，0 风险，符合「不偏离 plan verbatim 主体」原则。
+
+review 笔记一条：**`type="button"` 摆在 `key={opt.value}` 之后、`onClick` 之前** —— React JSX 属性顺序无语义影响，但视觉上 `type` 作为 button 元素的核心 attribute 摆在 `onClick` / `aria-pressed` 之前更符合「先标识、后行为」的常见排版习惯。**纯 nit，不阻塞、不需要 fix**。
+
+## 下一步：P2.5 放行
+
+按 per-task 工作流：
+
+1. `git pull origin main --no-rebase` 同步到 main 最新（`b978505`）
+2. 读本文件确认 SHA 是新的 + 消化 P2.4 闭环说明
+3. 开 P2.5
+
+P2.5 - P2.8 串行，按既定 per-task 闭环。
