@@ -302,6 +302,12 @@ export type AnalyzePotentialInput = {
     userIntent?: string;
     userTopic?: string;
   };
+  /**
+   * Gemini Files API processing 状态轮询最大次数（每次间隔 5s）。
+   * 默认 60 次（≈300s）保留旧行为；多视频路由可下调到 24（≈120s）
+   * 让卡死视频快速 fail，避免 N=6 并行时拖累整批 wall-clock。
+   */
+  maxPollAttempts?: number;
 };
 
 export async function analyzeMaterialPotential(
@@ -310,6 +316,7 @@ export async function analyzeMaterialPotential(
   const ai = getClient();
   const model = process.env.GEMINI_VIDEO_MODEL || "gemini-2.5-pro";
   const norm = makeTimeCodeNormalizer(input.meta.fps);
+  const maxPollAttempts = input.maxPollAttempts ?? 60;
 
   // 上传一次
   const uploaded = await ai.files.upload({
@@ -323,7 +330,9 @@ export async function analyzeMaterialPotential(
     let attempts = 0;
     while (file.state === "PROCESSING") {
       attempts++;
-      if (attempts > 60) throw new Error("Gemini file processing timed out");
+      if (attempts > maxPollAttempts) {
+        throw new Error("Gemini file processing timed out");
+      }
       await new Promise((r) => setTimeout(r, 5000));
       file = await ai.files.get({ name: file.name as string });
     }

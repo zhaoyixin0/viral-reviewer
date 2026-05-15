@@ -50,7 +50,7 @@ export default function AnalyzePage() {
               loading={stream.loading}
               error={stream.error}
               stages={stream.stages}
-              partial={stream.partial}
+              partials={stream.partials}
               full={stream.full}
               videoUrl={stream.videoUrls?.[0] ?? null}
               videoFileName={stream.videoFileNames?.[0] ?? null}
