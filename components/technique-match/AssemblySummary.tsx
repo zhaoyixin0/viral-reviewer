@@ -2,37 +2,13 @@
 
 import { Layers, ArrowRight } from "lucide-react";
 import type { AssemblyTimeline } from "@/lib/technique-matching/types";
+import { transitionLabel } from "@/lib/transitions-labels.client";
 
 type Props = {
   timeline: AssemblyTimeline;
   /** 与上传全集对齐的视频文件名数组（用于显示「素材N · xxx.mp4」），可缺。 */
   videoFileNames?: ReadonlyArray<string | null | undefined>;
 };
-
-/**
- * 编排枚举 → 中文短标签。catalog 定义在 `lib/capcut-compiler/transitions.ts`，
- * 这里只做 UI 展示用的最小映射，不引 server 侧 module 到 client bundle。
- * 未知类型回退到 type 原文，避免悄悄掩盖 LLM 自由发挥。
- */
-const TRANSITION_LABEL: Record<string, string> = {
-  hard_cut: "硬切",
-  cross_dissolve: "叠化",
-  fade: "叠化",
-  whip_pan: "Slick Twist",
-  match_cut: "替换",
-  flash: "流行切换",
-  push_in_transition: "推近",
-  blur: "模糊",
-  zoom_carousel: "缩放轮播",
-  wispy_fade: "Wispy Fade",
-  flip: "翻转视角",
-  glitch: "色差故障",
-  distort: "幻影波动",
-};
-
-function transitionLabel(type: string): string {
-  return TRANSITION_LABEL[type] ?? type;
-}
 
 function formatRange(startSec: number, endSec: number): string {
   return `${startSec.toFixed(1)}s – ${endSec.toFixed(1)}s`;

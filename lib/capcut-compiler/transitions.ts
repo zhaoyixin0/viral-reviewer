@@ -18,28 +18,14 @@
 /**
  * 编排层（Opus assemblyTimeline）输出的转场类型枚举。
  *
- * 核心 5 个（plan v4.1-review 签字 / Opus prompt 列举）：
- *   cross_dissolve / fade / whip_pan / match_cut / hard_cut
- *
- * 0514 真机扩展（Opus 可能产出，给精确映射避免降级）：
- *   flash / push_in_transition / blur / zoom_carousel / wispy_fade / flip / glitch / distort
+ * Task 14：union 定义已上移到 `lib/transitions-labels.client.ts` —— 客户端
+ * UI label map 和服务端 catalog 引同一源，`Record<AssemblyTransitionType, ...>`
+ * 守住编译期同步。此处 re-export 保持既有 `import { AssemblyTransitionType }
+ * from "@/lib/capcut-compiler/transitions"` 调用方零破坏。
  *
  * Opus 可能自由发挥输出其它字符串 —— resolveTransitionConfig 走 fallback。
  */
-export type AssemblyTransitionType =
-  | "cross_dissolve"
-  | "fade"
-  | "whip_pan"
-  | "match_cut"
-  | "hard_cut"
-  | "flash"
-  | "push_in_transition"
-  | "blur"
-  | "zoom_carousel"
-  | "wispy_fade"
-  | "flip"
-  | "glitch"
-  | "distort";
+export type { AssemblyTransitionType } from "@/lib/transitions-labels.client";
 
 /**
  * 单种转场对应的 CapCut 资源配置。
