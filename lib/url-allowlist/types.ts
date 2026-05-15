@@ -33,7 +33,13 @@ export type UrlAllowlistDenyReason =
   | "invalid_url"
   | "scheme_denied"
   | "host_denied"
-  | "private_ip";
+  | "private_ip"
+  // Phase 3 (DNS rebinding 防御): hostname DNS resolve 失败（NXDOMAIN /
+  // SERVFAIL / timeout / 空 records 等)。transient,caller 可指数退避重试。
+  | "dns_resolve_failed"
+  // Phase 3: DNS 解析到的 IP 命中私段（含 IPv6 / IPv4-mapped IPv6）。
+  // **security event**,caller 必须 log / alert,绝不重试。
+  | "resolved_private_ip";
 
 export type UrlAllowlistResult =
   | { ok: true; parsed: URL }
