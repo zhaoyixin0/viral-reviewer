@@ -2,7 +2,8 @@
 
 > Living document。窗口 3（主仓库 `main`）的协调者运行手册 + 进度快照。
 > compact / 换机器后读这份文件即可恢复协调工作模式。
-> 最后更新：**2026-05-14 收工**（当天三窗口并行会话结束）
+> 最后更新：**2026-05-15 回填**（窗口 3 在另一台机器恢复，pull 同步 `main` = `6986166` 后，
+> 据 `docs/coordination/` + git 历史重建昨日公司机器上推进的进度）
 
 ---
 
@@ -66,37 +67,48 @@
   跨窗口依赖打架）、production 风险 / secret
 - review 发现 Critical/High → 不打扰用户，直接写 `docs/coordination/window-<N>.md`（见上）
 
-## 当前进度快照（2026-05-14 收工）
+## 当前进度快照（2026-05-15 回填 · `main` = `6986166`）
 
-`main` HEAD：`e6d136e`（已全部 push 到 GitHub）。两个 worktree 分支都已完整 merge 进 main。
+`main` HEAD：`6986166`（"Merge W2: P2 release confirmation"，已全部 push 到 GitHub）。
+昨日（2026-05-14 公司机器）三窗口并行又推进了 31 个 commit，下面是回填后的实际状态。
 
-### 窗口 1 — CapCut setup-script link fix —— ✅ 基本完成
-- 分支：`worktree-capcut-link`，tip `797a6e2`，**已完整 merge 进 main**
-- 状态：**7 个 task 全部实施并 merge,Windows 实测通过(不再弹 "Couldn't link")**
-- plan：`docs/superpowers/plans/2026-05-13-capcut-setup-script-link-fix.md`（全部 ✅）
-- 成果（都在 main）：
-  - `lib/capcut-compiler/setup-scripts/`（tokens.ts + index.ts 三个 setup 脚本常量）
-  - `lib/capcut-compiler/build.ts`（占位 token + 7 组 draft_materials）
-  - `lib/capcut-compiler/package.ts`（setup 脚本打进 zip 根 + README 重写）
-  - `app/api/compile-capcut/route.ts`（文件名贯穿管线 + Zod 路径分隔符 guard + 通用 500）
-  - 测试：build / package / sanitize / setup-scripts(真实执行) 四套
-  - `docs/HANDOVER-CAPCUT-LINK-2026-05-13.md` 末尾 "Findings" 章节（根因 + 方案 + 实测）
-  - `scripts/probe-capcut-zip.ts`（绕开 Gemini/Opus 直接生成测试 zip）
-- **唯一剩余**：macOS 真机补测（`setup.sh`）—— 目前由 CI 执行测试 `tests/capcut-compiler/setup-scripts.test.ts` 覆盖。窗口 1 明天**无新任务**,除非要做 macOS 实测或新的 CapCut 功能。
+> **当前没有可 merge 的东西** —— 两个窗口都在 task 内部、各自挂了 WIP 分支并明确标注「勿 merge」。
+> 监控模式照常运行，等到完成态 commit 再走标准流程。
 
-### 窗口 2 — hot-tracking / 周热点 —— 🔧 实施进行中,恢复点 **P1.8 checkpoint 2**
-- 分支：`feat/hot-tracking-p0-p2`,**已完整 merge 进 main（含到 P1.8 checkpoint 1）**,分支 tip behind main 1（`e6d136e` merge commit）
-- 状态：**P0 + P1 数据层 + spec v4.1 + plan 重写 + P1.8 checkpoint 1 全部 merge。恢复点 = P1.8 checkpoint 2**
-- spec：`docs/superpowers/specs/2026-05-13-hot-tracking-design.md`（**v4.1**,经 architect v1-v4 共 5 轮 review）
-- plan：`docs/superpowers/plans/2026-05-13-hot-tracking-implementation.md`（按 v4.1 重写,经 architect plan review 两轮,残留项已修）
-- 已 merge 的实施成果（都在 main）：
-  - P0：`lib/research/topic-research.ts` 30 天发布窗口过滤
-  - P1 数据层：`lib/trending/{types,velocity,snapshot-store}.ts`、`lib/utils/iso-week.ts`、`scripts/probe-tiktok-trends.ts`（P1.7 probe）
-  - **P1.8 checkpoint 1**：v4 schema type 层 —— `TrendingHashtag` 类型 + `TrendingSnapshot.trendingHashtags` + `ViralVideo.trendingContext?` + loose Zod 同步（commit `4331835`）
-- **恢复点 = P1.8 checkpoint 2**：`normalizeTikTokTrendingHashtag` 加进 `lib/apify/normalize.ts` + 新建 `tests/apify/normalize-trending-hashtag.test.ts`（plan 里 `## Task P1.8` 的 Step 7-11,字段映射表在那,用 P1.7 probe 实测字段）
-- **之后的工作**：P1.9 `scrapeTikTokTrendingHashtags`(Stage 1) → P1.10/P1.11(ig-hot-hashtags / topic-classifier) → P1.12 `fetchTikTokTwoStage` 两阶段编排 → P1.13 cron route → P1.14 vercel.ts → P1.15 `computeHashtagVelocity` → P2 看板
-- architect 已确认：P1.8-P1.15 核心编排可信可连续实施；P2.2/P2.3/P2.5/P2.6 的 Step 代码已在 plan 修订里重写到位。窗口 2 建议:P1 段做完、进 P2 前再跟窗口 3 确认一次 P2 完全放行(architect C1 复审已覆盖,属保险确认)
-- ⚠️ **P1.1 的 Vercel 部署前置是 deploy-time gate**:viral-reviewer 在 Vercel 账户下还没 project,cron 套餐验证 + `ADMIN_TRIGGER_SECRET` 配置要首次部署后才能做 —— 不阻塞 P1.2-P1.14 代码实施
+### 窗口 1 — ✅ CapCut setup-script 完成 → 🔧 新 initiative: multi-video technique-match
+- 分支：`worktree-capcut-link`，origin tip `adf2011`
+- **CapCut setup-script link fix —— ✅ 完成**：7 个 task 全部 merge，Windows 实测通过（不再弹 "Couldn't link"）。
+  唯一剩余是 macOS `setup.sh` 真机补测，目前由 CI 测试 `tests/capcut-compiler/setup-scripts.test.ts` 覆盖。
+- **新 initiative：多视频 technique-match（AI 跨视频编排剪辑）**
+  - plan：`docs/superpowers/plans/2026-05-14-multi-video-technique-match.md`（**Task 1–14**，端到端串行）
+  - **Task 1（契约冻结 + 共享类型/schema）—— ✅ 已 merge（`b6c5e5b`）**：经过一次 bounce —— 窗口 3 review 发现
+    `route.ts` 不能直接 export zod schema（`.next/types` TS2344），窗口 1 改为抽到同目录 `schema.ts`，三项验证全绿后 merge。
+  - **Task 2（CapCut 转场结构逆向探测 PROBE）—— 🔧 WIP，勿 merge**：origin tip `adf2011`，commit 标 `[WIP — 勿 merge]`。
+    已产出 `docs/CAPCUT-TRANSITION-STRUCTURE.md` + `scripts/probe-capcut-transitions.ts`，逆向出 transition material 字段结构、
+    转场挂在前导 segment 的 `extra_material_refs`、时间轴语义是「`is_overlap=true` 但 `target_timerange` 线性累加不重叠」
+    （三选一里最简单的一种，大幅简化 Task 8）。**卡点**：只实测到 2 种 `effect_id`（Slick Twist / Filmstrip），
+    缺 cross dissolve / 叠化 —— Task 6 降级策略的落点。窗口 1 要补完叠化转场再出完成态 commit。
+- ⚠️ **窗口 1 的 WIP 直接推在 `worktree-capcut-link` 上** —— monitor 会对 `adf2011` 触发 `CHANGED`，
+  靠 commit message 里的 `[WIP — 勿 merge]` 识别、跳过不 merge（见标准流程第 4 步「还在 task 内部 → 不 merge」）。
+
+### 窗口 2 — ✅ P0 + P1 全部完成 → 🔧 P2 看板实施中（P2.1 checkpoint 1）
+- 分支：`feat/hot-tracking-p0-p2`，origin tip `1500459`（P2 放行确认回执）
+- spec：`docs/superpowers/specs/2026-05-13-hot-tracking-design.md`（v4.1）
+- plan：`docs/superpowers/plans/2026-05-13-hot-tracking-implementation.md`
+- **P0 + P1.1–P1.15 —— ✅ 全部 merge 进 main**：P1.8 ck2（`normalizeTikTokTrendingHashtag` + 非有限数 guard）、
+  P1.9（`scrapeTikTokTrendingHashtags` Stage 1）、P1.10（IG hot-hashtag list）、P1.11（Haiku topic-classifier）、
+  P1.12（two-stage `fetchTrendingSnapshot` 编排）、P1.13（cron route + dual auth）、P1.14（`vercel.ts` 周热点 cron）、
+  P1.15（`computeHashtagVelocity` 跨周趋势连续性）。
+- **P2 已放行**：architect 确认 P2.1–P2.8 在 plan 里均有 verbatim 代码 + 测试 + Step、无歧义；窗口 2 已回写确认（`window-2.md`），开始 P2.1。
+- **P2.1（`retrieval.ts` snapshot 兜底层，任务内双 commit checkpoint）—— 🔧 WIP，NOT FOR MERGE**：
+  推在独立分支 `wip/p2.1-progress`，tip `c902584`「checkpoint 1 in progress — pickSnapshotMatches」。
+  checkpoint 1 = 纯函数 `pickSnapshotMatches`，checkpoint 2 = 链路集成。恢复笔记在 `docs/WIP-P2.1-RESUME.md`。
+- **之后的工作**：P2.1 ck2 链路集成 → P2.2 `/api/trending` route → P2.3 `TrendingCard` → P2.4 `PlatformFilter`
+  → P2.5 `TrendingBoard` → P2.6 `app/trending/page.tsx` RSC → P2.7 Playwright E2E → P2.8 全量验证 + push。
+- ⚠️ **窗口 2 的 WIP 推在独立 `wip/p2.1-progress` 分支** —— monitor 只看 `feat/hot-tracking-p0-p2`，不会对 WIP 触发。
+  完成态 commit 会推回 `feat/hot-tracking-p0-p2`，那时 monitor 才触发。
+- ⚠️ **P1.1 的 Vercel 部署前置仍是 deploy-time gate**：viral-reviewer 在 Vercel 账户下还没 project，
+  cron 套餐验证 + `ADMIN_TRIGGER_SECRET` 配置要首次部署后才能做 —— 不阻塞代码实施，但 P2 全做完后要安排首次部署。
 
 ## 关键决策记忆（换机器/compact 后不能丢）
 
@@ -121,9 +133,10 @@
 
 ---
 
-## 明天换机器恢复步骤
+## 换机器恢复步骤
 
-> 用户明天在另一台 Windows 机器上继续。代码全在 GitHub（`main` = `e6d136e`），照下面走。
+> 用户在多台 Windows 机器间切换。代码全在 GitHub（当前 `main` = `6986166`），照下面走。
+> 已有 worktree 的机器只需 `git pull`，从未 clone 过的机器走下面完整步骤。
 
 ### 一次性环境准备
 ```powershell
@@ -146,9 +159,20 @@ Copy-Item .\.env.local .\.claude\worktrees\hot-tracking\.env.local
 ```
 
 ### 三个窗口各自恢复
-- **窗口 3（主仓库 `main`,协调者）**：读本文件即可恢复。重新用 Monitor 工具起 persistent poll 脚本（90s 间隔,比对 `origin/worktree-capcut-link` 和 `origin/feat/hot-tracking-p0-p2` 的 tip）。然后进入"收到 CHANGED 事件 → 标准流程"的被动监控模式。
-- **窗口 1（`.claude/worktrees/capcut-link`）**：CapCut setup-script 任务**已完成**。开窗后先 `git pull origin main`。明天**无新任务**,除非用户要做 macOS `setup.sh` 真机实测,或开新的 CapCut 功能。
-- **窗口 2（`.claude/worktrees/hot-tracking`）**：开窗后先 `git pull origin main` 同步到 `e6d136e`。然后读 `docs/superpowers/plans/2026-05-13-hot-tracking-implementation.md` 的 `## Task P1.8`,**从 P1.8 checkpoint 2 恢复实施**（Step 7-11:`normalizeTikTokTrendingHashtag` 加进 `lib/apify/normalize.ts` + 新建 `tests/apify/normalize-trending-hashtag.test.ts`。P1.1-P1.7 + P1.8 checkpoint 1 已 ✅ merge,不要重新 Create/重做）。用 subagent-driven-development 跑 P1.8 ck2 → P1.9 → P1.15 → P2。
+- **窗口 3（主仓库 `main`,协调者）**：`git pull origin main --no-rebase` 同步到 `6986166`,读本文件即可恢复。
+  重新用 Monitor 工具起 persistent poll 脚本（90s 间隔,比对 `origin/worktree-capcut-link` 和
+  `origin/feat/hot-tracking-p0-p2` 的 tip）。然后进入"收到 CHANGED 事件 → 标准流程"的被动监控模式。
+  ⚠️ 收到 `CHANGED` 后先看 commit message:带 `[WIP]` / `勿 merge` / `NOT FOR MERGE` 的不 merge,等完成态 commit。
+- **窗口 1（`.claude/worktrees/capcut-link`）**：开窗后先 `git pull origin main --no-rebase`,读 `docs/coordination/window-1.md`
+  确认 SHA。**当前在 multi-video technique-match 的 Task 2（CapCut 转场逆向 PROBE）—— WIP 未完成**:
+  origin `worktree-capcut-link` = `adf2011`,卡点是只实测到 2 种 transition `effect_id`,缺 cross dissolve / 叠化。
+  恢复实施 = 补完叠化转场的 `effect_id` 实测 + 收口 `docs/CAPCUT-TRANSITION-STRUCTURE.md`,出完成态 commit 走 per-task 闭环。
+  之后按 `docs/superpowers/plans/2026-05-14-multi-video-technique-match.md` 的 Task 3–14 继续。
+- **窗口 2（`.claude/worktrees/hot-tracking`）**：开窗后先 `git pull origin main --no-rebase` 同步到 `6986166`。
+  **当前在 P2.1（`retrieval.ts` snapshot 兜底层）—— WIP 未完成**:WIP 在独立分支 `wip/p2.1-progress` = `c902584`,
+  checkpoint 1（纯函数 `pickSnapshotMatches`）进行中。恢复实施 = 读 `docs/WIP-P2.1-RESUME.md` + plan 文档 `## Task P2.1`,
+  继续 ck1 → ck2 链路集成,完成态 commit 推回 `feat/hot-tracking-p0-p2` 走 per-task 闭环,再 P2.2 → P2.8。
+  P1.1-P1.15 已全部 ✅ merge,不要重做。
 
 ### 端口分配（防 dev server 冲突）
 窗口 1 = 3001,窗口 2 = 3002,窗口 3 = 3000。`npm run dev -- -p <port>`。
