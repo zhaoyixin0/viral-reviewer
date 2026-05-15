@@ -122,6 +122,59 @@ export function sanitizeVideoFileName(raw: string | undefined): string {
   return cleaned;
 }
 
+const MAX_VIDEO_FILE_NAME_LEN = 120;
+
+/**
+ * 多视频上传时，把已 sanitize 的文件名数组去重。重名按出现顺序加 `-1`/`-2`
+ * 后缀（保扩展名）。
+ *
+ * 关键不变量：`draft_content.json` 的 `materials.videos[i].path`、
+ * `draft_meta_info.json` 的 `draft_materials[0].value[i].file_Path`、
+ * 以及 zip 内 `materials/<name>` 三处必须用同一份数组，才能让 CapCut 解析。
+ * 调用方应在 sanitize 之后立刻 dedupe，再 forward 给 build/package。
+ *
+ * 长度仍受 {@link sanitizeVideoFileName} 的 120 字符上限约束 —— 后缀拼上来
+ * 后再次截 stem 部分以保扩展名。
+ */
+export function dedupeFileNames(
+  names: ReadonlyArray<string>,
+): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const raw of names) {
+    if (!seen.has(raw)) {
+      seen.add(raw);
+      out.push(raw);
+      continue;
+    }
+    const dot = raw.lastIndexOf(".");
+    const stem = dot > 0 ? raw.slice(0, dot) : raw;
+    const ext = dot > 0 ? raw.slice(dot) : "";
+    let n = 1;
+    let candidate = makeSuffixed(stem, ext, n);
+    while (seen.has(candidate)) {
+      n++;
+      candidate = makeSuffixed(stem, ext, n);
+    }
+    seen.add(candidate);
+    out.push(candidate);
+  }
+  return out;
+}
+
+function makeSuffixed(stem: string, ext: string, n: number): string {
+  const suffix = `-${n}`;
+  const joined = `${stem}${suffix}${ext}`;
+  if (joined.length <= MAX_VIDEO_FILE_NAME_LEN) return joined;
+  // stem 截到能容下 suffix + ext
+  const room = MAX_VIDEO_FILE_NAME_LEN - suffix.length - ext.length;
+  if (room <= 0) {
+    // 极端：ext 已经吃满 120，退化到纯 suffix（不再保 ext，但仍唯一）
+    return `${suffix.slice(1)}${ext}`.slice(0, MAX_VIDEO_FILE_NAME_LEN);
+  }
+  return `${stem.slice(0, room)}${suffix}${ext}`;
+}
+
 /**
  * 兼容路径（无 assemblyTimeline）：按主视频（metas[0]）走 trim/keep + 切点切段。
  * 输出的每个 plan 的 sourceVideoIndex 默认为 0（planEditSegments 行为）。

@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { buildDraftContent, type CompileInput } from "@/lib/capcut-compiler/build";
+import {
+  buildDraftContent,
+  dedupeFileNames,
+  sanitizeVideoFileName,
+  type CompileInput,
+} from "@/lib/capcut-compiler/build";
 import {
   TOKEN_PROJECT_DIR,
   TOKEN_DRAFTS_DIR,
@@ -551,5 +556,67 @@ describe("buildDraftContent — Task 10 transitions", () => {
       }),
     );
     expect(draftContent.materials.transitions).toEqual([]);
+  });
+});
+
+// ============================================================
+// Task 11 · dedupeFileNames
+// ============================================================
+
+describe("dedupeFileNames", () => {
+  it("没有重名 → 数组不变", () => {
+    expect(dedupeFileNames(["a.mp4", "b.mp4", "c.mp4"])).toEqual([
+      "a.mp4",
+      "b.mp4",
+      "c.mp4",
+    ]);
+  });
+
+  it("一对重名 → 第二个加 -1 后缀，扩展名保留", () => {
+    expect(dedupeFileNames(["a.mp4", "a.mp4"])).toEqual(["a.mp4", "a-1.mp4"]);
+  });
+
+  it("多对重名 → 递增后缀", () => {
+    expect(dedupeFileNames(["a.mp4", "a.mp4", "a.mp4", "b.mp4", "a.mp4"])).toEqual([
+      "a.mp4",
+      "a-1.mp4",
+      "a-2.mp4",
+      "b.mp4",
+      "a-3.mp4",
+    ]);
+  });
+
+  it("无扩展名也能 dedupe", () => {
+    expect(dedupeFileNames(["video", "video"])).toEqual(["video", "video-1"]);
+  });
+
+  it("已存在 a-1.mp4 时 a.mp4 重复 → 跳过 a-1 用 a-2", () => {
+    // 用户上传两个本来就叫 a-1.mp4 的 + 一个真重复 → 不能撞
+    expect(dedupeFileNames(["a.mp4", "a-1.mp4", "a.mp4"])).toEqual([
+      "a.mp4",
+      "a-1.mp4",
+      "a-2.mp4",
+    ]);
+  });
+
+  it("超 120 字符 stem 加后缀后仍 ≤ 120，保扩展名", () => {
+    // sanitize 上限是 120；dedupe 后缀再次需要截 stem
+    const long = "x".repeat(116) + ".mp4"; // 120 chars total
+    const out = dedupeFileNames([long, long]);
+    expect(out[0]!.length).toBeLessThanOrEqual(120);
+    expect(out[1]!.length).toBeLessThanOrEqual(120);
+    expect(out[1]!.endsWith(".mp4")).toBe(true);
+    expect(out[1]!).toContain("-1");
+    expect(out[0]).not.toBe(out[1]); // 真去重
+  });
+
+  it("和 sanitizeVideoFileName 串联：脏文件名清洗后 dedupe", () => {
+    const raw = ["video?.mp4", "video?.mp4", "video*.mp4"];
+    const sanitized = raw.map((r) => sanitizeVideoFileName(r));
+    // sanitize 把 ? * 全替换成 _，前两个原本不同但 sanitize 后撞名
+    expect(sanitized).toEqual(["video_.mp4", "video_.mp4", "video_.mp4"]);
+    const deduped = dedupeFileNames(sanitized);
+    expect(new Set(deduped).size).toBe(3); // 三个都唯一
+    expect(deduped[0]).toBe("video_.mp4");
   });
 });

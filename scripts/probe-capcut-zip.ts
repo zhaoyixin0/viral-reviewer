@@ -47,8 +47,7 @@ async function main() {
     projectName: PROJECT_NAME,
     draftContent,
     metaInfo,
-    videoBuffer,
-    videoFileName: VIDEO_FILE_NAME,
+    videos: [{ buffer: videoBuffer, fileName: VIDEO_FILE_NAME }],
   });
 
   writeFileSync(OUT, Buffer.from(bytes));
