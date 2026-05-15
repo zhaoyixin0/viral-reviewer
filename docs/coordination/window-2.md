@@ -1257,3 +1257,63 @@ W2 给的 3 个修法方向：
 
 > **W2 phase 2 可以动手** —— 范围已锁死（UI only），spec 明确，前置无依赖。
 
+---
+
+## W2 → W3 · phase 2 ack（UI cover fallback）
+
+> 写于 2026-05-15 · 分支 `feat/trending-cover-diagnose`（reuse） · base = `ea179ef`（含 W1 Task 12 verdict + Task 13 release）
+>
+> 2 commits：
+> - `8f7a8ce feat(trending): cover fallback on img error + referrerPolicy=no-referrer`
+> - `af24840 test(trending): TrendingCard cover fallback cases (5 cases, zero new deps)`
+
+### 三门验证
+
+| 门 | 结果 |
+|---|---|
+| `npx tsc --noEmit` | EXIT 0（静默） |
+| `npx vitest run` | **33 files / 273 cases**（base 32/268 → +1 file +5 cases，全过） |
+| `npx next build` | 23 / 23 routes 全过；`/trending` 仍 2.87 kB / First Load 109 kB / Revalidate 1h / Expire 1y，零退化 |
+
+### 实施要点
+
+1. **`shouldShowPlaceholder(cover, imgFailed)` 抽 export 纯函数**：cover 空 OR onError 触发都走"无封面"占位分支。便于单测、避免 hook 状态测试依赖 DOM env。
+2. **`<img>` 加 `onError={() => setImgFailed(true)}`**：浏览器实际渲染失败时切到占位，**不** preemptive HEAD 探测（防 CDN ban + 省带宽）。
+3. **`<img>` 加 `referrerPolicy="no-referrer"`**：诊断证明 Referer 不是根因，但跨 TT/IG/未来其它 CDN cheap belt-and-suspenders。
+4. **占位与 `<img>` 同容器尺寸**（`aspect-[9/16]` + 同样的 `text-white/30 text-xs` 文案 "无封面"）→ 卡片在 cover 失效时**不破样式**。
+5. **`useState` 加 React import**：唯一新增 import。
+
+### Spec 偏离说明
+
+| # | 偏离点 | 实际做法 | 原因 |
+|---|---|---|---|
+| 1 | spec：「`tests/components/trending/TrendingCard.test.tsx`」 + 「项目无 RTL 配置请在 ack 段告诉我」 | 文件改为 **`tests/trending/trending-card-fallback.test.ts`**（`.test.ts`，不是 `.tsx`） | 项目 `vitest.config.ts` 用 `include: ["tests/**/*.test.ts"]`，**`.test.tsx` 不会被 include 拾取**；同时项目无 `@testing-library/react` / `jsdom` / `happy-dom` 直接 dep，env=node。按 W3 spec 允许的 fallback「纯 vitest unit + jsdom render」**进一步降级到零 DOM 依赖**方案。文件名与现有 `trending-card-format.test.ts` 同目录同后缀，project consistency 优先。 |
+| 2 | spec 隐含：「`fireEvent.error(img)` 触发 onError」 | 改用**纯函数 `shouldShowPlaceholder(cover, imgFailed)`** + **`renderToStaticMarkup` SSR HTML 断言** | 不需要 jsdom/RTL；onError 状态切换的核心逻辑被纯函数完整覆盖（cover 空 / imgFailed=true / happy path 三分支）；referrerPolicy 落 DOM 属性用 SSR markup 字符串断言验证（React 序列化为小写 `referrerpolicy="no-referrer"`，HTML 属性大小写不敏感，DOM 表现一致）。 |
+| 3 | spec：「3 cases」 | 实际 **5 cases**（3 个纯函数 + 2 个 SSR markup） | 纯函数测三分支（空 / 失败 / 成功）比 2 分支更稳；SSR markup 拆 2 case 让 referrerPolicy 与占位互不耦合断言。 |
+| 4 | spec Nice-to-have：「占位文案抽常量 `COVER_PLACEHOLDER_TEXT = "无封面"`」 | **未做** | 「无封面」仅出现在 TrendingCard.tsx 内一处，抽常量没有 reuse value；测试用字面量 `"无封面"` 断言反而更可读。 |
+| 5 | spec Nice-to-have：「`ImageOff` icon」 | **未做** | 现有占位是 `text-white/30 text-xs` 极简文案，加 icon 改变视觉密度。phase 2 spec 主目标是"不破样式"，最小改动原则。 |
+
+### 未触代码（spec 明确禁止动的）
+
+- `lib/apify/normalize.ts` —— 未改 ✓
+- `lib/trending/snapshot-store.ts` —— 未改 ✓
+- `app/api/trending/route.ts` —— 未改 ✓
+- `app/trending/page.tsx` —— 未改 ✓
+- `vitest.config.ts` —— 未改 ✓（零新依赖）
+- `package.json` —— 未改 ✓（零新依赖）
+- 任何样式系统 —— 未改 ✓（沿用 glass-card + tailwind）
+
+### W3 review 重点（spec 列出的项，自检结论）
+
+- **onError 状态 reset 逻辑**：当 cover URL 变化时 `imgFailed` 是否要重置？
+  - 自检：当前实现 `useState(false)` 初始，未挂 `useEffect([card.cover])` reset。**这是设计选择**：TrendingCard 在 props.card 变化时不会 unmount/remount（看板 list 用 key={card.id} 重渲染会创建新实例，state 自动重置）。同一卡片 cover URL 中途换的场景在当前架构下不存在（snapshot 投影是 immutable）。如 W3 觉得需要防御性 reset，加 `useEffect(() => setImgFailed(false), [card.cover])` 即可，可在 verdict 反馈后追加。
+- **占位视觉不破样式**：占位与 `<img>` 同 `aspect-[9/16]` 容器 + 同 `bg-white/[0.04]` + 同绝对定位的角标位置，next build 验证 `/trending` 2.87 kB 不退化 ✓
+- **测试覆盖**：5 cases 覆盖 cover 空 / onError 触发 / happy path / SSR markup referrerPolicy / SSR markup 占位分支 ✓
+- **referrerPolicy 落 DOM 属性**：SSR markup 字符串断言 `html.toLowerCase()` 含 `'referrerpolicy="no-referrer"'` ✓
+
+### W2 当前动作
+
+- 已 push `feat/trending-cover-diagnose` —— W3 monitor `feat/*` pattern watch 会自动捕
+- 等 W3 review verdict
+- **不主动开 phase 3 / (a) Blob 种子 / (c) cron 重抓** —— W3 决策
+

@@ -1,7 +1,18 @@
+import { useState } from "react";
 import { TrendingUp, TrendingDown, Sparkles, Minus } from "lucide-react";
 import type { TrendingCard as TrendingCardData } from "@/app/api/trending/route";
 
 type Velocity = TrendingCardData["velocity"];
+
+/**
+ * 决定是否渲染"无封面"占位。
+ * cover 为空 OR 浏览器加载失败（onError 触发）都走占位分支。
+ * 抽成纯函数便于单测：phase 1 诊断证实 prod cover URL 会因 CDN signed-URL 过期 403，
+ * UI 必须无论上游何时坏都不破样式。
+ */
+export function shouldShowPlaceholder(cover: string, imgFailed: boolean): boolean {
+  return !cover || imgFailed;
+}
 
 type Badge = {
   label: string;
@@ -47,6 +58,8 @@ function formatViews(views: number): string {
 export function TrendingCard({ card }: { card: TrendingCardData }) {
   const badge = formatVelocityBadge(card.velocity);
   const platformLabel = card.platform === "tiktok" ? "TT" : "IG";
+  const [imgFailed, setImgFailed] = useState(false);
+  const showPlaceholder = shouldShowPlaceholder(card.cover, imgFailed);
 
   return (
     <a
@@ -56,17 +69,19 @@ export function TrendingCard({ card }: { card: TrendingCardData }) {
       className="glass-card group block overflow-hidden transition-transform hover:-translate-y-1"
     >
       <div className="relative aspect-[9/16] bg-white/[0.04]">
-        {card.cover ? (
+        {showPlaceholder ? (
+          <div className="flex h-full items-center justify-center text-white/30 text-xs">
+            无封面
+          </div>
+        ) : (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={card.cover}
             alt={card.title}
             className="h-full w-full object-cover"
+            referrerPolicy="no-referrer"
+            onError={() => setImgFailed(true)}
           />
-        ) : (
-          <div className="flex h-full items-center justify-center text-white/30 text-xs">
-            无封面
-          </div>
         )}
         {/* 平台角标 */}
         <span className="absolute left-2 top-2 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-white">
