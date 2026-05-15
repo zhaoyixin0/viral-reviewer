@@ -4,7 +4,15 @@ import {
   BriefExtractException,
   type ExtractedBrief,
 } from "@/lib/template-review/brief-extract";
+import { createUrlAllowlist, VERCEL_BLOB_PRESET } from "@/lib/url-allowlist";
 import { TemplateBriefJsonBodySchema } from "./schema";
+
+/**
+ * P3 #2 phase 2：模块作用域单实例。Allowlist 实例无内部状态，跨请求复用安全，
+ * 省每请求一次 Zod 校验开销。VERCEL_BLOB_PRESET 强制 https + 阻私有 IP +
+ * `*.public.blob.vercel-storage.com` 后缀匹配（含根域 + 子域）。
+ */
+const URL_ALLOWLIST = createUrlAllowlist(VERCEL_BLOB_PRESET);
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -107,12 +115,19 @@ async function loadFromBlobUrl(req: NextRequest): Promise<LoadResult> {
   }
   const { blobUrl } = parsed.data;
   const fileName = parsed.data.fileName ?? "brief.pdf";
-  if (!isVercelBlobUrl(blobUrl)) {
+  // P3 #2 phase 2：替换旧 inline isVercelBlobUrl。lib allowlist 在 hostname suffix
+  // 之外额外强制 https: + 阻私有 IP（旧实现只 hostname endsWith）。W3 verdict B2：
+  // response 用统一 url_denied enum，不暴露 deny reason；server console.warn 写完整。
+  const allowlistResult = URL_ALLOWLIST.check(blobUrl);
+  if (!allowlistResult.ok) {
+    console.warn(
+      `[url-allowlist] denied url=${blobUrl} reason=${allowlistResult.reason} route=template-brief`,
+    );
     return {
       ok: false,
       status: 400,
-      error: "invalid_blob_url",
-      message: "blobUrl must be a vercel-storage.com URL",
+      error: "url_denied",
+      message: "提供的 URL 不在允许列表中",
     };
   }
   let blobRes: Response;
@@ -153,15 +168,6 @@ async function loadFromBlobUrl(req: NextRequest): Promise<LoadResult> {
     };
   }
   return { ok: true, buffer, fileName, sizeBytes: buffer.length };
-}
-
-function isVercelBlobUrl(url: string): boolean {
-  try {
-    const u = new URL(url);
-    return u.hostname.endsWith(".public.blob.vercel-storage.com");
-  } catch {
-    return false;
-  }
 }
 
 export async function POST(

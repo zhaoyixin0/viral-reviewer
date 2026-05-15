@@ -52,14 +52,31 @@ describe("POST /api/template-brief (JSON blob URL branch)", () => {
     expect(body.error).toBe("invalid_request");
   });
 
-  it("rejects non-vercel-storage hostname with 400 invalid_blob_url (post-Zod allowlist)", async () => {
-    const res = await POST(
-      jsonReq({ blobUrl: "https://evil.com/x.pdf", fileName: "x.pdf" }),
-    );
-    expect(res.status).toBe(400);
-    const body = await res.json();
-    // Zod 语法过了,SSRF allowlist 拒绝
-    expect(body.error).toBe("invalid_blob_url");
+  it("rejects non-vercel-storage hostname with 400 url_denied (post-Zod allowlist)", async () => {
+    // Phase 2 起改用 lib allowlist：旧 `isVercelBlobUrl` inline 已删，error 字符串
+    // 从 `invalid_blob_url` 统一为 `url_denied`（W3 B2 verdict，不暴露 reason）
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const res = await POST(
+        jsonReq({ blobUrl: "https://evil.com/x.pdf", fileName: "x.pdf" }),
+      );
+      expect(res.status).toBe(400);
+      const body = await res.json();
+      expect(body.error).toBe("url_denied");
+      // server log 写完整 url + reason 方便后续 grep（VERCEL_BLOB_PRESET 拒
+      // evil.com 在 host_denied，不在 scheme_denied/private_ip）
+      const warned = warnSpy.mock.calls.map((c) => String(c[0]));
+      expect(
+        warned.some(
+          (m) =>
+            m.includes("evil.com") &&
+            m.includes("host_denied") &&
+            m.includes("route=template-brief"),
+        ),
+      ).toBe(true);
+    } finally {
+      warnSpy.mockRestore();
+    }
   });
 
   it("rejects fileName exceeding 255 chars", async () => {
