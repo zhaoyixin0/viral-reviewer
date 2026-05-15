@@ -6,15 +6,13 @@
 
 ## 执行进度（换机器 / compact 后读这里恢复）
 
-最后更新：**2026-05-14 收工**
+最后更新：**2026-05-15 W1 Task 2 完成并 merge**
 
-- **Task 1 — 契约冻结 + 共享类型/schema** — ✅ 已完成并 merge（`b6c5e5b`，main 已到 `6c34173`）
-- **Task 2 — CapCut 转场结构逆向探测 (PROBE)** — 🔧 **进行中，未 merge**
-  - 已完成：核心结构全部逆向 —— `scripts/probe-capcut-transitions.ts`（探测脚本）+ `docs/CAPCUT-TRANSITION-STRUCTURE.md`（结论文档：transition 字段结构、挂载方式、`is_overlap` 时间轴语义、filter/effect 附录）。
-  - **唯一卡点**：只实测到 2 种转场 effect_id（Slick Twist / Filmstrip x2），缺「叠化 / cross dissolve」—— 它是 Task 6 降级策略的落点，必须补。
-  - **恢复方式（换机器）**：见 `docs/CAPCUT-TRANSITION-STRUCTURE.md` 附录 B。需在 Windows CapCut 8.5.0 建/打开带「叠化」转场的项目，跑 `npx tsx scripts/probe-capcut-transitions.ts <项目目录>` 补 effect_id → 文档去掉 WIP 标注 → Task 2 完成 → 走 per-task 工作流（push / 等 merge）。
-  - ⚠️ 当前 worktree 已 push 的 Task 2 commit 是 **WIP，请窗口 3 勿 merge**，等补完叠化转场的完成态 commit。
-- **Task 3-14** — ⏳ 待办（严格串行，Task 2 完成后继续）。
+- **Task 1 — 契约冻结 + 共享类型/schema** — ✅ 已完成并 merge（`b6c5e5b`）
+- **Task 2 — CapCut 转场结构逆向探测 (PROBE)** — ✅ 已完成并 merge（`6dd6dc0`）
+  - 交付：`docs/CAPCUT-TRANSITION-STRUCTURE.md`（11 个实测 effect_id 含叠化 cross dissolve `6724845717472416269`、is_overlap 修正、Task 6/8/10 落地结论、附录 B 跨机器复现步骤）+ `scripts/probe-capcut-transitions.ts`（只读探测脚本）。
+  - **关键修正**：`is_overlap` 不是恒 true，按 effect_id 实测值逐条配置；Task 6 映射表需带 `effect_id + is_overlap + 默认 duration`，Task 10 写 material 时从表取（不 hardcode）。
+- **Task 3-14** — ⏳ 待办（严格串行，Task 2 已完成解锁 Task 6/8/10）。
 
 ## Context
 
