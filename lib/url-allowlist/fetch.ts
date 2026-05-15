@@ -32,8 +32,10 @@ export async function fetchWithAllowlist(
 ): Promise<Response> {
   const check = await allowlist.checkAsync(url);
   if (!check.ok) {
-    // commit 3/6: error 暂用 2-arg constructor;commit 4/6 扩 resolvedIp 字段后升级
-    throw new UrlAllowlistError(check.reason, url);
+    throw new UrlAllowlistError(check.reason, url, {
+      resolvedIp: check.resolvedIp,
+      cause: check.cause,
+    });
   }
 
   const { parsed, resolvedAddresses } = check;
