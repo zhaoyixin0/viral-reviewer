@@ -285,3 +285,47 @@ W2 self-report 倾向 ③ 论据正确，采纳。
 4. P2.6 闭环后建议 `/compact` 上下文
 
 P2.6 - P2.8 串行，按既定 per-task 闭环。**不在 P2.6 / P2.7 / P2.8 单点处理上面 5 项 follow-up**，统一进 P3 hardening pass。
+
+---
+
+## P2.7 已 merge ✅ — P2.8 放行
+
+> 写于 2026-05-14 · `main` = `059a1c5` · 来自窗口 3 协调者
+
+### merge 内容
+
+`feat/hot-tracking-p0-p2` tip `990c2b3` 已合入 main（merge commit `059a1c5`）。本次合入：
+
+- `990c2b3` — test(p2) Playwright E2E smoke for `/trending` board
+  - `playwright.config.ts` (13 行新文件)：`testDir=./e2e` / `timeout=30s` / `baseURL=localhost:3000` / `webServer.command=npm run dev` + `reuseExistingServer=true` + `webServer.timeout=60s`
+  - `e2e/trending.spec.ts` (21 行新文件，2 个 case)：
+    1. `/trending renders without NaN% or +null% in any badge` —— `body.innerText` 不含 `"NaN"` / `"null%"`，h1 始终可见
+    2. `/trending platform filter is interactive` —— TikTok 按钮可见时点击不报错、点击后 body 仍不含 `"NaN"`；不可见时跳过（空状态防御）
+  - `package.json`：`+devDependencies["@playwright/test"]: "^1.60.0"` + `+scripts["test:e2e"]: "playwright test"`
+  - `package-lock.json`：新增 3 个 transitive
+
+三项验证全绿：
+- `npx tsc --noEmit` → EXIT 0（`npm install` 拉到 `@playwright/test` 后 types 解析正常）
+- `npx vitest run` → **184/184** (26 files)，Playwright 走 `test:e2e` 不混入 vitest 默认收集（spec 路径 `./e2e/` 不在 vitest `include` 默认 `**/*.test.ts` 模式内）
+- `npm run build` → 编译成功；`/trending` 仍 `1h` ISR + `1y` 期限（无回归）
+
+### P2.7 review 笔记（亮点）
+
+- **粗匹配契合 BUG-2 修复意图**：`expect(bodyText).not.toContain("NaN")` / `"null%"` 是粗 substring 匹配，但 P2.5 BUG-2（velocity `+null%` / `NaN%` formatter 防御）的核心规约就是「页面任意位置都不能出现这两个文案」，粗匹配比 `getByText` 精确定位更稳：未来即便 badge 文案变体（如「+12.3%」→「+12%」）也不会误绿
+- **空状态双路径覆盖**：第二个 case 用 `if (await tiktokBtn.isVisible())` 短路 —— snapshot store 空时 TrendingBoard 不渲染过滤器（`showHashtagBoard=false`），E2E 走 skip 分支；有数据时走交互断言。**与 P2.6 `if (current)` RSC 兜底 + P2.5 `<TrendingBoard>` 空状态文案三层 fallback 一致**
+- **`webServer.reuseExistingServer=true`**：本地开发跑 `npm run dev` 时不会重复起 server；CI 没现存 server 则自动启动。`webServer.timeout=60s` 给 Next.js 冷启动留余地
+- **`baseURL=localhost:3000` hardcode**：单环境 fine（P2 阶段无多环境 E2E 矩阵），P3 若需 staging E2E 再抽 `process.env.E2E_BASE_URL`
+- **`@playwright/test` 进 devDependencies**：版本范围 `^1.60.0`，与 Next 15 / React 19 兼容；`npm install` 后 3 个 transitive，体积可控
+
+**零 finding**。E2E 是只读冒烟，不引入新生产代码路径；spec 内部不涉及 user input / external fetch / DOM mutation。
+
+### 下一步：P2.8 放行
+
+按 per-task 工作流：
+
+1. `git pull origin main --no-rebase` 同步到 `059a1c5`
+2. 读本文件「P2.7 已 merge ✅」整段确认 SHA + 零 finding
+3. 开 P2.8（plan v4.1-review 既定终态 — 取决于 P2.8 范围；若是 docs / README 更新，直接 push；若涉及 SSR / Server Action / API hardening，按常规 review 走）
+4. P2.7 闭环后建议 `/compact` 上下文
+
+> **CI / 流水线先不动**：playwright.config 已存在但 CI 工作流（`.github/workflows/`）未更新；P3 hardening 阶段统一接入 CI E2E 矩阵（Chromium / Firefox / WebKit）。当前 P2 阶段 `test:e2e` 仅本地执行验证。
