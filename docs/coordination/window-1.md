@@ -229,3 +229,57 @@ Task 6-14 串行，按既定 per-task 闭环。
 4. Task 6 闭环后建议 `/compact` 上下文
 
 **建议起监听**：W1 这边监听 `origin/main` tip 前进（90s 轮询），触发后跑「pull → 读 README → 读 window-1.md 末段」，避免再次因未监听而 idle。
+
+---
+
+## Task 7 已 merge ✅ — Task 8 放行
+
+> 写于 2026-05-14 · 针对 `main` = `f3fe3f2` · 来自窗口 3 协调者
+
+### merge 内容
+
+`worktree-capcut-link` tip `dcf38f3` 已合入 main（merge commit `f3fe3f2`）。本次合入：
+
+- `dcf38f3` — feat(capcut-compiler) Task 7 — route + assets multi-video（3 文件 / 307 行）
+  - `lib/capcut-compiler/assets.ts` (+56 / -23)：`AssetWorkspace.videoPath` → `videoPaths: string[]`；`prepareAssets(videoUrls[], bgmUrl?)` 并发下载 `input-${i}.mp4`；`Promise.allSettled` 收集失败 index；失败 → `rm(workDir, {recursive, force})` 回滚 + console.error 带 `#i` + `status`；主错误 `Failed to download videos: #0, #2 (2/3)` 列出全部失败 index；BGM 单独 try/catch + 失败也清 workDir
+  - `app/api/compile-capcut/route.ts` (+19 / -8)：从 Zod preprocess `videoUrls!` / `videoFileNames` 取（C1 兼容层保证非空，注释说明）；ffprobe 改 `Promise.all(videoPaths.map(probeVideoMeta))` 并发；build/package 仍单视频接口（Task 9/11 接入），forwards `metas[0]` + `buffer[0]` + `names[0]`
+  - `tests/capcut-compiler/assets.test.ts` (+224，new)：8 cases — single / N-concurrent / 1-fail / multi-fail / network-reject / bgm-success / bgm-fail / empty-array-reject
+
+三项验证全绿：
+- `npx tsc --noEmit` → EXIT 0
+- `npx vitest run` → 27 files / 192/192 cases（184 → 192，+8 Task 7 cases）
+- `npm run build` → 编译成功（`/api/compile-capcut` dynamic 路由保留，无 ISR 回归）
+
+### Task 7 review 亮点
+
+- **`Promise.allSettled` 而非 `Promise.all`**：N 视频并发下载，一个失败不立刻 abort，所有失败 index 全收集 —— 用户能一次性看到「#0, #2 都挂了 (2/3)」而不是只看到第一个失败。
+- **Partial-state 防御**：任一视频失败 → `rm(workDir, {recursive:true, force:true}).catch(() => {})` 立即清 workDir，避免 `input-1.mp4` 单独残留进 Task 9 build → 编译每段都要齐才能产 zip，partial 状态进下游是 silent corruption。`.catch(() => {})` 不冒泡 cleanup 错误（cleanup 失败 ≠ 业务失败）。
+- **Per-failure log 带 index + status**：`[capcut-compiler/assets] video #1 download failed (404): ...` —— 跑批日志能快速 grep `video #N` 定位具体失败 URL。fetch network reject（无 status）退化为 `fetch_error` 字符串。
+- **空数组 reject 在 mkdir 之前**：`if (!Array.isArray(videoUrls) || videoUrls.length === 0) throw` —— 不创建 workDir 就抛错，避免无谓 IO。test "rejects empty videoUrls" 显式覆盖。
+- **route.ts 阶段切分注释清晰**：`metas[0]` / `videoPaths[0]` / `videoFileNames[0]` 三处都注释「Task 9/11 起改 N」—— review 不会困惑为啥并发 ffprobe 后又只取 [0]，阶段计划写在代码旁。
+- **BGM 失败也清 workDir**：BGM 单独 try/catch，rejected 时同样 `rm(workDir).catch(() => {})` —— 与视频失败保持对称防御，不会因「视频齐全 BGM 挂」留半成品 workDir。
+- **`addRandomSuffix:true` 保留**：Blob upload 防同毫秒并发覆盖（沿用 Task 6 前的设计），多视频不影响这条。
+
+### 一条观察（不阻塞、不需要 fix）
+
+`Object.assign(new Error(...), { __index, __status })` 把 metadata 挂 Error 上 —— ad-hoc 但 scope 极窄（仅 `prepareAssets` closure 内消费），不污染类型系统。如果将来 P3 hardening 引入结构化错误，可改成 `class DownloadError extends Error { index; status; }`，但 Task 7 阶段不需要。
+
+### follow-up（不阻塞 merge，与上轮统一）
+
+- **Opus 实弹探测（user 侧）**：从 Task 5 carry-over，plan §Task 5 探测点列表 4 项仍待用户实弹
+- **SSRF hardening (Task 4 carry-over)**：进 P3 "API boundary hardening"（与 P2.5 follow-up 合流）
+- **Task 6 nit (上轮)**：Task 10/12 callsite 注入 collector，替换默认 `console.warn`
+- **Task 7 nit (本轮新增)**：考虑 `DownloadError` 结构化错误类（P3 hardening 顺带，不阻塞）
+
+### 浏览器烟测试
+
+commit 不含 UI 改动 —— route.ts 改动是后端 N→1 接入扩展点，仍走单视频 zip。Task 13 才 arrayify ResultsArea。窗口 3 不阻塞 merge。
+
+## 下一步：Task 8 放行
+
+按 per-task 工作流：
+
+1. `git pull origin main --no-rebase` 同步到 `f3fe3f2`
+2. 读本文件「Task 7 已 merge ✅」整段确认 SHA + 消化 Task 7 nit（不阻塞）
+3. 开 Task 8（按 plan 既定阶段）
+4. Task 7 闭环后建议 `/compact` 上下文
