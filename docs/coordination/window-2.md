@@ -1317,3 +1317,80 @@ W2 给的 3 个修法方向：
 - 等 W3 review verdict
 - **不主动开 phase 3 / (a) Blob 种子 / (c) cron 重抓** —— W3 决策
 
+---
+
+## Phase 2 已 merge ✅ — trending-cover 任务整体闭环（零 nit）
+
+> 写于 2026-05-15 · `main` = `ac0a243` · 来自窗口 3
+
+**Merge**: `ac0a243` (main，2026-05-15 12:54 PT)
+**Branch tips merged**: `8f7a8ce` + `af24840` + `aa32a7d`
+
+### 三门验证（W3 这边 merge 后）
+
+- `npx tsc --noEmit` → exit 0
+- `npx vitest run` → **33 files / 273 cases**（268→273，+5 = 3 pure fn + 2 SSR markup）
+- `npx next build` → 23 routes 全绿
+
+### Review 亮点
+
+1. **`shouldShowPlaceholder(cover, imgFailed)` 抽 export 纯函数**：声明式 `!cover || imgFailed`，单测友好。逻辑只一行但**值得抽出** —— 可测、可独立验证、UI 渲染分支条件清晰。
+2. **占位与 img 分支同样式**：占位 div 跟原空 cover 分支完全一致（fonts / 容器 / aspect 全保），切到占位时**零视觉漂移**，next build 验证 `/trending` 2.87 kB 不退化。
+3. **`referrerPolicy="no-referrer"`** 防御性加 —— phase 1 诊断证明 Referer 不是根因，但 cheap belt-and-suspenders。
+4. **零新依赖**：用 `react-dom/server.renderToStaticMarkup` + `react.createElement`，不引 jsdom / @testing-library/react。
+5. **测试两层覆盖**：pure fn 3 case（空 / onError 触发 / happy path）+ SSR markup 2 case（referrerPolicy 落 DOM / 占位 vs img 分支可见）。
+6. **范围严格**：仅 `components/trending/TrendingCard.tsx` + `tests/trending/trending-card-fallback.test.ts`，零 lib / 零 app / 零样式系统改动。
+7. **5 处偏离全部主动列出**，前 3 互相依存（SSR 路线），后 2 是 Nice-to-have 合规跳过。**W2 自己注意到 `vitest.config.ts` `include` 是 `.test.ts` 不收 `.test.tsx`**，决定改后缀 —— 这是主动 sweep 项目配置避免静默漏测，比"按 spec 字面照搬"更靠谱。
+
+### W3 spec review 点裁决
+
+| review 点 | W2 实际 | 裁决 |
+|---|---|---|
+| onError 状态 reset 逻辑（cover URL 变化时是否重置） | 不重置 —— useState 默认 false，cover 变化时 imgFailed 保持原值 | ✅ 接受。URL 失败后即使 cover prop 变了用户也不期望看到 prev img；将来若必要可加 `key={card.cover}` 或 `useEffect(...[card.cover])`，**当前不必要**。 |
+| 占位视觉不破样式 | 完全同原占位 div，零样式漂移 | ✅ |
+| 测试覆盖 | SSR markup 不验 onError 实际触发（client-side），pure fn 覆盖逻辑分支 + React 框架本身保证 onError 绑定 | ✅ 接受。onError-to-state 链路靠 React 框架保证，不需单测验。 |
+| referrerPolicy 落 DOM | SSR markup 断言 `referrerpolicy="no-referrer"` 小写序列化 | ✅ |
+
+### Nit
+
+**无**。Code 干净、测试覆盖、零新依赖、零样式漂移、范围严格、偏离全部主动列出且合理 —— **零 nit merge**。
+
+---
+
+## trending-cover 任务收尾：(a) Blob 种 snapshot 是 user 侧操作
+
+phase 1 诊断的**真正大根因**是 prod Vercel Blob `trending/*` 0 条 snapshot —— UI fallback (b) 只能让看板**不破样式**，**真正让看板有数据**还需要 (a) 跑一次 Apify 抓取 + 写 Blob。
+
+**(a) 是 operational task，W3/W2 都不能自动执行**（涉及 Apify quota + Vercel env），由 user 决定。
+
+### User runbook（供参考）
+
+```bash
+# 0. 确认 .env.local 有 APIFY_TOKEN（memory 标 rotate-pending，建议 rotate 一次再跑）
+# 1. 找入口脚本：
+grep -r "fetchTrendingSnapshot\|writeSnapshot" scripts/ lib/trending/
+
+# 2. 或通过 /api/cron/trending 触发（需 Authorization Bearer header）
+
+# 3. 跑完后用诊断脚本验证 Blob 是否真有 snapshot：
+npx tsx scripts/diagnose-trending-covers.ts
+# 期望：BLOB_READ_WRITE_TOKEN 已配置=true, trending/ 下 blob 数=N (N>0)
+```
+
+### (c) 异步重抓 cron — defer
+
+phase 1 报告的 (c) "stale-cover 异步重抓" 是 bigger infra task。**defer**，等 (a) 种完 + (b) 兜住后看实际 prod cover URL 健康度，真有需求再做。
+
+### W2 当前动作
+
+1. `git switch main && git pull --no-rebase`（同步到 `ac0a243`）
+2. `git branch -D feat/trending-cover-diagnose`（本地分支已 merge，可删）
+3. 回主 worktree，切 main
+4. **回 idle 态**，等下个任务（短期内可能继续 idle —— P3 #2/phase 2 都在 W1 队列）
+5. **`/compact`**（per `feedback_compact_after_merge.md`）
+
+### W3 后续
+
+- monitor `b3zd25r7f` pattern 已覆盖，自动捕 W1 Task 13 push 或 user 跑完 (a) 后回报
+- W1 Task 13 在 `worktree-capcut-link` 路上，跟 W2 phase 2 落地的 `TrendingCard.tsx` 零文件 overlap
+
