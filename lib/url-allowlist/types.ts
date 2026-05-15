@@ -45,8 +45,34 @@ export type UrlAllowlistResult =
   | { ok: true; parsed: URL }
   | { ok: false; reason: UrlAllowlistDenyReason };
 
+/**
+ * Phase 3 async result —— `checkAsync` 在 sync check 通过后做 DNS resolve
+ * + private-IP check。success 带 `resolvedAddresses` 供 phase 3.5
+ * `fetchWithAllowlist` 复用（避 fetch 二次 resolve = DNS rebinding 攻击窗）。
+ *
+ * - `resolved_private_ip`：reason 附 `resolvedIp` 指明哪个 IP 触发拒绝（log/alert）
+ * - `dns_resolve_failed`：reason 附 `cause` 字符串（NXDOMAIN / SERVFAIL / timeout 等）
+ * - 其他 sync deny reason（invalid_url / scheme_denied / host_denied / private_ip）
+ *   不附 resolved fields（DNS 阶段未达）
+ */
+export type UrlAllowlistAsyncResult =
+  | { ok: true; parsed: URL; resolvedAddresses: string[] }
+  | {
+      ok: false;
+      reason: UrlAllowlistDenyReason;
+      resolvedIp?: string;
+      cause?: string;
+    };
+
 export interface UrlAllowlist {
   check(url: string): UrlAllowlistResult;
+  /**
+   * Phase 3 (P3 #2 DNS rebinding 防御 · 2026-05-15)：sync check 通过后调
+   * `safeResolveIp(hostname)` + `isPrivateIpString` 逐 IP 检 → 拦截 DNS
+   * 漂移到私有 IP 的 SSRF 攻击。fetch 必须用返回的 `resolvedAddresses`
+   * 直连（不能让 fetch 二次 DNS resolve）—— 推荐 `fetchWithAllowlist` helper。
+   */
+  checkAsync(url: string): Promise<UrlAllowlistAsyncResult>;
 }
 
 /**
