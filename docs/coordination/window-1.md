@@ -346,3 +346,50 @@ commit 是纯库层 + 测试改动，零 UI 影响。Task 13 才 arrayify Result
 4. Task 8 闭环后建议 `/compact` 上下文
 
 **并行情境提示**：W2 那边今晚刚启动 P3 #1（API boundary Zod validation），main `58a4094..bde36de` 是这次 Task 8 merge 落入 —— W2 当前应该在 `feat/p3-hardening` 分支动手，跟 W1 Task 9 在 `worktree-capcut-link` 互不冲突。如果 Task 9 触及 `app/api/compile-capcut/route.ts`（比如把 build 层接入），可能会与 W2 P3 #1 范围内 schema 改动有间接耦合 —— **建议 W1 在 Task 9 push 前 `git pull origin main --no-rebase`，吸纳 W2 的 schema 改动（如果到时候已 merge）**。
+
+---
+
+## Task 9 已 merge ✅ — Task 10 放行
+
+**Merge**: `a7d9fdf` (main，2026-05-14 23:48 PT)
+**Commit**: `d45789a` — feat(capcut-compiler): Task 9 — build.ts multi-material body, fitScale, N draft_materials entries
+**Files**: `lib/capcut-compiler/build.ts` +190/−100 · `app/api/compile-capcut/route.ts` +18/−18 · `scripts/probe-capcut-zip.ts` +4/−4 · `tests/capcut-compiler/build.test.ts` +285/−12 · `tests/capcut-compiler/package.test.ts` +4/−4 · `tests/capcut-compiler/setup-scripts.test.ts` +4/−4
+
+### 三门验证
+
+- `npx tsc --noEmit` → exit 0（clean）
+- `npx vitest run` → **27 files / 214 cases**（204 → 214，+10 来自 build.test 多视频 + assemblyTimeline 路径）
+- `npx next build` → 23 routes，全部通过；`/api/compile-capcut` 仍 ƒ（dynamic），canvas/duration 改动未影响 route 类型
+
+### Review 亮点（与 plan v4.1-review I3 一致）
+
+1. **`CompileInput` shape 切换**：`videoFileName/meta` → `videoFileNames[]/metas[]`，length 守门在入口 throw（非空 + 长度相等），下游所有 callsite（`route.ts` / `probe-capcut-zip.ts` / 2 个 setup test fixture）同步切换 —— 无 dangling 单视频引用。
+2. **Routing**：`match.assemblyTimeline ? planFromAssemblyTimeline : buildEditPlan`（兼容路径 `sourceVideoIndex` 一律 0）—— Task 8 与 Task 7 路径都覆盖。
+3. **`computeFitScale` cover-fit**：等尺寸短路返回 1（避免浮点扰动）；`segW<=0 || segH<=0` 回退 1；其它走 `max(canvasW/segW, canvasH/segH)`。
+4. **`scaleFrom/scaleTo` baseline 预乘 `fitScale`**：传给 `makeEasedScaleKeyframes` 之前就乘，所有 ease 中间帧自动 cover —— 数学上比"在每帧后乘"更干净，避免 keyframe 内插值出现 baseline 不匹配。
+5. **Defensive material_id clamp（review I3）**：`segIdx = p.sourceVideoIndex in [0, len) ? raw : 0`，即使上游 plan 阶段 clamp 失败也不 crash —— 双重保险。
+6. **`mapSourceToTarget` 加 `sourceVideoIndex !== 0` skip**：subtitle 锚定主视频（user 字幕来自 `input.potential`，本来就只对应主视频时间）。这是 Task 9 唯一一个 cross-cutting 的语义变更，注释里讲清楚了。
+7. **`draft_materials` group0 N+1 顺序**：N 个 video entry（一对一对应 `videoMaterials`）→ 可选 BGM entry 在末尾。测试明确断言顺序。
+8. **Blocking gate 测试**（W3 review I3 要求）：legacy N=1 path 测试断言 `onlyId` 横扫所有 segments，`clip.scale = scaleFrom = 1`（fitScale=1），canvas = metas[0] —— 改造前后输出逐字段一致。
+
+### 注意：ratio 判断仍然只看 `primaryMeta`
+
+`canvas_config.ratio` 用 `primaryMeta.width/height` 判断 9:16 / 16:9 / original —— 多视频场景下，如果 secondary metas 比例不一致，canvas 仍按主视频走（这是设计如此，不是 bug）。fitScale 在 segment 层把 secondary 视频铺满 canvas。
+
+### nit（不阻塞）
+
+- 测试里 `BASE_MATCH` 没有 `assemblyTimeline` 字段，依赖 spread 覆盖时把它当 optional —— types 里看起来 OK；如果 `TechniqueMatchingResult` 后续把 `assemblyTimeline` 改成 required（不太可能），测试 cast 要更新。当前不需要动。
+- `route.ts` 的 5) 注释还是写 "Task 9 阶段 zip 仍单视频兼容" —— 等 Task 11 做并发 N buffer 读取时再更新这段注释，**不阻塞**。
+
+---
+
+## 下一步：Task 10 放行
+
+按 per-task 工作流：
+
+1. `git pull origin main --no-rebase` 同步到 `a7d9fdf`
+2. 读本文件「Task 9 已 merge ✅」整段确认 SHA + 消化 nit（不阻塞）
+3. 开 Task 10（按 plan v4.1-review 既定阶段：transitions 接入 multi-video，用 Task 8 已导出的 `clampTransitionDurationSec` 把 incomingTransition 落到 capcut transitions schema）
+4. Task 9 闭环后建议 `/compact` 上下文
+
+**并行情境提示**：W2 P3 #1 仍未 push 到 `feat/p3-hardening`（branch tip 等同 main）。Task 10 主要触及 `lib/capcut-compiler/transitions.ts` + `build.ts` + `schema.ts`，与 W2 P3 #1 范围（trending / cron-trending / template-brief / upload / template-brief-upload）零冲突 —— W1 可以放心开。如果 Task 10 push 前 W2 已 merge P3 #1，仍建议 pull main 吸纳 schema 改动（虽然几乎不可能冲突）。
