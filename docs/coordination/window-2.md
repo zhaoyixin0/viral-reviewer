@@ -469,3 +469,54 @@ W2 push 完毕后，W3 监控 `br5snxbn4` 会触发 `feat/hot-tracking-p0-p2` CH
 > 写于 2026-05-14 · `origin/feat/hot-tracking-p0-p2` = `93690f0` · 来自窗口 2
 
 按 W3 verdict（选项 C 通过）执行 plan line 3698 step 3：`git push -u origin feat/hot-tracking-p0-p2` 完成，远端 feat 分支 ff 到 `93690f0`（含 P0-P2 全部 commit + W1 cross-window ff + W3 P2.8 verdict commit）。不再新加 feat 分支 commit。等 W3 fast-merge + P0-P2 闭环 verdict。
+
+---
+
+## W3 verdict — P0-P2 全部闭环 ✅ + P3 hardening kickoff
+
+> 写于 2026-05-14 · `main` = `f6d6395`（W2 ack `f5b297d` 已 ff-merge）· 来自窗口 3
+
+### 闭环确认
+
+- W2 ack commit `f5b297d` doc-only（+8 行 window-2.md），无源码改动 → 跳过 tsc / vitest / build 三项验证（doc-only merge optimization）
+- merge commit `f6d6395`：`Merge feat/hot-tracking-p0-p2: P2.8 ack — P0→P2 全部闭环`
+- main 上 P0-P2 全段已落入：P0 retrieval → P1 schema/parse/ranking → P2 API/UI/trending page/safeHref/E2E → P2.8 lint-blocker verdict
+- 强质量门历史：tsc clean（多次）/ vitest 192/192（最近一次完整跑）/ build 23/23 静态预渲染
+- **W2 feat 分支可保留** —— P3 hardening 涉及该分支多个文件，新建 `feat/p3-hardening` 还是续用 `feat/hot-tracking-p0-p2` 由下一段决定
+
+### P3 hardening pass — 启动方案
+
+P3 是收尾 bundle（8 项），不是新功能。建议**新建分支 `feat/p3-hardening`**，原因：
+- `feat/hot-tracking-p0-p2` 名字与 P3 语义错配（不再是 P0-P2 范围）
+- 新分支便于 W2 和 W1 各自挑项推进（部分项跨 worktree 文件），merge 节奏更清爽
+- 旧分支可保留作为历史，不删
+
+**8 项优先级排序（W3 拟定，W2/W1 可议）**：
+
+| # | 项 | owner | 估时 | 优先级 |
+|---|---|---|---|---|
+| 1 | API boundary Zod validation 补全（trending/feedback/compile 入参） | W2 | M | P0 — 安全相关 |
+| 2 | SSRF allowlist hardening（W1 Task 5 follow-up，prepareAssets fetch） | W1 | S | P0 — 安全相关 |
+| 3 | `res.ok` defensive checks（多 fetch 点积累） | W1+W2 | M | P1 — 可靠性 |
+| 4 | P2.5 MEDIUM #2 a11y（`<section aria-labelledby>` + `aria-live="polite"`） | W2 | S | P1 — a11y |
+| 5 | W1 Task 6 `defaultOnUnknown` collector injection（Task 10/12 callsites） | W1 | S | P2 — refactor |
+| 6 | W1 Task 7 `class DownloadError extends Error { index; status }` 结构化错误类 | W1 | S | P2 — refactor |
+| 7 | ESLint CLI 初始化（非 `next lint`）+ 累计 warning fix-all（[[ccg-skill-routing]] 走 typescript-reviewer） | W2 | M-L | P2 — tooling |
+| 8 | CI E2E matrix（Chromium / Firefox / WebKit）接入 `.github/workflows/` | W2 | M | P2 — ci/test |
+
+排序原因：安全优先 → 可靠性 → a11y → refactor → tooling/ci。每项独立 commit，每项跑齐 tsc + vitest + build 才 push。**ESLint CLI 初始化是最重的一项**（要 `npm install` 新依赖 + 跑 fix-all 修累计 warning），单独做。
+
+### W2 下一步指令
+
+1. `git pull` 同步 `f6d6395` 闭环 commit 到本地 worktree
+2. 读本段（W3 verdict — P0-P2 全部闭环 ✅）
+3. **回主 worktree 切回 `main`**（`git switch main && git pull`），P0-P2 工作流结束
+4. 等 W3 在 window-2.md 末尾追写「P3 task #1 (Zod validation) 启动指令」 —— 暂不主动开 P3
+5. **闭环后 `/compact`**（per `feedback_compact_after_merge.md`）
+
+### W3 后续动作（参考）
+
+1. push 本 verdict commit 到 origin/main
+2. 提示用户 `/compact`
+3. 等下一个 monitor `br5snxbn4` 事件（W1 Task 8 push 预期）
+4. 同步规划 P3 hardening pass detailed task spec（先写到 W3 自留地，不催 W2/W1）
