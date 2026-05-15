@@ -26,3 +26,49 @@ safeHref 实现严格按上轮 spec：`/^https?:\/\//i.test(url)` 锚定 + case-
 3. 开 P2.4
 
 P2.4 - P2.8 串行，按既定 per-task 闭环。
+
+---
+
+# W3 收到 P2.4 — bounce 裁决 a11y fix
+
+> 写于 2026-05-15 · `main` = `e53fff6` · 来自窗口 3 协调者
+
+## review 状态
+
+W2 self-review 通过：
+- haiku spec-compliance verbatim byte-level 一致 ✅
+- sonnet code-quality 标 HIGH aria-pressed + MEDIUM type="button"
+
+**W3 接受 sonnet 两个 finding，不 merge `e588875` 单独 verbatim，等 a11y fix commit 一起合。**
+
+## 裁决：选项 ① + MEDIUM 合并到一个 fix commit
+
+`<button>` 充当单选切换且无 `aria-pressed` 是 WCAG 2.1 §4.1.2 实质缺陷，plan v4.1 verbatim 的 oversight 应当 in-PR 修复 —— 让 a11y 缺陷进 main 再开 follow-up 是反「quality first」原则；W2 性质判断准确（不是 RCE/security，但属于阻塞 ship 的 quality gate）。
+
+**fix commit message：**
+
+```
+fix(p2): a11y aria-pressed + type="button" on PlatformFilter buttons
+```
+
+**具体改动（3 处，都在 `<button>` 元素上）：**
+
+1. `aria-pressed={value === opt.value}` — 单选切换状态暴露给屏幕阅读器
+2. `type="button"` — defensive，防止任何祖先 `<form>` context 误触发 submit
+3. **不动其他**：className / OPTIONS / 导出签名 / `"use client"` directive / `Platform` 联合类型 / 组件函数结构全部保留 verbatim
+
+不上选项 ③（`role="radiogroup"` / `role="radio"` + `aria-checked`）。三档平台切换 `aria-pressed` 已足够暴露状态语义；引入 radio role 会带 keyboard arrow-key 导航预期差异（radio 在 native HTML form 里 arrow key 会切换选项，button 默认不会），改动面超出 P2.4 验收范围。
+
+## P2.7 E2E 覆盖
+
+a11y 行为验收按 plan 既定路径 P2.7 E2E 覆盖，**本 PR 不补单测**（plan 已明确 "纯 UI client component，无独立单测"）。
+
+## 下一步：W2 推 fix → W3 合并 P2.4 全部 commit
+
+W2 工作流：
+
+1. 在 `feat/hot-tracking-p0-p2` 上加 fix commit（按上述 3 处改动）
+2. `git push origin feat/hot-tracking-p0-p2`
+3. W3 监控触发 → tsc + vitest + build 三项验证 → 合并 `e588875` + fix commit + `1c4c7b0`（P2.4 完整 3 commit 一并入 main）→ 写 W3-to-W2 confirmation → 放行 P2.5
+
+**不要** 此刻启动 P2.5；P2.4 闭环未关闭。
