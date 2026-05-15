@@ -84,6 +84,34 @@ describe("isPrivateIpString — IPv6 private/loopback/link-local ranges", () => 
   });
 });
 
+describe("isPrivateIpString — IPv4-mapped IPv6 dotted-quad (phase 1 nit cleanup 2026-05-15)", () => {
+  it("detects ::ffff:127.0.0.1 (loopback via mapped form)", () => {
+    expect(isPrivateIpString("::ffff:127.0.0.1")).toBe(true);
+  });
+
+  it("detects ::ffff:10.0.0.1 (private 10/8 via mapped form)", () => {
+    expect(isPrivateIpString("::ffff:10.0.0.1")).toBe(true);
+  });
+
+  it("detects ::ffff:169.254.169.254 (AWS metadata via mapped form)", () => {
+    // SSRF 攻击模型：caller 拿 `https://[::ffff:169.254.169.254]/latest/...` 绕 host allowlist
+    expect(isPrivateIpString("::ffff:169.254.169.254")).toBe(true);
+  });
+
+  it("is case-insensitive on the `::ffff:` prefix", () => {
+    expect(isPrivateIpString("::FFFF:127.0.0.1")).toBe(true);
+    expect(isPrivateIpString("::FfFf:10.0.0.1")).toBe(true);
+  });
+
+  it("strips brackets on IPv4-mapped IPv6 form", () => {
+    expect(isPrivateIpString("[::ffff:127.0.0.1]")).toBe(true);
+  });
+
+  it("does NOT flag public IPv4 wrapped in ::ffff: (8.8.8.8 mapped)", () => {
+    expect(isPrivateIpString("::ffff:8.8.8.8")).toBe(false);
+  });
+});
+
 describe("isPrivateIpString — non-IP hostnames", () => {
   it("returns false for domains (so domain-based allowlist handles them)", () => {
     expect(isPrivateIpString("example.com")).toBe(false);
