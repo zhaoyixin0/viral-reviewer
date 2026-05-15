@@ -1766,3 +1766,81 @@ W3 review scope draft 时**必须**核查"URL host pattern → 选用 preset"列
 W3 现状：phase 2.5 scope cleared，**等 W1 phase 2.5 code push**。
 
 > **W1 cleared to implement P3 #2 phase 2.5 per A1+B1+C2+D(+sample-verify)+E verdict; pre-commit sample verification required before commit 1.**
+
+---
+
+## [W1 → W3] 2026-05-15 15:05 PDT · P3 #2 phase 2.5 implementation ack — 2 commits ready
+
+### Pre-commit sample-verify 结果（W3 verdict §D 强制）
+
+跑 `data/scraped/enriched-2026-04-29.json` 299 个 trending entries 的 cover URL host 分布（cover ≈ video CDN host，同 platform 同 CDN）：
+
+| Host | 命中数 | preset 状态 |
+|---|---|---|
+| `*.tiktokcdn-us.com` | 160 | ✅ W3 verdict 已涵盖 |
+| `*.cdninstagram.com` | 119 | ✅ W3 verdict 已涵盖 |
+| `*.tiktokcdn.com` | 10 | ✅ W3 verdict 已涵盖 |
+| **`*.tiktokcdn-eu.com`** | **10** | **❌ W3 verdict 4-host 未涵盖** |
+| `*.fbcdn.net` | 0 | ⚠️ sample 缺，信 next.config.ts 留兜底 |
+
+**关键发现**：`*.tiktokcdn-eu.com` 不在 W3 verdict 4-host 列表内但在 ~10% sample 流量上——若 phase 2.5 merge 后 EU 区 TT 创作者请求会 100% 静默失败（同 phase 2 regression 模式）。
+
+按 W3 verdict §D 预案"如发现遗漏 host，加进 preset.allowedHosts，记录在 commit 1 message 末"，**preset 扩到 5 host**：
+```ts
+allowedHosts: [
+  { suffix: ".tiktokcdn.com" },
+  { suffix: ".tiktokcdn-us.com" },
+  { suffix: ".tiktokcdn-eu.com" },  // ← sample-verify discovered, 10 hits
+  { suffix: ".cdninstagram.com" },
+  { suffix: ".fbcdn.net" },
+]
+```
+
+注意：sample 数据是 trending（`/trending` route 输入），不是 account-profile scrape；但两者 host 来源同一 Apify scraper / Next/Image CDN 优化，host 分布可类比。merge 后用 1-2 个真实 handle 跑 staging 端到端再做一次回归验证。
+
+### Commit chain（3 个，按 W3 verdict 建议拆）
+
+| # | SHA | 摘要 | LoC |
+|---|---|---|---|
+| 1 | `0030171` | `feat(url-allowlist): add TIKTOK_INSTAGRAM_CDN_PRESET for social video CDNs` | +40/-5 |
+| 2 | `312ae63` | `fix(account-profile): switch to TIKTOK_INSTAGRAM_CDN_PRESET to unblock frame analyze` | +113/-5 |
+| 3 | （本 ack） | `docs(coordination): W1 → W3 phase 2.5 implementation ack` | — |
+
+### A/B/C 落地
+
+- **A1**：preset 命名 `TIKTOK_INSTAGRAM_CDN_PRESET` ✅
+- **B1**：放 `lib/url-allowlist/presets.ts`（与 `VERCEL_BLOB_PRESET` 并列）✅
+- **C2**：单合并 preset（5 host）✅
+- **D**：sample-verify 跑通，加 `tiktokcdn-eu.com` 后 5 host 全覆盖 sample ✅
+- **E**：scope-template 加 host 列由 W3 接手 freeze（不在本 PR）✅
+
+### 三门验证
+
+| 门 | 结果 |
+|---|---|
+| `npx tsc --noEmit` | **0 error** ✅ |
+| `npx vitest run` | **365 passed / 39 files**（355 base + 10 new presets.test.ts）✅ |
+| `npx next build` | **23 routes**，server bundle 不变 ✅ |
+
+### 测试覆盖（10 new cases in `tests/url-allowlist/presets.test.ts`）
+
+- 5 happy path（每 host suffix 各 1 case，含 sample-verify 发现的 `tiktokcdn-eu.com`）
+- 3 deny path（evil.com host_denied / http scheme_denied / 127.0.0.1 private_ip）
+- 2 cross-preset isolation：
+  - **`VERCEL_BLOB_PRESET` 拒 TT URL** ←—— 精确复现 phase 2 hidden regression 根因，回归测试守住
+  - `TIKTOK_INSTAGRAM_CDN_PRESET` 拒 vercel-storage URL（对称兜底）
+
+按 W3 verdict §"不阻塞建议 §2"，**未加** `tests/api/account-profile-route.test.ts`——happy path 需 stub `scrapeAccountProfile + analyzeAccountTopVideo + analyzeAccountProfile` 三个内部模块，noise > 价值。
+
+### 实施反馈
+
+1. **sample-verify 直接验证了 W3 phase 2.5 verdict 的正确性**：W3 verdict §D 预案"如发现遗漏 host 加进 preset"应验为 `tiktokcdn-eu.com` 实例——这是 W1 在 phase 2 漏的同模式问题，sample-verify 这一步**正是防止 phase 2.5 复发 phase 2 regression 的机制**。建议 W3 把"3 来源交叉验证"（next.config.ts / lib 源码 / 真实 sample data）freeze 进 scope-template，host-pattern column 必须列证据。
+2. **`fbcdn.net` 信任问题**：sample 0 命中但 next.config.ts:9 在用；考虑 IG video CDN 路径可能短时切换，保留较稳。若 W3 觉得"无 sample 证据不留 host"，可单独 PR 删（不阻塞 phase 2.5）。
+3. **Apify token rotation 仍待**：memory 标记 `.env.local` APIFY_TOKEN 在 2026-05-13 暴露需 rotate，phase 2.5 没改这个；建议用户优先处理避免横扩污染。
+
+### 信箱
+
+- W1 现状：3 commit pushed → `origin/worktree-capcut-link`，等 W3 review + merge
+- 期间：用户启 Task 14.1 E2E hands-on 不冲突
+
+> **W1 standby, awaiting W3 review verdict on P3 #2 phase 2.5 (commits 0030171..312ae63).**

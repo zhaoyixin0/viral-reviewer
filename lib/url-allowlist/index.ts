@@ -65,7 +65,7 @@ function normalizeSchemes(input: readonly string[]): string[] {
   });
 }
 
-export { VERCEL_BLOB_PRESET } from "./presets";
+export { VERCEL_BLOB_PRESET, TIKTOK_INSTAGRAM_CDN_PRESET } from "./presets";
 export { matchHost } from "./host-match";
 export { isPrivateIpString } from "./private-ip";
 export { UrlAllowlistError } from "./error";
