@@ -3,7 +3,10 @@ import { z } from "zod";
 import { scrapeAccountProfile } from "@/lib/account-profile/scrape";
 import { analyzeAccountTopVideo } from "@/lib/account-profile/frame-analyze";
 import { analyzeAccountProfile } from "@/lib/account-profile/analyze";
-import { createUrlAllowlist, VERCEL_BLOB_PRESET } from "@/lib/url-allowlist";
+import {
+  createUrlAllowlist,
+  TIKTOK_INSTAGRAM_CDN_PRESET,
+} from "@/lib/url-allowlist";
 import {
   buildAccountCacheKey,
   readAccountProfileCache,
@@ -124,10 +127,13 @@ export async function POST(req: NextRequest) {
         const frameInsights: AccountFrameInsight[] = [];
         const top1 = scrape.topVideos[0];
         if (top1?.videoDownloadUrl) {
-          // P3 #2 phase 2: SSRF allowlist for downstream extractFramesAndAudio
-          // frame-analyze 内部 try/catch 已把 UrlAllowlistError 当 fail-soft 返回 null
-          // （旧 TikTok URL 过期等同义），不需要 route 层显式 400
-          const urlAllowlist = createUrlAllowlist(VERCEL_BLOB_PRESET);
+          // P3 #2 phase 2.5：用 TIKTOK_INSTAGRAM_CDN_PRESET（不是 VERCEL_BLOB_PRESET）
+          // —— top1.videoDownloadUrl 来自 Apify scrape，host 是 TT/IG 媒体 CDN
+          // (`*.tiktokcdn.com` / `*.tiktokcdn-us.com` / `*.tiktokcdn-eu.com` /
+          // `*.cdninstagram.com` / `*.fbcdn.net`)。phase 2 误用 VERCEL_BLOB_PRESET
+          // 导致 100% host_denied 静默退化，本 commit 修复。frame-analyze 内部 try/catch
+          // 把 UrlAllowlistError 当 fail-soft 返回 null（与"网络失败 / URL 过期"同义）。
+          const urlAllowlist = createUrlAllowlist(TIKTOK_INSTAGRAM_CDN_PRESET);
           const insight = await analyzeAccountTopVideo(
             top1.videoDownloadUrl,
             top1.id,
