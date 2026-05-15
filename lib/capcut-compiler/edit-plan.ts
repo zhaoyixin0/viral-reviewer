@@ -45,6 +45,15 @@ export type EditSegmentPlan = {
   /** 该段来自上传全集里第几个用户视频（0-based，对齐 videoUrls[] / metas[]）。
    *  单视频兼容路径（planEditSegments）一律填 0。Task 8。 */
   sourceVideoIndex: number;
+  /**
+   * 该 plan 对应的 AssemblyTimeline.clips[] 下标（仅 assemblyTimeline 路径填写）。
+   * Task 10 用这个对齐转场：clip[i].incomingTransition 应挂到 segment[i-1]
+   * 的 extra_material_refs；若 plan 阶段 skip 了 degenerate clip，plan 下标和
+   * clip 下标会错位，需要靠 sourceClipIndex 重新对齐 + 检查相邻是否连续。
+   *
+   * 单视频兼容路径（planEditSegments）不写，保持 undefined。
+   */
+  sourceClipIndex?: number;
   sourceStartSec: number;
   sourceEndSec: number;
   targetStartSec: number;
@@ -332,7 +341,8 @@ export function planFromAssemblyTimeline(
   const plans: EditSegmentPlan[] = [];
   let targetCursor = 0;
 
-  for (const clip of timeline.clips) {
+  for (let clipIdx = 0; clipIdx < timeline.clips.length; clipIdx++) {
+    const clip = timeline.clips[clipIdx]!;
     const idx = resolveSourceVideoIndex(clip, metas.length);
     const maxDur = Math.max(0, metas[idx]?.durationSec ?? 0);
 
@@ -359,6 +369,7 @@ export function planFromAssemblyTimeline(
 
     plans.push({
       sourceVideoIndex: idx,
+      sourceClipIndex: clipIdx,
       sourceStartSec: sStart,
       sourceEndSec: sEnd,
       targetStartSec: targetCursor,
