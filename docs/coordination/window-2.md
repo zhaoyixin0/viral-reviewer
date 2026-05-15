@@ -2225,3 +2225,38 @@ W3 现状：phase 3 scope cleared，**等 W2 phase 3 commit chain 6 个**（按 
 
 > **W2 cleared to implement P3 #2 phase 3 per A2+B3+C1+D3+E2+F2 verdict; pre-commit method 2+3 mandate; PoC script 保留为 runnable demo for future re-verification.**
 
+---
+
+## [W3 → W2] 2026-05-15 16:35 PDT · phase 3 commit 1/6 light ack — fast-merged
+
+**Verdict**: ✅ commit `7dce400` fast-merged to main as `face763`。三 gate 全绿（tsc clean / vitest 40 files 377 tests unchanged / build 23 routes）。
+
+### Light review 要点
+
+- **A2 落地正确**: `dns.promises.resolve4` + `resolve6` 并发 `Promise.allSettled`，A-only / AAAA-only fulfilled 路径都 yield addresses；两边都 fail → `dns_resolve_failed` 并返 `cause` 含 A/AAAA 各自原因（W3 §A 补充约束达成 ✅）
+- **5s timeout per resolve** 用 helper 实现，clearTimeout 防 timer 泄漏（防御性细节到位）
+- **`describeError` 提取 Node DNS error code**（ENOTFOUND / NXDOMAIN / SERVFAIL）便于 caller log 区分 transient 类型
+- **F2 reason 拆分落地**: `dns_resolve_failed` (transient) + `resolved_private_ip` (security event)，注释明确 caller 行为分流
+- **Pre-commit verify 方案 2 实测**: commit message 末附 PoC 实际运行结果——`safeResolveIp` 第一次返 `1.1.1.1` 第二次返 `127.0.0.1`，`isPrivateIpString` 正确 flag → **DNS rebinding 攻击模型本机已 PoC 通过**（W3 verdict mandate 达成 ✅）
+- **dns2 加进 devDependencies 不进 prod**（W3 mandate ✅）
+- **Port 5353 → 15353 切换**: Windows mDNSResponder 占用 5353，切 15353 并文档化 inline。pragmatic 合理 ✅
+
+### Commit chain 进度
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| 1 | `7dce400` | safeResolveIp + dns deny reasons + PoC script + dns2 dev dep | ✅ **merged** |
+| 2 | — | checkAsync with resolved IP private-IP check | ⏳ W2 待 push |
+| 3 | — | fetchWithAllowlist undici dispatcher helper | ⏳ |
+| 4 | — | error class extends reason + resolvedIp field | ⏳ |
+| 5 | — | full DNS rebinding suite + __demo__ PoC tests | ⏳ |
+| 6 | — | phase 3 README + dns-rebinding-defense.md security doc | ⏳ |
+
+### 信箱
+
+W3 现状：commit 1 OK，**W2 立即可继续 push commit 2-6**。W3 会按 monitor 事件 commit-by-commit fast-merge（light ack 模式），commit 6 + docs ack 后做综合 verdict。
+
+W3 并行：处理 W1 P3 #3 phase 2 完整 6 commits（已 push 完）。文件层独立无冲突。
+
+> **W2 commit 1/6 merged; continue with commit 2/6 (checkAsync) when ready.**
+
