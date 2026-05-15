@@ -10,6 +10,15 @@ type Badge = {
 };
 
 /**
+ * 防御 javascript:/data: URI 等非 http(s) scheme 走进 <a href>。
+ * card.url 来自 Apify scraped 数据,上游不可信 —— 渲染边界必须自带 scheme guard。
+ * 非 http(s) → 返回 undefined,React 会 omit href 属性,a 标签退化为不可点击文本。
+ */
+export function safeHref(url: string): string | undefined {
+  return /^https?:\/\//i.test(url) ? url : undefined;
+}
+
+/**
  * velocity → badge 文案。纯函数,单独测。
  * architect L4:weekOverWeek 为 null(首周 / 上周无此条 / schemaVersion 不一致)
  * 一律渲染 NEW,绝不产出 +null% / NaN%。
@@ -41,7 +50,7 @@ export function TrendingCard({ card }: { card: TrendingCardData }) {
 
   return (
     <a
-      href={card.url}
+      href={safeHref(card.url)}
       target="_blank"
       rel="noopener noreferrer"
       className="glass-card group block overflow-hidden transition-transform hover:-translate-y-1"
