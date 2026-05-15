@@ -121,4 +121,26 @@ describe("GET /api/trending", () => {
     expect(body.trendingHashtags).toEqual([]);
     expect(body.week).toBeNull();
   });
+
+  it("rejects invalid platform query with 400", async () => {
+    // 没有 snapshot 也无所谓 —— schema 校验在 readLatestTwoSnapshots 之前
+    const res = await GET(new Request("https://x/api/trending?platform=foo"));
+    expect(res.status).toBe(400);
+    const body = await res.json();
+    expect(body.error).toBe("invalid_query");
+    expect(body.detail).toBeDefined();
+    // schema 校验应该在读 snapshot 之前；保证不会被无意中调用
+    expect(readLatestTwoMock).not.toHaveBeenCalled();
+  });
+
+  it("accepts missing platform (returns all platforms)", async () => {
+    readLatestTwoMock.mockResolvedValue({
+      current: snap("2026-W20", [vid("tt", "tiktok", 9000), vid("ig", "instagram", 8000)]),
+      previous: null,
+    });
+    const res = await GET(new Request("https://x/api/trending"));
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.cards).toHaveLength(2);
+  });
 });

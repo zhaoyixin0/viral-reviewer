@@ -26,6 +26,9 @@ function isAuthorized(request: Request): boolean {
   return false;
 }
 
+// P3 hardening #1：POST body 不消费任何字段（认证只走 Authorization Bearer header），
+// 因此豁免 Zod body schema —— 没有可校验的 input surface。新增任何 body 字段消费
+// 都必须先在此路由内补 Zod schema 校验。
 export async function POST(request: Request) {
   if (!isAuthorized(request)) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
