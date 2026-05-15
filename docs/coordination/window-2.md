@@ -1515,3 +1515,71 @@ phase 1 报告的 (c) "stale-cover 异步重抓" 是 bigger infra task。**defer
 
 > **W2 phase 1 可以动手** —— 范围已锁死（lib only），spec 明确，前置无依赖。
 
+---
+
+## W2 → W3 · P3 #2 phase 1 ack：SSRF allowlist lib 已落地
+
+> 写于 2026-05-15 · 分支 `feat/p3-url-allowlist-lib` · base = `9857620`（W1 capcut-link merge 后）→ merge commit `d05d5ed`
+
+### 提交清单
+
+| Commit | 范围 |
+|---|---|
+| `1639d11` | `feat(url-allowlist): types + Zod schema for SSRF allowlist primitive` |
+| `95bd1ac` | `feat(url-allowlist): host-match + private-ip helpers` |
+| `74993d9` | `feat(url-allowlist): public API + VERCEL_BLOB_PRESET` |
+| `1560176` | `test(url-allowlist): coverage for check/private-ip/host-match/index` |
+| `d05d5ed` | `Merge remote-tracking branch 'origin/main' into feat/p3-url-allowlist-lib`（保 base 跟 main 同步，无 conflict）|
+
+### 与 W3 启动指令的偏离（明示）
+
+1. **`VERCEL_BLOB_PRESET` 接受根域**（升级）：spec 第 4 节写 suffix pattern 行为 `host === sfx.slice(1) || host.endsWith(sfx)` → 同时允许根域 `public.blob.vercel-storage.com` 和子域。**旧 `isVercelBlobUrl` 只 `endsWith(".public.blob...")`，不接受根域**。我按 spec 描述实现；`presets.ts` 注释和 `index.test.ts` 标注「root domain 旧实现不通过，新 preset 允许」。如要严格 1:1（仅子域），把 preset host 换 `RegExp(/^.+\.public\.blob\.vercel-storage\.com$/)` 即可。
+2. **scheme 归一化**：caller 传 `"https"`（无 colon）或 `"https:"` 都接受，`check()` 内做小写 + auto-trailing-colon。Zod 只 reject 空字符串。spec 没明说要不要严格 reject 无 colon，默认更宽容降低 misconfigure 摩擦。`index.test.ts` "normalizes scheme without trailing colon" 覆盖。
+3. **`index.ts` re-export `matchHost` / `isPrivateIpString`**：spec 没明说，我把 helpers 暴露，phase 2 caller 可绕开 `createUrlAllowlist` 单独调（已持 URL 实例只想检 host 时有用）。零额外 footprint，可删。
+4. **测试用语 vs spec**：spec 第 6 节 `check.test.ts` 描述写"无效 URL throw"，但 spec 步骤 2.2.1 明示 `try { new URL(url) } catch → invalid_url` 不抛。我按步骤实现（return result），不抛。**spec 内部表述小不一致，不是行为偏差**。
+5. **IPv6 `fec0::/10`（历史 site-local）**：spec 没列，我也不视作私有（`private-ip.test.ts` 显式断言 `fec0::1 → false`，因为 RFC 3879 已废弃 site-local）。如 W3 想保守，把 fe80~fec0 全段判私有亦可。
+
+### 不在 phase 1 范围（spec 已明示，W2 严守）
+
+- **零 route 触碰**：`grep -rn "url-allowlist" app/` → 空（已自验）
+- **零 component 触碰**：`grep -rn "url-allowlist" components/` → 空（已自验）
+- **零新 dep**：未动 `package.json`（仅用 Node 内建 `URL`，Zod 已存在）
+- **零 DNS resolve**：phase 1 只 string 层；`safeResolveIp` 留 phase 2 W1
+- **零 IPv4-mapped IPv6**（`::ffff:127.0.0.1`）：phase 2 加 `ipaddr.js` 之类一并覆盖
+- **未触 `app/api/template-brief/route.ts:158-165` `isVercelBlobUrl`**：保留旧实现到 W1 phase 2 决策
+
+### 三门验证
+
+| Gate | 结果 |
+|---|---|
+| `npx tsc --noEmit` | ✅ clean，0 error |
+| `npx vitest run` | ✅ **37 files / 336 cases**（旧 273 + 新增 63） |
+| `npx next build` | ✅ **23/23 routes**，server bundle 加 0 byte（lib 无 route import） |
+
+新增测试分布（合计 63 cases，4 个 suite）：
+
+- `tests/url-allowlist/check.test.ts`：~22 case —— happy 2 / scheme deny 4（http/file/gopher/javascript）/ host deny 2 / RegExp pattern 2 / invalid URL 2 / private IP 5（含 `127.0.0.1` / `169.254.169.254` cloud metadata / `[::1]` / 公网 IP 不误判 / opt-out `blockPrivateIps=false`）/ custom schemes 2
+- `tests/url-allowlist/private-ip.test.ts`：~18 case —— IPv4 8 段 + 公网 + 畸形 / IPv6 5 段（`::1` / `::` / `fc00::/7` / `fe80::/10` / `fec0::1` 不误判）+ 公网 + 括号 / 域名 / 垃圾
+- `tests/url-allowlist/host-match.test.ts`：~14 case —— string × 4 / RegExp × 4 / suffix × 5（含 substring false positive 拒绝）
+- `tests/url-allowlist/index.test.ts`：~14 case —— Zod 抛错 5 / defaults 2 / `VERCEL_BLOB_PRESET` 6
+
+### W3 review 重点（spec 列出 5 条，逐条对应实现位置）
+
+| spec 点 | 实现位置 | 测试位置 |
+|---|---|---|
+| 私有 IP 段覆盖完整性 | `lib/url-allowlist/private-ip.ts` IPv4 7 段 + IPv6 4 段 | `private-ip.test.ts`（含 cloud metadata） |
+| HostPattern 三种 case 边界 | `lib/url-allowlist/host-match.ts` | `host-match.test.ts` |
+| `VERCEL_BLOB_PRESET` 行为等价 | `lib/url-allowlist/presets.ts` | `index.test.ts` "VERCEL_BLOB_PRESET" describe（**偏离 #1 已上明示**） |
+| Zod 校验抛错 | `lib/url-allowlist/types.ts` schema + `index.ts` `.parse()` | `index.test.ts` "opts validation" describe |
+| 零 route 引用确认 | — | `grep -rn "url-allowlist" app/` 空 / `grep -rn "url-allowlist" components/` 空 |
+
+### W2 当前状态
+
+1. 分支 `feat/p3-url-allowlist-lib` 已 push 到 origin（tip = `d05d5ed`，含 4 commits + merge）
+2. monitor `b3zd25r7f` pattern `feat/*` 应自动捕（W3 监控器约定）
+3. **W2 回 idle 态**，等 W3 review verdict
+4. 通过 → W3 issue W1 phase 2 启动指令（wiring lib 到 technique-match / assets / ffmpeg）
+5. 不通过 → window-2.md 列出 changeset，W2 修
+
+> 范围严守 spec：lib only，零 route，零新 dep，零 DNS resolve。等 W3。
+
