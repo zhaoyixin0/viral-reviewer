@@ -1844,3 +1844,81 @@ allowedHosts: [
 - 期间：用户启 Task 14.1 E2E hands-on 不冲突
 
 > **W1 standby, awaiting W3 review verdict on P3 #2 phase 2.5 (commits 0030171..312ae63).**
+
+---
+
+## [W3 → W1] 2026-05-15 15:10 PDT · P3 #2 phase 2.5 merge verdict + scope-template freezed
+
+**Verdict**: ✅ Both code commits merged to main as `11e0c23` (no-ff merge of `a4d4371`).
+
+### 三门复跑（W3 worktree 本地）
+
+| 门 | 结果 |
+|---|---|
+| `npx tsc --noEmit` | **0 error** ✅ |
+| `npx vitest run` | **365 passed / 39 files**（355 base + 10 new）✅ |
+| `npx next build` | **23 routes**, server bundle 不变 ✅ |
+
+### Sample-verify 机制验证成功 ⭐
+
+W3 verdict §D 要求 pre-commit 本机 sample-verify 是**预防性约束**，phase 2.5 实施中 W1 真实跑了 299 trending entries → 发现 `tiktokcdn-eu.com` (10 hits) **不在** W3 verdict 原 4-host 内：
+
+- W3 预测 4 host：`tiktokcdn.com` / `tiktokcdn-us.com` / `cdninstagram.com` / `fbcdn.net`
+- W1 实测发现 1 个 gap：`tiktokcdn-eu.com`（TT 欧洲区独立域名）
+- W1 正确扩 preset 为 **5 host**，附 sample 分布写进 commit 1 message
+
+**机制评价**：如果没 sample-verify，phase 2.5 merge 后欧洲区 TT 创作者请求会触发 100% silent regression（与 phase 2 完全同模式）。Sample-verify 机制工作正常，从**预防性设计**转为**实证有效的设计**。
+
+### Commit chain review 点评
+
+**`0030171`（新增 `TIKTOK_INSTAGRAM_CDN_PRESET`）**
+- ✅ 5 host suffix 全部以 "." 开头，与 phase 1 `HostPattern.suffix` 语义一致
+- ✅ 注释完整记录 3 个来源（next.config.ts L6-9 / scrape.ts L64-67 / sample-verify 结果）
+- ✅ Host 分布表格写在注释里，未来 W3/W1 回看一眼就懂为什么加 `tiktokcdn-eu.com`
+- ✅ 强制 https + blockPrivateIps 与生产 CDN 实际行为吻合
+- ✅ commit message 末"sample-verify 防止 EU-region TikTok 100% 静默失败"——锁死 §D 机制实证
+
+**`312ae63`（account-profile 切 preset + 10 tests）**
+- ✅ `account-profile/route.ts` inline doc 解释"phase 2 误用 VERCEL_BLOB_PRESET 的 regression history"——未来读 code 的人立刻知道为什么是 TT/IG preset
+- ✅ frame-analyze 内部 try/catch 保留，UrlAllowlistError 真正成为"网络失败 / URL 过期"同义 fail-soft 路径
+- ✅ `presets.test.ts` 10 cases 设计精准：
+  - 5 happy path（每 host suffix 1 case）
+  - 3 deny path（host_denied / scheme_denied / private_ip）
+  - **2 cross-preset isolation case** ⭐——`VERCEL_BLOB_PRESET rejects tiktokcdn URL` 精确复现 phase 2 regression root cause，未来再有人误用 preset 会被测试拦截
+
+### W3 自身 follow-up: `scope-template.md` freezed ✅
+
+按 verdict §E 承诺，W3 本 verdict 同步创建 **`docs/coordination/scope-template.md`** （独立文档，**不嵌入 window-N.md**）：
+
+- §2.2 强制 "URL 来源 / URL host pattern / 选用 preset / 现有校验" 必填栏（phase 2 错判根因防御）
+- §2.7 强制 pre-commit sample-verify 机制（phase 2.5 实证有效的设计）
+- §3 W3 verdict 必含项（逐项决策回答 / scope 收紧 / commit chain 建议 / 信箱清场）
+- §4 已记录 4 条 anti-pattern + 防御机制 cross-ref 表
+
+**P3 #3 phase 2 (rate-limit route wiring) 开始执行**：W1 scope draft **必须**用本模板格式（§2.2 必填栏一定要列）。W3 review 时**必须**核查 URL/source → 策略一致性，**核查不一致 = 阻止 scope merge**。
+
+### 累积 P3 + Task 14 状态
+
+| 项 | 状态 |
+|---|---|
+| P3 #1 rate-limit phase 1+2 | ✅ merged |
+| P3 #2 url-allowlist phase 1 | ✅ merged `daeebfc` |
+| Task 14 A+B（C1 shim 移除 + label 抽取） | ✅ merged `6c2627b` |
+| P3 #2 url-allowlist phase 2（route wiring） | ✅ merged `4f7f70f` |
+| **P3 #2 url-allowlist phase 2.5（preset fix）** | ✅ **merged `11e0c23`** |
+| P3 #3 rate-limit phase 2（route wiring） | 待 W1 接手（scope draft 必走 `scope-template.md`） |
+| Task 14.1 E2E hands-on | 待用户启动 |
+
+### 下一步建议
+
+W1 双轨可选：
+- **(a) Task 14.1 E2E hands-on**: 等用户在主窗口启 preview deploy + 6 视频 hands-on
+- **(b) P3 #3 phase 2 scope draft**: rate-limit route wiring，**第一个用 `scope-template.md` 格式的 scope draft**，§2.2 URL/source 必填栏请认真填（rate-limit bucket 类似 url-allowlist preset，按数据源选 bucket）
+
+W1 不能两个并发——选一个。E2E 需要用户参与；scope draft 可独立写。建议 W1 倾向 (b)（用户没启 E2E 之前不阻塞）。
+
+### 信箱
+
+W3 现状：phase 2.5 merged + scope-template freezed，**等 W1 P3 #3 phase 2 scope draft（用新模板）或用户启 Task 14.1 E2E**。
+
+> **W1 cleared from phase 2.5; next: either user-initiated Task 14.1 E2E session, OR W1 P3 #3 phase 2 scope draft using new `scope-template.md` format.**
