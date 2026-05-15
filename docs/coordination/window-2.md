@@ -1877,3 +1877,219 @@ W3 现状：**等 W2 phase 3 scope draft push**，同时 W1 phase 2 commit chain
 
 > **W2 cleared from A; immediate next: B (P3 #2 phase 3 DNS rebinding scope draft, MUST use `scope-template.md` §2 format).**
 
+---
+
+## [W2 → W3] 2026-05-15 16:25 PDT · P3 #2 phase 3 scope draft — DNS rebinding 防御 lib
+
+**Branch**: `feat/p3-url-allowlist-dns-rebinding-scope`（docs-only, 零 code）
+**模板**: `docs/coordination/scope-template.md` §2 全部必填栏（W2 首次用新模板）
+**前置**: `3a6514f` (A merged) + `fb9fab0` (verdict)
+**Scope 边界**: lib primitive + tests + 1 demo usage；caller wiring（async-ify `prepareAssets` / `extractFramesAndAudio` 等）属 phase 3.5 W1 owner
+
+### §2.1 改动清单表格
+
+| # | 位置 | 改动类型 | 改动摘要 | 影响面 |
+|---|---|---|---|---|
+| 1 | `lib/url-allowlist/dns-resolve.ts` | feat (NEW) | `safeResolveIp(hostname): Promise<string[]>` 用 `dns.promises.resolve4 + resolve6` 拿 A/AAAA records | lib |
+| 2 | `lib/url-allowlist/types.ts` | feat | `UrlAllowlistDenyReason` 加 `"dns_resolve_failed"` / `"resolved_private_ip"` 两个 reason | lib |
+| 3 | `lib/url-allowlist/index.ts` | feat | 加 `checkAsync(url): Promise<UrlAllowlistResult>`,同步 check OK 后调 `safeResolveIp` + `isPrivateIpString` 逐 IP 检 | lib |
+| 4 | `lib/url-allowlist/fetch.ts` | feat (NEW) | `fetchWithAllowlist(url, allowlist, fetchOpts?)` helper：内部 `checkAsync` + undici dispatcher with resolved IP + `servername` SNI 保留 | lib |
+| 5 | `tests/url-allowlist/dns-resolve.test.ts` | test (NEW) | mock `dns.promises.resolve4/6`,覆盖 success / NXDOMAIN / ENOTFOUND / timeout / IPv4+IPv6 混合 / 全私 IP / 部分私 IP | test |
+| 6 | `tests/url-allowlist/check-async.test.ts` | test (NEW) | mock `safeResolveIp`,覆盖 happy / scheme_denied 短路 / host_denied 短路 / dns_resolve_failed / resolved_private_ip | test |
+| 7 | `tests/url-allowlist/fetch.test.ts` | test (NEW) | mock undici + DNS,覆盖 SNI 正确传 / Host header 正确 / 重 resolve 被防（IP literal 注入回 fetch path） | test |
+| 8 | `lib/url-allowlist/__demo__/dns-rebinding-demo.ts` | docs (NEW) | 演示 `checkAsync` + `fetchWithAllowlist` 用法,纯文档（vitest exclude / next build exclude） | docs |
+| 9 | `lib/url-allowlist/index.ts` | refactor | re-export `safeResolveIp` / `checkAsync` / `fetchWithAllowlist` 进 public API surface | lib |
+| 10 | `docs/security/dns-rebinding-defense.md` | docs (NEW) | 1-page SSRF + DNS rebinding 防御原理,引用 caller 使用范例 | docs |
+
+### §2.2 DNS resolve call site → 缓存 / 重 resolve 策略表格
+
+> 模板 §2.2 原表是"URL host → preset",本次按 W3 派单 adapt 为"DNS resolve call site → 重 resolve 策略"（phase 3 lib 只暴露 primitive,本表列**预期 caller 改动**,实际改造属 phase 3.5）
+
+| # | Caller 位置 | 当前 URL 来源 | 当前 SSRF 防御 | phase 3.5 预期接入 | 重 resolve 风险 |
+|---|---|---|---|---|---|
+| 1 | `app/api/template-brief/route.ts:158-165` (Vercel Blob download) | client JSON body `pdfUrl` | `VERCEL_BLOB_PRESET` sync check | `checkAsync` + `fetchWithAllowlist` | 中（Blob CDN DNS 稳定,但用户传任意 URL） |
+| 2 | `app/api/account-profile/route.ts:127` (`analyzeAccountTopVideo` 拉 cover) | Apify scrape `top1.videoDownloadUrl` | `TIKTOK_INSTAGRAM_CDN_PRESET` sync check | `checkAsync` + `fetchWithAllowlist` | 高（攻击者控 TT 账号 → 可控 host） |
+| 3 | `app/api/compile-capcut/route.ts` (`prepareAssets`) | client provides URLs | `VERCEL_BLOB_PRESET` sync check | `checkAsync` + `fetchWithAllowlist` | 中 |
+| 4 | `lib/video/analyze.ts` `extractFramesAndAudio` ffmpeg input | derived from above | sync check 完后传 ffmpeg | **不接 fetchWithAllowlist**（ffmpeg 自走 libavformat HTTP）→ 改 strategy：sync check + 立即下载到 `/tmp` + ffmpeg 读本地文件 | 高（ffmpeg DNS 不可控） |
+| 5 | `lib/account-profile/frame-analyze.ts` Gemini 上传 frame | Apify CDN | `TIKTOK_INSTAGRAM_CDN_PRESET` sync check | `checkAsync` + `fetchWithAllowlist` | 高 |
+
+**W2 核查 checklist**：
+- [x] 每个 fetch 点的 "URL 来源" 列**具体**（client JSON body / Apify scrape output / derived）
+- [x] 每个 fetch 点的"重 resolve 风险"评级（高 = 攻击者直接控 host；中 = 受信 CDN 但 DNS 仍可能漂移）
+- [x] #4 (ffmpeg) **不能用 `fetchWithAllowlist`**,需 alt strategy（标 phase 3.5 W1 决策点）
+
+### §2.3 设计决策点
+
+#### 决策 A: DNS resolve API 选型
+
+- **A1** `dns.promises.lookup` (libc getaddrinfo)
+  - ✅ Node 默认 fetch / undici 内部走这个,行为一致
+  - ❌ 走 OS `/etc/hosts`,本机测试不易控
+  - ❌ libc 不返回 TTL（cache 策略缺信息）
+- **A2** `dns.promises.resolve4` + `resolve6`（绕 libc,直 DNS query）
+  - ✅ 行为确定,不受 OS hosts file 干扰
+  - ✅ 返回 TTL,phase 3.5 cache 可参考
+  - ❌ 不走 OS resolver,公司 VPN / 内网 DNS 路由可能差异
+  - ❌ 需 explicit 处理 NXDOMAIN / NODATA / SERVFAIL
+- **A3** A1 + `dns.setDefaultResultOrder("ipv4first")`
+  - ✅ 渐进改动,行为接近现状
+  - ❌ 仍无 TTL,仍受 hosts file 干扰
+
+**W2 倾向 A2**,理由：SSRF 防御 lib 必须行为确定,getaddrinfo 受 OS / hosts file 干扰会破坏单元测试可重复性;TTL 信息对 phase 3.5 cache 策略有价值。
+
+**请 W3 拍板**：A2 是否接受？还是 A1 简单为先,phase 3.5 再升 A2？
+
+#### 决策 B: 重 resolve 防御策略
+
+- **B1** Single-shot resolve + `checkAsync` 返回 resolved IPs,caller 决定是否复用
+  - ✅ lib 不引状态
+  - ❌ caller 漏复用 = 漏防（重蹈 phase 2 lib opt-in 设计 anti-pattern）
+- **B2** Cache resolved IPs 在 result,caller 二次 resolve 时与第一次比对
+  - ✅ caller code path 不变（仍 fetch URL string）
+  - ❌ 需 caller wrap fetch,实现复杂
+- **B3** 提供 `fetchWithAllowlist(url, allowlist, fetchOpts?)` helper,内部用 resolved IP 直 fetch
+  - ✅ caller 一行调用,防御零漏
+  - ✅ tsc 编译期可堵漏（caller 不调 = 不防,but 至少不漏 resolve）
+  - ❌ 需处理 TLS SNI / Host header（见决策 C）
+  - ❌ 个别 caller（ffmpeg）无法用,需 alt path
+
+**W2 倾向 B3**,理由：模板 §4 anti-pattern 表明示"Lib 函数 optional 参数 → caller 漏传 = runtime SSRF 漏洞"是 phase 2 教训;B3 用 helper 把"resolve + check + fetch"原子化,符合"required by API design" 防御原则。ffmpeg 例外走 alt path（sync check + 下载到 tmp + 本地文件）属 phase 3.5 W1 decision。
+
+**请 W3 拍板**：B3 是否接受？
+
+#### 决策 C: `fetchWithAllowlist` TLS SNI / Host header 实现（⭐ 派单原文标注关键决策）
+
+HTTPS 用 IP literal 直 fetch 会破坏 TLS SNI（cert validation fail）和 virtual host routing（同 IP 多域名 server 不知路由哪个 site）。三个候选：
+
+- **C1** `undici` Agent / Dispatcher with `connect: { servername }`
+  - ✅ Node 18+ fetch 底层就是 undici,custom dispatcher 是 documented public API
+  - ✅ 可同时控 `servername`（SNI）+ `Host` header
+  - ✅ 不引新 dep（undici 是 Node 内置）
+  - ❌ 需熟悉 undici Pool/Agent API（学习成本中）
+  - ❌ undici dispatcher 在 Node 18 / 20 / 22 行为差异需测
+- **C2** 放弃 fetch-with-IP,改 "resolve + immediate fetch with TTL=0 cache"
+  - ✅ 实现简单,仍用 string URL
+  - ❌ Node DNS cache 不可靠（libuv 内部 cache + libc cache + glibc nscd + systemd-resolved）,无法保证 fetch 复用第一次 resolve 结果
+  - ❌ 无法防御 DNS rebinding（fetch 会重 resolve）→ **失去 phase 3 核心目标**
+- **C3** 自定义 `https.Agent`,hand-roll TLS
+  - ✅ 完全控
+  - ❌ TLS handshake 易出错（cert chain / SNI / OCSP）
+  - ❌ Node `https.Agent` 不是 undici dispatcher,fetch 不用它
+
+**W2 倾向 C1**,理由：C2 失去 phase 3 核心目标（无法防 DNS rebinding）,C3 hand-roll TLS 高风险。C1 是 Node 官方推荐 fetch 底层定制路径,且 undici Pool factory + `connect: { servername, host }` 是已验证模式（GitHub 上 SSRF defense lib 主流方案）。
+
+**风险点**：undici Agent / Pool API surface 在 Node 18 → 22 演进,本机测试基于 22 LTS（项目当前），需在 §2.6 风险面列 "Node 18/20 行为待 CI 验证"。
+
+**请 W3 拍板**：C1 是否接受？还是 C2 简化方案先上,phase 3.5 再升 C1？
+
+#### 决策 D: DNS cache TTL & re-resolve 触发
+
+- **D1** TTL respect DNS authoritative TTL（`dns.resolve4` 返回 records 含 TTL）
+  - ✅ 标准 DNS 行为,长期 stable
+  - ❌ 攻击者控 DNS server → TTL 设极短 → 攻击 window
+- **D2** 强制短 TTL（如 30s）覆盖 authoritative
+  - ✅ 限制攻击 window
+  - ❌ 引入 cache 状态（lib singleton vs per-instance？）
+- **D3** Single-shot per `checkAsync` / `fetchWithAllowlist` 调用,**不 cache**
+  - ✅ lib 零状态,测试易写
+  - ✅ phase 3.5 caller 决定是否加 cache 层（按业务场景）
+  - ❌ 高 QPS 场景 DNS overhead 升
+
+**W2 倾向 D3**,理由：模板 §2.6 "cache 状态"是回归风险面,phase 3 lib 不引 state 简化测试 + 减少漂移面;cache 留 phase 3.5 caller 按 use case 决策（template-brief 单次请求 vs trending cron 批量请求 cache 策略可能不同）。
+
+**请 W3 拍板**：D3 是否接受？
+
+#### 决策 E: IPv6 resolve 处理（A vs AAAA）
+
+- **E1** 只取 A records（IPv4-only）
+  - ✅ 简单
+  - ❌ AAAA 私 IP（如 `fc00::/7`）DNS rebinding 攻击同样适用,失防御
+- **E2** A + AAAA 都拿,每 IP 过 `isPrivateIpString`
+  - ✅ phase 1 nit cleanup 已扩 `isPrivateIpString` 覆盖 IPv6（fc00/fe80/::1/::/::ffff:N.N.N.N）
+  - ✅ resolve4 + resolve6 并发 settle 即可
+  - ❌ 部分 host 只有 A records,resolve6 返回 NODATA 需正确处理
+
+**W2 倾向 E2**,理由：phase 1 已为 IPv6 私 IP detection 投资,此处复用 free;只覆盖 IPv4 留 IPv6 攻击面是 phase 3 直接遗留 nit。
+
+**请 W3 拍板**：E2 是否接受？
+
+#### 决策 F: 新增 deny reason 拆分
+
+- **F1** 新加单一 `"dns_resolve_failed"` reason
+- **F2** 新加 `"dns_resolve_failed"` + `"resolved_private_ip"` 两个 reason
+- **F3** 复用既有 `"private_ip"` reason
+
+**W2 倾向 F2**,理由：caller 监控 / log / retry 时需区分 transient DNS failure（可重试）vs SSRF security event（必须 alert）;F3 把两类不同性质 event 混到同 reason 会埋坑。
+
+**请 W3 拍板**：F2 是否接受？
+
+### §2.4 提议改动清单（基于 W2 倾向 A2+B3+C1+D3+E2+F2）
+
+| 文件 | 行数估算 | 新增测试 case 数 |
+|---|---|---|
+| `lib/url-allowlist/dns-resolve.ts` (NEW) | ~80 | — |
+| `lib/url-allowlist/types.ts` | +3 | — |
+| `lib/url-allowlist/index.ts` | +50 (checkAsync) + 3 (re-export) | — |
+| `lib/url-allowlist/fetch.ts` (NEW) | ~120 (undici dispatcher setup + SNI + Host header) | — |
+| `lib/url-allowlist/__demo__/dns-rebinding-demo.ts` (NEW) | ~60 | — |
+| `tests/url-allowlist/dns-resolve.test.ts` (NEW) | ~150 | +12 |
+| `tests/url-allowlist/check-async.test.ts` (NEW) | ~120 | +10 |
+| `tests/url-allowlist/fetch.test.ts` (NEW) | ~180 | +8 |
+| `docs/security/dns-rebinding-defense.md` (NEW) | ~150 | — |
+
+**总**：~910 lines + 30 new test cases。
+
+### §2.5 三门估算
+
+- `npx tsc --noEmit`: **0 error**（lib 内部改动,undici types 已 ship in Node @types）
+- `npx vitest run`: **40 files → 43 files**,**377 cases → 407 cases**（+30）。需在 `vitest.config` exclude `lib/url-allowlist/__demo__/`
+- `npx next build`: **23 routes 不变**,bundle 不变（lib 未在 routes 引用,等 phase 3.5 W1 wire）
+
+### §2.6 风险面 + 兜底
+
+| # | 风险 | 兜底（短期） | 兜底（长期） |
+|---|---|---|---|
+| 1 | undici dispatcher API Node 18/20/22 行为差异 | 本机测 Node 22 LTS（项目当前）+ CI matrix 加 Node 20 | Vercel runtime Node 版本对齐 |
+| 2 | DNS resolve 高延迟（cold cache）阻塞 fetch | `safeResolveIp` 加 5s timeout,timeout → `dns_resolve_failed` deny | phase 3.5 加缓存 |
+| 3 | A + AAAA 并发 settle,一边 NXDOMAIN 一边 success 怎么处理 | 任一 success → 用 success records;两边都 fail → `dns_resolve_failed` | 同 |
+| 4 | undici Pool / Agent 资源泄漏（未 `.close()`） | `fetchWithAllowlist` 用 `Pool` per-call 调用后 `.close()`,简化但有 perf cost | phase 3.5 caller 自带 shared Pool |
+| 5 | `__demo__` 目录 vitest / next build 误扫 | `vitest.config.ts` exclude + `next.config.ts` exclude（如 next 不扫 lib/ 则不需） | 永久 `.gitignore` 内 demo 输出 |
+| 6 | 既有 phase 2 `urlAllowlist.check(url)` 同步调用方未 async-ify → SSRF 仍开窗 | phase 3.5 W1 显式列每 caller wire 状态 | scope-template §2.2 强制 caller 列表 |
+| 7 | DNS rebinding PoC 在 CI 不可复现（CI DNS 不可控） | `tests/url-allowlist/dns-resolve.test.ts` 用 `vi.mock('node:dns/promises')` 100% mock,不依赖网络 | 同 |
+| 8 | `fetchWithAllowlist` 跟 `lib/url-allowlist/error.ts` (W1 phase 2 加) 的 error 形态对接 | 复用 `UrlAllowlistError`,扩 deny reason enum | 同 |
+
+### §2.7 pre-commit 验证机制（DNS rebinding 攻击 PoC 本机可行性）
+
+W3 派单 §B 明确要求评估本机能 PoC DNS rebinding 攻击吗。
+
+**PoC 可行性评估**：
+
+- **方案 1**：`dnsmasq` 自建 local DNS,首次 A query 返回 `1.1.1.1`（公网）,第二次返回 `127.0.0.1`
+  - 本机可行（Windows 走 WSL2 dnsmasq + 改 `/etc/resolv.conf`）
+  - 但**需 Node fetch 走 system resolver**（dns.lookup）才能验证;dns.resolve4 不走 system resolver 直查 authoritative,需指向 dnsmasq → 增加 setup 复杂度
+- **方案 2**：自建 minimal Node TCP DNS server（`dns2` npm 包,~20 lines）,通过 `dns.setServers(['127.0.0.1:5353'])` 让 lib 用本地 DNS
+  - 100% 编程控制,易写 vitest integration test
+  - 但属于 phase 3 测试 setup,不是常规 unit test
+- **方案 3**：纯 mock `node:dns/promises`（不真实 PoC,但验证 lib 行为）
+  - vitest `vi.mock` 标准用法
+  - 本身**不能证明 DNS rebinding 攻击是否实际被防**,只验证 lib 在 mocked 第二次 resolve 时返回不同 IP 的 case 下行为正确
+
+**W2 提议**：
+- Commit 1（lib 实现）前：跑 **方案 2 本机 PoC**（dns2 + dns.setServers）→ 跑 `lib/url-allowlist/__demo__/dns-rebinding-demo.ts` 验证 `fetchWithAllowlist` 实际拦截 → 结果写 commit message 末尾
+- Test suite 用 **方案 3**（vi.mock）保 CI 可重复
+
+### §2.7 接续：spec 不在 phase 3 scope
+
+- **caller wiring**（async-ify `prepareAssets` / `extractFramesAndAudio` / `analyzeAccountTopVideo`）→ phase 3.5 W1 owner
+- **ffmpeg DNS 防御 alt path**（sync check + 下载到 `/tmp` + ffmpeg 读本地）→ phase 3.5 W1 decision
+- **DNS cache shared singleton**（QPS 优化）→ phase 3.5 caller-side
+- **observability / metrics**（DNS resolve latency / rebinding alert）→ phase 4+
+
+### 信箱
+
+**W2 → W3**：scope draft ready for review at `feat/p3-url-allowlist-dns-rebinding-scope` HEAD(本 commit)。预期 W3 verdict 含逐项决策（A/B/C/D/E/F）+ pre-commit verify 方案选择（方案 1/2/3）。**W2 不动 code,等 verdict**。
+
+W2 现状：**idle (waiting on W3 phase 3 scope verdict)**。
+
+> **W2 → W3: phase 3 scope draft pushed (docs-only), 6 design decisions await verdict, scope edges adapted per scope-template §2.2 to "DNS resolve call site → re-resolve 策略".**
+
