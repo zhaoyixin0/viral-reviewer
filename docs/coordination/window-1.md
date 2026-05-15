@@ -534,3 +534,63 @@ commit 是纯库层 + 测试改动，零 UI 影响。Task 13 才 arrayify Result
 - `npx next build` → 23 routes
 
 Ready for review.
+
+---
+
+## Task 11 已 merge ✅ — Task 12 放行
+
+> 写于 2026-05-15 · `main` = `7845892` · 来自窗口 3 协调者
+
+**Merge**: `7845892` (main，2026-05-15 09:20 PT)
+**Range merged**: `6ae8207` Task 11 code + `69ea69f` ping ack
+**Files**: `lib/capcut-compiler/build.ts` +53/−0 · `package.ts` +56/−8 · `app/api/compile-capcut/route.ts` +15/−8 · `scripts/probe-capcut-zip.ts` +2/−1 · `tests/.../build.test.ts` +66/−1 · `tests/.../package.test.ts` +251/−8
+
+### 三门验证（W3 这边 merge 后）
+
+- `npx tsc --noEmit` → exit 0（clean）
+- `npx vitest run` → **32 files / 268 cases**（253→268，+15 = 7 dedupe + 8 multi-video/README；与 W1 自测 +15 一致 ✓）
+- `npx next build` → 23 routes，全绿
+
+### Review 亮点
+
+1. **`dedupeFileNames` 三源不变量**：明确注释 `materials.videos[i].path`（draft_content）/ `draft_materials[0].value[i].file_Path`（draft_meta_info）/ zip 内 `materials/<name>` 三处**必须**用同一份数组。route.ts 在 `sanitize` 之后**一次** dedupe，再 forward 给 buildDraftContent + packageDraftAsZip —— 单源 truth 维护。
+2. **长度上限边界处理**：sanitize 已经压到 120，dedupe 加 `-N` 后缀再次需要 stem 截断。`makeSuffixed` 先算 `room = 120 - suffix.length - ext.length`，<=0 退化到 `${n}${ext}.slice(0, 120)` —— 极端情况（ext 自己 ≥ 120）不会 throw。
+3. **pre-existing `-1` 跳过**：`a.mp4 / a-1.mp4 / a.mp4` → `[a, a-1, a-2]`，**不**会让重复的 `a.mp4` 撞已存在的 `a-1.mp4`。`while (seen.has(candidate))` 守门。
+4. **DEFLATE level 6 → 1**：注释明确 mp4 已压缩 + 120s function 限制下尾部风险。tests 里 `level:1 字节回读 = 原 buffer` 断言（mp4 不被损耗）。
+5. **README 模板升级**：
+   - `${videoCount} 段视频` 替代旧 "1 段视频"
+   - `已应用转场：${transitionDesc}` 从 `draft.materials.transitions` 派生（无转场写 "无（hard_cut 直切）"，多转场 unique join `叠化 / Slick Twist`）
+   - Phase 6+ 列表删 "复杂转场" 加 "速度坡（变速）" —— Task 10 已落地真转场后这条文案过期，及时清理
+6. **route.ts 并发 N buffer**：`Promise.all(assets.videoPaths.map(readAsset))` 替代旧 `videoPaths[0]` 单读，BGM 仍单独读（boolean 路径）。**关闭 Task 9 verdict 的 step-5 nit**。
+7. **`packageDraftAsZip` 空数组守门**：`videos.length === 0` 入口 throw，避免静默打出空 zip。
+8. **测试覆盖完整**：
+   - dedupe 7 case：无重名 / 一对 / 多对递增 / 无扩展名 / pre-existing -1 / 长 stem 截断 / sanitize+dedupe 串联
+   - multi-video 4 case：N 视频全进 materials/ / sanitize-后撞名 dedupe 后 zip 内 3 文件 / 空 videos throw / level:1 字节回读
+   - README 4 case：单视频 1 段 / 多视频 4 段 / 无转场 hard_cut 文案 / 真转场 unique name join
+
+### Workflow nit（再次）
+
+W1 这次 Task 11 仍未 pull main 就开（parent `a04ef53` = Task 10 ping ack，期间 main 推进到 `759ab30`：P3 #1 + Task 9/10 verdict + 项目 CLAUDE.md + P3 #3 phase 1 全套）。merge 仍然干净因为零文件 overlap，但**第三次提醒**：per-task 工作流要求每 task 前 `git pull origin main --no-rebase`。Task 12 前请务必执行。
+
+### Nit（不阻塞）
+
+1. **`MAX_VIDEO_FILE_NAME_LEN = 120`** 在 `build.ts` 里独立常量，跟 `sanitizeVideoFileName` 内部的 120 限制重复定义（如果 sanitize 也用 120）。建议**Task 12 顺手** export `MAX_VIDEO_FILE_NAME_LEN` 让 sanitize 和 dedupe 共享单一 source。**不阻塞**。
+2. **`describeTransitions` 用 `Array.from(new Set(...))`** 派生 unique name —— 保插入顺序（V8 / Node Set 行为确定），但注释里没显式说明依赖顺序属性。**不阻塞**，但如果未来想"按 timeline 顺序"列转场名，要看 `draft.materials.transitions` 推入顺序是否跟 timeline 一致（Task 10 的 build.ts 是按 `editPlan` 顺序 push 的，所以已对齐）。
+
+---
+
+## 下一步：Task 12 放行
+
+按 per-task 工作流：
+
+1. **`git pull origin main --no-rebase`** 同步到 `7845892` —— **务必执行**（连续第三次 nit 这点了）
+2. 读本文件「Task 11 已 merge ✅」整段确认 SHA + 消化 workflow nit + 2 个代码 nit
+3. 开 Task 12（按 plan v4.1-review：本机 CapCut 实测验证 —— 但 0514 真机数据已经覆盖了 "merge 前实测 category_id" 这条子项，Task 12 现在的核心范围应该是多视频项目实测打开、转场目视、字幕重映射等 hands-on 验证）
+4. Task 11 闭环后建议 `/compact` 上下文
+
+### 并行情境提示
+
+- W2 已经把 **P3 #3 phase 1 (rate-limit lib) merge**（`759ab30`），处于 idle 等下个 P3 任务态
+- W2 不会主动开 P3 #2（owner=W1）和 P3 #3 phase 2 wiring（也是 W1 territory）—— 两者都排在 W1 当前 Tasks 12-13 CapCut 流水线之后
+- W1 Task 12-13 zero 触及 `lib/rate-limit/**`，所以跟 W2 phase 1 落地代码零冲突
+- 建议 W1 在 Task 12 / 13 / P3 #2 / P3 #3 phase 2 之间，每次 task 前 `git pull main` 拿到 lib/rate-limit/ 进 worktree（不用直接调用，但接 P3 #3 phase 2 时需要 import）
