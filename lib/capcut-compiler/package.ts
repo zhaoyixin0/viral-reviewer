@@ -141,6 +141,14 @@ export async function packageDraftAsZip(
   });
 }
 
+/**
+ * 从 draft 的 transitions[] 派生人类可读的转场列表，写进 README。
+ *
+ * 顺序约定：依赖 `Set` 的插入顺序保留行为（ES2015 起所有 V8/Node 实现均保证），
+ * 因此 README 列出的转场名顺序 = transitions[] 中首次出现的顺序。例如
+ * `[叠化, Slick Twist, 叠化]` → README 写 "叠化 / Slick Twist"。
+ * 调用方不应依赖任何更强的排序保证（如字母序）。
+ */
 function describeTransitions(draft: DraftContent): string {
   const transitions = draft.materials.transitions ?? [];
   if (transitions.length === 0) return "无（hard_cut 直切）";

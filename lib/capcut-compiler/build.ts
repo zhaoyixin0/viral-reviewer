@@ -94,6 +94,12 @@ export type CompileInput = {
 };
 
 /**
+ * 视频文件名最大长度（含扩展名）。sanitizeVideoFileName 与 dedupeFileNames
+ * 共用此上限 —— 任何调整必须在两处同步生效，所以集中定义。
+ */
+export const MAX_VIDEO_FILE_NAME_LEN = 120;
+
+/**
  * 把用户上传的视频文件名清洗成可安全放进 zip / draft JSON 路径的文件名。
  * 保留原始可识别性（消除"手动 link 文件名不匹配"那条根因），只替换会破坏
  * 文件系统 / JSON 路径的字符。缺失或异常时退化为 "input.mp4"。
@@ -111,18 +117,16 @@ export function sanitizeVideoFileName(raw: string | undefined): string {
   const cleaned = base.replace(/[\\/:*?"<>|\x00-\x1f]/g, "_");
   if (!cleaned || cleaned === "." || cleaned === "..") return FALLBACK;
   // 限长，保留扩展名
-  if (cleaned.length > 120) {
+  if (cleaned.length > MAX_VIDEO_FILE_NAME_LEN) {
     const dot = cleaned.lastIndexOf(".");
     if (dot > 0) {
       const ext = cleaned.slice(dot);
-      return cleaned.slice(0, 120 - ext.length) + ext;
+      return cleaned.slice(0, MAX_VIDEO_FILE_NAME_LEN - ext.length) + ext;
     }
-    return cleaned.slice(0, 120);
+    return cleaned.slice(0, MAX_VIDEO_FILE_NAME_LEN);
   }
   return cleaned;
 }
-
-const MAX_VIDEO_FILE_NAME_LEN = 120;
 
 /**
  * 多视频上传时，把已 sanitize 的文件名数组去重。重名按出现顺序加 `-1`/`-2`

@@ -55,6 +55,7 @@ yarn-error.log*
 
 # probe verification outputs (debugging)
 /data/probes/
+/capcut-link-test*.zip
 
 # uploaded videos (demo only)
 /public/uploads
