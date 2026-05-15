@@ -855,3 +855,82 @@ P3 hardening 三件套现状：
 - 唯一 shared 文件：`package.json` —— W1 那边如果也加了 dep（不太可能，CapCut 任务清单里没装包步骤），merge 时 conflict 容易解决（依赖 list 是文本 union）
 
 > **W2 现在可以动手** —— idle 期间 monitor `baox0x2yu` 会看到 main 推 verdict commit 时触发，W2 拉新 + 读本启动指令 + 开新分支。
+
+---
+
+## W2 → W3 · P3 #3 phase 1 ready for review
+
+> 写于 2026-05-15 · branch `feat/p3-rate-limit-lib` @ `153f6df` · 基于 `main` = `289d3a9`
+>
+> P3 #3 phase 1 (rate-limit primitive lib) 实现完毕，零 route 触碰，等 W3 review + merge。
+
+### Commits（4 个，按建议节奏拆）
+
+| commit | scope |
+|---|---|
+| `7ee0acb` | `chore(deps)` add `@upstash/ratelimit@2.0.8` + `@upstash/redis@1.38.0` |
+| `7c56ad6` | `feat(rate-limit)` types + Zod schema + parse-window + memory-backend (sliding + fixed) + upstash-backend + dispatch (warn-once) |
+| `7dd1fca` | `feat(rate-limit)` public API (`createRateLimiter`) + headers (X-RateLimit + IETF draft + Retry-After) + middleware (`withRateLimit`) + presets + README (phase 2 wiring guide) |
+| `153f6df` | `test(rate-limit)` 16 cases across 4 files |
+
+### 三门验证
+
+| gate | result |
+|---|---|
+| `npx tsc --noEmit` | EXIT 0,clean |
+| `npx vitest run` | **238 / 238** (32 files);基线 222 / 28 → +16 / +4 |
+| `npx next build` | **23 / 23 routes**,零退化（lib 0 byte 进 route bundle,因为没 route 引用,phase 2 才 wire） |
+
+### 与 spec 对齐情况
+
+✅ Must-have 全部覆盖：
+- `lib/rate-limit/index.ts` — `createRateLimiter(opts)` + `RateLimiter.check(key)` + `RateLimitResult` 全字段
+- `lib/rate-limit/backend.ts` — env detect + Upstash / memory dispatch + warn-once (`memoryWarned` module state)
+- `lib/rate-limit/memory-backend.ts` — Map per `${identifier}|${key}`,sliding + fixed 两套
+- `lib/rate-limit/middleware.ts` — `withRateLimit(limiter, keyFn, handler)`,blocked → 429 + Retry-After,通过 → injectHeaders + original response
+- `lib/rate-limit/headers.ts` — `rateLimitHeaders(result, now?)`,双写 X-RateLimit + IETF draft RateLimit-*,blocked 加 Retry-After
+- 测试覆盖 backend / headers / middleware + 额外的 entry validation 测试
+
+✅ Nice-to-have 也做了：
+- `lib/rate-limit/README.md` — phase 2 wiring guide,含 typical 用法 A/B + preset 表
+- `lib/rate-limit/presets.ts` — `STRICT_PER_IP` / `GENEROUS_AUTHENTICATED` / `WRITE_HEAVY`
+
+### Spec 偏差（请 W3 裁定）
+
+1. **`pnpm-lock.yaml` → `package-lock.json`**
+   - spec 提到 "pnpm-lock"。本仓库实际用 npm（`package-lock.json` 存在,无 `pnpm-lock.yaml`）。
+   - 按 W3 "按实际字段补全" 原则,commit 1 用 `npm install --save` 同时改 `package.json` + `package-lock.json`。
+   - 风险评估：零 —— W1 那边如果加 dep 也只会动 npm lockfile,merge 仍是 union 行为。
+
+2. **Backend dispatch 增加 `_resetBackendForTests()` hook**
+   - spec 没要求,但 `cachedBackend` + `memoryWarned` 是 module-level state,测试隔离需要清除。
+   - 用 underscore 前缀标记非公共;`index.test.ts` 用它在 `beforeEach` 清状态。
+   - 生产代码零调用 → 无副作用。
+
+3. **新增 `tests/rate-limit/index.test.ts`（4 case）**
+   - spec 只点名 backend / headers / middleware 三组。新增 entry 测试覆盖 Zod opts 校验（empty identifier / zero limit → throw）+ in-memory fallback 限流真实生效 + warn-once 行为。
+   - 全部 mock console.warn,无副作用。
+   - 不替代 spec 三组,是加项。
+
+4. **`upstash-backend.ts` 实现但未测试**
+   - 严格遵守 spec "不要测 Upstash backend wire"。
+   - 文件存在 + 编译通过（tsc 验证类型签名）+ runtime 路径只在 env 全配时进入 —— phase 2 落地后做集成测试更合适。
+
+5. **window-spec 限定 6 个值（`1 s` / `10 s` / `1 m` / `10 m` / `1 h` / `1 d`）**
+   - spec 列了这 6 个,我用 `z.enum` 锁住,避免自由 string 导致 Upstash Duration 解析失败。
+   - 如果 phase 2 需要其他窗口（e.g. `30 s` / `5 m`）,扩 `WINDOW_VALUES` + `WINDOW_MS` 两处即可,no behavior change。
+
+### 关键设计点（供 review）
+
+- **零 route 引用**：`lib/rate-limit/*` 不被 `app/**` 任何文件 import,build 时 tree-shake 不进 route bundle（首屏 JS 不增长,见 build 输出 23/23 routes 各 157 B 与 main 一致）
+- **Immutability**：`check()` 每次返回新 `RateLimitResult` 对象,内部 `Map` state 不暴露给调用方
+- **Zod boundary**：`RateLimiterOpts` 在 `createRateLimiter` 入口处 parse,misconfigure 立即抛 —— 与 P3 #1 boundary 验证风格对齐
+- **不默认 IP 提取**：`keyFn` 由 caller 提供,W2 不写默认 IP 抽取（W1 phase 2 决定信任链,跟 SSRF 边界相关）
+- **warn-once**：`memoryWarned` 是 module-level boolean,首次 dispatch 时 console.warn 1 次
+
+### W2 后续
+
+- 等 W3 review 结论：
+  - 通过 → merge to main + verdict → W2 回 idle,等下个 P3 任务
+  - bounce → window-2.md 写明 changeset,W2 在 `feat/p3-rate-limit-lib` 上 follow-up commit
+- W2 monitor `baox0x2yu` 已升级到 pattern watch `refs/heads/*`,会捕获 main / 任意 feat 分支 ref 变更
