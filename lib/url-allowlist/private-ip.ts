@@ -17,9 +17,16 @@
  *   - `fc00::/7`             unique local（fc / fd 起首）
  *   - `fe80::/10`            link-local（fe80 ~ febf）
  *
+ * **IPv4-mapped IPv6**（phase 1 nit cleanup,2026-05-15）：
+ *   - `::ffff:N.N.N.N` dotted-quad 形态 → strip `::ffff:` 前缀后复用 IPv4 私段表
+ *   - 防御 caller 拿 `https://[::ffff:169.254.169.254]/` 绕过 host allowlist 直击
+ *     云元数据
+ *   - 不覆盖 hex-encoded mapped 形（`::ffff:7f00:1`）—— 实际攻击者用 dotted-quad
+ *     更常见,hex 形留 phase 3 ipaddr.js 一起处理
+ *
  * **不覆盖**（phase 1 范围外）：
- *   - DNS resolve 后的 IP（spec 明示 phase 1 不做 DNS lookup,留 phase 2 W1 加 `safeResolveIp`）
- *   - IPv4-mapped IPv6（`::ffff:127.0.0.1`,phase 2 加更稳的 lib）
+ *   - DNS resolve 后的 IP（spec 明示 phase 1 不做 DNS lookup,留 phase 3 加 `safeResolveIp`）
+ *   - hex-encoded IPv4-mapped IPv6（`::ffff:7f00:1`）
  *   - 路由层 IP 字面（这里只做 host string 层）
  */
 export function isPrivateIpString(host: string): boolean {
@@ -27,6 +34,17 @@ export function isPrivateIpString(host: string): boolean {
   const stripped = host.startsWith("[") && host.endsWith("]")
     ? host.slice(1, -1)
     : host;
+
+  // IPv4-mapped IPv6 dotted-quad 形：`::ffff:N.N.N.N` → strip 前缀后走 IPv4 检测。
+  // case-insensitive 因 IPv6 允许大写 hex（`::FFFF:1.2.3.4`）。
+  const lower = stripped.toLowerCase();
+  if (lower.startsWith("::ffff:")) {
+    const v4 = stripped.slice("::ffff:".length);
+    if (looksLikeIpv4(v4)) {
+      return isPrivateIpv4(v4);
+    }
+    // 非 dotted-quad 形（如 `::ffff:7f00:1`）落入下方 IPv6 路径处理
+  }
 
   if (looksLikeIpv4(stripped)) {
     return isPrivateIpv4(stripped);

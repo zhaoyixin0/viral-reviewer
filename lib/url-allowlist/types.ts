@@ -47,6 +47,14 @@ export interface UrlAllowlist {
  * HostPattern 联合含 `RegExp` 实例,Zod 没原生 RegExp schema,改用
  * `z.custom` 守住三种 case 的结构合法性。`z.custom` 不 transform,
  * RegExp 实例 parse 后保持原引用。
+ *
+ * **`{ suffix }` 前导点强校验**（phase 1 nit cleanup,2026-05-15）：
+ * suffix 必须以 `.` 开头,否则视为配置错误抛错。理由：
+ * - matchHost 行为 `host === sfx.slice(1) || host.endsWith(sfx)` 假定 leading dot
+ *   存在；不带点会切掉合法 hostname 字符（如 `"tiktokcdn.com".slice(1) = "iktokcdn.com"`）
+ *   生成歧义比对
+ * - host suffix 比对的 SSRF 防御语义里 leading-dot 是 standard 约定
+ *   （RFC 6265 cookie domain / nginx server_name 都强制前导点）
  */
 const hostPatternSchema = z.custom<HostPattern>(
   (val) => {
@@ -54,11 +62,15 @@ const hostPatternSchema = z.custom<HostPattern>(
     if (val instanceof RegExp) return true;
     if (typeof val === "object" && val !== null) {
       const sfx = (val as { suffix?: unknown }).suffix;
-      return typeof sfx === "string" && sfx.length > 0;
+      return typeof sfx === "string" && sfx.length > 0 && sfx.startsWith(".");
     }
     return false;
   },
-  { message: "host pattern must be non-empty string, RegExp, or { suffix }" },
+  {
+    message:
+      "host pattern must be a non-empty string, a RegExp, or { suffix: \".name\" } " +
+      "with a leading '.' (suffix without leading dot is ambiguous — use \".example.com\" not \"example.com\")",
+  },
 );
 
 /**
