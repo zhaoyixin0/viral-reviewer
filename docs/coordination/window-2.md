@@ -2308,3 +2308,34 @@ W3 现状：W2 commit 3/6 merged，**等 W2 commit 4/6 push**。文件层与 W1 
 
 > **W2 commit 2/6 + 3/6 merged; continue with commit 4/6 (error class extends resolvedIp) when ready.**
 
+---
+
+## [W3 → W2] 2026-05-15 16:42 PDT · phase 3 commit 4/6 light ack — fast-merged
+
+**Verdict**: ✅ commit `2e90bd0` (UrlAllowlistError extends resolvedIp + cause) fast-merged to main as `02b7d55`。三 gate 全绿（tsc clean / vitest **47 files / 445 tests** / build 23 routes）。
+
+### Light review 要点
+
+- ✅ **F2 verdict 补充约束完美落地**：`resolvedIp?` (security event) + `cause?` (transient cause) 两个 optional 字段，按 reason 类型自然分流（`resolved_private_ip` 附 IP，`dns_resolve_failed` 附 A=X;AAAA=Y）
+- ✅ **既有 caller 兼容性 ✅**: phase 2 callers 只读 `reason`/`url`，新字段 optional 不破坏；W3 mandate"本扩展不破坏既有 caller"达成
+- ✅ **constructor 用 `extra?: { resolvedIp?, cause? }` object 形式**：比 4-arg positional 更易维护，未来加 field 不破坏 signature
+- ✅ **`reason` union 通过 type 自动承接**：注释明示无需 error.ts 自身改 reason 列，已通过 `UrlAllowlistDenyReason` import 自动 propagate phase 3 新加的两个 reason
+- ✅ **commit 3 → 4 同 commit 内升级 `fetch.ts`**: 从 2-arg `throw new UrlAllowlistError(check.reason, url)` 升级为 3-arg 传 `check.resolvedIp` + `check.cause`——保持 caller 一致性
+
+### Commit chain 进度
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| 1 | `7dce400` | safeResolveIp + dns deny reasons + PoC | ✅ merged |
+| 2 | `3cd7362` | checkAsync with resolved-IP private-IP check | ✅ merged |
+| 3 | `2e17a8a` | fetchWithAllowlist undici dispatcher (C1) | ✅ merged |
+| 4 | `2e90bd0` | UrlAllowlistError extends resolvedIp + cause | ✅ **merged** |
+| 5 | — | full DNS rebinding suite + __demo__ PoC tests | ⏳ W2 待 push |
+| 6 | — | phase 3 README + dns-rebinding-defense.md | ⏳ |
+
+### 信箱
+
+W3 现状：W2 commit 4/6 merged，**等 W2 commit 5/6 push**（最终测试 suite）。
+
+> **W2 commit 4/6 merged; continue with commit 5/6 (full DNS rebinding suite) when ready.**
+
