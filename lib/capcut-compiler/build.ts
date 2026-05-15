@@ -15,8 +15,10 @@ import {
   planFromAssemblyTimeline,
   pickAnimation,
   makeEasedScaleKeyframes,
+  clampTransitionDurationSec,
   type EditSegmentPlan,
 } from "./edit-plan";
+import { resolveTransitionConfig } from "./transitions";
 import type {
   AudioMaterial,
   AudioSegment,
@@ -32,6 +34,7 @@ import type {
   TextMaterial,
   TextSegment,
   TextTrack,
+  TransitionMaterial,
   VideoMaterial,
   VideoSegment,
   VideoTrack,
@@ -404,6 +407,72 @@ export function buildDraftContent(input: CompileInput): {
     };
   });
 
+  // ===== 真转场（Task 10） =====
+  // PROBE 第 3 节：assemblyTimeline.clips[i].incomingTransition → 写进 CapCut
+  // segment[i-1] 的 extra_material_refs（前导段挂引用，末段不挂）。
+  //
+  // 对齐策略：editPlan[i].sourceClipIndex 是该 plan 对应的 clip 下标
+  // （planFromAssemblyTimeline 路径才有；degenerate clip 被 skip 时下标会跳号）。
+  // 仅在相邻 plan 的 clip 下标连续时挂转场 —— 中间 skip 过 clip 的情况下，转场跨过
+  // 不存在的中间段语义不清，丢弃更安全。
+  //
+  // 兼容路径（无 assemblyTimeline）：editPlan 全无 sourceClipIndex，transitions[] 留空。
+
+  const transitionsList: TransitionMaterial[] = [];
+  const clips = input.match.assemblyTimeline?.clips ?? null;
+
+  if (clips !== null) {
+    for (let i = 1; i < editPlan.length; i++) {
+      const planPrev = editPlan[i - 1]!;
+      const planCur = editPlan[i]!;
+      const segPrev = videoSegments[i - 1]!;
+
+      const prevClipIdx = planPrev.sourceClipIndex;
+      const curClipIdx = planCur.sourceClipIndex;
+      if (prevClipIdx === undefined || curClipIdx === undefined) continue;
+      // 相邻 plan 的 clip 下标必须连续（中间没 skip）
+      if (curClipIdx !== prevClipIdx + 1) continue;
+
+      const clip = clips[curClipIdx];
+      const trans = clip?.incomingTransition;
+      if (!trans) continue;
+
+      const config = resolveTransitionConfig(trans.type);
+      if (config === null) continue; // hard_cut
+
+      const prevDurSec = planPrev.targetEndSec - planPrev.targetStartSec;
+      const curDurSec = planCur.targetEndSec - planCur.targetStartSec;
+      const clampedDurSec = clampTransitionDurationSec(
+        trans.durationSec,
+        prevDurSec,
+        curDurSec,
+      );
+      if (clampedDurSec <= 0) continue;
+
+      const transId = id();
+      transitionsList.push({
+        id: transId,
+        type: "transition",
+        name: config.name,
+        effect_id: config.effect_id,
+        resource_id: config.resource_id,
+        third_resource_id: "0",
+        source_platform: 1,
+        path: "",
+        duration: Math.round(clampedDurSec * 1_000_000),
+        is_overlap: config.is_overlap,
+        platform: "all",
+        category_id: config.category_id,
+        category_name: config.category_name,
+        request_id: "",
+        is_ai_transition: false,
+        video_path: "",
+        task_id: "",
+      });
+      segPrev.extra_material_refs.push(transId);
+    }
+  }
+
   const videoTrack: VideoTrack = {
     id: id(),
     type: "video",
@@ -562,7 +631,7 @@ export function buildDraftContent(input: CompileInput): {
       vocal_separations: vocalSeparations,
       material_animations: [],
       audio_fades: [],
-      transitions: [],
+      transitions: transitionsList,
       video_effects: [],
     },
     create_time: createTime,

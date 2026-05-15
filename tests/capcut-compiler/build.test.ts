@@ -356,3 +356,200 @@ describe("buildDraftContent — assemblyTimeline path", () => {
     expect(draftContent.duration).toBe(5_000_000);
   });
 });
+
+// ============================================================
+// Task 10 · 真转场接入 (materials.transitions + extra_material_refs)
+// ============================================================
+
+describe("buildDraftContent — Task 10 transitions", () => {
+  const portrait = { ...META, width: 1080, height: 1920, durationSec: 10 };
+
+  it("blocking gate: compat path (no assemblyTimeline) keeps transitions[] empty", () => {
+    const { draftContent } = buildDraftContent(makeInput());
+    expect(draftContent.materials.transitions).toEqual([]);
+    const segments = (draftContent.tracks.find((t) => t.type === "video")! as VideoTrack)
+      .segments;
+    for (const s of segments) {
+      // compat path 没有转场，extra_material_refs 只含 speed/canvas/sound/placeholder/vocal 5 项
+      expect(s.extra_material_refs).toHaveLength(5);
+    }
+  });
+
+  it("single cross_dissolve between two clips: 1 transition material + ref on segment[0]", () => {
+    const timeline = makeTimeline([
+      makeClip({ sourceVideoIndex: 0, sourceStartSec: 0, sourceEndSec: 2 }),
+      makeClip({
+        sourceVideoIndex: 1,
+        sourceStartSec: 0,
+        sourceEndSec: 3,
+        incomingTransition: {
+          type: "cross_dissolve",
+          durationSec: 0.5,
+          reason: "test",
+        },
+      }),
+    ]);
+    const { draftContent } = buildDraftContent(
+      makeInput({
+        videoFileNames: ["a.mp4", "b.mp4"],
+        metas: [portrait, portrait],
+        match: { ...BASE_MATCH, assemblyTimeline: timeline } as TechniqueMatchingResult,
+      }),
+    );
+    expect(draftContent.materials.transitions).toHaveLength(1);
+    const tm = draftContent.materials.transitions[0]!;
+    expect(tm.effect_id).toBe("6724845717472416269");
+    expect(tm.name).toBe("叠化");
+    expect(tm.duration).toBe(500_000); // 0.5s = 500_000 μs
+    expect(tm.is_overlap).toBe(true);
+
+    const segments = (draftContent.tracks.find((t) => t.type === "video")! as VideoTrack)
+      .segments;
+    // 转场挂到 segment[0]（前导段），segment[1]（末段）不挂
+    expect(segments[0]!.extra_material_refs).toContain(tm.id);
+    expect(segments[1]!.extra_material_refs).not.toContain(tm.id);
+  });
+
+  it("hard_cut creates no transition material and no ref", () => {
+    const timeline = makeTimeline([
+      makeClip({ sourceVideoIndex: 0, sourceStartSec: 0, sourceEndSec: 2 }),
+      makeClip({
+        sourceVideoIndex: 1,
+        sourceStartSec: 0,
+        sourceEndSec: 2,
+        incomingTransition: {
+          type: "hard_cut",
+          durationSec: 0,
+          reason: "硬切",
+        },
+      }),
+    ]);
+    const { draftContent } = buildDraftContent(
+      makeInput({
+        videoFileNames: ["a.mp4", "b.mp4"],
+        metas: [portrait, portrait],
+        match: { ...BASE_MATCH, assemblyTimeline: timeline } as TechniqueMatchingResult,
+      }),
+    );
+    expect(draftContent.materials.transitions).toEqual([]);
+  });
+
+  it("multi-transition chain: 3 clips → 2 different transition materials", () => {
+    const timeline = makeTimeline([
+      makeClip({ sourceVideoIndex: 0, sourceStartSec: 0, sourceEndSec: 2 }),
+      makeClip({
+        sourceVideoIndex: 1,
+        sourceStartSec: 0,
+        sourceEndSec: 3,
+        incomingTransition: {
+          type: "whip_pan",
+          durationSec: 1.0,
+          reason: "甩切",
+        },
+      }),
+      makeClip({
+        sourceVideoIndex: 0,
+        sourceStartSec: 4,
+        sourceEndSec: 6,
+        incomingTransition: {
+          type: "glitch",
+          durationSec: 0.2,
+          reason: "故障",
+        },
+      }),
+    ]);
+    const { draftContent } = buildDraftContent(
+      makeInput({
+        videoFileNames: ["a.mp4", "b.mp4"],
+        metas: [portrait, portrait],
+        match: { ...BASE_MATCH, assemblyTimeline: timeline } as TechniqueMatchingResult,
+      }),
+    );
+    expect(draftContent.materials.transitions).toHaveLength(2);
+    const effectIds = draftContent.materials.transitions.map((t) => t.effect_id);
+    expect(effectIds).toEqual([
+      "7627435157909261575", // whip_pan / Slick Twist
+      "6724239785205961228", // glitch / 色差故障
+    ]);
+    // is_overlap 按映射表逐条：whip_pan=true，glitch=false（0514 实测）
+    expect(draftContent.materials.transitions[0]!.is_overlap).toBe(true);
+    expect(draftContent.materials.transitions[1]!.is_overlap).toBe(false);
+  });
+
+  it("clampTransitionDurationSec clamps oversized duration to half of shorter adjacent segment", () => {
+    const timeline = makeTimeline([
+      // 两段都 1s；转场请求 10s → 应 clamp 到 min(1,1)/2 = 0.5s = 500_000 μs
+      makeClip({ sourceVideoIndex: 0, sourceStartSec: 0, sourceEndSec: 1 }),
+      makeClip({
+        sourceVideoIndex: 1,
+        sourceStartSec: 0,
+        sourceEndSec: 1,
+        incomingTransition: {
+          type: "cross_dissolve",
+          durationSec: 10,
+          reason: "ai 给了离谱时长",
+        },
+      }),
+    ]);
+    const { draftContent } = buildDraftContent(
+      makeInput({
+        videoFileNames: ["a.mp4", "b.mp4"],
+        metas: [portrait, portrait],
+        match: { ...BASE_MATCH, assemblyTimeline: timeline } as TechniqueMatchingResult,
+      }),
+    );
+    expect(draftContent.materials.transitions).toHaveLength(1);
+    expect(draftContent.materials.transitions[0]!.duration).toBe(500_000);
+  });
+
+  it("unknown transition type falls back to cross_dissolve (creates material, not null)", () => {
+    const timeline = makeTimeline([
+      makeClip({ sourceVideoIndex: 0, sourceStartSec: 0, sourceEndSec: 2 }),
+      makeClip({
+        sourceVideoIndex: 1,
+        sourceStartSec: 0,
+        sourceEndSec: 2,
+        incomingTransition: {
+          type: "future_warp_v9",
+          durationSec: 0.5,
+          reason: "未知 type",
+        },
+      }),
+    ]);
+    const { draftContent } = buildDraftContent(
+      makeInput({
+        videoFileNames: ["a.mp4", "b.mp4"],
+        metas: [portrait, portrait],
+        match: { ...BASE_MATCH, assemblyTimeline: timeline } as TechniqueMatchingResult,
+      }),
+    );
+    expect(draftContent.materials.transitions).toHaveLength(1);
+    // 降级到 cross_dissolve effect_id
+    expect(draftContent.materials.transitions[0]!.effect_id).toBe(
+      "6724845717472416269",
+    );
+  });
+
+  it("first clip has no incomingTransition wire even if schema allows null only", () => {
+    // 验证：clip[0].incomingTransition 哪怕设 cross_dissolve，build 也不为它造 material
+    // （没有"前一段"可挂） —— 即便 schema 上允许，构造层应当忽略 clip[0]
+    const timeline = makeTimeline([
+      makeClip({
+        sourceVideoIndex: 0,
+        sourceStartSec: 0,
+        sourceEndSec: 2,
+        // schema 允许（nullable），编排端不该填，但即使填了编译端也不能错
+        incomingTransition: null,
+      }),
+      makeClip({ sourceVideoIndex: 1, sourceStartSec: 0, sourceEndSec: 2 }),
+    ]);
+    const { draftContent } = buildDraftContent(
+      makeInput({
+        videoFileNames: ["a.mp4", "b.mp4"],
+        metas: [portrait, portrait],
+        match: { ...BASE_MATCH, assemblyTimeline: timeline } as TechniqueMatchingResult,
+      }),
+    );
+    expect(draftContent.materials.transitions).toEqual([]);
+  });
+});

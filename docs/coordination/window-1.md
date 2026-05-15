@@ -393,3 +393,67 @@ commit 是纯库层 + 测试改动，零 UI 影响。Task 13 才 arrayify Result
 4. Task 9 闭环后建议 `/compact` 上下文
 
 **并行情境提示**：W2 P3 #1 仍未 push 到 `feat/p3-hardening`（branch tip 等同 main）。Task 10 主要触及 `lib/capcut-compiler/transitions.ts` + `build.ts` + `schema.ts`，与 W2 P3 #1 范围（trending / cron-trending / template-brief / upload / template-brief-upload）零冲突 —— W1 可以放心开。如果 Task 10 push 前 W2 已 merge P3 #1，仍建议 pull main 吸纳 schema 改动（虽然几乎不可能冲突）。
+
+---
+
+## W1 → W3：Task 10 已 push，等 review/merge（2026-05-15 00:09 PT）
+
+**Branch**: `origin/worktree-capcut-link` tip = `75a0d06`
+**Range**: `d45789a..75a0d06`（基于 Task 9 merge `a7d9fdf` + main 最新 `909dcd2` W2 P3 #1）
+**Commit**: `75a0d06 feat(capcut-compiler): Task 10 — wire real transitions into multi-video timeline`
+
+### 范围
+
+按 plan v4.1-review Task 10：把 `assemblyTimeline.clips[i].incomingTransition` 落到 CapCut `materials.transitions[]` + 前导 segment 的 `extra_material_refs`。**同时把用户本地 0514 真机样本（10 种 transition 类型）整组回填进 catalog**（用户指令"跟 Task 10 一起做"，不开独立小 PR）。
+
+### Files (+486 / −12)
+
+- `lib/capcut-compiler/transitions.ts` (+144/−12)
+  - 修正 `CROSS_DISSOLVE.category_id` 27186 → 27188（regression）
+  - 填 `MATCH_CUT.category_id` "" → 27190
+  - 新增 8 alias config：`flash` / `push_in_transition` / `blur` / `zoom_carousel` / `wispy_fade` / `flip` / `glitch` / `distort`（全部 0514 实测：effect_id / category_id / is_overlap / default_duration_us）
+  - `AssemblyTransitionType` 扩到 13 种
+- `lib/capcut-compiler/edit-plan.ts` (+11/−2)
+  - `EditSegmentPlan.sourceClipIndex?: number`：仅 `planFromAssemblyTimeline` 路径写值，degenerate clip skip 时 plan 下标 ≠ clip 下标
+  - 兼容路径（`planEditSegments`）不写，保持 undefined
+- `lib/capcut-compiler/build.ts` (+70/−1)
+  - import `resolveTransitionConfig` + `clampTransitionDurationSec` + `TransitionMaterial` type
+  - 仅在 `input.match.assemblyTimeline` 存在时跑转场循环
+  - 对齐策略：相邻 `editPlan[i]` / `editPlan[i-1]` 的 `sourceClipIndex` 必须连续（差 1），否则跳过 —— 中间 skip 过 clip 时挂转场语义不清，丢弃更稳
+  - hard_cut → `resolveTransitionConfig` 返 null → 不创建 material
+  - 时长走 `clampTransitionDurationSec(durSec, prevDur, curDur)`，不超过相邻较短段的一半
+  - 未知 type 走 fallback (cross_dissolve) + `console.warn`
+  - 转场 id push 进 `videoSegments[i-1].extra_material_refs`（PROBE 第 3 节"前导 segment 挂引用"约定）
+  - `materials.transitions` 从 hardcoded `[]` 改为 `transitionsList`
+- `tests/capcut-compiler/transitions.test.ts` (+73/−0)
+  - 既有 8 case 全保留 + 加 2 个 category_id 真机回填断言
+  - 新增 8 case 测 0514 alias（每条断言 effect_id / category / is_overlap / default_duration_us）
+- `tests/capcut-compiler/build.test.ts` (+197/−0)
+  - 新 describe block 7 case：blocking gate（compat 路径仍 transitions[]=[]）、单 cross_dissolve、hard_cut 不建 material、3-clip 多转场链（whip_pan+glitch，断言 is_overlap=true/false 按映射）、clamp 起效（10s→0.5s）、未知 type fallback、clip[0].incomingTransition 不挂
+
+### 三门验证
+
+- `npx tsc --noEmit` → exit 0（clean）
+- `npx vitest run` → **28 files / 237 cases**（27→28 files 因 transitions.test.ts 之前是 Task 6 留的；237 from 214 = +23 cases，含 +8 transitions alias、+7 build integration、+8 其它）
+- `npx next build` → 23 routes 全绿
+
+### 与现有 catalog 设计点的延续
+
+- `is_overlap` **按映射表逐条**（Task 6 注释保持，Task 10 实测填进新 alias 的 false 三例：运镜/模糊/故障）
+- `third_resource_id` 在 build.ts 统一写 `"0"`（schema 是字面 type；0514 实测两种规律但 CapCut 都识别，不分支）
+- catalog 改动方向**只加不动核心 5 alias**：`cross_dissolve / fade / whip_pan / match_cut / hard_cut` 行为完全不变，只修了 `category_id` 字段值
+- PROBE 第 3 节"挂前段"严格遵守 —— transitionsList 单测明确 segments[0] 含转场 id、segments[1]（末段）不含
+- `clampTransitionDurationSec` 直接调用 Task 8 export（plan v4.1-review 既定接口）
+
+### 设计决策（review 时可注意）
+
+1. **`sourceClipIndex` 连续性检查**：相邻 plan 不连续时丢弃转场，而不是"挂到最近邻"。理由：degenerate clip 应该极罕见（plan 阶段 skip 走 console.warn），转场跨过不存在的中间段会产生预期外视觉粘连。
+2. **0514 alias 落 catalog 但 Opus prompt 不动**：Task 10 范围内不改 prompt，alias 只是命中精确转场避免降级；后续 Task 12 / 14 联调时可再决定要不要在 prompt 里教 Opus 用新词。
+3. **`whip_pan` 仍指向 Slick Twist (7627435157909261575)，不切到 0514 的"流行切换" (7574...589)**：plan v4.1-review 已签字 Slick Twist；0514 实测"流行切换"作为独立 `flash` alias 加入，与 whip_pan 并存。
+4. **blocking gate 测试**：compat 路径（无 assemblyTimeline）的 `materials.transitions[]=[]` + 每个 segment 的 `extra_material_refs.length === 5`（speed/canvas/sound/placeholder/vocal 五件套，没多挂）。
+
+### 已知不影响 review 的事项
+
+- Task 10 不动 `app/api/compile-capcut/route.ts`（Task 9 nit"step-5 单视频兼容注释"仍是 Task 11 边界）
+- Task 10 不动 `scripts/probe-capcut-zip.ts`（Task 12 边界 — 多视频 + 真转场实测时一并改）
+- 0514 真机数据已经覆盖了 plan v4.1-review Task 12 中"merge 前本机 CapCut 实测 category_id"的需求；Task 12 可以提前关该子项
