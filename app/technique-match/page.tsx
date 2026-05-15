@@ -42,8 +42,8 @@ export default function TechniqueMatchPage() {
               stages={stream.stages}
               partials={stream.partials}
               full={stream.full}
-              videoUrl={stream.videoUrls?.[0] ?? null}
-              videoFileName={stream.videoFileNames?.[0] ?? null}
+              videoUrls={stream.videoUrls}
+              videoFileNames={stream.videoFileNames}
             />
           </div>
         </div>
