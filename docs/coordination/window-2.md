@@ -112,3 +112,64 @@ review 笔记一条：**`type="button"` 摆在 `key={opt.value}` 之后、`onCli
 3. 开 P2.5
 
 P2.5 - P2.8 串行，按既定 per-task 闭环。
+
+---
+
+# W2 P2.5 done — sonnet 2 HIGH + 2 MEDIUM 待裁决
+
+> 写于 2026-05-15 · 针对 main = `922ca99` · 来自窗口 2
+
+## 实现
+
+`b13814b` — feat(p2) TrendingBoard adds hashtag velocity board section (spec 4.7)
+
+verbatim 实现 plan line 3377-3482 整段，零字节偏离。三项验证全绿：
+
+- `npx tsc --noEmit` → EXIT 0
+- `npx vitest run` → 175/175
+- `npm run build` → 22/22 pages OK（`/trending` route 在 P2.6 才出，本次未引入）
+
+## 双 review 结果
+
+**haiku spec-compliance** → PASS verbatim byte-level identical（agent 直接给 PASS，仅 trailing LF 差异）。
+
+**sonnet code-quality** → 2 HIGH + 2 MEDIUM，全部围绕 `handleChange` fetch 流程（plan line 3400-3415 verbatim 部分）：
+
+### HIGH #1 — `handleChange` 并发 fetch 无 AbortController（line 23-38）
+
+用户快速切换 platform（all → tiktok → all），两个 fetch 并发飞出；后启动请求若先返回，state 被慢请求覆盖，board 显示错误平台数据。React 19 并发渲染下竞态更易触发。
+
+**W2 判断**：真实存在，但 `/api/trending` 是本地 RSC API、延迟低；触发需要快速连击；最坏后果是渲染错误平台数据一次（用户再点恢复）。严重性低于 P2.3 XSS / P2.4 WCAG 4.1.2，**不是 ship-blocker 级**。
+
+### HIGH #2 — API boundary 无 runtime 验证（line 29-31）
+
+`res.json()` 返回 `any`，`body.cards` / `body.trendingHashtags` 直接进 typed state，无 Zod / 手写 guard。上游契约变化时下游静默渲染坏数据或 `viewCount / 1_000_000` 产 `NaN`。
+
+**W2 判断**：plan 全栈都是 typed，runtime 验证缺失是 plan 默认设计选择；其他类似 client fetch（如 `/analyze` 流）也未做 Zod；P2.5 单独加会破坏全局一致性。**建议作为全局 P3 hardening，不在 P2.5 单点引入**。
+
+### MEDIUM #1 — `res.ok` 未检查（line 28-31）
+
+HTTP 4xx/5xx 时 `res.json()` 仍可能成功解析错误 JSON，`body.cards ?? []` 把 error 吞为空数组，用户看 "该平台暂无数据" 无法区分「真无数据」vs「服务端错」。
+
+**W2 判断**：与 HIGH #2 是同一类 API boundary hardening；graceful degradation 行为可接受（空状态 UI 已实现），改进建议同 HIGH #2 后置 P3。
+
+### MEDIUM #2 — hashtag 榜无 `<section>` / `aria-labelledby` + loading 状态无 `aria-live`（line 59-92）
+
+`<h2>` 已存在，外层补 `<section aria-labelledby="...">` 可让屏幕阅读器导航识别榜单区域；loading 占位补 `aria-live="polite"` 可通知状态变化。
+
+**W2 判断**：progressive enhancement，非 WCAG 明确标准违反（对比 P2.4 aria-pressed = §4.1.2 实质缺陷）；plan 已明确「视频网格 / 平台筛选状态 / 空状态逻辑不变」，本质属于「plan 默认覆盖范围之外」。a11y 行为验收路径在 P2.7 E2E，可在 E2E 阶段统一审视。
+
+## 裁决选项（按 P2.4 范式）
+
+- **① in-PR 全修**：HIGH #1 加 AbortController + HIGH #2 加 Zod schema + MEDIUM 一并修，单 fix commit 合并入 P2.5
+- **② in-PR 单点修**：只修 HIGH #1（竞态影响最直观），其余 follow-up 后置
+- **③ 全部 follow-up 后置**：P2.5 verbatim 进 main，所有 finding 开 P3 issue（建议合并到一个 "trending UI hardening" issue）
+- **④ 其他**：W3 自定义裁决
+
+W2 倾向：**③** — P2.5 是纯 UI、展示数据、最坏后果是 UX 退化（无 RCE / 无 a11y 标准违反）；plan v4.1-review 既定 P2.7 E2E 覆盖 a11y；fetch 竞态 + API runtime 验证是全局设计议题不该单点处置。
+
+但 P2.4 W3 接受了 sonnet HIGH (aria-pressed) 实质性问题 → 该判断由 W3 决定。
+
+## 下一步
+
+等待 W3 在本文件追加裁决段；不启动 P2.6。
