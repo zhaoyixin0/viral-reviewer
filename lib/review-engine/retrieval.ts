@@ -13,6 +13,7 @@ import {
   inferTopic,
   type InferredTopic,
 } from "@/lib/research/topic-inference";
+import { readLatestTwoSnapshots } from "@/lib/trending/snapshot-store";
 
 function rankByEngagement(pool: ViralVideo[], topK: number): ViralVideo[] {
   return [...pool]
@@ -159,7 +160,7 @@ export function pickSnapshotMatches(
     .map((x) => x.v);
 }
 
-export type RetrievalSource = "local" | "cache" | "live" | "fallback";
+export type RetrievalSource = "local" | "cache" | "live" | "snapshot" | "fallback";
 
 export type RetrievalResult = {
   topic: string;
@@ -174,6 +175,7 @@ export type RetrievalStage =
   | "topic_inference"
   | "local_lookup"
   | "cache_hit"
+  | "snapshot"
   | "live_research"
   | "ready"
   | "fallback";
@@ -293,6 +295,35 @@ export async function retrieveSimilarVideos(
       hashtags: cached.hashtags,
       inference,
     };
+  }
+
+  // 3.5) Trending snapshot 兜底层（免费，live 抓取之前先试）
+  //      全局快照按 canonicalTopic 模糊匹配采样;命中则直接返回，省一次 Apify。
+  try {
+    const { current } = await readLatestTwoSnapshots();
+    if (current && current.videos.length > 0) {
+      const snapMatches = pickSnapshotMatches(
+        current.videos,
+        canonicalTopic,
+        topK,
+      );
+      if (snapMatches.length > 0) {
+        emit({
+          stage: "snapshot",
+          message: `命中本周趋势快照:${snapMatches.length} 条同题材样本`,
+          data: { week: current.week },
+        });
+        return {
+          topic: canonicalTopic,
+          videos: pickFromTopicPool(snapMatches, videoSignature, topK),
+          matched: true,
+          source: "snapshot",
+          inference,
+        };
+      }
+    }
+  } catch (e) {
+    console.error("[retrieval] snapshot fallback failed:", e);
   }
 
   // 4) Cache miss → 实时搜索 TikTok + Instagram top 10（TT 5 + IG 5）
