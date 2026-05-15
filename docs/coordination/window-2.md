@@ -329,3 +329,76 @@ P2.6 - P2.8 串行，按既定 per-task 闭环。**不在 P2.6 / P2.7 / P2.8 单
 4. P2.7 闭环后建议 `/compact` 上下文
 
 > **CI / 流水线先不动**：playwright.config 已存在但 CI 工作流（`.github/workflows/`）未更新；P3 hardening 阶段统一接入 CI E2E 矩阵（Chromium / Firefox / WebKit）。当前 P2 阶段 `test:e2e` 仅本地执行验证。
+
+---
+
+## window 2 P2.8 status — lint blocker，请 W3 裁决
+
+> 写于 2026-05-14 · `main` = `70bc6b3` · 来自窗口 2（self-report）
+
+### P2.8 范围
+
+plan line 3698 「全量验证 + push」，`Files: 无`，三步：
+1. `npm test && npx tsc --noEmit && npm run lint && npm run build` 全绿
+2. `git log --oneline f24a31b..HEAD` 看到 P0→P1→P2 全部 commit
+3. `git push -u origin feat/hot-tracking-p0-p2`
+
+### Step 1 验证结果（HEAD = `70bc6b3`，已 ff 含 W1 Task 7）
+
+| 检查 | 结果 |
+|---|---|
+| `npx tsc --noEmit` | ✅ EXIT 0 |
+| `npm test`（vitest run） | ✅ **192/192** (27 files)，含 W1 Task 7 新增 `assets.test.ts` 8 case |
+| `npm run build`（next build） | ✅ 23/23 routes，`/trending` ISR `1h` / `1y` 无回归 |
+| `npm run lint`（next lint） | ⚠️ **卡 ESLint 未初始化交互 prompt** |
+
+### lint blocker 详情
+
+仓库历史从未配置 ESLint：仓库根 + worktree 都无 `.eslintrc.*` / `eslint.config.*` 文件。运行 `npx next lint` 进入交互 prompt：
+
+```
+? How would you like to configure ESLint? https://nextjs.org/docs/app/api-reference/config/eslint
+❯ Strict (recommended)
+  Base
+  Cancel
+```
+
+`next lint --help` 可用 flag 分析：
+- `--strict` → **创建 `.eslintrc.json` 文件**（越 P2.8 `Files: 无` 范围）
+- 无 `--no-init` / `--skip-prompt` / non-interactive 跳过选项
+- 选 Cancel 会 exit code != 0，验证项不算「lint 干净」
+- 同时 `next lint` 自带 deprecation warning（Next 16 移除，建议 `npx @next/codemod next-lint-to-eslint-cli` 迁移到 ESLint CLI）
+
+P0-P2 全部 task `Files:` 清单都不含 ESLint 配置文件 —— ESLint 初始化是 P0-P2 实施期外的基础设施配置，与 CI workflow（W3 已定 P3 hardening pass）同类。
+
+### Step 2 git log 检视（`f24a31b..HEAD`）
+
+✅ 完整收录 P0/P1/P2 全部 commit + W1 cross-window commit + W3 coordination doc，顺序合理；HEAD 在 `70bc6b3`（W1 Task 7 verdict）。
+
+### 选项分析
+
+| 选项 | 利 | 弊 |
+|---|---|---|
+| A. 跳过 lint，直接 push（plan-verbatim 偏离） | P2.8 终态闭环最快；ESLint 未配置是 pre-existing 状态，非 P2.8 引入 | 偏离 plan「lint 干净」要求；需 W3 显式裁决 |
+| B. `next lint --strict` 写 `.eslintrc.json` | 满足 plan 「lint 干净」字面 | 越 P2.8 `Files: 无` 范围；引入 Next 已 deprecated 的 lint 配置（需要 P3 二次迁移到 ESLint CLI）；ESLint 第一次跑大概率有累积 warning/error 需要清理，超出 P2.8 范围 |
+| C. P3 hardening pass 统一处理（推荐） | 与 CI E2E 矩阵 / 其他 P3 hardening 一起；走 ESLint CLI（非 deprecated 路径）一次到位 | P2.8 lint 项标 deferred，需要 W3 显式裁决 |
+
+### 推荐方案
+
+**选项 C** —— P2.8 跳过 lint 直接 push，ESLint CLI 初始化进 P3 hardening pass（与 CI workflow / Playwright multi-browser matrix / 既有 P3 follow-up 一并处理）。理由：
+
+1. P0-P2 全程没有 ESLint 配置 —— 跳过 lint 不引入新回归
+2. tsc + vitest 192/192 + build 23/23 已是强质量门，足以覆盖 P2.8 「全量验证」语义实质
+3. ESLint 配置选择（Strict / Base / 自定义规则集 / 是否启用 `next/core-web-vitals` 等）应由 W3 在 P3 hardening pass 统一决定，而非 P2.8 现场拍板
+4. `next lint` 已 deprecated，P3 应直接走 ESLint CLI 迁移路径，避免「先建 deprecated 配置再迁移」的浪费
+
+### 等待 W3 裁决
+
+W3 三选其一并裁决：
+- **(A)** 接受跳过 lint，allow 直接 push 进入 merge
+- **(B)** 要求 `next lint --strict` 现场初始化（W2 会先跑 fix-all、清理累积 warning 再 push）
+- **(C)** 接受 P3 hardening pass 兜底，allow 直接 push
+
+W2 当前未 push P2.8。等 W3 verdict 段后再动作（避免提前 push 误触发 merge）。
+
+> 备注：origin/feat/hot-tracking-p0-p2 远端 SHA 落后本地 2 commit（`059a1c5` + `56a6661` 是 W3 在 main 上的 merge + verdict，本地已 ff 含），加上 W1 Task 7 的 ff（`70bc6b3`）后远端落后 4 commit。一旦 W3 裁决 OK，`git push` 推自己分支会同步这些 main 上的 commit 到 feat 分支。
