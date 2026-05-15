@@ -41,8 +41,12 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { projectName, videoUrl, bgmUrl } = parsed.data;
-  const videoFileName = sanitizeVideoFileName(parsed.data.videoFileName);
+  const { projectName, bgmUrl } = parsed.data;
+  // Zod preprocess (schema.ts C1 兼容层) 保证 videoUrls / videoFileNames 在校验
+  // 通过后必然存在；这里非空断言只为收紧类型，运行期不会触发。
+  const videoUrls = parsed.data.videoUrls!;
+  const rawFileNames = parsed.data.videoFileNames ?? videoUrls.map(() => undefined);
+  const videoFileNames = rawFileNames.map((n) => sanitizeVideoFileName(n));
 
   const potentialParsed = MaterialPotentialSchema.safeParse(
     parsed.data.userPotential,
@@ -63,12 +67,18 @@ export async function POST(req: NextRequest) {
 
   let workDir: string | null = null;
   try {
-    // 1) 下载视频 + (可选) BGM
-    const assets = await prepareAssets(videoUrl, bgmUrl ?? undefined);
+    // 1) 下载视频 (N 个并发) + (可选) BGM
+    const assets = await prepareAssets(videoUrls, bgmUrl ?? undefined);
     workDir = assets.workDir;
 
-    // 2) ffprobe 视频元数据
-    const meta = await probeVideoMeta(assets.videoPath);
+    // 2) ffprobe 视频元数据 — 并发探测，得到 metas 与 videoPaths 同序数组。
+    //    Task 9 起 build.ts 接入 metas[]；Task 7 阶段 build/package 仍是单视频
+    //    接口，下面只用 metas[0] 维持现有 zip 兼容。
+    const metas = await Promise.all(
+      assets.videoPaths.map((p) => probeVideoMeta(p)),
+    );
+    const meta = metas[0];
+    const videoFileName = videoFileNames[0];
 
     // 3) BGM 时长（如有）
     let bgmDurationSec: number | undefined;
@@ -92,8 +102,9 @@ export async function POST(req: NextRequest) {
       match: matchParsed.data,
     });
 
-    // 5) 读素材 buffer
-    const videoBuffer = await readAsset(assets.videoPath);
+    // 5) 读素材 buffer — Task 7 阶段单视频 zip 兼容，仅读 videoPaths[0]；
+    //    Task 11 起改并发读 N 个 buffer 写入 zip materials/。
+    const videoBuffer = await readAsset(assets.videoPaths[0]);
     const bgmBuffer = assets.bgmPath
       ? await readAsset(assets.bgmPath)
       : undefined;
