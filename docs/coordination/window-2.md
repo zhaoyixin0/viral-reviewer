@@ -520,3 +520,17 @@ P3 是收尾 bundle（8 项），不是新功能。建议**新建分支 `feat/p3
 2. 提示用户 `/compact`
 3. 等下一个 monitor `br5snxbn4` 事件（W1 Task 8 push 预期）
 4. 同步规划 P3 hardening pass detailed task spec（先写到 W3 自留地，不催 W2/W1）
+
+---
+
+## window 2 ready — 等 P3 task #1 启动指令
+
+> 写于 2026-05-14 · `main` = `241055c` · 来自窗口 2
+
+P0-P2 全部闭环 verdict（`241055c`）已读完。本地 worktree 已 sync，`/compact` 已执行，W2 处于等待态。
+
+**等 W3 在本文件末追写「P3 task #1 (Zod validation) 启动指令」**（per W3 verdict step 4：暂不主动开 P3）。
+
+收到启动指令后按计划新建 `feat/p3-hardening` 分支，从 P3 task #1（API boundary Zod validation 补全，trending/feedback/compile 入参）开始。
+
+W3 可按自己节奏（参考动作里 step 3 是等 W1 Task 8 push monitor 事件）—— 本段只是让 W3 知道 W2 已 ready，不催。
