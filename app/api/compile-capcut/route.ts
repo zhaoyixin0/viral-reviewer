@@ -72,13 +72,11 @@ export async function POST(req: NextRequest) {
     workDir = assets.workDir;
 
     // 2) ffprobe 视频元数据 — 并发探测，得到 metas 与 videoPaths 同序数组。
-    //    Task 9 起 build.ts 接入 metas[]；Task 7 阶段 build/package 仍是单视频
-    //    接口，下面只用 metas[0] 维持现有 zip 兼容。
+    //    Task 9 起 build.ts 接入 metas[] / videoFileNames[] 完整数组。
     const metas = await Promise.all(
       assets.videoPaths.map((p) => probeVideoMeta(p)),
     );
-    const meta = metas[0];
-    const videoFileName = videoFileNames[0];
+    const primaryMeta = metas[0];
 
     // 3) BGM 时长（如有）
     let bgmDurationSec: number | undefined;
@@ -87,22 +85,22 @@ export async function POST(req: NextRequest) {
         bgmDurationSec = await probeBgmDurationSec(assets.bgmPath);
       } catch (e) {
         console.warn("[compile-capcut] bgm probe failed:", (e as Error).message);
-        bgmDurationSec = meta.durationSec; // 兜底用视频时长
+        bgmDurationSec = primaryMeta.durationSec; // 兜底用主视频时长
       }
     }
 
-    // 4) 构造 CapCut JSON
+    // 4) 构造 CapCut JSON — 整组 metas/videoFileNames 全量 forward。
     const { draftContent, metaInfo } = buildDraftContent({
       projectName,
-      videoFileName,
+      videoFileNames,
       bgmFileName: assets.bgmPath ? "bgm.mp3" : undefined,
       bgmDurationSec,
-      meta,
+      metas,
       potential: potentialParsed.data,
       match: matchParsed.data,
     });
 
-    // 5) 读素材 buffer — Task 7 阶段单视频 zip 兼容，仅读 videoPaths[0]；
+    // 5) 读素材 buffer — Task 9 阶段 zip 仍单视频兼容，仅读 videoPaths[0]；
     //    Task 11 起改并发读 N 个 buffer 写入 zip materials/。
     const videoBuffer = await readAsset(assets.videoPaths[0]);
     const bgmBuffer = assets.bgmPath
@@ -115,7 +113,7 @@ export async function POST(req: NextRequest) {
       draftContent,
       metaInfo,
       videoBuffer,
-      videoFileName,
+      videoFileName: videoFileNames[0],
       bgmBuffer,
       bgmFileName: bgmBuffer ? "bgm.mp3" : undefined,
     });

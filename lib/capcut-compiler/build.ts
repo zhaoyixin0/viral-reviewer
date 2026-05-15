@@ -12,6 +12,7 @@ import {
   extractTrimRanges,
   computeKeepRanges,
   planEditSegments,
+  planFromAssemblyTimeline,
   pickAnimation,
   makeEasedScaleKeyframes,
   type EditSegmentPlan,
@@ -74,13 +75,17 @@ function nowMs(): number {
 
 export type CompileInput = {
   projectName: string;
-  /** 用户视频在 CapCut 项目中的相对路径（解压后 CapCut 看到的位置） */
-  videoFileName: string;
+  /**
+   * N 个用户视频在 CapCut 项目中的相对路径（解压后 CapCut 看到的位置）。
+   * 与 `metas` 同长度且按上传全集顺序对齐。Task 9 起 build 接入多 material。
+   */
+  videoFileNames: ReadonlyArray<string>;
   /** 用户上传的 BGM 文件名（Phase 5.5）。不传则视频自带音轨负责播放，不创建独立 audio 轨 */
   bgmFileName?: string;
   /** BGM 时长（秒，从 ffprobe 拿）。bgmFileName 存在时必填 */
   bgmDurationSec?: number;
-  meta: VideoMeta;
+  /** 与 `videoFileNames` 同序、同长度的 ffprobe 元数据数组。 */
+  metas: ReadonlyArray<VideoMeta>;
   potential: MaterialPotential;
   match: TechniqueMatchingResult;
 };
@@ -115,28 +120,17 @@ export function sanitizeVideoFileName(raw: string | undefined): string {
 }
 
 /**
- * 把 topPriorityActions 里的「在 X 秒切镜」抽出来作为时间轴 cut points。
- * 同时把 push_in / pull_out 动作识别出来用于 keyframe。
- */
-/**
- * 计算输出视频的 segment 计划：
- *   1) 从 LLM match 里抽出"必删片段"
- *   2) 从源视频里减去删除区间 → 剩余 keep ranges
- *   3) 在 keep ranges 内按用户素材/LLM 推荐的切点切成多段
- *   4) 每段在输出时间轴上紧贴拼接（target_timerange 从 0 累计递增）
- *
- * 返回的 plan 直接对应 CapCut segments。
+ * 兼容路径（无 assemblyTimeline）：按主视频（metas[0]）走 trim/keep + 切点切段。
+ * 输出的每个 plan 的 sourceVideoIndex 默认为 0（planEditSegments 行为）。
  */
 function buildEditPlan(
   match: TechniqueMatchingResult,
   potential: MaterialPotential,
   totalDurSec: number,
 ): EditSegmentPlan[] {
-  // a) trim → keep
   const trims = extractTrimRanges(match, totalDurSec);
   const keepRanges = computeKeepRanges(totalDurSec, trims);
 
-  // b) 切点：用户原视频自带的 cut + match 给的切点（仅那些在 keep range 内的会用上）
   const cutSet = new Set<number>();
   for (const a of match.topPriorityActions ?? []) {
     if (a.userVideoAt && typeof a.userVideoAt.sec === "number") {
@@ -150,10 +144,24 @@ function buildEditPlan(
   }
   const cutPoints = Array.from(cutSet).sort((a, b) => a - b);
 
-  // c) plan
   return planEditSegments(keepRanges, cutPoints, (sStart, sEnd, idx) =>
     pickAnimation(sStart, sEnd, idx, potential, match),
   );
+}
+
+/**
+ * cover-fit scale：让 segment 视频铺满 canvas（保持纵横比，多出部分裁掉）。
+ * 等尺寸短路返回 1，避免引入浮点扰动。
+ */
+function computeFitScale(
+  canvasW: number,
+  canvasH: number,
+  segW: number,
+  segH: number,
+): number {
+  if (segW === canvasW && segH === canvasH) return 1;
+  if (segW <= 0 || segH <= 0) return 1;
+  return Math.max(canvasW / segW, canvasH / segH);
 }
 
 /**
@@ -183,14 +191,25 @@ export function buildDraftContent(input: CompileInput): {
   draftContent: DraftContent;
   metaInfo: DraftMetaInfo;
 } {
+  if (input.metas.length === 0 || input.videoFileNames.length === 0) {
+    throw new Error("buildDraftContent: metas/videoFileNames must be non-empty");
+  }
+  if (input.metas.length !== input.videoFileNames.length) {
+    throw new Error(
+      `buildDraftContent: metas (${input.metas.length}) and videoFileNames (${input.videoFileNames.length}) length mismatch`,
+    );
+  }
+
   const projectId = id();
-  const durationUs = secToMicroseconds(input.meta.durationSec);
-  const isPortrait = input.meta.height > input.meta.width;
+  const primaryMeta = input.metas[0];
+  const durationUs = secToMicroseconds(primaryMeta.durationSec);
+  const isPortrait = primaryMeta.height > primaryMeta.width;
   const ratio =
-    isPortrait && Math.abs(input.meta.width / input.meta.height - 9 / 16) < 0.05
+    isPortrait &&
+    Math.abs(primaryMeta.width / primaryMeta.height - 9 / 16) < 0.05
       ? "9:16"
       : !isPortrait &&
-          Math.abs(input.meta.width / input.meta.height - 16 / 9) < 0.05
+          Math.abs(primaryMeta.width / primaryMeta.height - 16 / 9) < 0.05
         ? "16:9"
         : "original";
 
@@ -200,16 +219,16 @@ export function buildDraftContent(input: CompileInput): {
   // `${TOKEN_PROJECT_DIR}/materials/<file>`，zip 附的 setup 脚本在用户机器上
   // 把 token 字面替换成项目文件夹的绝对路径。CapCut 要的就是绝对路径
   // （原生项目 0203/0205 验证）。
-  const videoMaterial: VideoMaterial = {
+  const videoMaterials: VideoMaterial[] = input.metas.map((m, i) => ({
     id: id(),
     type: "video",
-    path: `${TOKEN_PROJECT_DIR}/materials/${input.videoFileName}`,
-    material_name: input.videoFileName,
-    width: input.meta.width,
-    height: input.meta.height,
-    duration: durationUs,
-    has_audio: input.meta.hasAudio,
-  };
+    path: `${TOKEN_PROJECT_DIR}/materials/${input.videoFileNames[i]}`,
+    material_name: input.videoFileNames[i],
+    width: m.width,
+    height: m.height,
+    duration: secToMicroseconds(m.durationSec),
+    has_audio: m.hasAudio,
+  }));
 
   // 视频自带音轨已经在 video segment 里播放（speed=1, volume=1）。
   // 只有用户主动上传 BGM 时才创建独立 audio 轨（Phase 5.5）。
@@ -222,21 +241,21 @@ export function buildDraftContent(input: CompileInput): {
         path: `${TOKEN_PROJECT_DIR}/materials/${input.bgmFileName}`,
         name: input.bgmFileName,
         duration: secToMicroseconds(
-          Math.min(input.bgmDurationSec ?? input.meta.durationSec, input.meta.durationSec),
+          Math.min(
+            input.bgmDurationSec ?? primaryMeta.durationSec,
+            primaryMeta.durationSec,
+          ),
         ),
       }
     : null;
 
   // ===== Edit plan: trim + keep + segment placement =====
-  // 把 LLM 的"必删片段"翻译成 source/target timerange 严格分离的 segments。
-  // source_timerange 是从原视频取片，target_timerange 是输出时间轴上紧贴的位置。
-  // 详见 lib/capcut-compiler/edit-plan.ts。
+  // Task 9：match.assemblyTimeline 存在 → multi-video 编排路径；
+  //          否则 → 旧 buildEditPlan 兼容路径（sourceVideoIndex 一律 0）。
 
-  const editPlan = buildEditPlan(
-    input.match,
-    input.potential,
-    input.meta.durationSec,
-  );
+  const editPlan: EditSegmentPlan[] = input.match.assemblyTimeline
+    ? planFromAssemblyTimeline(input.match.assemblyTimeline, input.metas)
+    : buildEditPlan(input.match, input.potential, primaryMeta.durationSec);
 
   // 输出总时长 = 最后一段 target_end（剪辑后的紧凑时长，比源视频短）
   const outputDurationUs =
@@ -255,6 +274,21 @@ export function buildDraftContent(input: CompileInput): {
   // ===== Video track segments =====
 
   const videoSegments: VideoSegment[] = editPlan.map((p) => {
+    // sourceVideoIndex 在 plan 阶段已 clamp 到 [0, metas.length-1]；
+    // 这里再防御一次：越界则回退 0（避免下游 crash，与 review I3 一致）。
+    const segIdx =
+      p.sourceVideoIndex >= 0 && p.sourceVideoIndex < videoMaterials.length
+        ? p.sourceVideoIndex
+        : 0;
+    const segMeta = input.metas[segIdx];
+    const segMaterial = videoMaterials[segIdx];
+    const fitScale = computeFitScale(
+      primaryMeta.width,
+      primaryMeta.height,
+      segMeta.width,
+      segMeta.height,
+    );
+
     const speedMat: SpeedMaterial = {
       id: id(),
       type: "speed",
@@ -305,11 +339,14 @@ export function buildDraftContent(input: CompileInput): {
     const targetDurUs =
       secToMicroseconds(p.targetEndSec) - secToMicroseconds(p.targetStartSec);
 
-    // CapCut 要求 4 个 property type 一起设，否则整个动画被忽略
-    // ScaleX 用多 keyframe 模拟 ease-in-out（CapCut keyframe schema 不暴露 easing 字段）
-    const scaleFrom =
+    // CapCut 要求 4 个 property type 一起设，否则整个动画被忽略。
+    // ScaleX 用多 keyframe 模拟 ease-in-out（CapCut keyframe schema 不暴露 easing 字段）。
+    // 多视频：素材尺寸 != canvas 时乘 fitScale，让 segment 铺满 canvas（cover）。
+    const baseFrom =
       p.animation.type === "none" ? 1.0 : p.animation.scaleFrom;
-    const scaleTo = p.animation.type === "none" ? 1.0 : p.animation.scaleTo;
+    const baseTo = p.animation.type === "none" ? 1.0 : p.animation.scaleTo;
+    const scaleFrom = baseFrom * fitScale;
+    const scaleTo = baseTo * fitScale;
     const scaleKfs = makeEasedScaleKeyframes(scaleFrom, scaleTo, targetDurUs);
 
     const keyframes: CommonKeyframe[] = [
@@ -342,7 +379,7 @@ export function buildDraftContent(input: CompileInput): {
 
     return {
       id: id(),
-      material_id: videoMaterial.id,
+      material_id: segMaterial.id,
       // 关键：source 是从原视频取片范围，target 是在输出时间轴上的紧贴位置
       // 两者分离 = 真正剪辑（删除 trim 区间 + 重排剩余段）
       target_timerange: { start: targetStartUs, duration: targetDurUs },
@@ -399,7 +436,7 @@ export function buildDraftContent(input: CompileInput): {
     // BGM 时长可能比视频长，截到视频时长
     // BGM 长度截到剪辑后的输出总时长（不再截到原视频时长，否则结尾会有静音段）
     const bgmDur = Math.min(
-      secToMicroseconds(input.bgmDurationSec ?? input.meta.durationSec),
+      secToMicroseconds(input.bgmDurationSec ?? primaryMeta.durationSec),
       outputDurationUs,
     );
 
@@ -426,15 +463,20 @@ export function buildDraftContent(input: CompileInput): {
   }
 
   // ===== Text track =====
+  // 字幕段的 target_timerange 必须重映射到剪辑后的输出时间轴：
+  //   - 字幕落在被删除的 trim 区间 → 整条丢弃
+  //   - 字幕跨过 trim 区间边界 → 截断到 keep 内的部分（简化：直接丢弃跨界的）
+  //
+  // Task 9 注：assemblyTimeline 路径下 plan.sourceStart/End 不再对应"主视频时间"，
+  // 而是按各自 sourceVideoIndex 来；user-supplied subtitle 默认锚定主视频时间，因此
+  // 仅命中 sourceVideoIndex===0 的段是安全映射。
 
   const subtitles = extractSubtitles(input.potential);
   const textMaterials: TextMaterial[] = [];
 
-  // 字幕段的 target_timerange 必须重映射到剪辑后的输出时间轴：
-  //   - 字幕落在被删除的 trim 区间 → 整条丢弃
-  //   - 字幕跨过 trim 区间边界 → 截断到 keep 内的部分（简化：直接丢弃跨界的）
   const mapSourceToTarget = (srcSec: number): number | null => {
     for (const p of editPlan) {
+      if (p.sourceVideoIndex !== 0) continue;
       if (srcSec >= p.sourceStartSec - 1e-3 && srcSec <= p.sourceEndSec + 1e-3) {
         return p.targetStartSec + (srcSec - p.sourceStartSec);
       }
@@ -447,7 +489,7 @@ export function buildDraftContent(input: CompileInput): {
   for (const sub of subtitles) {
     const targetStartSec = mapSourceToTarget(sub.atSec);
     const targetEndSec = mapSourceToTarget(sub.atSec + sub.durationSec);
-    if (targetStartSec === null || targetEndSec === null) continue; // 字幕在被删的段里
+    if (targetStartSec === null || targetEndSec === null) continue;
     const effectiveDur = Math.max(0, targetEndSec - targetStartSec);
     if (effectiveDur < 0.1) continue;
 
@@ -502,15 +544,15 @@ export function buildDraftContent(input: CompileInput): {
     name: input.projectName,
     // 剪辑后的输出总时长（比源视频短），CapCut 会用它画时间轴长度
     duration: outputDurationUs,
-    fps: Math.round(input.meta.fps),
+    fps: Math.round(primaryMeta.fps),
     canvas_config: {
-      width: input.meta.width,
-      height: input.meta.height,
+      width: primaryMeta.width,
+      height: primaryMeta.height,
       ratio,
     },
     tracks,
     materials: {
-      videos: [videoMaterial],
+      videos: videoMaterials,
       audios: bgmMaterial ? [bgmMaterial] : [],
       texts: textMaterials,
       speeds,
@@ -548,26 +590,28 @@ export function buildDraftContent(input: CompileInput): {
   const nowSec = Math.floor(importedAtMs / 1000);
   const nowUs = importedAtMs * 1000;
 
-  const videoMetaEntry: DraftMaterialEntry = {
-    ai_group_type: "",
-    create_time: nowSec,
-    duration: durationUs,
-    extra_info: input.videoFileName,
-    file_Path: `${TOKEN_PROJECT_DIR}/materials/${input.videoFileName}`,
-    height: input.meta.height,
-    id: videoMaterial.id,
-    import_time: nowSec,
-    import_time_ms: nowUs,
-    item_source: 1,
-    md5: "",
-    metetype: "video",
-    roughcut_time_range: { duration: durationUs, start: 0 },
-    sub_time_range: { duration: -1, start: -1 },
-    type: 0,
-    width: input.meta.width,
-  };
-
-  const group0Entries: DraftMaterialEntry[] = [videoMetaEntry];
+  const group0Entries: DraftMaterialEntry[] = videoMaterials.map((vm, i) => {
+    const meta = input.metas[i];
+    const dUs = secToMicroseconds(meta.durationSec);
+    return {
+      ai_group_type: "",
+      create_time: nowSec,
+      duration: dUs,
+      extra_info: input.videoFileNames[i],
+      file_Path: `${TOKEN_PROJECT_DIR}/materials/${input.videoFileNames[i]}`,
+      height: meta.height,
+      id: vm.id,
+      import_time: nowSec,
+      import_time_ms: nowUs,
+      item_source: 1,
+      md5: "",
+      metetype: "video",
+      roughcut_time_range: { duration: dUs, start: 0 },
+      sub_time_range: { duration: -1, start: -1 },
+      type: 0,
+      width: meta.width,
+    };
+  });
 
   if (bgmMaterial && input.bgmFileName) {
     group0Entries.push({

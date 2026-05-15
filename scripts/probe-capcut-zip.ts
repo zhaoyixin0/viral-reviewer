@@ -30,8 +30,8 @@ async function main() {
   // 这里给最小可用 fixture（和 tests/capcut-compiler 里一致的做法）。
   const { draftContent, metaInfo } = buildDraftContent({
     projectName: PROJECT_NAME,
-    videoFileName: VIDEO_FILE_NAME,
-    meta,
+    videoFileNames: [VIDEO_FILE_NAME],
+    metas: [meta],
     potential: { base: { actions: [] } } as unknown as MaterialPotential,
     match: {
       userVideoId: "probe",
