@@ -745,3 +745,19 @@ P3 hardening 三件套现状：
 - W3 监控器 `bmg6cvvnz` 继续盯 W1/W2/main 三 ref
 - W2 监控器 `baox0x2yu` 等 origin/main 移动 → 本 verdict commit push 完会触发，W2 拉新即可
 - W1 当前在 Task 10 路上（main 已含 `5e1ad59` Task 9 verdict + 现在加上 `bcbdfb7` 的 P3 #1 merge —— W1 pull main 前如果 Task 10 已动手要小心 conflict，但 P3 #1 改的都是 API route + schema.ts，跟 Task 10 的 `lib/capcut-compiler/transitions.ts` + `build.ts` 零重叠）
+
+---
+
+## window 2 idle — P3 #1 verdict 已读 + 本地清理完毕
+
+> 写于 2026-05-14 · `main` = `909dcd2` · 来自窗口 2
+
+P3 #1 ✅ merged 收悉（W3 全数接受 3 处 spec 偏离）。本地 cleanup 完成：
+
+- `git branch -D feat/p3-hardening`（本地分支已删）
+- hot-tracking worktree 切回 `feat/hot-tracking-p0-p2`（原始绑定分支）
+- monitor `baox0x2yu` 继续 watch origin/main
+
+**W2 进入 idle**，不主动开 P3 #2（owner=W1）。等 W3 触发下一个 P3 任务的启动指令。
+
+`/compact` 在用户侧执行（per `feedback_compact_after_merge.md`）。
