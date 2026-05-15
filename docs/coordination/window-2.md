@@ -1,33 +1,33 @@
-# 窗口 2 → 窗口 3 回执
+# 给窗口 2 的指令
 
-> 写于 2026-05-14 · 针对 `main` = `52219d1` · 来自窗口 2
+> 写于 2026-05-15 · 针对 `main` = `25dba14` · 来自窗口 3 协调者
 
-## P2.1 完成 ✅ + 一个 HIGH review finding 待协调者裁决
+## P2.1 已 merge ✅ + H2 裁决：接受为已知降级
 
-P2.1（`retrieval.ts` snapshot 兜底层）已实施，按 plan 双 commit checkpoint：
+P2.1 retrieval.ts snapshot 兜底层（`pickSnapshotMatches` 纯函数 + 链路集成）+ `package-lock.json` 同步已合入 `main`（merge commit `25dba14`）。三项验证全绿：
 
-- `77e7c7e` feat(p2): add pickSnapshotMatches pure function — checkpoint 1
-- `340da2c` feat(p2): insert trending-snapshot fallback layer — checkpoint 2
-- `0d2c26c` chore: sync package-lock.json — 见下「附带修复」
+- `npx tsc --noEmit` → EXIT 0
+- `npx vitest run` → 161/161
+- `npm run build` → 编译成功（含 lint + type check）
 
-验证：全量 161 测试 PASS、`tsc --noEmit` 干净。双 review：spec-compliance **PASS**（逐字对齐 plan，唯一偏离是 WIP-P2.1-RESUME.md 里用户已授权的测试用例 1 同字序改动）；code-quality **WARNING**（详见下）。
+> 验证前先在窗口 3 跑了 `npm install` —— 这台机器 pull 完 31 个 commit 后没跑过，`@vercel/config` 没装上 tsc/build 报错。窗口 2 这边如果也是新机器，记得 `npm install` 一下。
 
-### 附带修复 `0d2c26c`（不在 P2.1 plan 内）
+### H2 裁决：接受为已知降级，不开 follow-up
 
-P1.14 把 `@vercel/config` 加进 `package.json` 但 `package-lock.json` 没同步它的依赖树，导致 worktree `tsc` 报 `Cannot find module '@vercel/config/v1'`。已 `npm install` 补全并单独 commit。**这不是 P2.1 范围**，是 P1.14 遗留漂移，单提一个 `chore:` 便于审。
+snapshot 路径因 `pickSnapshotMatches` 预截到 `topK`、导致 `pickFromTopicPool` 必然短路到 `rankByEngagement` —— 这条 plan-design 观察接受，理由：
 
-### code-quality review 的 HIGH —— 需要协调者/architect 裁决
+1. **fix 的实际效用接近 0**。snapshot 总池 ~20 条，经 confidence ≥0.6 + topic jaccard ≥0.2 双过滤后通常 ≤ topK；即使传更大池子，`rankBySignature`/`diversifyByCluster` 仍会因 `pool.length <= topK` 短路（验证了 retrieval.ts:72 / :109）。多数真实请求下，fix 不改变行为。
+2. **plan 是 architect 两轮 review 过的 verbatim**，不是疏漏。改 plan 要走 architect re-review，开销 >> 收益。
+3. **与既有取舍一致**：H1（CJK tokenization）+ user 在 WIP-P2.1-RESUME.md 对 snapshot 层「保持简单、不过度工程」的拍板。
 
-**H2（plan 设计疏漏，非实现 bug）：`videoSignature` 在 snapshot 路径结构性失效。**
-plan Step 9 verbatim 是 `pickFromTopicPool(snapMatches, videoSignature, topK)`，但 `snapMatches = pickSnapshotMatches(current.videos, canonicalTopic, topK)` 已预截断到 ≤ topK，导致 `rankBySignature`/`diversifyByCluster` 必然短路到 `rankByEngagement` —— snapshot 路径永远拿不到 signature 多样化排序。`local`/`cache`/`live` 路径的池子可能 > topK 所以不受影响，snapshot 是唯一一条结构性失效的。
-- 影响：低。snapshot 总池 ~20 条，按 topic 过滤后实际很少 > topK=5；snapshot 路径仍返回有效的 engagement 排序样本，属优雅降级不是 break。
-- 我**没有**单方面改（修法是给 `pickSnapshotMatches` 传 `topK*N`，引入魔数 + 偏离 architect 两轮 review 过的 plan verbatim，超出窗口 2 权限）。
-- 建议协调者裁决：① 接受现状、记为已知降级；或 ② 开 follow-up task 改 plan call site。倾向 ①（与 H1 同类，用户在 WIP-P2.1-RESUME.md 已对 snapshot 层「保持简单、不过度工程」拍过板）。
+裁决已写进 merge commit message，留作历史记录。
 
-**H1**：`tokens()` 对连续中文 topic 退化为精确相等匹配，"模糊匹配"对 CJK 名不副实 —— **这条 WIP-P2.1-RESUME.md「关键决策」里用户已拍板**（Step 3 verbatim 保留、不加 CJK 分词，理由：topic 由共享归一化机制产出、与 local 层精确相等一致）。已知取舍，不动。
+## 下一步：P2.2 放行
 
-MEDIUM 项（异常路径无测试、`previous` 未消费、`console.error` 裸 unknown）均为 plan verbatim 范围外或全文件既有惯例，未处理。
+按 per-task 工作流：
+1. `git pull origin main --no-rebase` 同步到 `25dba14`
+2. （如本机第一次 pull 这批 commit）`npm install`
+3. 读本文件确认 SHA = `25dba14` 是新的
+4. 开 P2.2 `/api/trending` route（plan 文档 `## Task P2.2`，verbatim 代码 + 测试 + Step 都在）
 
-### 后续
-
-窗口 2 按 per-task 闭环：已 push `feat/hot-tracking-p0-p2`，监控 `origin/main` 等 merge。merge 后 `git pull origin main --no-rebase` → 读本文件看有无新指令 → 才开 P2.2。
+P2.2-P2.8 串行，每 task push → 等 merge → pull → 读本文件 → 下一个。
