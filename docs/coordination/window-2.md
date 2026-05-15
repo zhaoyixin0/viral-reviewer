@@ -402,3 +402,62 @@ W3 三选其一并裁决：
 W2 当前未 push P2.8。等 W3 verdict 段后再动作（避免提前 push 误触发 merge）。
 
 > 备注：origin/feat/hot-tracking-p0-p2 远端 SHA 落后本地 2 commit（`059a1c5` + `56a6661` 是 W3 在 main 上的 merge + verdict，本地已 ff 含），加上 W1 Task 7 的 ff（`70bc6b3`）后远端落后 4 commit。一旦 W3 裁决 OK，`git push` 推自己分支会同步这些 main 上的 commit 到 feat 分支。
+
+---
+
+## W3 verdict — P2.8 选项 C 通过 ✅
+
+> 写于 2026-05-14 · `main` = `232347c`（已 ff 含 W2 doc commit `4e17dae`）· 来自窗口 3
+
+### 裁决：**选项 C** —— 跳过 lint 直接 push，ESLint CLI 初始化进 P3 hardening pass
+
+### 复核 W2 诊断（核实通过）
+
+| 检查项 | W3 复核结果 |
+|---|---|
+| 仓库根 / worktree 有无 ESLint 配置 | ✅ 确认无（`git ls-files` 全量列表零命中 `.eslintrc*` / `eslint.config.*`） |
+| `package.json` devDependencies 含 ESLint | ✅ 确认**无**（不仅没配置，连 `eslint` / `eslint-config-next` 依赖都没装） |
+| `npm run lint` 实际可跑性 | ✅ 确认必走交互 prompt（且选 strict 不只是写 `.eslintrc.json`，还要 `npm install` 灌一堆依赖到 `package.json` + `package-lock.json`） |
+| `next lint` deprecation 路径 | ✅ Next 16 已弃用，官方迁移建议 ESLint CLI |
+| W2 分支三项强质量门 | ✅ tsc clean / vitest 27 files **192/192** / build 23/23（`/trending` ISR `1h`/`1y` 保留） |
+
+W2 推荐理由 4 条全部成立，且选项 B 实际代价比 W2 描述的更高（W2 说"写 `.eslintrc.json`"，实际还要装 `eslint` + `eslint-config-next` + 一堆插件 + 跑 fix-all 修累计 warning，远超 P2.8 `Files: 无`）。
+
+### 选项 C 通过依据
+
+1. **零回归保证** —— ESLint 在仓库历史从未存在，"跳过 lint" 不引入任何新偏差，只是把 plan 字面 lint 项标 deferred
+2. **质量门已足够强** —— tsc 严格 + vitest 192/192 + build 全绿构成 P2.8 「全量验证」语义实质，覆盖 plan 意图
+3. **路径选择应集中决策** —— ESLint 配置（Strict vs Base / 是否启用 `next/core-web-vitals` / `@typescript-eslint/*` 规则集 / `eslint-plugin-react-hooks` 等）属 P3 hardening 范畴，不应 P2.8 现场拍板
+4. **不走 deprecated 路径** —— P3 一次直接迁到 ESLint CLI，避免「P2.8 建 deprecated 配置 → P3 迁移到 ESLint CLI」二次成本
+5. **W3 P3 follow-up bundle 同步增项** —— ESLint CLI 初始化与既有 P3 项打包（SSRF carry-over / Zod boundary / DownloadError / a11y polite / Task 6 collector / CI E2E matrix）
+
+### P3 hardening bundle（W3 维护 — 截至本裁决）
+
+待 P0-P2 全部闭环（W1 Task 8-? + W2 P2.8）后统一启动：
+
+| 项 | 来源 | 类型 |
+|---|---|---|
+| SSRF allowlist hardening | W1 Task 5 follow-up | security |
+| API boundary Zod validation 补全 | 多任务积累 | reliability |
+| `res.ok` defensive checks | 多任务积累 | reliability |
+| P2.5 MEDIUM #2 a11y (`aria-labelledby` + `aria-live="polite"`) | W2 P2.5 deferred | a11y |
+| W1 Task 6 nit: `defaultOnUnknown` collector injection（Task 10/12 callsites） | W1 Task 6 deferred | refactor |
+| W1 Task 7 nit: `class DownloadError extends Error { index; status }` 结构化错误类 | W1 Task 7 deferred | refactor |
+| CI E2E matrix（Chromium / Firefox / WebKit）接入 `.github/workflows/` | W2 P2.7 deferred | ci/test |
+| **ESLint CLI 初始化（非 `next lint`）+ 累计 warning fix-all** | **W2 P2.8 deferred — 本裁决新增** | **tooling** |
+
+### W2 下一步指令
+
+P2.8 全部条件已满足（W3 裁决通过 + 三项强质量门绿 + git log 完整 P0-P2 commit）：
+
+1. `git pull` 同步本 verdict 段到本地 worktree（main = `232347c` → 还会再加一条 verdict commit）
+2. 读本段（W3 verdict — P2.8 选项 C 通过 ✅）
+3. 执行 plan line 3698 step 3：`git push -u origin feat/hot-tracking-p0-p2`
+   - 推送内容：自己分支已有的 commit + 远端落后的 main commit（4 条 ff）
+   - 推完后**不要在 feat 分支再新加 commit** —— P2.8 plan-verbatim 边界已到，等 W3 在 main 上 fast-merge
+4. push 完毕在 window-2.md 末尾追一段「P2.8 已 push，等 W3 merge」短 status（≤ 5 行）即可
+5. **闭环后 `/compact`**（per memory rule `feedback_compact_after_merge.md`）
+
+### W3 后续动作（参考）
+
+W2 push 完毕后，W3 监控 `br5snxbn4` 会触发 `feat/hot-tracking-p0-p2` CHANGED 事件 → W3 执行 fast-merge（无源码改动，纯 P0-P2 全段已 ff 含进 main），main 上加一条「P0-P2 全部闭环」verdict commit，并启动 P3 hardening pass 规划。
