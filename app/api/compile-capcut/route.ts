@@ -8,6 +8,7 @@ import {
 } from "@/lib/capcut-compiler/assets";
 import {
   buildDraftContent,
+  dedupeFileNames,
   sanitizeVideoFileName,
 } from "@/lib/capcut-compiler/build";
 import { packageDraftAsZip } from "@/lib/capcut-compiler/package";
@@ -46,7 +47,12 @@ export async function POST(req: NextRequest) {
   // 通过后必然存在；这里非空断言只为收紧类型，运行期不会触发。
   const videoUrls = parsed.data.videoUrls!;
   const rawFileNames = parsed.data.videoFileNames ?? videoUrls.map(() => undefined);
-  const videoFileNames = rawFileNames.map((n) => sanitizeVideoFileName(n));
+  // sanitize 各自清洗 → dedupe 让重名加 -1/-2 后缀。三处必须用同一份数组：
+  // draft_content.json 的 materials.videos[i].path、draft_meta_info.json 的
+  // draft_materials[0].value[i].file_Path、zip 内 materials/<name>。
+  const videoFileNames = dedupeFileNames(
+    rawFileNames.map((n) => sanitizeVideoFileName(n)),
+  );
 
   const potentialParsed = MaterialPotentialSchema.safeParse(
     parsed.data.userPotential,
@@ -100,20 +106,23 @@ export async function POST(req: NextRequest) {
       match: matchParsed.data,
     });
 
-    // 5) 读素材 buffer — Task 9 阶段 zip 仍单视频兼容，仅读 videoPaths[0]；
-    //    Task 11 起改并发读 N 个 buffer 写入 zip materials/。
-    const videoBuffer = await readAsset(assets.videoPaths[0]);
+    // 5) 并发读 N 个视频 buffer + (可选) BGM buffer
+    const videoBuffers = await Promise.all(
+      assets.videoPaths.map((p) => readAsset(p)),
+    );
     const bgmBuffer = assets.bgmPath
       ? await readAsset(assets.bgmPath)
       : undefined;
 
-    // 6) 打 zip
+    // 6) 打 zip — N 段视频按 videoFileNames 顺序进 materials/
     const zipBytes = await packageDraftAsZip({
       projectName,
       draftContent,
       metaInfo,
-      videoBuffer,
-      videoFileName: videoFileNames[0],
+      videos: videoBuffers.map((buffer, i) => ({
+        buffer,
+        fileName: videoFileNames[i]!,
+      })),
       bgmBuffer,
       bgmFileName: bgmBuffer ? "bgm.mp3" : undefined,
     });

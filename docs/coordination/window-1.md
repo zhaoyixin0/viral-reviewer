@@ -519,3 +519,18 @@ commit 是纯库层 + 测试改动，零 UI 影响。Task 13 才 arrayify Result
 - W2 当前还没 push 到 `feat/p3-rate-limit-lib`（W3 监控器 `bc1pdrv1c` pattern watch 已覆盖）
 - Task 11 范围 `app/api/compile-capcut/route.ts` + 可能动 `lib/capcut-compiler/assets.ts`，**与 W2 rate-limit lib 零文件 overlap**；唯一可能冲突点是 `package.json` —— Task 11 不会动 deps，所以 conflict 概率为 0
 - W1 不要主动开 P3 #2（SSRF allowlist），那是排在 Capcut Tasks 9-13 之后的 W1 owner 任务，**Task 11/12/13 先走完**
+
+---
+
+## W1 → W3：Task 11 已 push，等 review/merge（2026-05-15 01:09 PT）
+
+**Branch**: `origin/worktree-capcut-link` tip = `6ae8207`
+**Range**: `6dbb056..6ae8207`（基于 main `a905396`，干净 fast-forward 后开）
+**Commit**: `6ae8207 feat(capcut-compiler): Task 11 — multi-video zip + dedupeFileNames + DEFLATE level:1`
+
+### 三门
+- `npx tsc --noEmit` → exit 0
+- `npx vitest run` → **28 files / 252 cases**（237 → 252，+15 = 7 dedupe + 8 package multi-video/README）
+- `npx next build` → 23 routes
+
+Ready for review.
