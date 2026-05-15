@@ -2,9 +2,21 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import { loadVideos } from "@/lib/data/load-videos";
 import { generateExploreWithLLM } from "@/lib/template-review/explore-llm";
+import {
+  createRateLimiter,
+  clientIp,
+  rateLimitHeaders,
+  ANON_AI_HEAVY,
+} from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
+
+// P3 #3 phase 2: ANON_AI_HEAVY (10/10m sliding) —— Claude Opus explore。
+const RATE_LIMITER = createRateLimiter({
+  identifier: "template-explore",
+  ...ANON_AI_HEAVY,
+});
 
 const Schema = z.object({
   topic: z.string().max(100).optional(),
@@ -46,6 +58,19 @@ export async function POST(req: NextRequest) {
     return new Response(
       JSON.stringify({ error: "invalid_input", details: parsed.error.format() }),
       { status: 400, headers: { "content-type": "application/json" } },
+    );
+  }
+
+  // P3 #3 phase 2: rate-limit inline check — stream 启动前。
+  const rlResult = await RATE_LIMITER.check(clientIp(req));
+  const rlHeaders = rateLimitHeaders(rlResult);
+  if (!rlResult.success) {
+    return new Response(
+      JSON.stringify({ error: "rate_limited", limit: rlResult.limit }),
+      {
+        status: 429,
+        headers: { ...rlHeaders, "content-type": "application/json" },
+      },
     );
   }
 
@@ -98,6 +123,7 @@ export async function POST(req: NextRequest) {
 
   return new Response(stream, {
     headers: {
+      ...rlHeaders,
       "content-type": "application/x-ndjson; charset=utf-8",
       "cache-control": "no-cache, no-transform",
       "x-accel-buffering": "no",

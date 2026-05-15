@@ -12,6 +12,19 @@ import {
 } from "@/lib/review-engine/llm";
 import type { ReviewInput } from "@/lib/review-engine/types";
 import type { AccountProfile } from "@/lib/account-profile/types";
+import {
+  createRateLimiter,
+  clientIp,
+  rateLimitHeaders,
+  ANON_AI_HEAVY,
+} from "@/lib/rate-limit";
+
+// P3 #3 phase 2: ANON_AI_HEAVY (10/10m sliding) —— review LLM (Opus/Haiku) +
+// retrieval。
+const RATE_LIMITER = createRateLimiter({
+  identifier: "review",
+  ...ANON_AI_HEAVY,
+});
 
 function deriveSignature(input: ReviewInput): VideoSignature | undefined {
   if (input.type === "text") {
@@ -97,6 +110,19 @@ export async function POST(req: NextRequest) {
     return new Response(
       JSON.stringify({ error: "invalid_input", details: parsed.error.format() }),
       { status: 400, headers: { "content-type": "application/json" } },
+    );
+  }
+
+  // P3 #3 phase 2: rate-limit inline check — stream 启动前。
+  const rlResult = await RATE_LIMITER.check(clientIp(req));
+  const rlHeaders = rateLimitHeaders(rlResult);
+  if (!rlResult.success) {
+    return new Response(
+      JSON.stringify({ error: "rate_limited", limit: rlResult.limit }),
+      {
+        status: 429,
+        headers: { ...rlHeaders, "content-type": "application/json" },
+      },
     );
   }
 
@@ -193,6 +219,7 @@ export async function POST(req: NextRequest) {
 
   return new Response(stream, {
     headers: {
+      ...rlHeaders,
       "content-type": "application/x-ndjson; charset=utf-8",
       "cache-control": "no-cache, no-transform",
       "x-accel-buffering": "no",
