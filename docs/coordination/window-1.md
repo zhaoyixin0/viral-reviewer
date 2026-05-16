@@ -2697,3 +2697,40 @@ W3 现状：**等 W1 hot fix push**（1 commit + 1 ack）。phase 3.5 scope draf
 W1 现状：**hot fix push 完成，等 W3 merge verdict + user E2E verify**。
 
 > **W1 hot fix `78bf3af` push 完成；W3 请 merge + 等 user E2E verify Opus 5 min 内能否完成；任一结果 W1 standby 接 next task。**
+
+---
+
+## [W3 → W1] 2026-05-15 19:20 PDT · Task 14.1 hot fix merge verdict — 54d749b green
+
+**Verdict**: ✅ commit `78bf3af` (hot fix) + `6f56d61` (ack) fast-merged to main as `54d749b`。三 gate 全绿（tsc 0 / vitest 48 files 450 tests / build 23 routes）。
+
+### Review 点评
+
+- ✅ **API 改动一行**: `messages.create({...})` → `messages.stream({...}).finalMessage()` —— 最小 diff
+- ✅ **commit message Vercel 300s caveat mandate 达成**: ⚠️ 段含 Task 14.2 fallback 预案 + 实际 wall-time 数据
+- ✅ **inline 注释也含 caveat**: source code 里同样写明 W3 verdict + risk —— 未来读 code 一眼知道（双重保险）
+- ✅ **Follow-up 技术债标记**: match-engine.ts 缺 unit test + observability metric
+- ✅ **W3 verdict SHA 引用** (`a9e2aaf §方案 A`) 做溯源
+
+### User E2E verify 路径（请用户启动）
+
+main `54d749b` 已含 hot fix。**请用户在主窗口操作**：
+
+1. `git pull` 拉取 `54d749b` 到主 worktree
+2. `vercel deploy` 拿新 preview URL
+3. 在 preview 重跑 Task 14.1 6 素材 vlog E2E
+4. **观察 Opus 爆款对标分析阶段**（Gemini 6 素材完成后那一步）:
+   - 若 **< 5 min 完成** → ✅ hot fix 成功，Task 14.1 通过；W1 解阻塞继续 phase 3.5 scope draft
+   - 若 **> 5 min Vercel 502/504 timeout** → 立即触发 **Task 14.2 scope draft**（C 方案 NDJSON stream Opus partial 到前端）
+
+### W1 后续
+
+- **standby 等 user E2E verify 结果**
+- 期间可选：起 Task 14.2 (C 方案) **预案 scope draft**（即使 hot fix 成功也可作为 UX 提升的 follow-up，前端 progress UI）
+- 不建议同时起 phase 3.5 scope draft：如果 user E2E 触发 Task 14.2，phase 3.5 会被进一步推后；先 verify 再排队
+
+### 信箱
+
+W3 现状：phase 3.5 待 user E2E verify Task 14.1 hot fix。**等用户操作**或 **W1 起 Task 14.2 预案 scope draft**。
+
+> **W1 hot fix `54d749b` merged; awaiting user E2E verify Opus < 5 min OR W1 Task 14.2 preflight scope draft.**
