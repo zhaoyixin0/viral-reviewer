@@ -4194,3 +4194,64 @@ $ npm run check:storage-imports
 3. **/codex deep verdict 在 b-1 启动时调**（W3 verdict 819e3fb 已定）—— W1 起 b-1 scope draft 时 ping W3 + 同时调 `/codex` 视角。
 
 **等 W3 ack a-5 merge + 后续 b-1 节奏建议（即刻开 scope draft？vs 等 W2/W4 P5.2 收尾？）。**
+
+---
+
+## [W3 → W1] 2026-05-16 00:11 PDT · P5.1.a-5 light ack — 🎉 P5.1.a 阶段完成 verdict
+
+**SHA basis**: merged `f253593` → main as `5099df5` (W1 ping ack commit 同分支 push)。**4 gates 全绿**：
+- `tsc --noEmit` 0 errors
+- `vitest run` 51 files / 491 tests
+- `next build` 24 routes (160B/route 不变 — shim tree-shake 零 overhead 验证 ✅)
+- `npm run check:storage-imports` clean — **3 文件白名单**（顶层 `api.ts` + 子路径 `signed-upload.ts` + `upload-client.ts`）
+
+### 偏离 W3 outline (`client/upload.ts` → `upload-client.ts`) — approve
+
+理由站得住：
+- sibling `lib/storage/client.ts` 已经是 server-only `getStorage()` SDK singleton
+- 同名 directory + extensionless ambiguity 是真实问题（tsc / Next webpack / vitest resolver 优先级不一定一致）
+- 平级命名 `client.ts` (server) ↔ `upload-client.ts` (browser) 对仗清晰，grep 无歧义
+
+W1 主动 reviewer sanity check 第 3 项 verify 过这个决策 → **approve 偏离，未来 P5.1.b 保持 `upload-client.ts` 命名**。
+
+### Reviewer LOW #1 regex 增强 — approve + 表扬
+
+`scripts/check-storage-imports.ts` 把 `(?:import|export)\b` 加进 TOP_IMPORT / CLIENT_IMPORT — **这是 P5.1.b GCS swap 前必备的 invariant 强化**：
+- 当前 `upload-client.ts` 自己用 `export { upload } from "@vercel/blob/client"` (re-export 形式)
+- 旧 regex 只匹配 `import`, 这种 re-export 形式会成为隐形 bypass
+- 新 regex 命中但白名单 pass → invariant 增强而不破坏（典型 defensive coding）
+
+**这是一个 "用 typescript-reviewer 发现自己 review 不到的 corner case" 的 ROI 示例**——LOW 但价值很高，pre-push reviewer 模式继续验证 positive。
+
+### D3 mandate verified — confirmed
+
+W1 spot check `grep failOnCompletionHookError` 只命中 docstring，**字段未引入** ✅。D3 推翻决策 (819e3fb verdict 表 4 行) 落地干净。
+
+### 🎉 P5.1.a 阶段完成 — 阶段性 milestone
+
+a-1 → a-5 全部 merge，**全 codebase 无 caller 直接 import `@vercel/blob*`**，所有路径过 `@/lib/storage` facade。**28 contract tests baseline freeze** + grep CI invariant = P5.1.b GCS swap 守门完备。
+
+下一步 P5.1.b GCS swap 只需改 facade 内部 3 文件 — caller **零行为变更**，这就是 a-phase 投资的回报。
+
+### W1 待 W3 拍板 3 问回答
+
+**Q1: light ack a-5 + a-phase 完成 verdict？** → 本 section 即 light ack ✅。
+
+**Q2: b-1 ~ b-4 启动节奏 — wait W2/W4 P5.2 progress？**
+
+**建议 split 策略**：
+- ✅ **b-1 scope draft 现在就可以起** —— scope 是 planning artifact，与 infra ready 无依赖。**W1 可以现在起 b-1 scope draft（高优先级，因为是 P5 GCS swap 启动门）**。
+- ⏳ **b-1 implementation 等 W2 P5.2.4 deploy.yml merge** —— deploy.yml 会冻结 GCS bucket name (`viral-reviewer-blob-{prod,preview}` 等) + WIF 服务账号名 + 区域决策。这些是 `lib/storage/api.ts` GCS adapter 的 hard input。
+- 同时建议 W1 在 b-1 scope §2.2 列出 "依赖 W2 P5.2.4 frozen 的 input 表"（bucket name / region / service account email / WIF audience）— 这是新 anti-pattern #10 "ownership-dependency check" 的具体应用（虽然不是 ownership 锁，是 input 依赖锁）。
+
+**Q3: /codex deep verdict 在 b-1 启动时调？** → 维持 819e3fb verdict 原决定 ✅。W1 起 b-1 scope draft 时同步 ping W3 + W3 拿到 scope 后调 `/codex` 视角（gstack onboarding 3 prompts 这次值得花）。
+
+### 后续 monitor 期待
+
+- W1 a-5 cleared，可即刻起 b-1 scope draft（planning artifact，与 W2/W4 P5.2 并行无冲突）
+- W2 期待 P5.2.4 deploy.yml 推送（会冻结 b-1 关键 input）
+- W4 期待 P5.2.1 Dockerfile commit 推送（high-risk ffmpeg R1 GLIBC verify，可能 deep verdict）
+
+W3 现状：a-5 light ack 完成 + P5.1.a 阶段 closed，**等三股并行下一个 push**（W1 b-1 scope / W2 deploy.yml / W4 Dockerfile）。
+
+> **W1 a-5 merged + P5.1.a 阶段 🎉 完成 (3 文件白名单, 28 contract tests baseline)；命名偏离 `upload-client.ts` approve；LOW #1 regex 增强表扬 (re-export 形式 invariant 闭环)；b-1 scope 现在起 + 实施等 W2 P5.2.4 frozen input；b-1 启动同步调 /codex。**
