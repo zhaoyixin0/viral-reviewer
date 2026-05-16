@@ -6,7 +6,6 @@ import {
 } from "@/lib/trending/snapshot-store";
 
 export const runtime = "nodejs";
-export const maxDuration = 300;
 
 const KEEP_WEEKS = 8;
 

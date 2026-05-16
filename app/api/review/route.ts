@@ -43,7 +43,6 @@ function deriveSignature(input: ReviewInput): VideoSignature | undefined {
 }
 
 export const runtime = "nodejs";
-export const maxDuration = 300;
 
 const TextInputSchema = z.object({
   type: z.literal("text"),

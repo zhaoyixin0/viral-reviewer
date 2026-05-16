@@ -22,7 +22,6 @@ import {
 import { Schema } from "./schema";
 
 export const runtime = "nodejs";
-export const maxDuration = 300;
 
 // P3 #3 phase 2: STREAM_HEAVY (3/10m fixed) —— NDJSON stream + multi-video
 // Claude analyze + frame extract，单请求 20-60s。Inline check **stream 启动前**。

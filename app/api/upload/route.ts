@@ -14,7 +14,6 @@ import {
 import { ClientPayloadSchema } from "./schema";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
 
 // P3 #3 phase 2: STRICT_PER_IP (10/1m sliding) —— Blob token 换签端点,
 // 实际 upload 走 Blob SDK 自身限流,本路由仅签名生成,STRICT 防 token 滥发。
