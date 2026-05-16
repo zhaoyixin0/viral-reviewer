@@ -4234,3 +4234,130 @@ W3 现状不变：等 W1 b-1 commit 1 / W2 P5.2.4.1 / W4 P5.2.5 三股任一 pus
 W3 现状：W2 P5.2.4.1 closed → **W2 standby**（等 user 跑 runbook + 第一次 deploy success）。同期 monitor W1 b-1 commit 1 push (刚到 `ef4e13f`) + W4 P5.2.5 push (刚到 `a120ba8`) — 都需 review。
 
 > **W2 P5.2.4.1 light ack — 9 decisions + 2 nits + reviewer 3 findings 全 same-commit 修；anti-pattern #11 落地 (post-build arch verify step)；runbook Appendix D 完整；W2 standby 等 user 第一次 deploy。**
+
+---
+
+## [W4 → W3] 2026-05-16 00:50 PDT · P5.2.5 push 完成 ping — `a120ba8` (cloud-run-revisions-gc weekly cron)
+
+Per W3 P5.2 verdict `f7d46bb` 决策 F1 + P5.2.1 v2 light ack `a6d25bd` cleared。
+
+### 文件改动 (1 NEW file, +229 lines)
+
+| 文件 | 行数 | 类型 |
+|---|---|---|
+| `.github/workflows/cloud-run-revisions-gc.yml` | 229 | NEW (weekly cron workflow + workflow_dispatch manual) |
+
+### Workflow design
+
+- name: `cloud-run-revisions-gc`
+- triggers: `schedule cron "0 0 * * 0"` (Sun 00:00 UTC) + `workflow_dispatch` (dry_run + keep_days inputs)
+- auth: WIF OIDC (google-github-actions/auth + setup-gcloud)
+- permissions (minimal per W3 P5.2.4 verdict I): `contents: read` + `id-token: write`
+- concurrency lock + timeout-minutes: 10
+- logic: list service revisions older than KEEP_DAYS → exclude active-traffic → per-revision delete loop → GITHUB_STEP_SUMMARY
+
+### Pre-push verify (per W3 P5.2.1 v2 mandate)
+
+| Check | 结果 |
+|---|---|
+| yamllint (cytopia docker, relaxed rules) | exit 0 ✅ |
+| security-reviewer agent (W3 MED #1 mandate) | 2 HIGH + 1 MED + 2 LOW + 3 INFO — HIGH/MED 全 same-commit fix |
+
+### Security-reviewer findings + 处理
+
+| # | Severity | Finding | 本 commit 处理 |
+|---|---|---|---|
+| 1 | **HIGH** | `${{ inputs.keep_days }}` 直接 inline 进 bash run: → shell injection (workflow_dispatch 任何 Write+ 成员可输入) | ✅ fix: env: 传递 + 整数 regex 校验 |
+| 2 | **HIGH** | `${{ steps.list.outputs.delete_list }}` 直接 inline → 同 injection 风险 | ✅ fix: env: 传递 + revision name DNS label 白名单 defense in depth |
+| 3 | **MED** | google-github-actions/auth@v2 + setup-gcloud@v2 没 pin SHA digest (tag-push supply-chain 攻击) | ✅ fix: pin auth@`c200f36...` + setup-gcloud@`e427ad8...` (SHA 抓取于 2026-05-16: curl api.github.com/repos/.../git/refs/tags/v2) |
+| 4 | LOW | heredoc `<<EOF` 理论 injection (revision name 不可能含 `EOF` 行) | ⏳ defense-in-depth nice-to-have, 留 follow-up |
+| 5 | LOW | `grep -c '^'` 空字符串返 1 而非 0 (job summary cosmetic) | ⏳ cosmetic, 留 follow-up |
+| 6-8 | INFO | OIDC scope 充分 / cron dry_run=false by design / runtime API behavior 等 GHA first run 验 | n/a |
+
+### Verify 边界
+
+实际 cron 行为需 first scheduled run 在 GH Actions log 可见（周日 00:00 UTC）。本机 yaml syntax + structural check 充分；runtime GCP API behavior 等 W2 P5.2.4 deploy.yml first deploy + P5.6 secrets bootstrap 同期跑通后再 end-to-end verify GC chain。
+
+### File ownership (零跨界)
+
+| 文件 | Owner | 本 commit 改 |
+|---|---|---|
+| `.github/workflows/cloud-run-revisions-gc.yml` | **W4** P5.2.5 | NEW ✅ |
+| `.github/workflows/deploy.yml` | W2 P5.2.4.1 | 不动 |
+| `.github/workflows/preview-deploy.yml` | W2 P5.2.4.2 | 不动 |
+
+### 信箱
+
+W4 现状：P5.2.5 push 完成，等 W3 light ack `a120ba8` → 启 **P5.2.7** (W4 final ack，与 W2 协调 P5.2 综合 ack 是合并还是各自)。
+
+> **W4 → W3: P5.2.5 `a120ba8` pushed; yamllint ✅; security-reviewer 2 HIGH + 1 MED + 2 LOW + 3 INFO, HIGH/MED 全 same-commit fix; SHA pin + injection 防御就位; 等 light ack 启 P5.2.7。**
+
+---
+
+## [W3 → W4] 2026-05-16 01:42 PDT · P5.2.5 `a120ba8` light ack — security-reviewer 2 HIGH + 1 MED 全 same-commit fix + SHA pin
+
+**SHA basis**: merged W4 P5.2.5 commit + ping (`a120ba8` + `7ff5d73`) → main。**3 gates 全绿**：
+- `tsc --noEmit` 0 errors ✅
+- `vitest run` 52 files / 496 tests ✅
+- (GHA workflow + check:storage-imports / build 不受影响)
+
+### Security-reviewer findings 处理嘉奖
+
+| Severity | Finding | W4 处理 |
+|---|---|---|
+| **HIGH #1** | `${{ inputs.keep_days }}` 直接 inline → shell injection | ✅ **完美 fix** — `env:` 传递 + 整数 regex 验证 (`^[0-9]+$`) + boolean enum 验证 |
+| **HIGH #2** | `${{ steps.list.outputs.delete_list }}` 直接 inline → 同 injection | ✅ **完美 fix** — `env:` 传递 + revision name DNS label 白名单 (`^[a-z][a-z0-9-]{0,62}$`) defense in depth |
+| **MED** | google-github-actions/auth + setup-gcloud 未 pin SHA digest | ✅ **完美 fix** — pin `auth@c200f36...` + `setup-gcloud@e427ad8...` (SHA 抓取于 2026-05-16) |
+| LOW × 2 | heredoc EOF / `grep -c '^'` cosmetic | ⏳ defer approve (cosmetic, 不阻塞) |
+| INFO × 3 | OIDC scope / cron design / runtime verify defer | n/a |
+
+**pre-push reviewer ROI 持续 positive**（W1 a-4 + W4 v2 + W2 P5.2.4.1 + **W4 P5.2.5** 共 **4 例**验证）。
+
+### 关键 security 决策超出 W2 P5.2.4 标准
+
+W4 P5.2.5 比 W2 P5.2.4.1 **更严**：W2 deferred SHA-pin third-party actions 作为 LOW（理由：single-developer + WIF bounded scope），W4 选择 same-commit fix 即时落地。
+
+**verdict**：两种处理都 acceptable。W4 的处理是 supply-chain hygiene 的较高 bar，**W2 应 follow W4 在 P5.2.4.2** 一并升级（P5.2.4.2 preview-deploy.yml 同期把 deploy.yml 的 `auth@v2` / `setup-gcloud@v2` SHA-pin 化）。**mandate**：W2 P5.2.4.2 commit 内同期 patch deploy.yml SHA-pin（小 diff，<10 行）。
+
+### Workflow design 嘉奖
+
+1. **Active traffic exclusion**: `comm -23 <(stale | sort) <(active | sort)` — 用 `gcloud run services describe` 拿 active set，stale 集减去 active 集 = 安全 delete 候选。逻辑严密。✅
+2. **DNS-label whitelist**: 即使 gcloud 服务端 reject 非法 revision name，client-side 仍加白名单防 `comm -23` 输出污染（comm 输出本质是文本流，可能含 shell metacharacter 如果上游 inject）。Defense in depth 正确。✅
+3. **Dry-run mode**: workflow_dispatch default `dry_run=true`，user 显式 disable 才删。schedule 触发硬 default `dry_run=false`（cron 本意就是清理，dry-run cron 没有意义）。设计合理。✅
+4. **Per-revision delete with continue on failure**: `gcloud run revisions delete ... --quiet || echo "WARN"` — 单个 fail 不 abort chain。✅
+5. **`set -euo pipefail`** 在每个 multi-line script 里 — bash safety 模式 ✅。
+
+### 1 NIT (cosmetic, P5.2.7 ack 时可同步 follow-up)
+
+`grep -c '^'` 空字符串 quirk：W4 reviewer LOW #5 已 flag。当前 `DELETE_LIST` 在 `comm -23` 输出空时是空字符串，`echo ""` + `grep -c '^'` 返 1 而非 0。这导致 job summary 显 "Candidates deleted: 1" 但实际 delete 步骤被 `if: steps.list.outputs.delete_count != '0'` 跳过（用字符串比较，'1' != '0' 触发但实际无 delete）。
+
+**Fix proposal** (~3 行)：
+```bash
+if [ -z "${DELETE_LIST}" ]; then
+  DELETE_COUNT=0
+else
+  DELETE_COUNT=$(printf '%s\n' "${DELETE_LIST}" | wc -l)
+fi
+```
+
+不阻塞本 commit；W4 P5.2.7 综合 ack 时可 same-commit 修。
+
+### W4 cleared 启 P5.2.7
+
+按 P5.2 commit chain：
+1. ✅ P5.2.1 v2 (BLOCKER cleared)
+2. ✅ P5.2.5 (本 ack)
+3. ⏭ **P5.2.7** — W2 + W4 联合综合 ack
+   - **W2 owned**: P5.2.4 chain 全 ack (P5.2.4.1 已 ship + waiting on user first deploy → P5.2.4.2 preview-deploy.yml + P5.2.4.3 综合 ack)
+   - **W4 owned**: P5.2 phase 总结 ack (P5.2.1 v2 + P5.2.5 全 chain) + 可选同 commit 修 grep -c quirk
+   - **协调**：P5.2.7 是 P5.2 phase exit gate，**等 W2 P5.2.4.2 ship 后 W4 + W2 一次性联合 ack**（不是 W4 单独提前 ack）
+
+### 信箱
+
+W3 现状：W4 P5.2.5 closed → **W4 standby**（等 W2 P5.2.4.2 ship）。同期 monitor：
+- W1 b-1 commit 2 (api.ts head/put/list swap)
+- W2 P5.2.4.2 wait user first deploy success
+
+W3 self follow-up 不变（scope-template §4 #10/#11/#12 batch patch 等 P5.2 全完）。
+
+> **W4 P5.2.5 light ack — security-reviewer 2 HIGH + 1 MED 全 same-commit fix + SHA pin defense；anti-pattern 候选 #12 (worktree) + #11 (multi-arch) 已 record；W4 standby 等 P5.2.7 联合 ack；W2 P5.2.4.2 patch deploy.yml SHA-pin mandate。**
