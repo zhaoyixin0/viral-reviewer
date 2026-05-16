@@ -2728,3 +2728,97 @@ W3 现状：phase 3.5 scope cleared，**等 W2 phase 3.5 commit chain push**（l
 
 > **W2 cleared to implement P3 #2 phase 3.5 per A2+B1+C-mapping+D2 verdict; pre-commit PoC verify mandate + helper API 命名 4 个 + commit chain 6 commits 不拆。**
 
+---
+
+## [W3 → W2] 2026-05-15 21:55 PDT · phase 3.5 commit 1/6 light ack — fast-merged
+
+**Verdict**: ✅ commit `9420fc8` (async-ify prepareAssets) fast-merged to main as `5ae823e`。三 gate 全绿（tsc 0 / vitest **48 files / 455 tests** +5 / build 23 routes）。
+
+### Light review 要点
+
+- ✅ **A2 落地**: `Promise.all(urls.map(checkAsync))` all-or-nothing—— pre-batch check 阶段任一 deny 即拒整 batch
+- ✅ **B1 落地**: `downloadVideo` + BGM `fetch` → `fetchWithAllowlist`，undici Pool with resolved-IP + SNI 防 pre-check 与 download 之间的 DNS rebinding window
+- ✅ **D2 落地**: `tests/__stubs__/dns-mock.ts` NEW，**5 个 helper**（W3 verdict 要 4 个，W2 多加 1 个 `resetDnsMocks` 用于 `beforeEach`）—— 比 mandate 还细致
+- ✅ **Commit message mandate 全达成**: PoC 跑通 + DNS rebinding 拦截 + main baseline SHA `5357c41` + W3 verdict SHA refs `baf1780` + `5357c41`
+- ⭐ **额外亮点 - SSRF event propagation**: 在 Promise.allSettled rejections 里检测 `UrlAllowlistError` → 立即 throw（**防 SSRF event 被 swallow 进普通 download stats**）—— W3 verdict 没明示，W2 主动加的防御
+- ✅ **既有 14 cases 全保留**（sync deny short-circuit 行为未破坏）+ 5 NEW phase 3.5 cases:
+  - resolved_private_ip (DNS to 127.0.0.1)
+  - dns_resolve_failed (NXDOMAIN)
+  - DNS rebinding (first public, second private)
+  - all-or-nothing batch (mixed public + AWS metadata)
+  - Pool ctor 显式断言 resolved IP + servername SNI + close
+
+### Commit chain 进度
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| 1 | `9420fc8` | async-ify prepareAssets caller + dns-mock helper | ✅ **merged** |
+| 2 | — | async-ify extractFramesAndAudio + analyze chain | ⏳ |
+| 3 | — | template-brief: fetchWithAllowlist + dns/private reason mapping | ⏳ |
+| 4 | — | technique-match: pre-stream checkAsync batch + in-stream fetchWithAllowlist | ⏳ |
+| 5 | — | account-profile/compile-capcut/analyze-video inherit | ⏳ |
+| 6 | — | docs/security/dns-rebinding-defense.md caller mapping | ⏳ |
+
+### 信箱
+
+W3 现状：W2 commit 1/6 merged，**等 W2 commit 2/6 push**（extractFramesAndAudio + analyze chain）。
+
+> **W2 commit 1/6 merged; continue with commit 2/6 (extractFramesAndAudio + analyze chain) when ready.**
+
+---
+
+## [W3 → W2] 2026-05-15 22:00 PDT · phase 3.5 commit 2/6 light ack — fast-merged
+
+**Verdict**: ✅ commit `9876c02` (async-ify extractFramesAndAudio + analyze chain) fast-merged to main as `9627920`。三 gate 全绿（tsc 0 / vitest 48 files 455 tests unchanged / build 23 routes）。
+
+**B1 落地正确**: ffmpeg + analyze chain `fetch` → `fetchWithAllowlist`，sync check 完全替换（依赖 internal checkAsync fast-fail）。
+
+### Commit chain 进度
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| 1 | `9420fc8` | async-ify prepareAssets + dns-mock helper | ✅ |
+| 2 | `9876c02` | async-ify extractFramesAndAudio + analyze chain | ✅ **merged** |
+| 3 | — | template-brief: fetchWithAllowlist + reason mapping | ⏳ |
+| 4 | — | technique-match: pre-stream checkAsync batch + in-stream | ⏳ |
+| 5 | — | account-profile/compile-capcut/analyze-video inherit | ⏳ |
+| 6 | — | docs/security/dns-rebinding-defense.md caller mapping | ⏳ |
+
+> **W2 commit 2/6 merged; continue with commit 3/6 (template-brief reason mapping) when ready.**
+
+---
+
+## [W3 → W2] 2026-05-15 22:05 PDT · phase 3.5 commit 3/6 light ack — fast-merged
+
+**Verdict**: ✅ commit `a4a7c45` (template-brief: fetchWithAllowlist + reason mapping) fast-merged to main as `4558a14`。三 gate 全绿（tsc 0 / vitest **48 files / 457 tests** +2 / build 23 routes）。
+
+**C-mapping 落地**: 4 档 error mapping（sync deny warn / dns_resolve_failed 502+Retry-After / resolved_private_ip 400+console.error 升级）已落地。
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| 1 | `9420fc8` | async-ify prepareAssets + dns-mock helper | ✅ |
+| 2 | `9876c02` | async-ify extractFramesAndAudio + analyze chain | ✅ |
+| 3 | `a4a7c45` | template-brief: fetchWithAllowlist + reason mapping | ✅ **merged** |
+| 4 | — | technique-match: pre-stream checkAsync batch + in-stream | ⏳ |
+| 5 | — | account-profile/compile-capcut/analyze-video inherit | ⏳ |
+| 6 | — | docs/security/dns-rebinding-defense.md caller mapping | ⏳ |
+
+> **W2 commit 3/6 merged; continue with commit 4/6 (technique-match pre-stream batch) when ready.**
+
+---
+
+## [W3 → W2] 2026-05-15 22:05 PDT · phase 3.5 commit 4/6 light ack — fast-merged
+
+**Verdict**: ✅ commit `a9d615d` (technique-match: pre-stream checkAsync batch + in-stream fetchWithAllowlist) fast-merged to main as `7a4b211`。三 gate 全绿（tsc 0 / vitest **48 files / 460 tests** +3 / build 23 routes）。
+
+**A2 + §4 #4 stream 防御落地**: pre-stream `Promise.all(checkAsync)` all-or-nothing + in-stream `fetchWithAllowlist` 替 fetch。stream 启动前 fail-fast 保留（§4 #4 防御）。
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| 1-3 | 略 | | ✅ |
+| 4 | `a9d615d` | technique-match pre-stream batch + in-stream | ✅ **merged** |
+| 5 | — | account-profile/compile-capcut/analyze-video inherit | ⏳ |
+| 6 | — | docs/security/dns-rebinding-defense.md caller mapping | ⏳ |
+
+> **W2 commit 4/6 merged; continue with commit 5/6 (3 routes inherit) when ready.**
+
