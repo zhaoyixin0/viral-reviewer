@@ -1,6 +1,6 @@
 import "server-only";
 
-import { randomUUID } from "node:crypto";
+import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import type { Readable } from "node:stream";
 
 import { getStorage } from "./client";
@@ -30,6 +30,14 @@ import {
  * StorageError codes after commit 3:
  *   storage_not_configured / head_failed / put_failed / list_failed
  *   / del_failed / download_url_failed / url_not_in_bucket
+ *
+ * P5.1.b-2 commit 1 adds (per W3 deep verdict 78b7d2f + ECC follow-up):
+ *   signed_upload_failed / completion_token_invalid / completion_token_expired
+ *
+ * — three new helpers (generateSignedPostPolicy / signCompletionToken /
+ *   verifyCompletionToken) prepare the GCS swap of signed-upload.ts (commit 2).
+ *   `urlToKey` is also exported here so commit 2 can use it for the
+ *   `completion_blob_mismatch` strict URL parse (W3 nit #2 HIGH fix).
  */
 
 /**
@@ -56,8 +64,12 @@ function publicUrl(bucketName: string, key: string): string {
  *
  * A bare key (no scheme) passes through unchanged. Any URL whose host or
  * path does NOT match `bucketName` throws `StorageError("url_not_in_bucket")`.
+ *
+ * Exported in P5.1.b-2 commit 1 so signed-upload.ts (commit 2) can use it
+ * for the `completion_blob_mismatch` strict URL parse — per W3 verdict
+ * 78b7d2f nit #2 HIGH fix replacing `.includes()` substring check.
  */
-function urlToKey(urlOrKey: string, bucketName: string): string {
+export function urlToKey(urlOrKey: string, bucketName: string): string {
   if (!urlOrKey.startsWith("http://") && !urlOrKey.startsWith("https://")) {
     return urlOrKey;
   }
@@ -297,4 +309,211 @@ function readPageToken(nextQuery: unknown): string | undefined {
   if (!nextQuery || typeof nextQuery !== "object") return undefined;
   const t = (nextQuery as { pageToken?: unknown }).pageToken;
   return typeof t === "string" ? t : undefined;
+}
+
+// ---------------------------------------------------------------------------
+// P5.1.b-2 commit 1: GCS v4 signed POST policy + HMAC-signed completion token
+// ---------------------------------------------------------------------------
+
+/** Default 60-minute TTL for signed POST policies (W3 12b3b18 C write TTL). */
+const SIGNED_POST_DEFAULT_TTL_MS = 60 * 60 * 1000;
+
+/** Default 60-minute TTL for completion tokens — matches signed POST TTL. */
+const COMPLETION_TOKEN_DEFAULT_TTL_MS = 60 * 60 * 1000;
+
+/** Browser-facing result of a v4 signed POST policy generation. */
+export interface SignedPostPolicy {
+  /** Endpoint the browser POSTs the multipart form to (host always GCS). */
+  url: string;
+  /** Form fields the browser MUST include verbatim in the multipart POST. */
+  fields: Record<string, string>;
+}
+
+export interface SignedPostPolicyOptions {
+  contentType: string;
+  maxBytes: number;
+  /** Override the default 60-minute policy TTL. */
+  expiresMs?: number;
+}
+
+/**
+ * Completion token payload — fields cross-checked at `verifyCompletionToken`
+ * against the browser-supplied `blobInfo` in signed-upload.ts commit 2.
+ *
+ * `nonce` is generated server-side and round-trips through the token; it is
+ * NOT consumed by the current console.log-only `onCompleted` callers, but is
+ * exposed in `verifyCompletionToken`'s return so future DB-write callers can
+ * use it as an idempotency key without a token-protocol upgrade (per ECC
+ * MED-1/2 follow-up 78b7d2f — forward-compat 4-th defense of anti-pattern #13).
+ */
+export interface CompletionTokenPayload {
+  finalKey: string;
+  contentType: string;
+  maxBytes: number;
+  expiresAt: number;
+  nonce: string;
+}
+
+/**
+ * Canonical pipe-concat serialization of the completion token payload.
+ *
+ * Per W3 verdict 78b7d2f BLOCKER nit #1: `JSON.stringify` key order is V8
+ * insertion-order-stable but NOT ECMAScript-guaranteed. A future Node major
+ * bump or runtime swap (Bun, Cloudflare Workers) could re-order keys,
+ * silently invalidating in-flight tokens across deployments. Explicit
+ * pipe-concat removes the ambiguity and the JSON-escape edge cases for
+ * contentType containing special characters.
+ *
+ * Field separator (`|`) is reserved — any field carrying `|` must be
+ * rejected upstream. None of the current 5 fields can: `finalKey` is
+ * sanitized by `addRandomSuffix`, `contentType` is restricted by
+ * `allowedContentTypes`, the other three are typed (number/uuid).
+ */
+function canonicalCompletionPayload(p: CompletionTokenPayload): string {
+  return `${p.finalKey}|${p.contentType}|${p.maxBytes}|${p.expiresAt}|${p.nonce}`;
+}
+
+/** Throw if UPLOAD_SIGNING_SECRET is missing — fail-fast mirroring requireBucket. */
+function requireUploadSecret(): string {
+  const secret = process.env.UPLOAD_SIGNING_SECRET;
+  if (!secret) {
+    throw new StorageError(
+      "storage_not_configured",
+      "UPLOAD_SIGNING_SECRET is not set — completion token signing unavailable",
+    );
+  }
+  return secret;
+}
+
+/**
+ * Generate a v4 signed POST policy for browser direct upload to GCS.
+ *
+ * Per W3 verdict 78b7d2f A1: POST policy is mandatory over PUT signed URL
+ * because GCS conditions enable server-side enforcement of:
+ *   - `["content-length-range", 0, maxBytes]` — caps abuse (e.g. 10GB upload)
+ *   - `["eq", "$Content-Type", contentType]` — locks MIME to the allowlist entry
+ *   - `["eq", "$key", key]` — server-side `addRandomSuffix` enforcement
+ *     (browser cannot replace `$key` once policy is signed)
+ *
+ * SDK quirk (per b-1 H1 lessons + ECC MED-3 mandate): the SDK resolves
+ * `generateSignedPostPolicyV4` to a 1-element tuple `[PolicyResponse]`. The
+ * facade unwraps via `[0]` destructure — DO NOT simplify to `await ...`
+ * without tuple destructure; mocks must preserve this shape.
+ */
+export async function generateSignedPostPolicy(
+  key: string,
+  opts: SignedPostPolicyOptions,
+): Promise<SignedPostPolicy> {
+  const { bucket } = requireBucket();
+  const expires = Date.now() + (opts.expiresMs ?? SIGNED_POST_DEFAULT_TTL_MS);
+  try {
+    const [policy] = await bucket.file(key).generateSignedPostPolicyV4({
+      expires,
+      conditions: [
+        ["content-length-range", 0, opts.maxBytes],
+        ["eq", "$Content-Type", opts.contentType],
+        ["eq", "$key", key],
+      ],
+    });
+    return { url: policy.url, fields: policy.fields };
+  } catch (err) {
+    throw new StorageError(
+      "signed_upload_failed",
+      `storage.generateSignedPostPolicy(${key}) failed: ${errorMessage(err)}`,
+      err,
+    );
+  }
+}
+
+/**
+ * Mint an HMAC-SHA256-signed completion token.
+ *
+ * Token format: `<base64url(canonicalPayload)>.<hex(hmac)>`. Stateless —
+ * no server-side storage needed (per W3 verdict 78b7d2f C1). The caller
+ * provides `{finalKey, contentType, maxBytes}`; this helper adds
+ * `expiresAt = now + ttlMs` and a fresh `nonce`.
+ */
+export function signCompletionToken(
+  payload: Pick<CompletionTokenPayload, "finalKey" | "contentType" | "maxBytes">,
+  ttlMs: number = COMPLETION_TOKEN_DEFAULT_TTL_MS,
+): string {
+  const secret = requireUploadSecret();
+  const fullPayload: CompletionTokenPayload = {
+    ...payload,
+    expiresAt: Date.now() + ttlMs,
+    nonce: randomUUID(),
+  };
+  const canonical = canonicalCompletionPayload(fullPayload);
+  const hmac = createHmac("sha256", secret).update(canonical).digest("hex");
+  const payloadEncoded = Buffer.from(canonical, "utf8").toString("base64url");
+  return `${payloadEncoded}.${hmac}`;
+}
+
+/**
+ * Verify a completion token and return its decoded payload.
+ *
+ * Throws:
+ *   - `completion_token_invalid` — malformed token / bad base64 / HMAC
+ *     mismatch (tampered or wrong secret) / wrong field count / non-numeric
+ *     maxBytes/expiresAt.
+ *   - `completion_token_expired` — `expiresAt < now`.
+ *   - `storage_not_configured` — `UPLOAD_SIGNING_SECRET` missing.
+ *
+ * Uses `timingSafeEqual` to prevent HMAC-oracle timing attacks.
+ *
+ * The returned `nonce` is currently unused by callers but exposed for
+ * future DB-write callers needing an idempotency key (ECC MED-1/2 forward-
+ * compat: adding consumer logic later does NOT break in-flight tokens).
+ */
+export function verifyCompletionToken(token: string): CompletionTokenPayload {
+  const secret = requireUploadSecret();
+  const parts = token.split(".");
+  if (parts.length !== 2) {
+    throw new StorageError(
+      "completion_token_invalid",
+      "completion token must be <payload>.<hmac>",
+    );
+  }
+  const [payloadEncoded, hmacGiven] = parts;
+  const canonical = Buffer.from(payloadEncoded, "base64url").toString("utf8");
+  const hmacExpected = createHmac("sha256", secret).update(canonical).digest("hex");
+  // Hex pre-validate: `Buffer.from(<non-hex>, "hex")` silently strips
+  // invalid chars and yields a short buffer, which then makes
+  // `timingSafeEqual` throw RangeError (mismatched byte lengths) instead of
+  // returning false — the token would still be correctly rejected, but the
+  // caller would receive an uncaught TypeError outside the StorageError
+  // wrapping contract. Per pre-push typescript-reviewer MED finding 2026-05-16.
+  if (
+    hmacGiven.length !== hmacExpected.length ||
+    !/^[0-9a-f]+$/i.test(hmacGiven) ||
+    !timingSafeEqual(Buffer.from(hmacGiven, "hex"), Buffer.from(hmacExpected, "hex"))
+  ) {
+    throw new StorageError(
+      "completion_token_invalid",
+      "completion token HMAC mismatch (tampered or wrong secret)",
+    );
+  }
+  const fields = canonical.split("|");
+  if (fields.length !== 5) {
+    throw new StorageError(
+      "completion_token_invalid",
+      `completion token payload has ${fields.length} fields, expected 5`,
+    );
+  }
+  const [finalKey, contentType, maxBytesStr, expiresAtStr, nonce] = fields;
+  const maxBytes = Number(maxBytesStr);
+  const expiresAt = Number(expiresAtStr);
+  if (!Number.isFinite(maxBytes) || !Number.isFinite(expiresAt)) {
+    throw new StorageError(
+      "completion_token_invalid",
+      "completion token has non-numeric maxBytes / expiresAt",
+    );
+  }
+  if (Date.now() > expiresAt) {
+    throw new StorageError(
+      "completion_token_expired",
+      `completion token expired at ${new Date(expiresAt).toISOString()}`,
+    );
+  }
+  return { finalKey, contentType, maxBytes, expiresAt, nonce };
 }

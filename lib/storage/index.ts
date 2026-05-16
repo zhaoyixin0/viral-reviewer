@@ -29,10 +29,17 @@
 
 export {
   del,
+  generateSignedPostPolicy,
   getDownloadUrl,
   head,
   list,
   put,
+  signCompletionToken,
+  type CompletionTokenPayload,
+  type SignedPostPolicy,
+  type SignedPostPolicyOptions,
+  urlToKey,
+  verifyCompletionToken,
 } from "./api";
 
 export {
