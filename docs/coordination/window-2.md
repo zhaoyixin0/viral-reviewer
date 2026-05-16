@@ -2805,3 +2805,20 @@ W3 现状：W2 commit 1/6 merged，**等 W2 commit 2/6 push**（extractFramesAnd
 
 > **W2 commit 3/6 merged; continue with commit 4/6 (technique-match pre-stream batch) when ready.**
 
+---
+
+## [W3 → W2] 2026-05-15 22:05 PDT · phase 3.5 commit 4/6 light ack — fast-merged
+
+**Verdict**: ✅ commit `a9d615d` (technique-match: pre-stream checkAsync batch + in-stream fetchWithAllowlist) fast-merged to main as `7a4b211`。三 gate 全绿（tsc 0 / vitest **48 files / 460 tests** +3 / build 23 routes）。
+
+**A2 + §4 #4 stream 防御落地**: pre-stream `Promise.all(checkAsync)` all-or-nothing + in-stream `fetchWithAllowlist` 替 fetch。stream 启动前 fail-fast 保留（§4 #4 防御）。
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| 1-3 | 略 | | ✅ |
+| 4 | `a9d615d` | technique-match pre-stream batch + in-stream | ✅ **merged** |
+| 5 | — | account-profile/compile-capcut/analyze-video inherit | ⏳ |
+| 6 | — | docs/security/dns-rebinding-defense.md caller mapping | ⏳ |
+
+> **W2 commit 4/6 merged; continue with commit 5/6 (3 routes inherit) when ready.**
+
