@@ -3722,4 +3722,159 @@ W1 主动 fix：catch 加 `instanceof StorageError` 分支，显式打 `code=${e
 | a-4 | — | 2 upload routes → handleClientUpload | ⏳ |
 | b-1~b-4 | — | GCS swap chain | ⏳ |
 
+---
+
+---
+
+## [W1 → W3] 2026-05-15 23:37 PDT · P5.1.a-4 plan ping — signed-upload facade 设计 5 决策 + planner 输出
+
+**SHA basis**: rebased onto `aba9b32` (current main tip)。**Scope**: P5.1.a-4 = a 阶段最后一步，把 2 个 upload routes（`/api/upload`、`/api/template-brief-upload`）从 `@vercel/blob/client.handleUpload` swap 到 `@/lib/storage` facade。
+
+按 a-3 followup process 自省的承诺，先调 `Agent: everything-claude-code:planner` 出 plan，**不写代码**。a-4 比 a-3 复杂（新 facade 接口 ~120 行 + 接口语义抉择），属于 a-1 类（scope draft → W3 ack → implement）。等 W3 light ack 再实施。
+
+### Planner 设计要点摘要（120 字）
+
+把 2 routes 共享的 `handleUpload` 集成**整体**搬进 `lib/storage/signed-upload.ts`，对外只暴露 server-side helper `handleSignedUpload(req, policy)`。Routes 退化为 ~38 行薄壳。**政策驱动**而非 callback 驱动：不让 caller 传 `onBeforeGenerateToken`（会泄 Vercel-specific 签名），改成传 `UploadPolicy` 数据结构。失败统一抛 `StorageError("signed_upload_failed", ..., cause)`。
+
+### 关键接口签名草案
+
+```ts
+// lib/storage/signed-upload.ts
+export interface UploadPolicy {
+  readonly logTag: string;
+  readonly allowedContentTypes: readonly string[];
+  readonly maxBytes: number;
+  readonly addRandomSuffix?: boolean;
+  readonly clientPayloadSchema: ZodType<unknown>;
+  readonly onCompleted?: (info: SignedUploadCompletion) => Promise<void>;
+}
+
+export interface SignedUploadCompletion {
+  readonly url: string;
+  readonly pathname: string;
+  readonly contentType?: string;
+  readonly size?: number;
+}
+
+export async function handleSignedUpload(
+  req: NextRequest,
+  policy: UploadPolicy,
+): Promise<unknown>;  // 返回值是浏览器 SDK 期望的 JSON envelope，route 不应解构
+```
+
+### W1 拍板的 5 决策（planner 提了 5 未决问题，W1 自决，邀 W3 复核）
+
+| # | 问题 | W1 决策 | 理由 |
+|---|---|---|---|
+| D1 | `invalid_json` 现状 400，facade 化后若统一 throw 会 regress 到 500 | **保留 400** —— facade 加 `InvalidUploadBodyError extends StorageError`，route 层 `instanceof` 映射回 400 | 零行为变更优先；schema 校验失败也走这个子类，统一 4xx 输入非法语义 |
+| D2 | 前端 3 处 `from "@vercel/blob/client"`（technique-match InputPanel/CapCutExport + review InputPanel）a-4 改不改 | **a-4 不动**，写 `// FIXME P5.1.b-2` + grep 白名单含这 3 文件；**a-5 独立 commit** 抽 `lib/storage/client/upload.ts` 浏览器 shim 清理前端 | a-4 严格 server-side facade（P5.1 verdict 12b3b18 框定的 a 阶段范围）；扩 a-4 scope 会让 review 面失控 |
+| D3 | `onCompleted` hook 失败抛 StorageError（502 客户端）还是 swallow + log | **默认 swallow + console.error**（保零行为变更，与 Vercel `handleUpload` 默认对齐）；policy 加可选 `failOnCompletionHookError: boolean` 给未来 caller opt-in | 现在两 routes 的 onCompleted 只 log，永不失败；未来挂业务（DB 写）时再 opt-in |
+| D4 | grep CI check 阻塞 `npm run lint`，还是独立 `check:storage-imports` task | **独立 script**（`scripts/check-storage-imports.ts` + `npm run check:storage-imports`），不绑 lint | 失败信息更精确；CI workflow 单独 step 调，与 lint 解耦 |
+| D5 | `PutBody` 是否扩 `Uint8Array` | **不动，超出 a-4 scope** | api.ts 已注释让 caller `Buffer.from(uint8)`；未来 caller 抱怨再松绑 |
+
+### Route 改造前后对比（`app/api/upload/route.ts`，97 → ~38 lines）
+
+before：见 main `aba9b32` 现状（handleUpload + onBeforeGenerateToken + onUploadCompleted 全套内联）。
+
+after：
+```ts
+import { NextRequest, NextResponse } from "next/server";
+import { createRateLimiter, withRateLimit, clientIp, STRICT_PER_IP } from "@/lib/rate-limit";
+import { handleSignedUpload, StorageError, InvalidUploadBodyError } from "@/lib/storage";
+import { ClientPayloadSchema } from "./schema";
+
+export const runtime = "nodejs";
+export const maxDuration = 60;
+
+const RATE_LIMITER = createRateLimiter({ identifier: "upload", ...STRICT_PER_IP });
+
+const POLICY = {
+  logTag: "upload",
+  allowedContentTypes: [/* 13 video/audio MIME */] as const,
+  maxBytes: 200 * 1024 * 1024,
+  addRandomSuffix: true,
+  clientPayloadSchema: ClientPayloadSchema,
+  onCompleted: async ({ url }) => { console.log("[upload] completed:", url); },
+};
+
+async function impl(req: NextRequest) {
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {  // env check 保留在 route 层（D5 范畴外）
+    return NextResponse.json({ error: "blob_not_configured", ... }, { status: 503 });
+  }
+  try {
+    return NextResponse.json(await handleSignedUpload(req, POLICY));
+  } catch (e) {
+    if (e instanceof InvalidUploadBodyError) {
+      return NextResponse.json({ error: "invalid_json" }, { status: 400 });  // D1 保 400
+    }
+    if (e instanceof StorageError) {
+      console.error(`[upload] error code=${e.code}`, "cause:", e.cause);
+    } else {
+      console.error("[upload] error:", e);
+    }
+    return NextResponse.json({ error: "upload_failed", message: (e as Error).message }, { status: 500 });
+  }
+}
+
+export const POST = withRateLimit(RATE_LIMITER, clientIp, impl);
+```
+
+`template-brief-upload/route.ts` 结构同上，POLICY 差异：`logTag: "brief-upload"` / `allowedContentTypes: ["application/pdf"]` / `maxBytes: 100MB`。
+
+### 测试 plan
+
+新增 `tests/storage/signed-upload.test.ts`（**10 cases**，mock `@vercel/blob/client`）：
+1. happy path（透传 JSON）
+2. policy 注入（allowedContentTypes/maxBytes/addRandomSuffix 三字段透传 handleUpload）
+3. clientPayloadSchema `z.null()` 通过
+4. clientPayloadSchema `z.null()` 拒绝 → `InvalidUploadBodyError`，cause = zod error
+5. clientPayloadSchema `z.string()` 通过（验 schema 是注入而非 hardcode）
+6. onCompleted hook 被调一次，参数含 url/pathname
+7. onCompleted hook 抛错 → swallow + console.error（D3）；`failOnCompletionHookError: true` 时转 StorageError
+8. handleUpload 直接抛 → `StorageError("signed_upload_failed")` + cause 保留
+9. `req.json()` 解析失败 → `InvalidUploadBodyError` → route 层 400
+10. `addRandomSuffix: false` 透传（不要默认覆盖）
+
+a-2 的 15 contract tests 不动，独立文件。**总 25 storage tests**。
+
+### Grep invariant 升级（a-4 merge 后）
+
+```bash
+# 顶层 @vercel/blob —— 只允许 lib/storage/api.ts
+rg "from ['\"]@vercel/blob['\"]" --type ts
+
+# 子路径 @vercel/blob/client —— a-4 后允许命中:
+#   lib/storage/signed-upload.ts (server, 新增)
+#   components/technique-match/InputPanel.tsx (client, FIXME P5.1.a-5)
+#   components/technique-match/CapCutExport.tsx (client, FIXME P5.1.a-5)
+#   components/review/InputPanel.tsx (client, FIXME P5.1.a-5)
+rg "from ['\"]@vercel/blob/client['\"]" --type ts
+```
+
+CI check（`scripts/check-storage-imports.ts`, ~40 lines）：跑 ripgrep 双 invariant，白名单硬编码，越界 exit 1。`npm run check:storage-imports` 独立任务（D4）。
+
+### Commit 切分（2 commit，对齐 a-1/a-2/a-3 节奏）
+
+| # | Commit | 内容 | 三门期待 |
+|---|---|---|---|
+| 1 | `feat(storage): add signed-upload helper + contract tests` | `lib/storage/signed-upload.ts` 新增；`tests/storage/signed-upload.test.ts` 10 cases；`lib/storage/index.ts` re-export | tsc 0 / vitest 60 files / build 24 routes（无 regression，孤立新文件） |
+| 2 | `refactor(upload): swap 2 routes to lib/storage signed-upload` | 改 2 upload routes；新增 `scripts/check-storage-imports.ts` + `package.json` script；更新 `index.ts` 头注释（双 invariant 清单） | tsc 0 / vitest 60 files / build 24 routes / `npm run check:storage-imports` PASS |
+
+### 风险 + 缓解
+
+| # | 风险 | 严重度 | 缓解 |
+|---|---|---|---|
+| R1 | `handleUpload` 内部约定随 `@vercel/blob` 升级变化，mock-based 测试可能漏 | Med | package 版本 `^` 锁次版本；CHANGELOG 记 a-4 时 `@vercel/blob/client` 版本，b 阶段切 GCS 时校对 |
+| R2 | 前端 3 文件残留 import 可能被 contributor 复制开第 4 个 caller | Low | grep CI check 白名单**硬编码**这 3 路径，新增越界 fail；`index.ts` 注释标 "TO BE REMOVED in P5.1.a-5" |
+| R3 | `onCompleted` swallow 行为（D3 决策）未来挂 DB 写时会丢数据 | Med | policy 已留 `failOnCompletionHookError` opt-in；CHANGELOG 注明 a-4 默认 swallow 是"零行为变更"决策，业务消费时必须显式设 true |
+| R4 | b 阶段 GCS 没有等价 `handleUpload` JSON 协议，前端 `@vercel/blob/client.upload()` 调用必须换 SDK | High | a-4 plan 已认清此事实：a 阶段只保 server-side facade 干净；a-5 抽前端 shim，b-2 再 swap shim 内部到 GCS v4 signed POST URL |
+
+### 待 W3 拍板
+
+1. **5 个 W1 决策（D1-D5）是否 ack**？特别是 D2（前端 a-4 不动 + a-5 独立 commit）—— 这影响 grep invariant 是否能在 a-4 merge 时彻底干净。
+2. **`InvalidUploadBodyError extends StorageError` 命名**是否 OK？或者 W3 偏好 `StorageInvalidInputError` / 其他？
+3. **`failOnCompletionHookError` opt-in 字段**是否 a-4 引入，还是延后到真正有 caller 需要时再加（YAGNI 视角）？倾向 a-4 引入（接口冻结成本低，比 b 阶段加破坏 contract 便宜）。
+
+**等 W3 light ack（最多 2-3 sentence 复核 D1-D5 + 命名）后启动 a-4 implement chain（commit 1 → 三门 → typescript-reviewer pre-push → commit 2 → 三门 + grep CI check → push）。**
+
 > **W1 P5.1.a-3 followup merged; continue with a-4 (upload routes handleClientUpload swap) when ready.**
