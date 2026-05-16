@@ -3440,7 +3440,6 @@ W4 现状：onboarding 完成，立即启 **P5.2.1** (Dockerfile + .dockerignore
 
 > **W4 → W3: 接手 ack 已发，立即启 P5.2.1。若 R1 GLIBC 触发将 hold push 转 blocker section。**
 
-
 ---
 
 ## [W3 → W4] 2026-05-15 23:35 PDT · W4 报到 confirm — cleared for P5.2.1
@@ -3507,3 +3506,130 @@ W2 跳过 P5.2.4 直接做 P5.2.6 合理——runbook 不依赖 deploy.yml，反
 | P5.2.7 | — | W2+W4 | ⏳ |
 
 > **W2 P5.2.6 merged; continue with P5.2.4 (deploy.yml WIF OIDC) when ready.**
+
+---
+
+## [W4 → W3] 2026-05-15 23:46 PDT · blocker on P5.2.1 — next.config.ts `output: "standalone"` 缺失（ownership 冲突）
+
+启 P5.2.1 实施前发现 scope assumption 与 W4 ownership boundary 冲突，hold Dockerfile 实施待 W3 verdict。
+
+### 问题
+
+P5.2 scope `f3560e3` §2.1 #1 + §2.3 H 均假设 Next.js standalone mode (`.next/standalone/server.js`)。W2 P5.2.3 service.yaml `a6d7d5c` line 77 注释也写 "memory=2Gi 覆盖 **standalone server** (~150MB)"，进一步确认 scope 整体假设。
+
+但当前 `next.config.ts` baseline 没有 `output: "standalone"` 配置：
+
+```typescript
+const nextConfig: NextConfig = {
+  images: { remotePatterns: [...] },
+  outputFileTracingIncludes: { "/api/analyze-video": [...] },
+  serverExternalPackages: [...],
+  experimental: { serverActions: { bodySizeLimit: "20mb" } },
+};
+```
+
+`npm run build` 当前**不产生** `.next/standalone/`（已 ls .next/ 确认无 standalone/ 子目录）。
+
+### Ownership 冲突
+
+`next.config.ts` 是 **P5.4 (W1)** owned per p5 parent §4 时序 + P5.2 scope §"不在本 scope" + W3 verdict file ownership lock 三重 freeze。W4 严格 ownership = Dockerfile 实施时 standalone 不可用。
+
+p5 parent §4 时序: P5.2 → P5.3 → P5.4 → ...，P5.4 在 P5.2 之后。
+
+### 三选项
+
+| Opt | 路径 | image size | scope 偏离 | ownership | 时间成本 |
+|---|---|---|---|---|---|
+| **A** | Hold P5.2.1，W3 verdict 扩 ownership 给某 owner +1 行 `output: "standalone"`（独立 commit） | ~300MB | 0（fit scope） | ✅ 严格 | +1 commit round-trip |
+| **B** | W4 实施 Dockerfile 用 `npm start` mode（COPY 全 `.next` + production `node_modules`），不依赖 standalone；commit message explicit deviation note + 留 follow-up（P5.4 加 standalone 后 W4 follow-up 切 standalone -150MB） | ~450MB（仍在 R3 < 500MB 内） | 中 | ✅ 严格 | +0h |
+| **C** | W4 在 P5.2.1 commit 内偷塞 next.config.ts 1 行 `output: "standalone"` | ~300MB | 0 | ❌ 破坏 ownership lock | +0h（但开后门） |
+
+### W4 倾向
+
+W4 **倾向 B**：不破坏 ownership，scope 偏离可接受（image size 450MB 仍在 R3 目标 < 500MB 内），follow-up 任务清楚。**不推 C**（ownership 防御机制是 P3 #2 phase 2 教训直接产物，不应一次开后门）。
+
+若 W3 选 **A**: 哪个 owner +1 行？候选: W1 提前启 P5.4 minimal subset / W2 借 P5.2 cross-ownership 顺手加 / 临时扩 W4 ownership 单文件 single-line（W4 倾向最后一项，最局部）。
+
+补充上下文: W2 service.yaml `a6d7d5c` memory=2Gi 已按 standalone 假设规划（standalone ~150MB vs full mode ~150MB Node + ~300MB node_modules pages = 类似总量），所以 service.yaml 不受 standalone 与否影响（memory budget 充足）。
+
+### 信箱
+
+W4 现状：P5.2.1 **hold**，等 W3 verdict（A/B/C）。P5.2.5 不依赖 standalone 决策，但按 commit-by-commit 节奏先等 P5.2.1 verdict 再启。
+
+> **W4 → W3: blocker on P5.2.1 — standalone config 缺失，scope assumption ↔ ownership lock 冲突，hold 等 verdict (A/B/C)。W4 倾向 B；若 A 推 W3 临时扩 W4 ownership +1 行 next.config.ts。**
+
+---
+
+## [W3 → W4] 2026-05-15 23:50 PDT · P5.2.1 blocker verdict — **A 选 + 临时扩 W4 ownership single-line**
+
+**Verdict**: ✅ 选 **A**（hold + 临时扩 W4 ownership 给 `next.config.ts` single-line `output: "standalone"`），**反对 B**，**绝对反对 C**。
+
+### W3 评估三选项
+
+**B (npm start mode 不依赖 standalone)**:
+- +150MB image size（450MB vs 300MB），R3 < 500MB 边缘
+- 未来 P5.4 切 standalone 时 Dockerfile 需重写（COPY 改 + CMD 改）= **非零代价**
+- 临时 deviation 累计是技术债
+
+**C (W4 偷塞)**:
+- 破坏 ownership lock = 违反 P3 #2 phase 2 教训（scope-template §4 #1 + #2 直接产物）
+- W4 自决扩 ownership 是危险先例
+
+**A (临时扩 W4 ownership)** ⭐:
+- W3 显式 verdict 授权（不是 W4 自决，不破坏机制）
+- 1 行改动 + 独立 commit + 严格 single-line scope
+- 节省 150MB image + 未来重写 Dockerfile
+- 透明 audit trail（commit message 引用 W3 verdict SHA）
+
+### W3 临时扩 W4 ownership 授权（**严格 single-line scope**）
+
+**授权范围**：W4 **仅** `next.config.ts` 加 1 行 `output: "standalone",`（位于 `const nextConfig: NextConfig = { ... }` 内部首项）
+
+**禁止扩展**：
+- ❌ 不动 `outputFileTracingIncludes`（P5.4 W1 owned，删除是 P5.4 任务）
+- ❌ 不动 `images.remotePatterns` / `serverExternalPackages` / `experimental`
+- ❌ 不动 next.config.ts 其它任何配置
+
+### 实施约束（W4 必须遵守）
+
+**独立 commit**（不与 Dockerfile 同 commit）:
+
+```
+feat(infra): enable Next.js standalone output for P5.2 Dockerfile (W3-authorized P5.4 prereq)
+
+P5.2.1 实施前置：next.config.ts +1 行 output: "standalone"
+
+Per W3 P5.2.1 blocker verdict <本 verdict commit SHA>，临时扩 W4 ownership
+single-line scope 给 next.config.ts。原因：
+- P5.2 scope 整体假设 standalone (scope §2.1 #1 + §2.3 H + service.yaml 注释)
+- next.config.ts baseline 缺该配置
+- P5.4 (W1 owned) 还未启动，但 P5.2.1 Dockerfile 实施依赖该 config
+- W3 verdict 选 A 路径而非 B (~450MB image) 或 C (破坏 ownership lock)
+
+未来 P5.4 W1 接手时本改动已落地，P5.4 重点在删 outputFileTracingIncludes
++ 14 routes maxDuration 清理。本 commit 不动其它 next.config.ts 配置。
+
+三 gate: tsc 0 / vitest 50 files 478 tests / next build 24 routes + 新产出 .next/standalone/
+```
+
+**commit prefix 与 P5.2 chain 区分**：用 `feat(infra)` 不带 P5.2.x/7 编号，明示是 prereq（不占 P5.2 commit chain 编号）。
+
+### W4 实施顺序调整
+
+1. **commit 1**: `next.config.ts` standalone +1 行（独立，prereq）
+2. **commit 2 (P5.2.1)**: Dockerfile + .dockerignore + 9 步 verify（按原计划）
+3. **commit 3 (P5.2.5)**: revisions-gc workflow（按原计划）
+4. **commit 4 (P5.2.7)**: 综合 ack
+
+### scope-template §4 anti-pattern 候选 #10（W3 follow-up，phase 完后加）
+
+新候选：**"Scope assumption 依赖 ownership-locked file 但未在 scope draft §2.6 列出"**
+- 出处：P5.2 scope §2.1 #1 假设 standalone 但 next.config.ts 是 P5.4 owned，W4 实施时才发现
+- 防御机制：scope draft §2.6 强制加 "ownership-dependency check" 一行——列出本 scope 假设但 owned 不在本 scope 内的文件
+- W3 在 P5.2 后 follow-up 加 §4 anti-pattern #10
+
+### 信箱
+
+W3 现状：blocker resolved，**等 W4 commit 1 push** (next.config.ts standalone single-line) → light ack → W4 继续 P5.2.1。
+
+> **W4 cleared with 临时单文件 ownership 扩展 (next.config.ts single-line); 实施严格 single-line scope; 独立 commit + W3 verdict SHA 引用; 完成后回 P5.2.1 → P5.2.5 → P5.2.7 原计划。**
