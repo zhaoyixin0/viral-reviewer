@@ -4158,3 +4158,61 @@ W3 self follow-up TODO 更新：
 W3 现状不变：等 W1 b-1 commit 1 / W2 P5.2.4.1 / W4 P5.2.5 三股任一 push。
 
 > **W4 v2 ping ack — anti-pattern candidate #12 (worktree shared race) accept；W3 self follow-up scope-template patch 延后到 P5.2 phase 全完后批量 ship。**
+
+---
+
+## [W4 → W3] 2026-05-16 00:50 PDT · P5.2.5 push 完成 ping — `a120ba8` (cloud-run-revisions-gc weekly cron)
+
+Per W3 P5.2 verdict `f7d46bb` 决策 F1 + P5.2.1 v2 light ack `a6d25bd` cleared。
+
+### 文件改动 (1 NEW file, +229 lines)
+
+| 文件 | 行数 | 类型 |
+|---|---|---|
+| `.github/workflows/cloud-run-revisions-gc.yml` | 229 | NEW (weekly cron workflow + workflow_dispatch manual) |
+
+### Workflow design
+
+- name: `cloud-run-revisions-gc`
+- triggers: `schedule cron "0 0 * * 0"` (Sun 00:00 UTC) + `workflow_dispatch` (dry_run + keep_days inputs)
+- auth: WIF OIDC (google-github-actions/auth + setup-gcloud)
+- permissions (minimal per W3 P5.2.4 verdict I): `contents: read` + `id-token: write`
+- concurrency lock + timeout-minutes: 10
+- logic: list service revisions older than KEEP_DAYS → exclude active-traffic → per-revision delete loop → GITHUB_STEP_SUMMARY
+
+### Pre-push verify (per W3 P5.2.1 v2 mandate)
+
+| Check | 结果 |
+|---|---|
+| yamllint (cytopia docker, relaxed rules) | exit 0 ✅ |
+| security-reviewer agent (W3 MED #1 mandate) | 2 HIGH + 1 MED + 2 LOW + 3 INFO — HIGH/MED 全 same-commit fix |
+
+### Security-reviewer findings + 处理
+
+| # | Severity | Finding | 本 commit 处理 |
+|---|---|---|---|
+| 1 | **HIGH** | `${{ inputs.keep_days }}` 直接 inline 进 bash run: → shell injection (workflow_dispatch 任何 Write+ 成员可输入) | ✅ fix: env: 传递 + 整数 regex 校验 |
+| 2 | **HIGH** | `${{ steps.list.outputs.delete_list }}` 直接 inline → 同 injection 风险 | ✅ fix: env: 传递 + revision name DNS label 白名单 defense in depth |
+| 3 | **MED** | google-github-actions/auth@v2 + setup-gcloud@v2 没 pin SHA digest (tag-push supply-chain 攻击) | ✅ fix: pin auth@`c200f36...` + setup-gcloud@`e427ad8...` (SHA 抓取于 2026-05-16: curl api.github.com/repos/.../git/refs/tags/v2) |
+| 4 | LOW | heredoc `<<EOF` 理论 injection (revision name 不可能含 `EOF` 行) | ⏳ defense-in-depth nice-to-have, 留 follow-up |
+| 5 | LOW | `grep -c '^'` 空字符串返 1 而非 0 (job summary cosmetic) | ⏳ cosmetic, 留 follow-up |
+| 6-8 | INFO | OIDC scope 充分 / cron dry_run=false by design / runtime API behavior 等 GHA first run 验 | n/a |
+
+### Verify 边界
+
+实际 cron 行为需 first scheduled run 在 GH Actions log 可见（周日 00:00 UTC）。本机 yaml syntax + structural check 充分；runtime GCP API behavior 等 W2 P5.2.4 deploy.yml first deploy + P5.6 secrets bootstrap 同期跑通后再 end-to-end verify GC chain。
+
+### File ownership (零跨界)
+
+| 文件 | Owner | 本 commit 改 |
+|---|---|---|
+| `.github/workflows/cloud-run-revisions-gc.yml` | **W4** P5.2.5 | NEW ✅ |
+| `.github/workflows/deploy.yml` | W2 P5.2.4.1 | 不动 |
+| `.github/workflows/preview-deploy.yml` | W2 P5.2.4.2 | 不动 |
+
+### 信箱
+
+W4 现状：P5.2.5 push 完成，等 W3 light ack `a120ba8` → 启 **P5.2.7** (W4 final ack，与 W2 协调 P5.2 综合 ack 是合并还是各自)。
+
+> **W4 → W3: P5.2.5 `a120ba8` pushed; yamllint ✅; security-reviewer 2 HIGH + 1 MED + 2 LOW + 3 INFO, HIGH/MED 全 same-commit fix; SHA pin + injection 防御就位; 等 light ack 启 P5.2.7。**
+
