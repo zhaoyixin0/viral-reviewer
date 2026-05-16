@@ -7,9 +7,12 @@
  *
  *   1. `from "@vercel/blob"` — only `lib/storage/api.ts`.
  *   2. `from "@vercel/blob/client"` — only `lib/storage/signed-upload.ts`
- *      (server) + 3 client components: `components/technique-match/InputPanel.tsx`,
- *      `components/technique-match/CapCutExport.tsx`, `components/review/InputPanel.tsx`.
- *      The 3 client components are TO BE REMOVED in P5.1.a-5 via `lib/storage/client/upload.ts`.
+ *      (server) + 4 client components: `components/technique-match/InputPanel.tsx`,
+ *      `components/technique-match/CapCutExport.tsx`, `components/review/InputPanel.tsx`,
+ *      `components/template-review/BriefUploader.tsx`.
+ *      The 4 client components are TO BE REMOVED in P5.1.a-5 via `lib/storage/client/upload.ts`.
+ *
+ *   CI enforcement: `npm run check:storage-imports` (scripts/check-storage-imports.ts).
  *
  * - P5.1.a (current): thin wrappers around `@vercel/blob` / `@vercel/blob/client`.
  * - P5.1.b (planned): internal swap to `@google-cloud/storage`, zero caller change.
