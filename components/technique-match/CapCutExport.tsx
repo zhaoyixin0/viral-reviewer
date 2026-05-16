@@ -107,8 +107,8 @@ export function CapCutExport({
       const a = document.createElement("a");
       a.href = url;
       // cross-origin URL 下浏览器忽略 a.download，真正触发"下载而非预览"的是
-      // Blob downloadUrl 自带的 Content-Disposition: attachment 头。a.download
-      // 仅作同源场景的提示；target=_blank 防止下载导航占用当前 tab。
+      // GCS v4 signed URL 内的 responseDisposition=attachment; filename="..."
+      // 头。a.download 仅作同源场景的提示；target=_blank 防止下载导航占用当前 tab。
       a.download = filename;
       a.target = "_blank";
       a.rel = "noopener";

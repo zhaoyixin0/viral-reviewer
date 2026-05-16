@@ -29,9 +29,22 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const gcs = vi.hoisted(() => {
   const fileGetMetadata = vi.fn();
   const fileSave = vi.fn();
+  const fileDelete = vi.fn();
+  const fileGetSignedUrl = vi.fn();
   const bucketGetFiles = vi.fn();
   const StorageCtor = vi.fn();
-  return { fileGetMetadata, fileSave, bucketGetFiles, StorageCtor };
+  // Track which key each File proxy was created for so per-op assertions
+  // can verify bucket.file(<key>) routing without coupling to ordering.
+  const fileKeyAccess = vi.fn<(key: string) => void>();
+  return {
+    fileGetMetadata,
+    fileSave,
+    fileDelete,
+    fileGetSignedUrl,
+    bucketGetFiles,
+    StorageCtor,
+    fileKeyAccess,
+  };
 });
 
 vi.mock("@google-cloud/storage", () => {
@@ -41,10 +54,15 @@ vi.mock("@google-cloud/storage", () => {
     }
     bucket(_name: string) {
       return {
-        file: (_key: string) => ({
-          getMetadata: gcs.fileGetMetadata,
-          save: gcs.fileSave,
-        }),
+        file: (key: string) => {
+          gcs.fileKeyAccess(key);
+          return {
+            getMetadata: gcs.fileGetMetadata,
+            save: gcs.fileSave,
+            delete: gcs.fileDelete,
+            getSignedUrl: gcs.fileGetSignedUrl,
+          };
+        },
         getFiles: gcs.bucketGetFiles,
       };
     }
@@ -52,31 +70,35 @@ vi.mock("@google-cloud/storage", () => {
   return { Storage };
 });
 
-// Legacy @vercel/blob mock — only del + getDownloadUrl still route through
-// vercel until commit 3. head / put / list mocks (putMock / headMock /
-// listMock) have been REMOVED to make the swap explicit; touching them in
-// tests below would fail to compile.
-const delMock = vi.fn();
-vi.mock("@vercel/blob", () => ({
-  del: (...a: unknown[]) => delMock(...a),
-}));
-
 import {
   __resetStorageForTests,
   del,
   getDownloadUrl,
   head,
   list,
+  type PutResult,
   put,
   StorageError,
 } from "@/lib/storage";
 
+// Compile-time invariant (commit 3a per W3 verdict efc1715 BLOCKER):
+// PutResult must NEVER carry a `downloadUrl` field again. The Vercel-Blob
+// `?download=1` convention does not work on GCS; callers must explicitly
+// call getDownloadUrl(). A future re-addition of `downloadUrl?: string` to
+// PutResult would make `_NoDownloadUrlOnPutResult` resolve to `never`,
+// turning the const assignment below into a TS error.
+type _NoDownloadUrlOnPutResult = "downloadUrl" extends keyof PutResult ? never : true;
+const _PROOF_NO_DOWNLOAD_URL: _NoDownloadUrlOnPutResult = true;
+void _PROOF_NO_DOWNLOAD_URL;
+
 beforeEach(() => {
   gcs.fileGetMetadata.mockReset();
   gcs.fileSave.mockReset();
+  gcs.fileDelete.mockReset();
+  gcs.fileGetSignedUrl.mockReset();
   gcs.bucketGetFiles.mockReset();
   gcs.StorageCtor.mockReset();
-  delMock.mockReset();
+  gcs.fileKeyAccess.mockReset();
   __resetStorageForTests();
   process.env.GCS_BUCKET_NAME = "viral-reviewer-blob-test";
 });
@@ -154,9 +176,13 @@ describe("storage.put", () => {
     expect(result.url).toBe(
       "https://storage.googleapis.com/viral-reviewer-blob-test/trending/snapshot-2026-W20.json",
     );
-    expect(result.downloadUrl).toBe(`${result.url}?download=1`);
     expect(result.pathname).toBe("trending/snapshot-2026-W20.json");
     expect(result.contentType).toBe("application/json");
+    // downloadUrl field removed in commit 3a per W3 verdict efc1715 BLOCKER
+    // — callers must now call getDownloadUrl() explicitly for a GCS v4 signed
+    // URL with Content-Disposition: attachment (the Vercel `?download=1`
+    // query convention does NOT work on GCS).
+    expect(result).not.toHaveProperty("downloadUrl");
     expect(gcs.fileSave).toHaveBeenCalledWith(
       '{"k":1}',
       expect.objectContaining({
@@ -250,26 +276,51 @@ describe("storage.list", () => {
   });
 });
 
-// del / getDownloadUrl: contract preserved from a-2; commit 3 will port these
-// to GCS along with the new `url_not_in_bucket` D3 code. Tests below still
-// exercise the @vercel/blob passthrough path.
-
 describe("storage.del", () => {
-  it("accepts a single URL string", async () => {
-    delMock.mockResolvedValue(undefined);
-    await del("https://blob/x");
-    expect(delMock).toHaveBeenCalledWith("https://blob/x");
+  it("accepts a single GCS public URL — reverse-maps to key and calls file.delete", async () => {
+    gcs.fileDelete.mockResolvedValue(undefined);
+    await del(
+      "https://storage.googleapis.com/viral-reviewer-blob-test/trending/snapshot-2026-W20.json",
+    );
+    expect(gcs.fileKeyAccess).toHaveBeenCalledWith("trending/snapshot-2026-W20.json");
+    expect(gcs.fileDelete).toHaveBeenCalledWith({ ignoreNotFound: true });
   });
 
-  it("accepts an array of URLs", async () => {
-    delMock.mockResolvedValue(undefined);
-    await del(["https://blob/a", "https://blob/b"]);
-    expect(delMock).toHaveBeenCalledWith(["https://blob/a", "https://blob/b"]);
+  it("accepts an array of URLs and deletes in parallel", async () => {
+    gcs.fileDelete.mockResolvedValue(undefined);
+    await del([
+      "https://storage.googleapis.com/viral-reviewer-blob-test/trending/a.json",
+      "https://storage.googleapis.com/viral-reviewer-blob-test/trending/b.json",
+    ]);
+    expect(gcs.fileKeyAccess).toHaveBeenCalledTimes(2);
+    expect(gcs.fileKeyAccess).toHaveBeenCalledWith("trending/a.json");
+    expect(gcs.fileKeyAccess).toHaveBeenCalledWith("trending/b.json");
+    expect(gcs.fileDelete).toHaveBeenCalledTimes(2);
+    // Both delete calls must carry { ignoreNotFound: true } — array path
+    // regression guard so a future loop refactor doesn't drop the option.
+    expect(gcs.fileDelete.mock.calls[0][0]).toEqual({ ignoreNotFound: true });
+    expect(gcs.fileDelete.mock.calls[1][0]).toEqual({ ignoreNotFound: true });
   });
 
-  it("throws StorageError('del_failed') on underlying failure", async () => {
-    delMock.mockRejectedValue(new Error("forbidden"));
-    await expect(del("https://blob/x")).rejects.toMatchObject({
+  it("accepts a bare key (no scheme) without reverse-mapping", async () => {
+    gcs.fileDelete.mockResolvedValue(undefined);
+    await del("trending/snapshot-2026-W20.json");
+    expect(gcs.fileKeyAccess).toHaveBeenCalledWith("trending/snapshot-2026-W20.json");
+  });
+
+  it("throws StorageError('url_not_in_bucket') on a cross-bucket URL (D3 defense)", async () => {
+    await expect(
+      del("https://storage.googleapis.com/some-other-bucket/x.json"),
+    ).rejects.toMatchObject({
+      name: "StorageError",
+      code: "url_not_in_bucket",
+    });
+    expect(gcs.fileDelete).not.toHaveBeenCalled();
+  });
+
+  it("throws StorageError('del_failed') on underlying SDK failure", async () => {
+    gcs.fileDelete.mockRejectedValue(new Error("forbidden"));
+    await expect(del("trending/x.json")).rejects.toMatchObject({
       name: "StorageError",
       code: "del_failed",
     });
@@ -277,21 +328,73 @@ describe("storage.del", () => {
 });
 
 describe("storage.getDownloadUrl", () => {
-  it("appends ?download=1 to a full https URL", async () => {
-    const url = await getDownloadUrl("https://blob/x/file.json");
-    expect(url).toBe("https://blob/x/file.json?download=1");
+  it("accepts a bare key + returns the SDK signed URL", async () => {
+    // SDK getSignedUrl resolves to [signedUrl] 1-tuple
+    gcs.fileGetSignedUrl.mockResolvedValue([
+      "https://storage.googleapis.com/viral-reviewer-blob-test/trending/x.json?X-Goog-Signature=abc",
+    ]);
+    const url = await getDownloadUrl("trending/x.json");
+    expect(url).toContain("X-Goog-Signature=abc");
+    expect(gcs.fileKeyAccess).toHaveBeenCalledWith("trending/x.json");
+    expect(gcs.fileGetSignedUrl).toHaveBeenCalledWith(
+      expect.objectContaining({
+        version: "v4",
+        action: "read",
+        responseDisposition: "attachment",
+      }),
+    );
   });
 
-  it("preserves existing query parameters", async () => {
-    const url = await getDownloadUrl("https://blob/x?v=2");
-    expect(url).toContain("v=2");
-    expect(url).toContain("download=1");
+  it("reverse-maps a GCS URL to key and applies filename in Content-Disposition", async () => {
+    gcs.fileGetSignedUrl.mockResolvedValue(["https://signed/url"]);
+    await getDownloadUrl(
+      "https://storage.googleapis.com/viral-reviewer-blob-test/capcut-exports/project.zip",
+      { filename: "viral-reviewer-2026-W20.zip" },
+    );
+    expect(gcs.fileKeyAccess).toHaveBeenCalledWith("capcut-exports/project.zip");
+    expect(gcs.fileGetSignedUrl).toHaveBeenCalledWith(
+      expect.objectContaining({
+        responseDisposition: 'attachment; filename="viral-reviewer-2026-W20.zip"',
+      }),
+    );
   });
 
-  it("throws StorageError('download_url_requires_full_url') on a bare key", async () => {
-    await expect(getDownloadUrl("trending/snapshot.json")).rejects.toMatchObject({
+  it("uses default 900s (15min) TTL when ttlSeconds not provided (W3 verdict 12b3b18 C)", async () => {
+    gcs.fileGetSignedUrl.mockResolvedValue(["https://signed/url"]);
+    const before = Date.now();
+    await getDownloadUrl("trending/x.json");
+    const after = Date.now();
+    const { expires } = gcs.fileGetSignedUrl.mock.calls[0][0] as { expires: number };
+    // 900s = 900_000ms; allow real-time jitter window for [before, after]
+    expect(expires).toBeGreaterThanOrEqual(before + 900_000);
+    expect(expires).toBeLessThanOrEqual(after + 900_000);
+  });
+
+  it("respects custom ttlSeconds override", async () => {
+    gcs.fileGetSignedUrl.mockResolvedValue(["https://signed/url"]);
+    const before = Date.now();
+    await getDownloadUrl("trending/x.json", { ttlSeconds: 60 });
+    const after = Date.now();
+    const { expires } = gcs.fileGetSignedUrl.mock.calls[0][0] as { expires: number };
+    expect(expires).toBeGreaterThanOrEqual(before + 60_000);
+    expect(expires).toBeLessThanOrEqual(after + 60_000);
+  });
+
+  it("throws StorageError('url_not_in_bucket') on a cross-bucket URL (D3 defense)", async () => {
+    await expect(
+      getDownloadUrl("https://storage.googleapis.com/some-other-bucket/x.json"),
+    ).rejects.toMatchObject({
       name: "StorageError",
-      code: "download_url_requires_full_url",
+      code: "url_not_in_bucket",
+    });
+    expect(gcs.fileGetSignedUrl).not.toHaveBeenCalled();
+  });
+
+  it("throws StorageError('download_url_failed') on SDK failure", async () => {
+    gcs.fileGetSignedUrl.mockRejectedValue(new Error("auth"));
+    await expect(getDownloadUrl("trending/x.json")).rejects.toMatchObject({
+      name: "StorageError",
+      code: "download_url_failed",
     });
   });
 });
