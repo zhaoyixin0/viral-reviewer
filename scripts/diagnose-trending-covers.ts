@@ -22,7 +22,7 @@
  * 仅诊断脚本本身。
  */
 
-import { list } from "@vercel/blob";
+import { list } from "@/lib/storage";
 import { z } from "zod";
 import { readFile, writeFile, readdir } from "node:fs/promises";
 import { join } from "node:path";

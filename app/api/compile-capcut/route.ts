@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { put } from "@vercel/blob";
+import { put } from "@/lib/storage";
 import {
   prepareAssets,
   readAsset,
