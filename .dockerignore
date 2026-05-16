@@ -1,0 +1,82 @@
+# .dockerignore for viral-reviewer Cloud Run image (P5.2.1)
+# Per W3 P5.2 verdict f7d46bb 决策 H (11 categories + vercel.ts 排除).
+# Goal: 缩 build context (2GB+ -> ~50MB), 绝禁 secret 进 image.
+#
+# 排除原则: 任何不被 npm ci / next build / runtime 直接需要的文件全排除.
+
+# -------- Secrets (HIGHEST PRIORITY — NEVER leak into image) --------
+.env
+.env.*
+!.env.example
+.env.docker.local
+
+# -------- Node / build outputs (rebuilt inside container) --------
+node_modules
+.next
+out
+
+# -------- Tests --------
+tests
+e2e
+playwright-report
+test-results
+coverage
+vitest.config.ts
+playwright.config.ts
+
+# -------- Docs (不进 runtime) --------
+docs
+*.md
+README.md
+PLAN.md
+PROGRESS.md
+CLAUDE.md
+
+# -------- Data fixtures / user uploads --------
+# data/ 大部分文件 build / runtime 需要 (seed/viral-videos.ts build 时 import；
+# enriched-cutplans/* + scraped/enriched-*.json + technique-index.json runtime 读)
+# 只排除 dev artifacts (大 mp4s + probe outputs + transient logs)
+data/raw-mp4s
+data/probes
+data/enrichment-errors.json
+data/rescrape-*.json
+data/scraped/tiktok-*.json
+data/scraped/instagram-*.json
+data/enrich-batch.log
+public/uploads
+scripts/*.pdf
+scripts/sample-*
+
+# -------- Dev scripts (tsx 跑, runtime 不需要) --------
+scripts
+
+# -------- Git --------
+.git
+.gitignore
+.gitattributes
+
+# -------- Editor / tool state --------
+.claude
+.worktrees
+.vscode
+.idea
+.npmrc
+
+# -------- Vercel artifacts (Cloud Run runtime 不读, 防 noise; per W3 verdict H 显式排除) --------
+.vercel
+.vercelignore
+vercel.ts
+
+# -------- Misc build artifacts --------
+*.log
+*.tsbuildinfo
+*.tar
+*.zip
+*.pem
+.DS_Store
+Thumbs.db
+
+# -------- Dockerfile itself (no recursive build) --------
+Dockerfile
+.dockerignore
+docker-compose*.yml
