@@ -66,15 +66,22 @@ jobs:
           echo "::notice::Deploying image tag ${IMAGE_TAG}"
 
       # ---- WIF auth (no SA key stored in GHA secret) ----
+      # SHA-pin Google actions per W3 P5.2.4.2 mandate (6849f4c) ←
+      # W4 P5.2.5 verdict ←
+      # security-reviewer MED finding (supply-chain: tag-push attack defense).
+      # SHA 由 W4 跑 `curl api.github.com/.../git/refs/tags/v2` 抓取于 2026-05-16,
+      # match W4 commit a120ba8 (cloud-run-revisions-gc.yml).
+      # actions/checkout 仍 @v4 (W3 mandate 未 list, 与 W4 GC workflow scope 一致;
+      # checkout 由 GitHub 官方维护 tag-push attack 风险更低)。
       - name: Authenticate to Google Cloud (WIF OIDC)
-        uses: google-github-actions/auth@v2
+        uses: google-github-actions/auth@c200f3691d83b41bf9bbd8638997a462592937ed  # v2
         with:
           workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
           service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
           # audience: default (action infers from WIF_PROVIDER) per W3 verdict H
 
       - name: Setup gcloud SDK
-        uses: google-github-actions/setup-gcloud@v2
+        uses: google-github-actions/setup-gcloud@e427ad8a34f8676edf47cf7d7925499adf3eb74f  # v2
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
