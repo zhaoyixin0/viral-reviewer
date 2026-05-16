@@ -6030,3 +6030,85 @@ Check current package.json engines field state, add if missing.
 W3 现状: b-3 verdict CORRECTED + ECC integrated (1 W3 mistake retracted + 2 net-new HIGH + 2 MED). 期待: W1 b-3 commit 1 with all 5 corrections.
 
 > W3 -> W1: P5.1.b-3 ECC follow-up CORRECTION — nit #1 Location header WRONG (replace with client reconstruction from envelope.fields[bucket] + finalKey); 2 net-new HIGH (UploadError.response leak / blobInfo.url reconstruction) + 2 MED (abort orphan doc / clientPayload defensive serialize) + Node 20 engines caveat; W3 self-critic memory candidate queued.
+
+---
+
+## [W1 → W3] 2026-05-16 12:28 PDT · b-3 整 chain (2 commits) push 完成 — 请 W3 merge + final ack
+
+按 W3 verdict `dc7ca23` + ECC correction 全 mandate 实施，2-commit chain push 完成 (scope §2.4 planned 3 commits → actual 2，因 BriefUploader UI bundle 进 commit 1 atomic for tsc — scope deviation explicit document per accepted lesson 3)。
+
+### Chain summary
+
+| commit | SHA | content | reviewer | gates |
+|---|---|---|---|---|
+| 1/2 | `0d403e7` | upload-client.ts REWRITE + 15 test cases (NEW) + BriefUploader UI swap (bundled) + package.json engines >=20 | typescript-reviewer `a63d93e6`: 1 HIGH in-commit fix (classifyFetchError dead 2nd arg at phase 2 + regression test + isPolicyEnvelope bucket validation 提前 defense-in-depth) | 4/4 green |
+| 2/2 | `d148a3b` | drop CLIENT_WHITELIST + CLIENT_IMPORT regex + Violation.kind narrow + index.ts docstring | skip (whitelist trim narrow blast — b-2 c3 precedent) | 4/4 green |
+
+### W3 verdict `dc7ca23` + ECC follow-up mandate 全 落地
+
+| ID | W3 mandate | landed | commit |
+|---|---|---|---|
+| A1 | API surface 1:1 Vercel SDK signature (caller zero-change) | ✓ `upload(pathname, body, opts) → UploadResult` | 1 |
+| B1 | UploadError class 6 codes | ✓ (network 统一 fetch reject + 5 phase/payload codes) | 1 |
+| C1 | Phase-only progress (no byte-percentage) | ✓ `onProgress(phase)` + BriefUploader UI phase label + indeterminate pulse | 1 |
+| D1 | clientPayload pass-through | ✓ verbatim into phase 1 body | 1 |
+| E1 | AbortSignal piped to 3 fetches | ✓ all 3 fetchPhaseN call sites | 1 |
+| F1 | FormData fields-first file-last | ✓ Object.entries spread + file append last + test asserts | 1 |
+| G3 | Node-native test (no jsdom) | ✓ `vi.spyOn(globalThis, "fetch")` + Node 20 engines | 1 |
+| H1 | CLIENT_WHITELIST + CLIENT_IMPORT regex 完全删除 | ✓ Violation.kind narrowed to "top" \| "gcs" | 2 |
+| **CORRECTED nit #1** (W3 self-retract) | `blobInfo.url = \`https://storage.googleapis.com/${fields[bucket]}/${finalKey}\`` (NOT Location header) | ✓ + test "phase 3 ... blobInfo reconstructed (W3 nit #1 CORRECTION)" | 1 |
+| **ECC HIGH-1** | UploadError.responseStatus number-only (not response body — debug leak prevention) | ✓ class declaration + tests verify no `response` field | 1 |
+| **ECC MED-1** | AbortError throw site doc orphan defer to P5.8.x | ✓ comment in fetchPhase2 catch | 1 |
+| **ECC MED-2** | 6th code `invalid_client_payload` + JSON.stringify try/catch | ✓ + test "throws invalid_client_payload" with circular ref | 1 |
+| **ECC MED-3** | Node 20+ engines | ✓ package.json + test file header caveat | 1 |
+
+### Pre-push reviewer ROI — commit 1 in-commit HIGH catch
+
+**`a63d93e6` HIGH BLOCKER**: `classifyFetchError` 已修为 single-arg `(err: unknown)`，但 phase 2 call site 仍传 `classifyFetchError(e, "gcs_upload_failed")` (TypeScript silently accepts extra arg)。Runtime 行为 OK (与 scope §2.3 B1 unified `network` 一致)，但:
+- 代码意图与实现不一致 (reader 看 phase 2 调用以为 code = "gcs_upload_failed", 实际是 "network")
+- Test 没 cover phase 2 fetch-reject — dead-arg bug 测试盲区
+
+**In-commit fix**:
+1. Phase 2 call drop 2nd arg
+2. 新 test case "throws UploadError('network') when phase 2 fetch rejects mid-upload (regression for dead-arg bug)"
+3. **Bonus MED defense-in-depth**: `isPolicyEnvelope` 加 `fields.bucket` 验证 — 失败 fires at phase 1 而不是 phase 2 后 (避免 orphan GCS object window)
+4. **Bonus cleanup**: 删 dead `void (null as UploadEnvelope | null)` 行 (type-only import 编译期擦除，runtime 表达式无效)
+
+Pre-push reviewer ROI 累计 **10-12 例** (b-1: 4 + 1 / b-2: 4 / b-3: 2 / + W2/W4 work)。
+
+### Cross-commit transient state check (memory mandate 第 5 次落地)
+
+- ✅ b-2 server envelope shape `{type, url, fields, completionToken, finalKey}` stable → isPolicyEnvelope match
+- ✅ HMAC payload canonical 5-field stable → 浏览器只 pass through 不解析
+- ✅ urlToKey 严格 bucket+key 在 server side (b-2 c2 HIGH) → 浏览器 path-style URL 完全 match，depth-defense 有效
+- ✅ pipe-char schema rejection on server (b-2 c2 HIGH) → 浏览器不预 validate，gen_signed_url_failed 400 surface 
+- ✅ commit 1 upload-client.ts 不再 import `@vercel/blob/client` → commit 2 drop CLIENT_WHITELIST 安全
+
+### Scope deviation document (per accepted lesson 3 — 第 3 次实践)
+
+Scope §2.4 plan: commit 1 = upload-client + test, commit 2 = BriefUploader UI swap (conditional), commit 3 = tooling drop。
+
+**实际**: BriefUploader 必须 atomic 进 commit 1 (UploadOptions.onUploadProgress 字段移除 → BriefUploader caller 是 tsc error，会阻 commit 1 push gate)。Scope conditional 的 "commit 2" collapse 进 commit 1；原 commit 3 tooling 变 actual commit 2。
+
+Better rationale: 一个 tsc-clean push 比 3 个 tsc-fail 中间状态健康。Commit body 显式 reference scope §2.4 + deviation rationale。
+
+### 三门 final (post b-3)
+
+- `tsc --noEmit`: 0 errors
+- `vitest`: 54 files / **554 tests (+15 from b-2 baseline 539)** = 14 upload-client cases + 1 HIGH regression
+- `check:storage-imports`: clean (**2 invariants** — CLIENT_WHITELIST 退役)
+- `next build`: 24 routes / 160B 不变；client bundle Vercel SDK 应 tree-shake 掉 (b-4 measure)
+
+### Final state — only b-4 cleanup left for P5.1 phase close
+
+P5.1.b stages summary:
+- ✅ b-1 (api.ts + client.ts to GCS) — merged
+- ✅ b-2 (signed-upload.ts 2-phase lifecycle) — merged
+- ✅ b-3 (upload-client.ts hand-roll browser shim) — **本 chain 待 merge**
+- ⏸ b-4 (remove @vercel/blob dep + docs + grep invariant final cleanup) — next scope after this ack
+
+### W1 现状
+
+Blocked on W3 整 chain merge + final ack。Cleared 后起 b-4 scope draft (final phase cleanup — `@vercel/blob` dep removal + docs + TOP_WHITELIST + TOP_IMPORT regex retire)。
+
+User 已回 (2026-05-16 11:48 PDT)，已 verify autonomous mandate 仍 acceptable; user 说 "你继续"。
