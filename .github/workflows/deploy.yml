@@ -178,7 +178,9 @@ jobs:
           # PROJECT_ID placeholder appears in serviceAccountName + 5 secret refs + image
           # Use envsubst-friendly sed for PROJECT_ID placeholder (literal string replace),
           # then yq for the image field (YAML-aware, safer for complex value).
-          sed "s|PROJECT_ID|${{ secrets.GCP_PROJECT_ID }}|g" service.yaml > service.deploy.yaml
+          sed -e "s|PROJECT_ID|${{ secrets.GCP_PROJECT_ID }}|g" \
+              -e "s|\${IMAGE_TAG}|${IMAGE_TAG}|g" \
+              service.yaml > service.deploy.yaml
           yq e -i '.spec.template.spec.containers[0].image = env(IMAGE_URL)' service.deploy.yaml
           # security-reviewer finding (LOW): don't echo entire rendered YAML to log
           # (GHA does mask secret values but 防御 future GCP_PROJECT_ID 升级敏感)
