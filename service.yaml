@@ -96,7 +96,7 @@ spec:
             # 缺值 → /api/cron/trending isAuthorized() OIDC 路径 fail-secure short-circuit,
             # 仍回 CRON_SECRET / ADMIN_TRIGGER_SECRET fallback (转 P5.7 cutover 期).
             - name: CRON_OIDC_AUDIENCE
-              value: "https://viral-reviewer-web/api/cron/trending"
+              value: "https://viral-reviewer-web-wowcshiskq-wl.a.run.app/api/cron/trending"
             - name: CRON_OIDC_SERVICE_ACCOUNT
               value: "cloud-scheduler@PROJECT_ID.iam.gserviceaccount.com"
 
