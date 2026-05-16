@@ -2,21 +2,23 @@
 /**
  * Grep invariant check for P5.1 storage facade.
  *
- * Enforces THREE grep invariants — direct SDK imports are confined to the
+ * Enforces TWO grep invariants — direct SDK imports are confined to the
  * facade. All callers MUST go through `@/lib/storage`.
  *
  *   1. `@vercel/blob`         only in `lib/storage/api.ts`         (P5.1.a)
  *      (← retired in P5.1.b-1 commit 2: api.ts no longer imports it, but
  *      the whitelist entry is preserved until b-4 removes the dep so a
  *      stray reintroduction here is still caught.)
- *   2. `@vercel/blob/client`  only in `lib/storage/upload-client.ts` (P5.1.a)
- *      (← signed-upload.ts retired in P5.1.b-2 commit 2 — lifecycle now
- *      goes through api.ts helpers, no direct SDK import. b-3 retires
- *      upload-client.ts similarly. b-4 removes the dep.)
- *   3. `@google-cloud/storage` only in `lib/storage/api.ts` and
+ *   2. `@google-cloud/storage` only in `lib/storage/api.ts` and
  *      `lib/storage/client.ts`                                     (P5.1.b)
- *      (← signed-upload.ts in b-2 DELIBERATELY goes through the api.ts
- *      facade helpers — keeps the SDK touch surface to 2 files.)
+ *      (← signed-upload.ts in b-2 + upload-client.ts in b-3 DELIBERATELY
+ *      go through the api.ts facade — keeps the SDK touch surface at 2
+ *      files; the browser shim hand-rolls multipart POST with no SDK call.)
+ *
+ *   The `@vercel/blob/client` invariant was REMOVED in P5.1.b-3 commit 2:
+ *   after upload-client.ts hand-rolled the GCS POST policy lifecycle in
+ *   b-3 commit 1, no file imports `@vercel/blob/client` any longer; the
+ *   regex + whitelist had become dead code.
  *
  * Why a custom script (not `npm run lint`): grep invariant violations need
  * a precise, ungated failure message pointing at the offending file —
@@ -63,9 +65,6 @@ const SKIP_DIRS = new Set([
  */
 const TOP_IMPORT = /(?:^|\n)\s*(?:import|export)\b[^"']*?from\s+["']@vercel\/blob["']/s;
 
-/** Matches `import ... from "@vercel/blob/client"` or `export ... from ...`. */
-const CLIENT_IMPORT = /(?:^|\n)\s*(?:import|export)\b[^"']*?from\s+["']@vercel\/blob\/client["']/s;
-
 /**
  * Matches `import ... from "@google-cloud/storage"` or `export ... from ...`.
  *
@@ -77,22 +76,6 @@ const GCS_IMPORT = /(?:^|\n)\s*(?:import|export)\b[^"']*?from\s+["']@google-clou
 
 /** Files allowed to import top-level `@vercel/blob`. */
 const TOP_WHITELIST = new Set<string>(["lib/storage/api.ts"]);
-
-/**
- * Files allowed to import `@vercel/blob/client`. Only `upload-client.ts`
- * (browser shim re-exporting `upload` for 4 frontend callers) remains after
- * P5.1.b-2 commit 3 — `signed-upload.ts` was rewritten in b-2 commit 2 to
- * go through `api.ts` helpers (`generateSignedPostPolicy` +
- * `signCompletionToken` + `verifyCompletionToken` + `urlToKey`) and no
- * longer touches the Vercel SDK directly.
- *
- * b-3 will rewrite `upload-client.ts` (hand-roll multipart POST to GCS v4
- * signed POST URL, no SDK call); b-4 will remove the `@vercel/blob` dep
- * entirely + delete this whitelist + the matching regex.
- */
-const CLIENT_WHITELIST = new Set<string>([
-  "lib/storage/upload-client.ts",
-]);
 
 /**
  * Files allowed to import `@google-cloud/storage` (P5.1.b).
@@ -138,7 +121,7 @@ function normalize(absPath: string): string {
 
 interface Violation {
   readonly file: string;
-  readonly kind: "top" | "client" | "gcs";
+  readonly kind: "top" | "gcs";
 }
 
 async function scan(): Promise<Violation[]> {
@@ -149,9 +132,6 @@ async function scan(): Promise<Violation[]> {
       const content = await readFile(abs, "utf8");
       if (TOP_IMPORT.test(content) && !TOP_WHITELIST.has(rel)) {
         violations.push({ file: rel, kind: "top" });
-      }
-      if (CLIENT_IMPORT.test(content) && !CLIENT_WHITELIST.has(rel)) {
-        violations.push({ file: rel, kind: "client" });
       }
       if (GCS_IMPORT.test(content) && !GCS_WHITELIST.has(rel)) {
         violations.push({ file: rel, kind: "gcs" });
@@ -165,18 +145,13 @@ async function main(): Promise<void> {
   const violations = await scan();
   if (violations.length === 0) {
     console.log(
-      "✓ storage import invariants clean — no out-of-whitelist @vercel/blob[/client] or @google-cloud/storage callers.",
+      "✓ storage import invariants clean — no out-of-whitelist @vercel/blob or @google-cloud/storage callers.",
     );
     return;
   }
   console.error("✗ storage import invariant violations:\n");
   for (const v of violations) {
-    const pkg =
-      v.kind === "top"
-        ? "@vercel/blob"
-        : v.kind === "client"
-          ? "@vercel/blob/client"
-          : "@google-cloud/storage";
+    const pkg = v.kind === "top" ? "@vercel/blob" : "@google-cloud/storage";
     console.error(`    ${v.file}: imports ${pkg} (not in whitelist)`);
   }
   console.error(
