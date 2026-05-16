@@ -2962,3 +2962,75 @@ W2 当前 idle。**P5 期间 W2 可协助**：
 W3 现状：**等 W1 P5 scope draft push**。Task 14.2 关闭 (drop)。phase 3.5 等待 P5 完成。
 
 > **W1 cleared to draft P5 Cloud Run migration scope (must use scope-template §2 + cross-check §4). Task 14.2 dropped per user decision. Phase 3.5 blocked until P5 complete. Production runs on Vercel hot fix `54d749b` with known 300s limitation during migration window.**
+
+---
+
+# 写于 2026-05-15 · 针对 `main` = `4c86cad` · 来自 W1 → W3
+
+## P5 Cloud Run migration scope draft pushed
+
+**分支**：`feat/p5-cloud-run-migration-scope`
+**文件**：`docs/coordination/scopes/p5-cloud-run-migration.md`（new，~280 行）
+**性质**：docs only，零 code 改动（实施 phase P5.1+ 单独走 scope）
+
+### Scope draft 覆盖（按 scope-template §2 全套）
+
+- §2.1 改动清单：**11 categories**（W3 预盘 + 加 route mode 列防 §4 #5 anti-pattern）
+- §2.2 URL → 策略表：**6 个 GCS 调用点** + 新增 `GCS_PRESET`（单 host `storage.googleapis.com`）
+- §2.3 决策点：**A-J 共 10 个**（W1 倾向已 explicit 写入）
+- §2.4 提议改动清单：**P5.1-P5.8 共 8 phase**（改 ~675 / new ~350 LoC + docs）
+- §2.5 三门估算：本 PR docs only（0/0/0）；实施 phase 单算
+- §2.6 风险面 + 8 anti-patterns cross-check：识别 **R1-R7 共 7 个风险** + applicable **5/8** anti-patterns
+- §2.7 pre-commit verify：本 PR 跳过；实施 phase 按 phase 列具体 verify 命令
+
+### W1 倾向汇总
+
+| 决策点 | W1 倾向 | 一句话理由 |
+|---|---|---|
+| A. service vs jobs | A1 service-only | 当前 NDJSON stream + 3600s timeout 够用，jobs/queue 过早 |
+| B. GCS 迁移路径 | B1 hard cut + 30min 停服 | 低流量，cache 类丢可重算，trending 下周一 cron 重生 |
+| C. Cron 选型 | C1 Scheduler + OIDC | 1 个 cron 不需要 Pub/Sub |
+| D. CDN | D1 Cloudflare | 免费 plan 够，Cloud CDN + LB 贵 |
+| E. CI/CD | E1 GitHub Actions | 跨平台 + `gcloud` CLI 文档充分 |
+| F. Preview | F1 Cloud Run revisions + tag URL | UI E2E 必须有 preview，否则 viral-reviewer 改动节奏受阻 |
+| G. Secret | G1 Secret Manager | APIFY 暴露已发生（memory），必须借机收敛 |
+| H. DNS 切流量 | H1 dual-domain 测试 1 周 | 低流量项目，user 自己跑 E2E |
+| I. Dual-run | I1 不 dual-run | 维护两套环境 + 数据同步成本高于带来的安全感 |
+| J. Rollback | J3 DNS 退路 + revision 退路 | rollback 是命门，多备一层成本是空跑 Vercel |
+
+### 关键 W3 拍板待答（汇总）
+
+除 A-J 10 个决策点，还有 4 个 cross-cutting 拍板：
+
+1. **§2.2 末尾**：`GCS_PRESET` 放 `lib/url-allowlist/presets.ts`（命名一致）还是 `lib/storage/preset.ts`（模块化）？
+2. **R2**：phase 3.5 (url-allowlist caller wiring) 是否能在 **P5.7 DNS cutover 之前** 做（不涉及平台，可以并行）？
+3. **R5**：Dockerfile base image **alpine** vs **bookworm-slim**？（ffmpeg-static glibc 依赖风险）
+4. **R7**：`isAuthorized()` 加 OIDC verify 后，**cronSecret 字段完全退役**还是保留作 dev 调试入口？
+
+### 三门估算（本 PR）
+
+- `tsc --noEmit`：0 error（docs only）
+- `vitest run`：base + 0 new
+- `next build`：routes 0 变化 / bundle 0 变化
+
+### 实施总工期估算
+
+**~2.5 周**（P5.1-P5.8 串行 + P5.7 dual-domain 1 周）。期间生产仍 Vercel hot fix `54d749b`，user 知情接受 300s 限制。
+
+### W2 协作点
+
+W3 在 verdict 通过后可分配给 W2：
+- P5.1 **GCS lib 设计**（`lib/storage/gcs.ts` new + tests，~200 LoC）
+- P5.2 **Dockerfile + Cloud Build YAML**（multi-stage Next.js standalone + ffmpeg COPY，~150 LoC + docs）
+
+W1 owns：caller wiring（P5.1 component / route 改 import）+ P5.3-P5.8 phase。
+
+### 信箱
+
+W1 现状：**等 W3 P5 scope draft verdict**。
+- 期待 W3 在 verdict 中逐项答 §3 拍板清单（A-J + 4 cross-cutting）
+- 通过后 W1 起 P5.1 sub-scope draft（GCS lib API design 详细），W2 起 P5.2 sub-scope draft（Dockerfile）
+- 期间 W1 idle；如 W3 长时间无动静，W1 会主动 ping
+
+> **W1 → W3: P5 scope draft 已 push (`feat/p5-cloud-run-migration-scope`)。docs only / 三门 0 error / 三门 base。请 W3 review `docs/coordination/scopes/p5-cloud-run-migration.md` 并按 scope-template §3 给逐项 verdict（A-J + 4 cross-cutting）。**
+
