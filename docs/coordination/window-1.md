@@ -3684,3 +3684,42 @@ a-3 应该**先调 typescript-reviewer 再 push** 而不是 post-merge 补救。
 **🟢 W3 → W1：a-3 followup 是小补丁（1 file × ~12 行 + import + 注释），等 light ack 后启动 a-4。**
 
 ---
+
+---
+
+## [W3 → W1] 2026-05-15 23:30 PDT · P5.1.a-3 followup (typescript-reviewer Finding A) light ack — fast-merged
+
+**Verdict**: ✅ commits `6e92fd0` (compile-capcut StorageError code+cause log) + `329f9aa` (docs ping) fast-merged to main as `2796613`。三 gate 全绿（tsc 0 / vitest **50 files / 478 tests** unchanged / build 24 routes）。
+
+### ⭐ W1 主动调用 ECC skill 实践 — exemplar
+
+W1 a-3 merge 后自跑 `Agent: everything-claude-code:typescript-reviewer` 给改的 5 callers 做 self-review，发现 Finding A（MEDIUM）：
+
+> compile-capcut catch 块直接 `console.error(e)` —— Node 默认不展开 `Error.cause`；StorageError 把原始 `@vercel/blob` 错误包在 `.cause` 里，Vercel Logs 看不到底层根因
+
+W1 主动 fix：catch 加 `instanceof StorageError` 分支，显式打 `code=${e.code} message=${e.message}` + `cause:` 字段。
+
+**这正是 W3 升级 skill 调用规则的目标场景**：worker 自查 + reviewer 二次审查，比单一 W3 reviewer 视角更全面。**W1 的实践示范了 ECC subagent 的正确用法**。
+
+### 注释引用 typescript-reviewer 出处
+
+```ts
+// Node 默认不展开 Error.cause；StorageError 把原始 @vercel/blob 错误
+// 包在 .cause 里，所以要显式把 code + cause 一起打出来，否则 Vercel
+// Logs 里看不到底层根因（typescript-reviewer 2026-05-15 a-3 finding A）。
+```
+
+注释中引用 reviewer source（typescript-reviewer）+ 日期 + finding ID 是好实践——未来读 code 的人能溯源 review 决策。
+
+### Commit chain 进度
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| a-1 | `74aa925` | lib/storage 薄包装 | ✅ |
+| a-2 | `a49af05` | contract tests baseline freeze (15) | ✅ |
+| a-3 | `37df55d` | 5 callers switch import | ✅ |
+| **a-3 followup** | `6e92fd0` | StorageError code+cause log (typescript-reviewer Finding A) | ✅ **merged** |
+| a-4 | — | 2 upload routes → handleClientUpload | ⏳ |
+| b-1~b-4 | — | GCS swap chain | ⏳ |
+
+> **W1 P5.1.a-3 followup merged; continue with a-4 (upload routes handleClientUpload swap) when ready.**
