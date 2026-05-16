@@ -1,0 +1,244 @@
+# Cloud Run preview deploy workflow (P5.2.4.2)
+#
+# ⚠️ UNTESTED-UNTIL-FIRST-PROD-VERIFY ⚠️
+# Per W3 FULL AUTONOMOUS MANDATE 6849f4c (user AFK): ship 提前不等 first prod deploy
+# verify. P5.2.4.1 deploy.yml workflow 还没在真 GCP project 跑过一次成功 deploy
+# (依赖 user 跑 runbook §1-§7 setup + Secret Manager bootstrap)。本 preview workflow
+# 复用 deploy.yml 同款 WIF auth + AR push + service.yaml 替换模式,但 path 走
+# `gcloud run deploy --tag pr-N --no-traffic`,不动 prod traffic 块。
+# 实际 PR 触发跑前 user 应先 verify prod deploy.yml workflow 通过。
+#
+# Trigger:
+#   - pull_request opened / synchronize / reopened → auto preview deploy
+#   - pull_request closed → cleanup PR tag revision (surgical, 不依赖 weekly GC)
+#
+# Per W3 P5.2.4 deep verdict b751afd (decision A2 + decision I extension):
+#   A2: prod path 单独 deploy.yml; preview here separate
+#   F1 → preview: 不 auto-revert (preview by definition allowed to fail; PR comment
+#                  含 deploy status + URL)
+#   I extension: 加 pull-requests: write permission (PR comment 用)
+#
+# SHA-pin Google actions per W3 mandate (same as deploy.yml).
+
+name: Preview Deploy (PR)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+# Minimal permissions:
+#   contents:read → checkout
+#   id-token:write → WIF OIDC token mint
+#   pull-requests:write → post preview URL comment (W3 P5.2.4 verdict I extension)
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+
+# Per-PR concurrency: a new push to a PR cancels in-flight preview build (waste 不必要的 GHA cycles)
+concurrency:
+  group: preview-deploy-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  # ----- Deploy preview revision (PR opened / synchronized / reopened) -----
+  deploy-preview:
+    name: Build + Push + Deploy preview tag
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      REGION: us-central1
+      SERVICE: viral-reviewer-web
+      AR_REPO: viral-reviewer
+      AR_IMAGE: web
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compute IMAGE_TAG + PR_TAG
+        id: tag
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          PR_TAG="pr-${{ github.event.pull_request.number }}"
+          echo "IMAGE_TAG=${IMAGE_TAG}" >> "$GITHUB_ENV"
+          echo "PR_TAG=${PR_TAG}" >> "$GITHUB_ENV"
+          echo "::notice::Preview deploy: image=${IMAGE_TAG} tag=${PR_TAG}"
+
+      # SHA-pin Google actions per W3 mandate (per deploy.yml SHA-pin)
+      - name: Authenticate to Google Cloud (WIF OIDC)
+        uses: google-github-actions/auth@c200f3691d83b41bf9bbd8638997a462592937ed  # v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+
+      - name: Setup gcloud SDK
+        uses: google-github-actions/setup-gcloud@e427ad8a34f8676edf47cf7d7925499adf3eb74f  # v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      # Verify required secrets exist (same as prod deploy.yml,防 P5.6 bootstrap 未完)
+      - name: Verify required Secret Manager secrets exist
+        run: |
+          REQUIRED_SECRETS=(anthropic-api-key openai-api-key google-api-key apify-token blob-read-write-token)
+          missing=0
+          for secret in "${REQUIRED_SECRETS[@]}"; do
+            if ! gcloud secrets describe "$secret" --project="${{ secrets.GCP_PROJECT_ID }}" >/dev/null 2>&1; then
+              echo "::error::Required Secret Manager secret '${secret}' not found. Run P5.6 bootstrap first."
+              missing=$((missing+1))
+            fi
+          done
+          if [ $missing -gt 0 ]; then
+            exit 1
+          fi
+
+      - name: Configure docker auth for Artifact Registry
+        run: |
+          gcloud auth configure-docker "${REGION}-docker.pkg.dev" --quiet
+
+      # Single-arch pin (same as prod) — per W3 MED #2 mandate + anti-pattern #11 候选
+      - name: Build Docker image (linux/amd64 single-arch)
+        run: |
+          IMAGE_URL="${REGION}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${AR_REPO}/${AR_IMAGE}"
+          docker build \
+            --platform linux/amd64 \
+            --tag "${IMAGE_URL}:${IMAGE_TAG}" \
+            --tag "${IMAGE_URL}:${PR_TAG}" \
+            --file Dockerfile \
+            .
+
+      - name: Verify image is single-arch (linux/amd64)
+        run: |
+          IMAGE_URL="${REGION}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${AR_REPO}/${AR_IMAGE}:${IMAGE_TAG}"
+          ARCH=$(docker image inspect "${IMAGE_URL}" --format='{{.Architecture}}/{{.Os}}')
+          if [ "${ARCH}" != "amd64/linux" ]; then
+            echo "::error::Image arch mismatch: ${ARCH}"
+            exit 1
+          fi
+
+      - name: Push image to Artifact Registry
+        run: |
+          IMAGE_URL="${REGION}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${AR_REPO}/${AR_IMAGE}"
+          docker push "${IMAGE_URL}:${IMAGE_TAG}"
+          docker push "${IMAGE_URL}:${PR_TAG}"
+
+      # Deploy as tagged revision with --no-traffic (per P5 verdict F1)
+      # Unlike prod deploy.yml which replaces service.yaml,preview uses --image flag
+      # 直接部署 single revision + tag,不动 prod traffic。
+      - name: Deploy preview revision (--tag + --no-traffic)
+        id: deploy
+        run: |
+          IMAGE_URL="${REGION}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${AR_REPO}/${AR_IMAGE}:${IMAGE_TAG}"
+          gcloud run deploy "${SERVICE}" \
+            --image="${IMAGE_URL}" \
+            --region="${REGION}" \
+            --project="${{ secrets.GCP_PROJECT_ID }}" \
+            --tag="${PR_TAG}" \
+            --no-traffic \
+            --quiet
+
+          # Get tagged URL: format is <tag>---<service>-<hash>-<region>.run.app
+          TAG_URL=$(gcloud run services describe "${SERVICE}" \
+            --region="${REGION}" \
+            --project="${{ secrets.GCP_PROJECT_ID }}" \
+            --format="value(status.traffic[?tag=='${PR_TAG}'].url)" \
+            | head -1)
+          echo "tag_url=${TAG_URL}" >> "$GITHUB_OUTPUT"
+          echo "::notice::Preview URL: ${TAG_URL}"
+
+      # Light smoke /api/health only (preview path 不强求 /api/trending 全跑;
+      # PR author 自己手测业务路径)
+      - name: Smoke /api/health (3 retries × 5s)
+        continue-on-error: true
+        id: smoke
+        run: |
+          URL="${{ steps.deploy.outputs.tag_url }}"
+          for attempt in 1 2 3; do
+            code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 30 "${URL}/api/health" || echo "000")
+            if [ "$code" -ge 200 ] && [ "$code" -lt 400 ]; then
+              echo "::notice::Smoke /api/health attempt ${attempt}: HTTP ${code} ✅"
+              exit 0
+            fi
+            echo "::warning::Smoke attempt ${attempt}: HTTP ${code}, sleeping 5s..."
+            sleep 5
+          done
+          echo "::error::Smoke /api/health failed all 3 attempts"
+          exit 1
+
+      # Post PR comment with preview URL + smoke status
+      - name: Post preview URL comment on PR
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const tagUrl = '${{ steps.deploy.outputs.tag_url }}';
+            const smokeOutcome = '${{ steps.smoke.outcome }}';
+            const sha = '${{ github.event.pull_request.head.sha }}'.substring(0, 7);
+            const prNumber = ${{ github.event.pull_request.number }};
+            const smokeIcon = smokeOutcome === 'success' ? '✅' : '⚠️';
+            const body = [
+              `### 🚀 Preview Deploy (PR #${prNumber})`,
+              ``,
+              `| Field | Value |`,
+              `| --- | --- |`,
+              `| Commit | \`${sha}\` |`,
+              `| Tag | \`pr-${prNumber}\` |`,
+              `| Preview URL | ${tagUrl || '_deploy failed_'} |`,
+              `| /api/health smoke | ${smokeIcon} ${smokeOutcome} |`,
+              ``,
+              `> Preview revision does NOT receive prod traffic. Use the URL above for manual QA. Tagged revision will be cleaned up when this PR is closed.`,
+            ].join('\n');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body
+            });
+
+      # Final workflow status: fail if either deploy or smoke failed
+      - name: Workflow status check
+        if: steps.deploy.outcome == 'failure' || steps.smoke.outcome == 'failure'
+        run: |
+          echo "::error::Preview deploy or smoke failed; see PR comment for details"
+          exit 1
+
+  # ----- Cleanup tagged revision on PR close -----
+  cleanup-preview:
+    name: Cleanup PR tagged revision
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      REGION: us-central1
+      SERVICE: viral-reviewer-web
+
+    steps:
+      - name: Authenticate to Google Cloud (WIF OIDC)
+        uses: google-github-actions/auth@c200f3691d83b41bf9bbd8638997a462592937ed  # v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+
+      - name: Setup gcloud SDK
+        uses: google-github-actions/setup-gcloud@e427ad8a34f8676edf47cf7d7925499adf3eb74f  # v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      # Remove the tag from the service. Cloud Run automatically retires the
+      # revision once no traffic + no tag (weekly GC by W4 P5.2.5 cleans actual revision).
+      - name: Remove PR tag from service
+        run: |
+          PR_TAG="pr-${{ github.event.pull_request.number }}"
+          # security-reviewer cross-commit check: validate PR_TAG format (numeric only after prefix)
+          if [[ ! "${PR_TAG}" =~ ^pr-[0-9]+$ ]]; then
+            echo "::error::Unexpected PR tag format: ${PR_TAG}"
+            exit 1
+          fi
+          # update-traffic 不能直接删 tag,需要 update service yaml with --remove-tags
+          gcloud run services update-traffic "${SERVICE}" \
+            --region="${REGION}" \
+            --project="${{ secrets.GCP_PROJECT_ID }}" \
+            --remove-tags="${PR_TAG}" \
+            --quiet || echo "::warning::Tag ${PR_TAG} may already be removed"
+          echo "::notice::Removed tag ${PR_TAG}; W4 P5.2.5 weekly GC will clean orphaned revision"
