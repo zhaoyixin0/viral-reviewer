@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      REGION: us-central1
+      REGION: us-west2
       SERVICE: viral-reviewer-web
       AR_REPO: viral-reviewer
       AR_IMAGE: web
@@ -187,7 +187,7 @@ jobs:
           yq e '.metadata.name, .spec.template.spec.containers[0].image, .spec.template.spec.containers[0].resources.limits' service.deploy.yaml
           echo "::endgroup::"
         env:
-          IMAGE_URL: ${{ env.IMAGE_TAG && format('us-central1-docker.pkg.dev/{0}/viral-reviewer/web:{1}', secrets.GCP_PROJECT_ID, env.IMAGE_TAG) || '' }}
+          IMAGE_URL: ${{ env.IMAGE_TAG && format('us-west2-docker.pkg.dev/{0}/viral-reviewer/web:{1}', secrets.GCP_PROJECT_ID, env.IMAGE_TAG) || '' }}
 
       # ---- Deploy: gcloud run services replace ----
       - name: Deploy to Cloud Run (replace service.yaml)

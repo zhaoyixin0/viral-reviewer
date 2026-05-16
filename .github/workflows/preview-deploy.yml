@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      REGION: us-central1
+      REGION: us-west2
       SERVICE: viral-reviewer-web
       AR_REPO: viral-reviewer
       AR_IMAGE: web
@@ -211,7 +211,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      REGION: us-central1
+      REGION: us-west2
       SERVICE: viral-reviewer-web
 
     steps:

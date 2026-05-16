@@ -3,7 +3,7 @@
 # Per W3 P5.2 verdict f7d46bb:
 #   A1: multi-stage Docker build (separate Dockerfile — W4 owned, P5.2.1)
 #   C1: declarative service.yaml (this file) over imperative `gcloud run deploy` flags
-#   D1: image registry us-central1-docker.pkg.dev/<PROJECT>/viral-reviewer/web
+#   D1: image registry us-west2-docker.pkg.dev/<PROJECT>/viral-reviewer/web
 #   G1: image tag = git short SHA; ${IMAGE_TAG} placeholder replaced by GHA yq at deploy
 #   J1: HTTP probe at /api/health (W2 P5.2.2 commit 9756301)
 #   K1: dedicated runtime SA separate from deployer SA (least privilege)
@@ -12,13 +12,13 @@
 #   IMAGE_TAG=$(git rev-parse --short HEAD)
 #   yq e ".spec.template.spec.containers[0].image |= sub(\"\\\${IMAGE_TAG}\", \"${IMAGE_TAG}\")" \
 #     service.yaml > service.deploy.yaml
-#   gcloud run services replace service.deploy.yaml --region=us-central1
+#   gcloud run services replace service.deploy.yaml --region=us-west2
 #
 # Rollback:
 #   git revert <deploy commit>  → service.yaml 自带前一个 immutable image SHA → replace
 #
 # PROJECT_ID placeholder is replaced by GHA at deploy time via yq (alongside IMAGE_TAG).
-# Local dry-run: `gcloud run services replace service.yaml --dry-run --region=us-central1`
+# Local dry-run: `gcloud run services replace service.yaml --dry-run --region=us-west2`
 #                (requires GCP project context; CI verifies)
 
 apiVersion: serving.knative.dev/v1
@@ -26,7 +26,7 @@ kind: Service
 metadata:
   name: viral-reviewer-web
   labels:
-    cloud.googleapis.com/location: us-central1
+    cloud.googleapis.com/location: us-west2
   annotations:
     # BETA needed for startup-cpu-boost + cpu-throttling=false (both Cloud Run-specific Beta features)
     run.googleapis.com/launch-stage: BETA
@@ -63,7 +63,7 @@ spec:
         - name: web
           # G1 verdict: ${IMAGE_TAG} 占位,GHA deploy.yml 用 yq 替换为 git short SHA
           # 每个 deploy commit 在 git 历史里都有 immutable image ref → rollback = git revert
-          image: us-central1-docker.pkg.dev/PROJECT_ID/viral-reviewer/web:${IMAGE_TAG}
+          image: us-west2-docker.pkg.dev/PROJECT_ID/viral-reviewer/web:${IMAGE_TAG}
 
           ports:
             # http1 = HTTP/1.1 (Cloud Run 前端到容器走 HTTP/1.1,Next.js 用这个)

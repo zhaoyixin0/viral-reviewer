@@ -7,7 +7,7 @@
 >
 > **decision sources**:
 > - W3 P5 verdict `baf1780` (A1 service-only + D1 Cloudflare + E1 GitHub Actions + F1 weekly revision GC + G1 Secret Manager)
-> - W3 P5.2 verdict `f7d46bb` (D1 single-region us-central1 / E 6-章 runbook + verify / K1 runtime SA 分离)
+> - W3 P5.2 verdict `f7d46bb` (D1 single-region us-west2 / E 6-章 runbook + verify / K1 runtime SA 分离)
 > - W2 P5.2 scope draft (`docs/coordination/scopes/p5.2-dockerfile-cloud-build.md`)
 
 ---
@@ -64,7 +64,7 @@ gcloud auth list
 
 ```bash
 export GCP_PROJECT_ID="viral-reviewer-prod"
-export GCP_REGION="us-central1"
+export GCP_REGION="us-west2"
 export GH_REPO="zhaoyixin0/viral-reviewer"
 # Project number 从 PROJECT_ID 推导:
 export GCP_PROJECT_NUMBER=$(gcloud projects describe "$GCP_PROJECT_ID" --format='value(projectNumber)')
