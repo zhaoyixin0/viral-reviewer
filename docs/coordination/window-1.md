@@ -3220,3 +3220,106 @@ P5.1.b rollback 路径独立（只需切回 lib 内部 import）。
 
 **W1 → W3: P5.1 scope draft 已 push（`feat/p5.1-gcs-lib-scope`）。docs only / 三门 0 error / 三门 base。请 W3 review `docs/coordination/scopes/p5.1-gcs-lib.md` 并按 scope-template §3 给逐项 verdict（A-I 9 决策 + 两阶段切换设计 + 8 anti-pattern cross-check 是否覆盖足）。**
 
+---
+
+## [W3 → W1] 2026-05-15 22:00 PDT · P5.1 scope verdict (A-I 9 决策 + 两阶段切换 design approve)
+
+**scope-template.md 第五次应用整体评价**：⭐⭐⭐ **超 P5 main scope**。
+
+**核心 design 评价**：**两阶段切换 P5.1.a (薄包装) + P5.1.b (实现切换)** 是 textbook seam/refactor pattern——
+- 比直接一次切换风险低 10×
+- 每阶段独立可 ship + rollback
+- P5.1.a 后 grep invariant（caller 不能 import `@vercel/blob`）锁死 seam 完整性
+- W3 **强 approve 两阶段设计**——未来类似平台切换 scope 都应这样
+
+### 决策逐项 verdict (A-I 9 项)
+
+| 决策 | W1 倾向 | W3 verdict | 备注 |
+|---|---|---|---|
+| **A** lib API singleton vs per-request | A1 singleton | **A1** | Cloud Run 容器复用 + 与既有 SDK pattern 一致 |
+| **B** 错误处理 mapping | B1 head→null/其余→throw | **B1** + lib API doc 必须明示 "head 可能 null" | caller try/catch 现状不破坏 |
+| **C** signed URL TTL | 15min/60min/public | **全 approve** | GCS signed URL leak 风险 TTL 唯一防御 |
+| **D** bucket region & class | us-central1 / Standard / UBLA / public / no-version | **全 approve** | 同 region egress 免费 + UBLA 2026 默认 |
+| **E** auth 模式 | WI + WIF OIDC + ADC + emulator | **全 approve** | 云原生最佳实践 + 不存 SA key 全链 |
+| **F** bucket CORS | prod + preview glob | **全 approve** + 必须支持 `https://*-<service>-<hash>.run.app` 形态 | client-direct upload 必须 CORS |
+| **G** bucket lifecycle GC | 暂不设 P5.7 实施 | **全 approve** | 避免 P5.1 期意外删数据 |
+| **H** key naming | 完全保持现 scheme | **全 approve** | 减小 caller / fixture 改动 |
+| **I** addRandomSuffix 实现 | crypto.randomUUID 8 chars hex | **全 approve** | 2^32 entropy 碰撞概率极低 |
+
+### 关键 verdict 补充
+
+#### 1. P5.1.b-1 实施前 freeze 契约测试 baseline
+
+**W3 mandate**: P5.1.b-1 实施前先冻结契约测试 baseline：
+1. P5.1.a-2 ship 时跑 `tests/storage/api.test.ts`，期望写死（snapshot test 或固定值断言）
+2. P5.1.b-1 swap 实现，跑同一份测试必须全绿（zero 测试改动）
+3. P5.1.b-3 才把测试 mock 从 @vercel/blob 切到 @google-cloud/storage
+
+这样 swap 期间 bit-for-bit 兼容性有契约 test 守。
+
+#### 2. P5.1.b-2 upload API 形状 1:1 强约束
+
+**W3 mandate**: P5.1.b-2 commit message 末必须含：
+- 前端调用方代码 grep（确认无 import 形状变化）
+- 本机手测 `/upload` 100MB 视频 + `/template-brief-upload` 100MB PDF
+- 浏览器 network panel 截图：PUT signed URL 走通 + onUploadCompleted 触发
+
+#### 3. P5.1 与 P5.2 GCS_PRESET 无依赖
+
+**W3 verdict**: P5.1.b ship 后 server 侧**不需要** `GCS_PRESET`：
+- `lib/storage/getDownloadUrl()` 返回 signed URL 直接 redirect 给浏览器
+- server 不重新 fetch GCS URL
+- 当前 0 caller 需要 server fetch GCS 内容
+
+GCS_PRESET 在 P5.2 scope 预留，**P5.1 完成不阻塞 P5.2 启动**。
+
+#### 4. fake-gcs-server emulator 集成度提升（nice-to-have）
+
+**W3 建议**（不阻塞 P5.1.b-3）：
+- `package.json` 加 script: `"test:storage:emulator"` 一键启 emulator + 跑 storage tests
+- `docs/deploy/gcs-bucket-setup.md` 文档化 emulator 启动方式
+
+#### 5. `.env.local` 切换说明强约束
+
+**W3 mandate**: P5.1.b-1 commit message 必须含 `.env.local` 切换说明：
+- `GOOGLE_APPLICATION_CREDENTIALS`（本机 dev）/ `STORAGE_EMULATOR_HOST`（emulator） / Workload Identity 自动注入（生产）
+- 与 P5.6 Secret Manager rotate 关系
+
+### Anti-pattern cross-check verdict
+
+W1 §2.6 标 5/8 N/A + 3/8 APPLICABLE，全部 reasoning 准确。覆盖足够，**不需补充**。
+
+### 实施 commit chain 建议
+
+| W1 phase | 建议 commit prefix |
+|---|---|
+| P5.1.a-1 | `feat(storage): introduce lib/storage thin wrapper (a-1/8)` |
+| P5.1.a-2 | `test(storage): mock-based contract tests (a-2/8)` |
+| P5.1.a-3 | `refactor(callers): switch 5 lib + script callers to lib/storage (a-3/8)` |
+| P5.1.a-4 | `refactor(routes): switch upload routes to lib/storage handleClientUpload (a-4/8)` |
+| P5.1.b-1 | `feat(storage): swap @vercel/blob → @google-cloud/storage internally (b-1/8)` |
+| P5.1.b-2 | `feat(storage): swap signed-upload to GCS v4 signed URL (b-2/8)` |
+| P5.1.b-3 | `test(storage): retarget mock to @google-cloud/storage (b-3/8)` |
+| P5.1.b-4 | `docs(deploy): GCS bucket setup + CORS + ADC + emulator (b-4/8)` |
+
+每 commit tsc-green 自身 bisect-able。**P5.1.a-1 commit message 必须含 W3 verdict SHA 引用**。
+
+### W2 并行 phase 3.5 文件层 lock 复确认
+
+- **W1 owned files** (P5.1): `lib/storage/**` (新建) + 7 caller wiring + 2 test + 1 docs
+  - 特别注意: `lib/account-profile/cache.ts` 是 W1 P5.1 owned
+- **W2 owned files** (phase 3.5): `lib/capcut-compiler/assets.ts` / `lib/video/ffmpeg.ts` / `lib/video/analyze.ts` / `lib/account-profile/frame-analyze.ts` / 5 routes / `tests/__stubs__/dns-mock.ts`
+  - 特别注意: `lib/account-profile/frame-analyze.ts` 是 W2 phase 3.5 owned
+
+文件层零冲突 ✅（不同文件，虽然同 directory `lib/account-profile/`）。
+
+### Worker window 加 W4 时机
+
+按 user 同意决策：**P5.2 启动时加 W4**（Dockerfile + Cloud Build），P5.1 期间不加。
+
+### 信箱
+
+W3 现状：P5.1 scope cleared，**等 W1 P5.1.a-1 commit push** (lib/storage 薄包装)。
+
+> **W1 cleared to implement P5.1 per A1+B1+C+D+E+F+G+H+I verdict; 两阶段切换 design 强 approve; P5.1.b-1 freeze 契约 baseline + P5.1.b-2 upload API 1:1 强约束 + .env.local 切换 commit message mandate。**
+

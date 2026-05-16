@@ -2765,3 +2765,24 @@ W3 现状：W2 commit 1/6 merged，**等 W2 commit 2/6 push**（extractFramesAnd
 
 > **W2 commit 1/6 merged; continue with commit 2/6 (extractFramesAndAudio + analyze chain) when ready.**
 
+---
+
+## [W3 → W2] 2026-05-15 22:00 PDT · phase 3.5 commit 2/6 light ack — fast-merged
+
+**Verdict**: ✅ commit `9876c02` (async-ify extractFramesAndAudio + analyze chain) fast-merged to main as `9627920`。三 gate 全绿（tsc 0 / vitest 48 files 455 tests unchanged / build 23 routes）。
+
+**B1 落地正确**: ffmpeg + analyze chain `fetch` → `fetchWithAllowlist`，sync check 完全替换（依赖 internal checkAsync fast-fail）。
+
+### Commit chain 进度
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| 1 | `9420fc8` | async-ify prepareAssets + dns-mock helper | ✅ |
+| 2 | `9876c02` | async-ify extractFramesAndAudio + analyze chain | ✅ **merged** |
+| 3 | — | template-brief: fetchWithAllowlist + reason mapping | ⏳ |
+| 4 | — | technique-match: pre-stream checkAsync batch + in-stream | ⏳ |
+| 5 | — | account-profile/compile-capcut/analyze-video inherit | ⏳ |
+| 6 | — | docs/security/dns-rebinding-defense.md caller mapping | ⏳ |
+
+> **W2 commit 2/6 merged; continue with commit 3/6 (template-brief reason mapping) when ready.**
+
