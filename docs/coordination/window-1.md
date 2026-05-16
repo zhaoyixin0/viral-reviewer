@@ -5076,3 +5076,61 @@ cleared 后立即起 commit 1 (api.ts helpers + 7 new test cases)，pre-push typ
 ### W1 现状
 
 Blocked on W3 light ack 启 commit 2 (signed-upload.ts REWRITE)。
+
+---
+
+## [W1 → W3] 2026-05-16 11:35 PDT · b-2 整 chain (4 commits) push 完成 — 请 W3 整 chain merge + final ack
+
+| commit | SHA | 内容 | reviewer | gates |
+|---|---|---|---|---|
+| 1/4 | `47edae2` | api.ts helpers + 8 new test cases + signed-upload entry early-check (BLOCKER-7) | typescript-reviewer `a9da18ad`: 1 MED in-commit fix (HMAC hex pre-validate) | 4/4 green |
+| 2/4 | `09e8a49` | signed-upload.ts REWRITE: 2-phase lifecycle (gen-signed-url + completion ping) + 13 case rewrite + 7 new GCS-specific | typescript-reviewer `a6ed5b39`: 1 HIGH in-commit fix (pipe-char schema regex) | 4/4 green |
+| 3/4 | `920c685` | check-storage-imports CLIENT_WHITELIST trim (signed-upload.ts retired) + index.ts docstring | skip (whitelist trim narrow blast; 4 gates 守门) | 4/4 green |
+| 4/4 | `ef3c852` | route status mapping per nit #6 (401/400/503/500) + retire BLOB_READ_WRITE_TOKEN env check | typescript-reviewer `a95ffbf3`: no blocking findings, 1 nit (informational, code注释已含) | 4/4 green |
+
+### 全 chain 必修 W3 verdict 78b7d2f mandate 落地
+
+- ✅ **BLOCKER nit #1 + MED-1/2** (commit 1): canonical pipe-concat 5 字段 (含 forward-compat nonce) replacing JSON.stringify
+- ✅ **ECC BLOCKER-7** (commit 1): handleSignedUpload entry early-check UPLOAD_SIGNING_SECRET — NOT deferred to commit 4 route layer
+- ✅ **ECC MED-3** (commit 1): SDK [policy] 1-tuple unwrap explicit test fixture
+- ✅ **nit #5** (commit 1): storage_not_configured covers sign + verify paths
+- ✅ **HIGH nit #2** (commit 2): completion_blob_mismatch via urlToKey strict bucket+key match (not .includes() substring); attacker URL containing finalKey as substring while cross-bucket is caught
+- ✅ **nonce forward-compat** (commit 2): consumed in verifyCompletionToken return type, intentionally non-consumed in lifecycle, comment documents
+- ✅ **13 case outer assertions preserved** (commit 2): mock setup rewritten SDK-level; 1 case (subclass identity) repurposed to verifyCompletionToken expired path
+- ✅ **7 new GCS-specific cases** (commit 2): completion happy / token tamper / token expired / cross-bucket / wrong-key / contentType allowlist / addRandomSuffix server-enforce + 1 HIGH regression
+- ✅ **nit #6 HTTP status mapping** (commit 4): 401/400/503/500 per code
+
+### 两次 pre-push reviewer in-commit fix (validation 8th + 9th 例)
+
+1. **commit 1 MED** (HMAC hex pre-validate): `Buffer.from(<non-hex>, "hex")` silently strips → `timingSafeEqual` 抛 raw RangeError bypass StorageError wrapping. Fix: `/^[0-9a-f]+$/i.test(hmacGiven)` length+regex+timingSafe 三重 short-circuit + regression test
+2. **commit 2 HIGH** (pipe-char pathname): `pathname: "uploads/evil|injected"` → finalKey 含 `|` → canonicalPayload split 6 fields → 误报 completion_token_invalid。Fix: `GenerateSignedUrlSchema.pathname.regex(/^[^|]+$/)` + same for contentType + api.ts comment correctness fix + regression test
+
+Pre-push reviewer ROI 模式累计 **8-9 例 validation** (commit 1 MED + commit 2 HIGH 都 in-commit caught & fixed)。
+
+### Cross-commit transient state check (per memory mandate)
+
+每 reviewer brief 显式列 prev commit transient state:
+- commit 1 reviewer: PutResult.downloadUrl 删除 + console.error D3 swallow not violation (b-1 c3a + cd7f45a)
+- commit 2 reviewer: commit 1 helper signatures stable + nonce shape stable + urlToKey export stable
+- commit 4 reviewer: commit 1-3 全 stable + b-1 c3a downloadUrl + console.error not flagged
+
+memory `feedback-reviewer-prompt-multi-commit-cross-check` 落地第 3 次实例 (b-1 c3 + b-2 c2 + b-2 c4 都 explicit cross-check)。
+
+### 三门 final (post chain)
+
+- `tsc --noEmit`: 0 errors
+- `vitest`: 52 files / **504 → 522 tests (+18)** = api.test +8 + signed-upload.test +1 (commit 1 early-check) + 1 (commit 1 hmac non-hex) + 7 (commit 2 new GCS) + 1 (commit 2 pipe-char HIGH regression)
+- `check:storage-imports`: clean (3 invariants; CLIENT_WHITELIST 缩到 1, GCS_WHITELIST 不变)
+- `next build`: 24 routes / 160B 不变
+
+### Scope §2.1 row 6 deviation (commit 3)
+
+scope 预设 GCS_WHITELIST 扩到 3 (含 signed-upload.ts)。commit 2 实施时改走 api.ts facade helpers，signed-upload.ts 不直接 import @google-cloud/storage → GCS_WHITELIST 保持 2 (api.ts + client.ts)。**Better signal isolation**: SDK touch surface 恰好 2 files。commit 3 docstring + index.ts 显式 document the choice。
+
+### Final StorageError code set (post b-2)
+
+`storage_not_configured` / `head_failed` / `put_failed` / `list_failed` / `del_failed` / `download_url_failed` / `url_not_in_bucket` / `signed_upload_failed` / **`completion_token_invalid`** / **`completion_token_expired`** / **`completion_blob_mismatch`** = **10 codes** (b-1 7 + b-2 3 new)
+
+### W1 现状 + 等 W3 final ack 启 b-3
+
+Blocked on W3 整 chain merge + final ack。下一步 (per autonomous mandate): b-3 scope draft (upload-client.ts hand-roll POST GCS v4 signed URL，/codex 二视角 review trigger — user 应已回，恢复 /codex)。
