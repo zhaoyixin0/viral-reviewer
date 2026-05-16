@@ -7,7 +7,12 @@ import { analyzeMaterialPotential } from "@/lib/video/analyze-potential";
 import { loadReferenceCutPlans } from "@/lib/sample-references";
 import { matchTechniques } from "@/lib/technique-matching/match-engine";
 import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
-import { createUrlAllowlist, VERCEL_BLOB_PRESET } from "@/lib/url-allowlist";
+import {
+  createUrlAllowlist,
+  fetchWithAllowlist,
+  UrlAllowlistError,
+  VERCEL_BLOB_PRESET,
+} from "@/lib/url-allowlist";
 import {
   createRateLimiter,
   clientIp,
@@ -101,17 +106,55 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // P3 #2 phase 2：SSRF allowlist batch check —— **必须**在 stream 启动前做。
-  // 本路由返回 NDJSON stream，一旦 controller 开始 enqueue 就 HTTP 200，
-  // 无法再回 400。fail-fast 在 stream 创建前，比错 deny URL 才发现晚。
-  // 与 prepareAssets 入口 check 同语义（W3 verdict B2：response 不暴露 reason）。
+  // P3 #2 phase 2 + phase 3.5：SSRF allowlist + DNS rebinding batch check —— **必须**
+  // 在 stream 启动前做（W3 phase 3.5 verdict 5357c41 §A2：all-or-nothing 语义,
+  // 任一 deny → 整 batch 拒）。本路由返回 NDJSON stream，一旦 controller 开始 enqueue
+  // 就 HTTP 200，无法再回 400。pre-stream batch checkAsync + in-stream fetchWithAllowlist
+  // 双重防御：第一层防绝大多数攻击，第二层防 stream 启动后 DNS rebind 时间窗。
   const urlAllowlist = createUrlAllowlist(VERCEL_BLOB_PRESET);
-  for (const url of videoUrls) {
-    const result = urlAllowlist.check(url);
-    if (!result.ok) {
-      console.warn(
-        `[url-allowlist] denied url=${url} reason=${result.reason} route=technique-match`,
-      );
+  try {
+    await Promise.all(
+      videoUrls.map(async (url) => {
+        const result = await urlAllowlist.checkAsync(url);
+        if (!result.ok) {
+          throw new UrlAllowlistError(result.reason, url, {
+            resolvedIp: result.resolvedIp,
+            cause: result.cause,
+          });
+        }
+      }),
+    );
+  } catch (e) {
+    if (e instanceof UrlAllowlistError) {
+      if (e.reason === "dns_resolve_failed") {
+        console.warn(
+          `[url-allowlist] dns_resolve_failed url=${e.url} cause=${e.cause ?? "?"} route=technique-match`,
+        );
+        return new Response(
+          JSON.stringify({
+            error: "dns_resolve_failed",
+            message: "无法解析 URL（DNS 解析失败），稍后重试",
+          }),
+          {
+            status: 502,
+            headers: {
+              "content-type": "application/json",
+              "Retry-After": "5",
+            },
+          },
+        );
+      }
+      if (e.reason === "resolved_private_ip") {
+        // SECURITY EVENT (W3 verdict §C): DNS rebinding 尝试。response 同 url_denied
+        // 防 SSRF probe，server console.error 触发运维 alert。
+        console.error(
+          `[url-allowlist] resolved_private_ip url=${e.url} resolvedIp=${e.resolvedIp ?? "?"} route=technique-match`,
+        );
+      } else {
+        console.warn(
+          `[url-allowlist] denied url=${e.url} reason=${e.reason} route=technique-match`,
+        );
+      }
       return new Response(
         JSON.stringify({
           error: "url_denied",
@@ -120,6 +163,7 @@ export async function POST(req: NextRequest) {
         { status: 400, headers: { "content-type": "application/json" } },
       );
     }
+    throw e;
   }
 
   const baseVideoId =
@@ -153,7 +197,10 @@ export async function POST(req: NextRequest) {
         );
         await Promise.all(
           videoUrls.map(async (url, i) => {
-            const res = await fetch(url);
+            // Phase 3.5 (W3 verdict 5357c41 §B3): fetchWithAllowlist 在 stream
+            // 内防 DNS rebind 时间窗（pre-stream check 与 in-stream fetch 之间
+            // attacker 可能 rebind DNS）。UrlAllowlistError 会冒泡到 stream catch。
+            const res = await fetchWithAllowlist(url, urlAllowlist);
             if (!res.ok) {
               throw new Error(
                 `下载视频 ${i + 1}/${totalMaterials} 失败 (${res.status})`,

@@ -19,6 +19,32 @@ vi.mock("@/lib/technique-matching/match-engine", () => ({
   matchTechniques: vi.fn(),
 }));
 
+// Phase 3.5: mock node:dns + undici for checkAsync + fetchWithAllowlist
+vi.mock("node:dns", async () => {
+  const actual = await vi.importActual<typeof import("node:dns")>("node:dns");
+  return {
+    ...actual,
+    promises: { resolve4: vi.fn(), resolve6: vi.fn() },
+  };
+});
+
+const { mockPoolCtor } = vi.hoisted(() => ({ mockPoolCtor: vi.fn() }));
+vi.mock("undici", () => {
+  class MockPool {
+    close = vi.fn().mockResolvedValue(undefined);
+    constructor(origin: string, opts: { connect?: { servername?: string } }) {
+      mockPoolCtor(origin, opts);
+    }
+  }
+  return { Pool: MockPool };
+});
+
+import { promises as dns } from "node:dns";
+import {
+  mockDnsNxDomain,
+  mockDnsResolve,
+  resetDnsMocks,
+} from "@/tests/__stubs__/dns-mock";
 import { POST } from "@/app/api/technique-match/route";
 import { NextRequest } from "next/server";
 import { _resetBackendForTests } from "@/lib/rate-limit/backend";
@@ -34,11 +60,23 @@ beforeEach(() => {
   // memory backend 跨 test case 累积同一 "anon" IP 桶 → 第 4 case 起 429。
   // 每 case reset 让 SSRF / happy path 期望不漂移。
   _resetBackendForTests();
+  resetDnsMocks(dns);
+  mockPoolCtor.mockReset();
 });
 
 afterEach(() => {
   process.env = { ...originalEnv };
 });
+
+// Helper: mock DNS for multiple hosts to public IPs
+function mockHostsPublic(hosts: string[]): void {
+  const resolve4Mock = dns.resolve4 as unknown as ReturnType<typeof vi.fn>;
+  const resolve6Mock = dns.resolve6 as unknown as ReturnType<typeof vi.fn>;
+  resolve4Mock.mockImplementation((h: string) =>
+    hosts.includes(h) ? Promise.resolve(["1.2.3.4"]) : Promise.resolve([]),
+  );
+  resolve6Mock.mockResolvedValue([]);
+}
 
 function jsonReq(body: unknown): NextRequest {
   return new NextRequest("https://x/api/technique-match", {
@@ -132,8 +170,11 @@ describe("POST /api/technique-match · P3 #2 phase 2 SSRF allowlist gate", () =>
   });
 
   it("does not return 400 url_denied when all URLs pass allowlist (stream starts normally)", async () => {
-    // 所有 URL 合法 → 进入 stream（无 throw）；不验证 stream 行为本身
-    // （依赖更多 mock），只确认 allowlist gate 不误拒
+    // Phase 3.5: 都解析到 public IP → checkAsync 全部 ok → 进 stream（不再 deny）
+    mockHostsPublic([
+      "x.public.blob.vercel-storage.com",
+      "y.public.blob.vercel-storage.com",
+    ]);
     const res = await POST(
       jsonReq({
         videoUrls: [
@@ -145,5 +186,103 @@ describe("POST /api/technique-match · P3 #2 phase 2 SSRF allowlist gate", () =>
     // 200 + NDJSON stream（stream 内部 mock 已被 vi.mock 桩住，不会真调 API）
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toContain("application/x-ndjson");
+  });
+});
+
+describe("POST /api/technique-match · phase 3.5 dns_resolve_failed + resolved_private_ip pre-stream", () => {
+  it("dns_resolve_failed: 502 + Retry-After: 5 BEFORE stream starts (no NDJSON)", async () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      mockDnsNxDomain(dns);
+      const res = await POST(
+        jsonReq({
+          videoUrls: ["https://nx.public.blob.vercel-storage.com/a.mp4"],
+        }),
+      );
+      expect(res.status).toBe(502);
+      expect(res.headers.get("Retry-After")).toBe("5");
+      // **critical security property**: NOT NDJSON stream (proves pre-stream batch caught it)
+      expect(res.headers.get("content-type")).not.toContain("application/x-ndjson");
+      const body = await res.json();
+      expect(body.error).toBe("dns_resolve_failed");
+      const warned = warnSpy.mock.calls.map((c) => String(c[0]));
+      expect(
+        warned.some(
+          (m) =>
+            m.includes("dns_resolve_failed") &&
+            m.includes("route=technique-match"),
+        ),
+      ).toBe(true);
+      expect(mockPoolCtor).not.toHaveBeenCalled();
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it("resolved_private_ip: 400 url_denied + console.error BEFORE stream starts", async () => {
+    const errSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      mockDnsResolve(
+        dns,
+        "evil.public.blob.vercel-storage.com",
+        ["127.0.0.1"],
+      );
+      const res = await POST(
+        jsonReq({
+          videoUrls: ["https://evil.public.blob.vercel-storage.com/a.mp4"],
+        }),
+      );
+      expect(res.status).toBe(400);
+      // **critical security property**: NOT NDJSON stream (rejected pre-stream)
+      expect(res.headers.get("content-type")).not.toContain("application/x-ndjson");
+      const body = await res.json();
+      expect(body.error).toBe("url_denied"); // same as host_denied (防 SSRF probe)
+      const errored = errSpy.mock.calls.map((c) => String(c[0]));
+      expect(
+        errored.some(
+          (m) =>
+            m.includes("resolved_private_ip") &&
+            m.includes("127.0.0.1") &&
+            m.includes("route=technique-match"),
+        ),
+      ).toBe(true);
+      // No Pool ctor: zero connection attempt to rebound IP
+      expect(mockPoolCtor).not.toHaveBeenCalled();
+    } finally {
+      errSpy.mockRestore();
+    }
+  });
+
+  it("all-or-nothing batch: 1 of N URLs rebinds → entire batch rejected pre-stream", async () => {
+    const errSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const resolve4Mock = dns.resolve4 as unknown as ReturnType<typeof vi.fn>;
+      const resolve6Mock = dns.resolve6 as unknown as ReturnType<typeof vi.fn>;
+      resolve4Mock.mockImplementation((h: string) => {
+        if (h === "ok.public.blob.vercel-storage.com") return Promise.resolve(["1.1.1.1"]);
+        if (h === "evil.public.blob.vercel-storage.com") return Promise.resolve(["169.254.169.254"]);
+        return Promise.resolve([]);
+      });
+      resolve6Mock.mockResolvedValue([]);
+
+      const res = await POST(
+        jsonReq({
+          videoUrls: [
+            "https://ok.public.blob.vercel-storage.com/a.mp4",
+            "https://evil.public.blob.vercel-storage.com/b.mp4",
+          ],
+        }),
+      );
+      expect(res.status).toBe(400);
+      expect(res.headers.get("content-type")).not.toContain("application/x-ndjson");
+      const errored = errSpy.mock.calls.map((c) => String(c[0]));
+      expect(
+        errored.some(
+          (m) => m.includes("resolved_private_ip") && m.includes("169.254.169.254"),
+        ),
+      ).toBe(true);
+    } finally {
+      errSpy.mockRestore();
+    }
   });
 });
