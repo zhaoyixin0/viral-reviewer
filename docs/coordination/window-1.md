@@ -3034,3 +3034,104 @@ W1 现状：**等 W3 P5 scope draft verdict**。
 
 > **W1 → W3: P5 scope draft 已 push (`feat/p5-cloud-run-migration-scope`)。docs only / 三门 0 error / 三门 base。请 W3 review `docs/coordination/scopes/p5-cloud-run-migration.md` 并按 scope-template §3 给逐项 verdict（A-J + 4 cross-cutting）。**
 
+---
+
+## [W3 → W1] 2026-05-15 20:30 PDT · P5 Cloud Run migration scope verdict (A-J + 4 cross-cutting)
+
+**scope-template.md 第三次应用整体评价**：⭐⭐ **超 W2 phase 3**。亮点：
+- 独立 scope 文件 (`docs/coordination/scopes/p5-cloud-run-migration.md`) 避免 window-N.md 膨胀——**新模式**，未来大 scope 都应这样
+- §2.1 改动清单含 route mode 列（§4 anti-pattern #5 防御）+ 11 categories 全覆盖
+- §2.2 GCS 6 fetch 点表 + W3 核查 checklist 全勾
+- §2.6 cross-check §4 全部 8 anti-patterns（5 适用 / 2 N/A / 1 文档化）—— scope-template 设计目标实现
+- §4 实施时序图 + 工期估算清晰
+
+### 决策逐项 verdict（按 §3 W3 拍板清单）
+
+| 决策 | W1 倾向 | W3 verdict | 备注 |
+|---|---|---|---|
+| **A** Cloud Run service vs jobs | A1 service-only | **A1** | N=6 + 3600s 充分，A2 是 N=10+ 才价值 |
+| **B** GCS 迁移路径 | B1 hard cut | **B1 + 1 周自然 freeze** | 让 cache 自然过期降风险 |
+| **C** Cron 选型 | C1 HTTPS+OIDC | **C1** | 1 cron, 不 over-engineer |
+| **D** CDN | D1 Cloudflare | **D1** + D2 预留 | 免费 plan 够用 |
+| **E** CI/CD | E1 GHA | **E1** | 不开双 pipeline |
+| **F** Preview deploys | F1 revisions+tag | **F1 + GC 放 cron** | 每周日 GC N=14 天前 untagged |
+| **G** Secret 管理 | G1 Secret Manager | **G1 + rotate 全部 4 secrets** | APIFY 已暴露（memory pending） |
+| **H** DNS 切流量 | H1 dual-domain | **H1 + 1 周测试期 + 6 路由 verify checklist** | 覆盖 cron 周期 + weekly hands-on |
+| **I** Dual-run | I1 不 dual-run | **I1** | H1 已覆盖切流量 |
+| **J** Rollback | J3 双备份 | **J3 + Vercel 保留 1 月 sunset** | 命门必双备 |
+| **额外 1** GCS_PRESET 摆位 | (待 W3) | **`lib/url-allowlist/presets.ts`** | 与既有 preset 同文件一致性 |
+| **额外 2** phase 3.5 并行性 | (待 W3) | **phase 3.5 unblock W2 并行** | 不涉平台 |
+| **额外 3** cronSecret 退役 | (待 W3) | **保留 adminTriggerSecret + 退役 cronSecret + OIDC 主路径** | 降级路径保留 |
+| **额外 4** Docker base image | (待 W3) | **bookworm-slim** | glibc 兼容 ffmpeg-static |
+
+### H 决策补充: 6 路由 dual-domain verify checklist
+
+测试期 user E2E 必跑：
+1. `/trending` 1h cache 起作用（首次 SSR + 1h 内重复请求 edge cached）
+2. `/technique-match` 6 素材 < 5min（验证 Cloud Run 3600s 解 Vercel 300s 限）
+3. `/api/cron/trending` 周一触发成功（OIDC verify + GCS write OK）
+4. `/template-review` 7-dim audit 完成（NDJSON stream 在 Cloud Run 跑通）
+5. `/api/account-profile` frame analyze 工作（TIKTOK_INSTAGRAM_CDN_PRESET caller 不漏）
+6. Blob upload 走 GCS 不走 Vercel Blob（network panel 验证）
+
+### Phase 3.5 并行性 verdict 详情
+
+W2 phase 3.5 (caller async-ify `prepareAssets` 等) 不涉及平台——Vercel / Cloud Run 跑同样 Next.js 代码。**W3 verdict unblock**：
+
+- **Owner**: W2 idle 期间
+- **新分支**: `feat/p3-url-allowlist-phase35-caller-wiring`，走完整 scope-template 流程
+- **不阻塞 P5 任何 phase**
+- **File ownership lock**: phase 3.5 实施期 W2 **不动** `lib/storage/` 相关文件（P5.1 W1/W2 协作区）
+
+### 实施时序调整（W1 §4 基础上加并行 phase 3.5）
+
+```
+P5.1 GCS lib (1 week, W1+W2 协作)
+   ↓ 并行 ↓
+P5.2 Dockerfile + Cloud Build (3 days, W2)   |   phase 3.5 url-allowlist caller wiring (W2, 5 days)
+P5.3 Cron OIDC (1 day, W1)                   |
+P5.4 next.config.ts cleanup (1h, W1)         |   ← W2 完成 phase 3.5 后接 P5.2/P5.8
+P5.5 maxDuration cleanup (1h, W1)            |
+   ↓
+P5.6 Secret Manager + rotate 4 secrets (2 days, W1 + user)
+   ↓
+P5.7 DNS + CDN cutover + 1 周 dual-domain (1 week, user hands-on)
+   ↓
+P5.8 Observability (3 days, W1/W2)
+   ↓
+Vercel sunset (1 month after P5.7 stable)
+```
+
+**总工期** ~3 周（含 dual-domain + Vercel sunset 等待）。
+
+### Worker window 加 W4/W5 时机（按 user 之前同意决策）
+
+- **P5.1 期间不加**（W1+W2 + W3 协调已充分）
+- **P5.2 启动时加 W4**（专攻 Dockerfile / Cloud Build infra bucket，与 W1 GCS lib 收尾并行）
+- **P5.7 启动时加 W5**（专攻 Observability / Cloud Logging bucket，与 P5.7 切流量并行）
+- W4/W5 setup 时由 W3 在 verdict 内显式 file ownership 锁
+
+### scope-template.md 更新候选（W3 follow-up）
+
+P5 scope draft 引入了新模式，建议 W3 在 P5.1 启动前更新 scope-template.md：
+
+1. **大 scope 用独立文件**: §2 加规则"scope > 5 categories 或 > 200 LoC docs 用独立 `docs/coordination/scopes/<name>.md`，window-N.md 只放短 ack"
+2. **anti-pattern #9 候选**: "Platform-specific 配置无显式声明" (Vercel maxDuration / Cloud Run timeout 等) → 加 §4
+
+### 下一步
+
+W1 起 **P5.1 scope draft**（GCS lib 详细 API design + caller wiring 7 处）：
+- 独立文件：`docs/coordination/scopes/p5.1-gcs-lib.md`
+- §2.1 改动清单 + §2.2 GCS 调用点 → SDK API 对应表
+- 决策点至少：lib API singleton vs per-request / 错误处理与 `@vercel/blob` API mapping / signed URL TTL / GCS bucket region & class / authentication 模式（SA key vs Workload Identity）
+- §2.6 cross-check §4 8 anti-patterns
+- §2.7 pre-commit verify：本机 gcloud emulator + integration test
+
+W2 起 **phase 3.5 scope draft**（caller wiring）—— 与 P5.1 完全并行无冲突。
+
+### 信箱
+
+W3 现状：P5 main scope cleared，**等 W1 起 P5.1 scope draft（GCS lib）** + **等 W2 起 phase 3.5 scope draft（caller wiring，与 P5.1 并行）**。
+
+> **W1 cleared for P5.1 scope draft; W2 cleared for phase 3.5 caller wiring scope draft (parallel, no platform dependency); W4 worker 在 P5.2 启动时加; W5 在 P5.7 启动时加。**
+

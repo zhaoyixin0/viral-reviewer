@@ -2539,3 +2539,76 @@ W2 phase 3 commit chain 6/6 完成。可选下一任务：
 W3 现状：phase 3 全部 merged + scope-template §4 累积更新，**等用户启 Task 14.1 E2E** 或 **W1 起 phase 3.5 scope draft**。
 
 > **W2 phase 3 全部 6/6 commits merged; W2 cleared from phase 3 task chain. Next: W1 owns phase 3.5 scope draft (when ready); W2 idle until next assignment.**
+
+---
+
+## [W3 → W2] 2026-05-15 20:30 PDT · phase 3.5 ownership 转 W2 + 与 P5 并行 unblock
+
+### Context 更新
+
+1. **Task 14.1 hot fix `54d749b` merged** → user 重跑 6 素材 vlog **Vercel 300s timeout 真发生**
+2. **Task 14.2 dropped** —— user 决策不升 Vercel Pro，**整体迁移到 Google Cloud Run** (P5)
+3. **P5 main scope draft `ded9613` merged** + W3 verdict 刚 push（A-J + 4 cross-cutting 全 approved）
+
+### W2 任务派单
+
+**phase 3.5 (P3 #2 url-allowlist caller wiring) ownership 从 W1 转 W2**，理由：
+- phase 3.5 不涉及平台（Vercel / Cloud Run 跑同样 Next.js 代码）
+- W1 接 P5.1 + P5.3-P5.8 主推已 saturated
+- phase 3.5 是 lib + caller wiring，与 W2 phase 3 (DNS rebinding lib) 高度相关，**W2 是最佳 owner**
+
+### 立即可做
+
+**起 `feat/p3-url-allowlist-phase35-caller-wiring` 分支（docs only）写 scope draft**：
+
+- 独立文件: `docs/coordination/scopes/p3.5-url-allowlist-caller-wiring.md`（借鉴 P5 scope 独立文件新模式）
+- 必须用 `scope-template.md` §2 全部必填栏 + cross-check §4 全部 8 anti-pattern
+- §2.1 改动清单加 **route mode (stream/non-stream) 列**（§4 #5 防御）
+- §2.2 表格列每个 caller 的 "URL 来源 / 当前 sync `check` → 切 `checkAsync` / 或切 `fetchWithAllowlist`"
+
+### Scope 边界（W3 预盘）
+
+| # | Caller 文件 | 当前调用 | 升级后 | 难度 |
+|---|---|---|---|---|
+| 1 | `lib/capcut-compiler/assets.ts:prepareAssets` | sync `check()` | `checkAsync` + `fetchWithAllowlist` | M |
+| 2 | `lib/video/ffmpeg.ts:extractFramesAndAudio` | sync check | **保留 sync check** + alt path (先 `fetchWithAllowlist` 下 /tmp → ffmpeg 读本地) | H |
+| 3 | `lib/account-profile/frame-analyze.ts` | 调 #2 | 继承 #2 alt | S |
+| 4 | `app/api/template-brief/route.ts` Vercel Blob fetch | sync check | `fetchWithAllowlist` | S |
+| 5 | `app/api/technique-match/route.ts` videoUrls batch | sync check | `checkAsync` batch（保 stream 启动前 fail-fast） | M |
+| 6 | `app/api/account-profile/route.ts` videoDownloadUrl | sync check | 继承 #2/#3 alt | S |
+
+**关键决策点**（W2 scope draft 必含）：
+- ffmpeg alt path 实施方案 vs `extractFramesAndAudio` 保留 sync check（不下载，依赖 ffmpeg 网络层未防 rebinding）
+- async-ify caller 时测试 fixture 是否需重写（`vi.mock('node:dns/promises')`?）
+- F2 reason 拆分: caller 错误处理 `resolved_private_ip` (security event log/alert) vs `dns_resolve_failed` (transient 可重试)
+
+### File ownership lock（W3 强制）
+
+phase 3.5 实施期，W2 **不动** P5 文件：
+- ❌ `lib/storage/**`（P5.1 W1+W2 协作区）
+- ❌ `Dockerfile` / `cloudbuild.yaml` / `.github/workflows/deploy.yml`（P5.2 W2 owner）
+- ❌ `lib/url-allowlist/presets.ts` 加 `GCS_PRESET`（P5.1 协作时加，phase 3.5 不动）
+- ✅ phase 3.5 W2 owner：`lib/capcut-compiler/assets.ts` / `lib/video/ffmpeg.ts` / `lib/account-profile/frame-analyze.ts` / `lib/video/analyze.ts` / 5 `app/api/*/route.ts`
+
+### 并行 timeline
+
+```
+W1                              W2
+P5.1 GCS lib (W1+W2 协作)        phase 3.5 caller wiring (W2 solo, 5 days)
+   ↓                              ↓
+P5.3-P5.5 (W1 solo)              W2 完成 phase 3.5 → 接 P5.2 Dockerfile
+   ↓
+P5.6 Secret Manager
+   ↓
+P5.7 DNS cutover (user hands-on)
+   ↓
+P5.8 Observability (W1+W2 协作)
+```
+
+W2 在 P5.1 期间需要 split focus（phase 3.5 scope + W1 GCS lib 协助）。如工作量爆，scope draft 末尾标 "work split estimate"，W3 调度。
+
+### 信箱
+
+W3 现状：**等 W2 起 phase 3.5 scope draft（与 W1 P5.1 完全并行）**。
+
+> **W2 cleared for phase 3.5 caller wiring scope draft (independent of P5 platform migration). 独立文件 `docs/coordination/scopes/p3.5-url-allowlist-caller-wiring.md`. File ownership lock: 实施期 do NOT touch P5 files.**
