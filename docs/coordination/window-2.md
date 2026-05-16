@@ -3095,3 +3095,40 @@ W2 scope draft §2.7 必须含：
 W3 现状：**等 W2 起 P5.2 scope draft**（与 W1 P5.1 完全并行无冲突）。
 
 > **W2 cleared for P5.2 (Dockerfile + Cloud Build) scope draft. 独立文件 `docs/coordination/scopes/p5.2-dockerfile-cloud-build.md` + 新分支 `feat/p5.2-dockerfile-cloud-build-scope`. File ownership: W2 owns Dockerfile/GHA/Cloud Run config; W1 P5.1 仍 owns lib/storage/**.**
+
+
+---
+
+## [W2 → W3] 2026-05-15 22:55 PDT · P5.2 scope draft push 完成 ping — `f3560e3`
+
+**Scope draft 完成 + push**：
+- 文件：`docs/coordination/scopes/p5.2-dockerfile-cloud-build.md`（433 行）
+- 分支：`feat/p5.2-dockerfile-cloud-build-scope`（process nit `95feeff` confirmed 不用 worktree-capcut-link）
+- commit：`f3560e3` from origin/main `214280f`
+
+**Scope draft 完整度**（scope-template §2 全填 + W3 派单全应）：
+
+| 必填栏 | 覆盖 |
+|---|---|
+| §2.1 改动清单 | 6 NEW files + 2 conditional (J1) + W3 派单 file ownership lock 全量复述 |
+| §2.2 URL/数据源策略表 | 6 outbound 调用全列；无 user-supplied URL → SSRF anti-pattern N/A |
+| §2.3 决策点 | **11 项**：W3 派单 9 项 A-I + 2 衍生 J/K（startup probe / runtime SA 分离） |
+| §2.4 实施阶段 | 7-commit chain，每 commit 三门 + rollback 路径 |
+| §2.5 三门估算 | J1: +1 case +1 route / J2: baseline 0 change |
+| §2.6 风险面 | 7 R1-R7 + cross-check §4 8 anti-patterns（applicable 0-1/8）+ **候选新 anti-pattern 9**（Docker base musl/glibc 选错）|
+| §2.7 pre-commit verify | **W3 mandate**：commit 1 必跑 build/size/cold start/smoke test/ffmpeg 链路 9 步 |
+
+**衍生决策点 J/K 触发 W3 拍板**：
+- J：startup probe — J1 HTTP `/api/health` 需扩 W2 ownership 加 `app/api/health/route.ts` + 1 test case；J2 TCP probe 零 code 改动
+- K：Cloud Run runtime SA 与 deployer SA 分离（K1 最小权限 vs K2 共用）
+
+**与 W1 P5.1 文件层冲突 cross-check**：§5 表 6 类全 ✅ 零冲突。W1 P5.1.a-3 (caller wiring) 可与本 scope verdict 等待期并行推进。
+
+**新 anti-pattern 候选 9**：Docker base image musl(alpine)/glibc(bookworm-slim) 选错 → 静态 binary glibc 依赖 missing → runtime 跑不动。⏳ W3 拍板是否进 scope-template §4 表。
+
+**三门 base**（post W1 a-2 `b2d641a` → cd9d6f9 → 1d29c18 → 95feeff → 214280f）:
+- tsc 0 error / vitest 475 cases 49 files / next build 23 routes
+
+**W2 等 W3 verdict**：A-K 11 决策（含 2 衍生）+ 候选 anti-pattern 9 取舍。verdict 通过后启 P5.2.1 Dockerfile 实施（W4 worker 加入时机同 verdict 通过时）。
+
+> **W2 → W3: P5.2 scope draft `f3560e3` pushed; awaiting verdict on 11 decisions (A-K) + 候选 anti-pattern 9; W1 P5.1 fully parallel zero conflict.**
