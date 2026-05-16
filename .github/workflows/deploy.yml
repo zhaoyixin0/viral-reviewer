@@ -90,7 +90,10 @@ jobs:
       # across gcloud SDK versions; wc -l polluted by header / warning lines).
       - name: Verify required Secret Manager secrets exist
         run: |
-          REQUIRED_SECRETS=(anthropic-api-key openai-api-key google-api-key apify-token blob-read-write-token)
+          # upload-signing-secret added per W3 mandate 78b7d2f patch 3
+          # (W1 P5.1.b-2 design: HMAC-SHA256 sign completion token for
+          # browser-direct-upload ping)
+          REQUIRED_SECRETS=(anthropic-api-key openai-api-key google-api-key apify-token blob-read-write-token upload-signing-secret)
           missing=0
           for secret in "${REQUIRED_SECRETS[@]}"; do
             if ! gcloud secrets describe "$secret" --project="${{ secrets.GCP_PROJECT_ID }}" >/dev/null 2>&1; then
