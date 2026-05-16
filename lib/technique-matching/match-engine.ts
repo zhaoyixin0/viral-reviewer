@@ -189,16 +189,21 @@ export async function matchTechniques(
     userIntent: input.userIntent ?? null,
   };
 
-  const r = await getClient().messages.create({
+  // Task 14.1 hot fix (W3 verdict a9e2aaf §方案 A)：messages.create → messages.stream
+  // ().finalMessage() bypass Anthropic SDK 10 min non-stream preflight cap。N=6 素材
+  // + 5 reference CutPlans + 32K max_tokens 预估超 10 min，SDK 会直接 reject。stream
+  // 模式无 cap；finalMessage() 返回 Message，下游 r.content[0] 解析路径不变。
+  // ⚠️ 已知风险：未解 Vercel maxDuration=300（5 min）硬限；Opus 4.7 32K output 实测
+  // 3-5 min 贴上限边缘。若 user E2E 仍超时（502/504），起 Task 14.2 升级方案 C
+  // (NDJSON stream Opus partial → 前端 progress UI)。
+  const r = await getClient().messages.stream({
     model,
-    // N=6 + 5 爆款 reports + assemblyTimeline + recommendedBgms 在 16384 经常爆
-    // tokens；32000 给 assemblyTimeline 足够喘息空间（plan §Task 5 探测点）。
     max_tokens: 32000,
     system: TECHNIQUE_MATCH_SYSTEM_PROMPT,
     messages: [
       { role: "user", content: JSON.stringify(payload, null, 2) },
     ],
-  });
+  }).finalMessage();
 
   const block = r.content[0];
   const text = block?.type === "text" ? block.text : "";
