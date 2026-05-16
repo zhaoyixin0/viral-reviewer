@@ -3440,3 +3440,55 @@ W4 现状：onboarding 完成，立即启 **P5.2.1** (Dockerfile + .dockerignore
 
 > **W4 → W3: 接手 ack 已发，立即启 P5.2.1。若 R1 GLIBC 触发将 hold push 转 blocker section。**
 
+---
+
+## [W4 → W3] 2026-05-15 23:46 PDT · blocker on P5.2.1 — next.config.ts `output: "standalone"` 缺失（ownership 冲突）
+
+启 P5.2.1 实施前发现 scope assumption 与 W4 ownership boundary 冲突，hold Dockerfile 实施待 W3 verdict。
+
+### 问题
+
+P5.2 scope `f3560e3` §2.1 #1 + §2.3 H 均假设 Next.js standalone mode (`.next/standalone/server.js`)。W2 P5.2.3 service.yaml `a6d7d5c` line 77 注释也写 "memory=2Gi 覆盖 **standalone server** (~150MB)"，进一步确认 scope 整体假设。
+
+但当前 `next.config.ts` baseline 没有 `output: "standalone"` 配置：
+
+```typescript
+const nextConfig: NextConfig = {
+  images: { remotePatterns: [...] },
+  outputFileTracingIncludes: { "/api/analyze-video": [...] },
+  serverExternalPackages: [...],
+  experimental: { serverActions: { bodySizeLimit: "20mb" } },
+};
+```
+
+`npm run build` 当前**不产生** `.next/standalone/`（已 ls .next/ 确认无 standalone/ 子目录）。
+
+### Ownership 冲突
+
+`next.config.ts` 是 **P5.4 (W1)** owned per p5 parent §4 时序 + P5.2 scope §"不在本 scope" + W3 verdict file ownership lock 三重 freeze。W4 严格 ownership = Dockerfile 实施时 standalone 不可用。
+
+p5 parent §4 时序: P5.2 → P5.3 → P5.4 → ...，P5.4 在 P5.2 之后。
+
+### 三选项
+
+| Opt | 路径 | image size | scope 偏离 | ownership | 时间成本 |
+|---|---|---|---|---|---|
+| **A** | Hold P5.2.1，W3 verdict 扩 ownership 给某 owner +1 行 `output: "standalone"`（独立 commit） | ~300MB | 0（fit scope） | ✅ 严格 | +1 commit round-trip |
+| **B** | W4 实施 Dockerfile 用 `npm start` mode（COPY 全 `.next` + production `node_modules`），不依赖 standalone；commit message explicit deviation note + 留 follow-up（P5.4 加 standalone 后 W4 follow-up 切 standalone -150MB） | ~450MB（仍在 R3 < 500MB 内） | 中 | ✅ 严格 | +0h |
+| **C** | W4 在 P5.2.1 commit 内偷塞 next.config.ts 1 行 `output: "standalone"` | ~300MB | 0 | ❌ 破坏 ownership lock | +0h（但开后门） |
+
+### W4 倾向
+
+W4 **倾向 B**：不破坏 ownership，scope 偏离可接受（image size 450MB 仍在 R3 目标 < 500MB 内），follow-up 任务清楚。**不推 C**（ownership 防御机制是 P3 #2 phase 2 教训直接产物，不应一次开后门）。
+
+若 W3 选 **A**: 哪个 owner +1 行？候选: W1 提前启 P5.4 minimal subset / W2 借 P5.2 cross-ownership 顺手加 / 临时扩 W4 ownership 单文件 single-line（W4 倾向最后一项，最局部）。
+
+补充上下文: W2 service.yaml `a6d7d5c` memory=2Gi 已按 standalone 假设规划（standalone ~150MB vs full mode ~150MB Node + ~300MB node_modules pages = 类似总量），所以 service.yaml 不受 standalone 与否影响（memory budget 充足）。
+
+### 信箱
+
+W4 现状：P5.2.1 **hold**，等 W3 verdict（A/B/C）。P5.2.5 不依赖 standalone 决策，但按 commit-by-commit 节奏先等 P5.2.1 verdict 再启。
+
+> **W4 → W3: blocker on P5.2.1 — standalone config 缺失，scope assumption ↔ ownership lock 冲突，hold 等 verdict (A/B/C)。W4 倾向 B；若 A 推 W3 临时扩 W4 ownership +1 行 next.config.ts。**
+
+
