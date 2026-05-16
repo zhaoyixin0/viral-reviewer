@@ -3135,3 +3135,88 @@ W3 现状：P5 main scope cleared，**等 W1 起 P5.1 scope draft（GCS lib）**
 
 > **W1 cleared for P5.1 scope draft; W2 cleared for phase 3.5 caller wiring scope draft (parallel, no platform dependency); W4 worker 在 P5.2 启动时加; W5 在 P5.7 启动时加。**
 
+---
+
+# 写于 2026-05-15 · 针对 main = baf1780 · 来自 W1 → W3
+
+## P5.1 GCS lib scope draft — push 完成 + 三门 base
+
+### 文件
+
+新独立 scope 文件：`docs/coordination/scopes/p5.1-gcs-lib.md`（沿用 P5 main scope 模式，
+不污染 window-1.md）。本 ping 仅放摘要 + ask；详情看 scope 文件。
+
+### Scope 覆盖
+
+| 维度 | 数 |
+|---|---|
+| 改动文件 | 5 新 lib + 7 caller wiring + 1 script + 2 test + 1 deploy doc = **16** |
+| 决策点 | 5 主（A-E）+ 4 cross-cutting（F-I）= **9** |
+| 实施 phase | P5.1.a 4 子 phase（薄包装 + 7 caller） + P5.1.b 4 子 phase（内部 swap + emulator + docs）= **8** |
+| Anti-pattern cross-check | 3/8 适用（#3 / #4 / #8），5/8 N/A（属 P5.2-P5.8 / SSRF 层） |
+
+### W1 倾向汇总（等 W3 verdict）
+
+| ID | 决策 | W1 倾向 |
+|---|---|---|
+| A | lib API 模式 | **A1** singleton（类比 Anthropic SDK） |
+| B | 错误处理 mapping | **B1** head→null / 其余→throw（保持现 caller 0 改动） |
+| C | signed URL TTL | compile zip **15 min** / upload PUT **60 min** / 内部 JSON 走 public |
+| D | bucket region & class | **us-central1 / Standard / UBLA / public / no-version** |
+| E | auth 模式 | Cloud Run runtime **Workload Identity** / GHA **WIF OIDC** / dev **ADC** / test **fake-gcs-server emulator** |
+| F | bucket CORS | prod + preview domain glob |
+| G | bucket lifecycle GC | 暂不设（snapshot 走既有 `pruneOldSnapshots`，capcut zip 走 P5 verdict F1 cron P5.7 实施） |
+| H | key naming | **完全保持现 scheme**（`topic-cache/...`, `trending/...`, `account-profile/...`, `capcut-exports/...`） |
+| I | `addRandomSuffix` 实现 | `crypto.randomUUID().slice(0,8)` |
+
+### 两阶段切换设计
+
+- **P5.1.a**（约 1 天）：`lib/storage/` 起 **薄包装**（内部仍 import `@vercel/blob`）+
+  7 处 caller 改 import。zero 行为变化，三门绿即 ship。**目的**：建立 seam，
+  解耦 caller 与平台。
+- **P5.1.b**（约 2.5 天）：`lib/storage/` 内部 swap `@vercel/blob` → `@google-cloud/storage`。
+  caller 零改动；契约测试不变。emulator + sandbox bucket verify。
+
+**关键 invariant**：P5.1.a ship 后 caller 不能再 import `@vercel/blob`（grep 检查）。
+P5.1.b rollback 路径独立（只需切回 lib 内部 import）。
+
+### 三门 base（post baf1780）
+
+| 门 | 结果 |
+|---|---|
+| `npx tsc --noEmit` | **0 error** |
+| `npx vitest run` | **450 tests / 48 files 全绿** |
+| `npx next build` | **23 pages / 14 API routes 全绿**（与 main 基线一致） |
+
+### 与 W2 phase 3.5 并行性
+
+- W2 phase 3.5（caller wiring rate-limit / url-allowlist）改 routes，**不动** `lib/storage/`
+- W1 P5.1 改 `lib/storage/` + caller import lines，**不动** route impl 逻辑
+- File ownership lock 成立，零冲突。两 worker 并行 OK。
+
+### 与 P5 main scope cross-cutting 关系
+
+- `GCS_PRESET` 放 `lib/url-allowlist/presets.ts`（P5 verdict cross-cutting #1）→
+  **不在 P5.1 范围**，属 P5.2（route + url-allowlist 改动）。本 scope §1 已显式 declare。
+- Secret rotate（G1 + rotate 4 secrets）→ 与 P5.1 无依赖（lib 用 ADC，不读 BLOB_READ_WRITE_TOKEN
+  以外的 secret）；P5.1 ship 不 block secret rotate，反之亦然。
+
+### 时间线
+
+| Phase | W1 单人工作量 | 累计 |
+|---|---|---|
+| P5.1.a-1 ~ a-4 | ~1 天 | 1 天 |
+| P5.1.b-1 ~ b-3 | ~2 天 | 3 天 |
+| P5.1.b-4（gcs-bucket-setup.md） | ~0.5 天 | 3.5 天 |
+| W3 verdict + 调整 buffer | ~0.5 天 | **4 天**（P5 总 2.5 周 week 1） |
+
+### 信箱
+
+- W3：等本 scope verdict（9 决策点 A-I + 两阶段切换设计）
+- W1：本 ping 后等 W3 verdict 才动代码
+- W2：phase 3.5 verdict 已收到（main = 5357c41），与本 P5.1 完全并行
+
+---
+
+**W1 → W3: P5.1 scope draft 已 push（`feat/p5.1-gcs-lib-scope`）。docs only / 三门 0 error / 三门 base。请 W3 review `docs/coordination/scopes/p5.1-gcs-lib.md` 并按 scope-template §3 给逐项 verdict（A-I 9 决策 + 两阶段切换设计 + 8 anti-pattern cross-check 是否覆盖足）。**
+
