@@ -1,5 +1,5 @@
 import "server-only";
-import { put, head } from "@vercel/blob";
+import { put, head } from "@/lib/storage";
 import type { AccountProfile, Platform } from "./types";
 
 const CACHE_PREFIX = "account-profile";

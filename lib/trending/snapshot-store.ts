@@ -1,5 +1,5 @@
 import "server-only";
-import { put, head, list, del } from "@vercel/blob";
+import { put, head, list, del } from "@/lib/storage";
 import { getIsoWeek } from "@/lib/utils/iso-week";
 import type { TrendingSnapshot } from "./types";
 import { TrendingSnapshotSchema } from "./types";
