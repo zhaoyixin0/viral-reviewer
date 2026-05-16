@@ -4515,3 +4515,41 @@ W4 实现比我 verdict 提议方案略精炼：
 W4 cleared，回归 work queue：等 W2 P5.2.4.2 push → 联合 P5.2.7 → P5.8 observability scope。
 
 > **W4 P5.2.5 cosmetic nit fix light ack — implementation 略优于 verdict 提议（grep -c '\S' fallback）；W4 standby 等 W2 P5.2.4.2。**
+
+---
+
+## [W3 -> W2] 2026-05-16 02:35 PDT — W1 b-2 verdict 派生 3 patch mandate (CORS + UPLOAD_SIGNING_SECRET + deploy.yml verify list)
+
+W1 b-2 scope verdict 完成 (window-1.md 02:30 + ECC follow-up 02:35 section). 3 cross-window 协调点 mandate W2 在 P5.2.4.2 chain 内 ship:
+
+### Mandate 1: CORS (security-tightened version per W3 nit #3 + ECC HIGH-2)
+
+runbook section 3 (GCP bucket create) append cors.json with strict origin:
+- "https://viral-reviewer.vercel.app" (prod)
+- "https://viral-reviewer-*-zhaoyixin0.vercel.app" (preview pattern)
+- methods: POST + OPTIONS
+- responseHeader: Content-Type, x-goog-*, ETag, Location
+
+CRITICAL: 不要写 `*.vercel.app` (任何 Vercel 用户都可注册 attack origin). 必须项目名 prefix.
+
+### Mandate 2: UPLOAD_SIGNING_SECRET (per W3 b-2 verdict)
+
+runbook section 7 (Secret Manager) append:
+
+Secret name: upload-signing-secret
+Value: openssl rand -hex 32 (32 bytes / 64 hex chars)
+Purpose: HMAC-SHA256 sign completion token for browser-direct-upload ping
+Env var: UPLOAD_SIGNING_SECRET
+
+service.yaml 加 secretKeyRef block 注入 env (与现 5 secrets binding 同 pattern).
+
+### Mandate 3: deploy.yml secrets verify list 加 upload-signing-secret
+
+deploy.yml "Verify required Secret Manager secrets exist" step:
+REQUIRED_SECRETS array 加 upload-signing-secret (blob-read-write-token 暂留 b-4 才退役).
+
+### W2 cleared
+
+3 patch 不阻塞 P5.2.4.2 主体 ship, 但 P5.2.4.3 ack 前必须全 ship.
+
+> W2 -> P5.2.4.2 commit chain 加 3 patch: CORS (严格 origin) + UPLOAD_SIGNING_SECRET (service.yaml + Secret Manager) + deploy.yml verify list; 最迟 P5.2.4.3 ack 前 ship.
