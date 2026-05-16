@@ -12,6 +12,9 @@ import {
   clientIp,
   ANON_AI_HEAVY,
 } from "@/lib/rate-limit";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "api/analyze-video" });
 
 export const runtime = "nodejs";
 
@@ -64,9 +67,10 @@ async function impl(req: NextRequest) {
   } catch (e) {
     if (e instanceof UrlAllowlistError) {
       if (e.reason === "dns_resolve_failed") {
-        console.warn(
-          `[url-allowlist] dns_resolve_failed url=${e.url} cause=${e.cause ?? "?"} route=analyze-video`,
-        );
+        log.warn("url-allowlist dns_resolve_failed", {
+          url: e.url,
+          cause: e.cause ?? null,
+        });
         return NextResponse.json(
           {
             error: "dns_resolve_failed",
@@ -76,20 +80,22 @@ async function impl(req: NextRequest) {
         );
       }
       if (e.reason === "resolved_private_ip") {
-        console.error(
-          `[url-allowlist] resolved_private_ip url=${e.url} resolvedIp=${e.resolvedIp ?? "?"} route=analyze-video`,
-        );
+        log.error("url-allowlist resolved_private_ip", {
+          url: e.url,
+          resolvedIp: e.resolvedIp ?? null,
+        });
       } else {
-        console.warn(
-          `[url-allowlist] denied url=${e.url} reason=${e.reason} route=analyze-video`,
-        );
+        log.warn("url-allowlist denied", {
+          url: e.url,
+          reason: e.reason,
+        });
       }
       return NextResponse.json(
         { error: "url_denied", message: "提供的 URL 不在允许列表中" },
         { status: 400 },
       );
     }
-    console.error("[analyze-video] error:", e);
+    log.error("error", { err: e });
     return NextResponse.json(
       { error: "analyze_failed", message: (e as Error).message },
       { status: 500 },

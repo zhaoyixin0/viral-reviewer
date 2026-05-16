@@ -88,7 +88,7 @@ describe("POST /api/template-brief (JSON blob URL branch)", () => {
   it("rejects non-vercel-storage hostname with 400 url_denied (post-Zod allowlist)", async () => {
     // Phase 2 起改用 lib allowlist：旧 `isVercelBlobUrl` inline 已删，error 字符串
     // 从 `invalid_blob_url` 统一为 `url_denied`（W3 B2 verdict，不暴露 reason）
-    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const warnSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       const res = await POST(
         jsonReq({ blobUrl: "https://evil.com/x.pdf", fileName: "x.pdf" }),
@@ -104,7 +104,7 @@ describe("POST /api/template-brief (JSON blob URL branch)", () => {
           (m) =>
             m.includes("evil.com") &&
             m.includes("host_denied") &&
-            m.includes("route=template-brief"),
+            m.includes('"module":"api/template-brief"'),
         ),
       ).toBe(true);
     } finally {
@@ -140,7 +140,7 @@ describe("POST /api/template-brief (JSON blob URL branch)", () => {
   it("rejects http:// scheme on blob hostname with 400 url_denied (scheme_denied reason)", async () => {
     // 旧 inline isVercelBlobUrl 只校 hostname endsWith,不阻 http://；phase 2 起
     // VERCEL_BLOB_PRESET 强制 https:,模拟攻击者 host header injection 走 http
-    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const warnSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       const res = await POST(
         jsonReq({
@@ -161,7 +161,7 @@ describe("POST /api/template-brief (JSON blob URL branch)", () => {
   it("rejects literal private IP host with 400 url_denied (private_ip reason)", async () => {
     // 旧 inline 只 hostname.endsWith 不阻私有 IP；phase 2 阻 127.0.0.1
     // / 169.254.169.254（云元数据）/ ::1 等
-    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const warnSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       const res = await POST(
         jsonReq({
@@ -181,7 +181,7 @@ describe("POST /api/template-brief (JSON blob URL branch)", () => {
 
   it("rejects AWS metadata IP 169.254.169.254 with 400 url_denied", async () => {
     // 防御性回归 case：AWS / GCP metadata endpoint 是典型 SSRF 攻击目标
-    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const warnSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       const res = await POST(
         jsonReq({
@@ -202,7 +202,7 @@ describe("POST /api/template-brief (JSON blob URL branch)", () => {
 
 describe("POST /api/template-brief · phase 3.5 dns_resolve_failed + resolved_private_ip mapping", () => {
   it("dns_resolve_failed: 502 + Retry-After: 5 (transient, caller may retry)", async () => {
-    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const warnSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       mockDnsNxDomain(dns);
       const res = await POST(
@@ -222,7 +222,7 @@ describe("POST /api/template-brief · phase 3.5 dns_resolve_failed + resolved_pr
           (m) =>
             m.includes("dns_resolve_failed") &&
             m.includes("nx.public.blob.vercel-storage.com") &&
-            m.includes("route=template-brief"),
+            m.includes('"module":"api/template-brief"'),
         ),
       ).toBe(true);
       // no actual Pool/fetch
@@ -233,7 +233,7 @@ describe("POST /api/template-brief · phase 3.5 dns_resolve_failed + resolved_pr
   });
 
   it("resolved_private_ip: 400 url_denied (防 SSRF probe) + console.error (security event)", async () => {
-    const errSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const errSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       mockDnsResolve(
         dns,
@@ -259,7 +259,7 @@ describe("POST /api/template-brief · phase 3.5 dns_resolve_failed + resolved_pr
           (m) =>
             m.includes("resolved_private_ip") &&
             m.includes("169.254.169.254") &&
-            m.includes("route=template-brief"),
+            m.includes('"module":"api/template-brief"'),
         ),
       ).toBe(true);
       // no actual Pool/fetch (rejected before TCP)

@@ -6,6 +6,9 @@ import {
   writeSnapshot,
   pruneOldSnapshots,
 } from "@/lib/trending/snapshot-store";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "api/cron/trending" });
 
 export const runtime = "nodejs";
 
@@ -40,8 +43,8 @@ async function verifyGoogleOidc(token: string): Promise<boolean> {
   if (!expectedAudience || !expectedEmail) {
     // security-reviewer LOW (route.ts:39): warn on missing OIDC env so 运维误删
     // env 不会静默 fallback Vercel Cron model (P5.7 cutover 后此 fallback 退役)
-    console.warn(
-      "[cron/trending] OIDC env missing (CRON_OIDC_AUDIENCE or CRON_OIDC_SERVICE_ACCOUNT); OIDC auth disabled, falling back to legacy secrets",
+    log.warn(
+      "OIDC env missing (CRON_OIDC_AUDIENCE or CRON_OIDC_SERVICE_ACCOUNT); OIDC auth disabled, falling back to legacy secrets",
     );
     return false;
   }
@@ -121,7 +124,7 @@ export async function POST(request: Request) {
     snapshot = await fetchTrendingSnapshot();
   } catch (e) {
     // 两个平台都失败 → fetchTrendingSnapshot throw → 不写空快照
-    console.error("[cron/trending] fetch failed:", (e as Error).message);
+    log.error("fetch failed", { err: e });
     return NextResponse.json(
       { error: "fetch_failed", message: (e as Error).message },
       { status: 502 },

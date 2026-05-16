@@ -3,6 +3,9 @@ import { z } from "zod";
 import { scrapeAccountProfile } from "@/lib/account-profile/scrape";
 import { analyzeAccountTopVideo } from "@/lib/account-profile/frame-analyze";
 import { analyzeAccountProfile } from "@/lib/account-profile/analyze";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "api/account-profile" });
 import {
   createUrlAllowlist,
   TIKTOK_INSTAGRAM_CDN_PRESET,
@@ -212,7 +215,7 @@ export async function POST(req: NextRequest) {
             message: e.detail.message,
           });
         } else {
-          console.error("[account-profile] error:", e);
+          log.error("error", { err: e });
           send({ type: "error", code: "internal", message: (e as Error).message });
         }
       } finally {

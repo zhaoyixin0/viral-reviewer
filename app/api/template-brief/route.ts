@@ -4,6 +4,9 @@ import {
   BriefExtractException,
   type ExtractedBrief,
 } from "@/lib/template-review/brief-extract";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "api/template-brief" });
 import {
   createUrlAllowlist,
   fetchWithAllowlist,
@@ -152,9 +155,10 @@ async function loadFromBlobUrl(req: NextRequest): Promise<LoadResult> {
   } catch (e) {
     if (e instanceof UrlAllowlistError) {
       if (e.reason === "dns_resolve_failed") {
-        console.warn(
-          `[url-allowlist] dns_resolve_failed url=${blobUrl} cause=${e.cause ?? "?"} route=template-brief`,
-        );
+        log.warn("url-allowlist dns_resolve_failed", {
+          url: blobUrl,
+          cause: e.cause ?? null,
+        });
         return {
           ok: false,
           status: 502,
@@ -166,9 +170,10 @@ async function loadFromBlobUrl(req: NextRequest): Promise<LoadResult> {
       if (e.reason === "resolved_private_ip") {
         // SECURITY EVENT: DNS rebinding 尝试。response 与 host_denied 同 enum 防 SSRF probe，
         // server log 用 error level（运维 alert 触发 desired）。
-        console.error(
-          `[url-allowlist] resolved_private_ip url=${blobUrl} resolvedIp=${e.resolvedIp ?? "?"} route=template-brief`,
-        );
+        log.error("url-allowlist resolved_private_ip", {
+          url: blobUrl,
+          resolvedIp: e.resolvedIp ?? null,
+        });
         return {
           ok: false,
           status: 400,
@@ -177,9 +182,10 @@ async function loadFromBlobUrl(req: NextRequest): Promise<LoadResult> {
         };
       }
       // Sync deny reasons (invalid_url / scheme_denied / host_denied / private_ip)
-      console.warn(
-        `[url-allowlist] denied url=${blobUrl} reason=${e.reason} route=template-brief`,
-      );
+      log.warn("url-allowlist denied", {
+        url: blobUrl,
+        reason: e.reason,
+      });
       return {
         ok: false,
         status: 400,
@@ -277,7 +283,7 @@ async function impl(
         return errResponse(500, "llm_failed", detail.message, detail);
       }
     }
-    console.error("[template-brief] unexpected error:", e);
+    log.error("unexpected error", { err: e });
     return errResponse(500, "internal", (e as Error).message);
   }
 }

@@ -12,6 +12,9 @@ import {
   type UploadPolicy,
 } from "@/lib/storage";
 import { ClientPayloadSchema } from "./schema";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "api/upload" });
 
 export const runtime = "nodejs";
 
@@ -89,11 +92,7 @@ function mapUploadError(e: unknown): NextResponse {
     return NextResponse.json({ error: "invalid_upload_body" }, { status: 400 });
   }
   if (e instanceof StorageError) {
-    console.error(
-      `[upload] error code=${e.code} message=${e.message}`,
-      "cause:",
-      e.cause,
-    );
+    log.error("storage error", { code: e.code, errorMessage: e.message, cause: e.cause });
     switch (e.code) {
       case "storage_not_configured":
         return NextResponse.json(
@@ -113,7 +112,7 @@ function mapUploadError(e: unknown): NextResponse {
         );
     }
   } else {
-    console.error("[upload] error:", e);
+    log.error("error", { err: e });
   }
   return NextResponse.json(
     { error: "upload_failed", message: "上传失败，请稍后重试" },

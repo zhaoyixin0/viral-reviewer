@@ -6,6 +6,9 @@ import {
   cleanupAssets,
   probeBgmDurationSec,
 } from "@/lib/capcut-compiler/assets";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "api/compile-capcut" });
 import {
   createUrlAllowlist,
   VERCEL_BLOB_PRESET,
@@ -108,7 +111,7 @@ async function impl(req: NextRequest) {
       try {
         bgmDurationSec = await probeBgmDurationSec(assets.bgmPath);
       } catch (e) {
-        console.warn("[compile-capcut] bgm probe failed:", (e as Error).message);
+        log.warn("bgm probe failed", { err: e });
         bgmDurationSec = primaryMeta.durationSec; // 兜底用主视频时长
       }
     }
@@ -179,13 +182,13 @@ async function impl(req: NextRequest) {
       // code + cause 出来供 Vercel Logs 排查（per typescript-reviewer
       // 2026-05-15 a-3 finding A）。
       if (e instanceof StorageError) {
-        console.error(
-          `[compile-capcut] storage step failed code=${e.code} message=${e.message}`,
-          "cause:",
-          e.cause,
-        );
+        log.error("storage step failed", {
+          code: e.code,
+          errorMessage: e.message,
+          cause: e.cause,
+        });
       } else {
-        console.error("[compile-capcut] storage step failed:", e);
+        log.error("storage step failed", { err: e });
       }
       return new Response(
         JSON.stringify({
@@ -202,9 +205,10 @@ async function impl(req: NextRequest) {
     // - resolved_private_ip → 400 url_denied + console.error (security event, ops alert)
     if (e instanceof UrlAllowlistError) {
       if (e.reason === "dns_resolve_failed") {
-        console.warn(
-          `[url-allowlist] dns_resolve_failed url=${e.url} cause=${e.cause ?? "?"} route=compile-capcut`,
-        );
+        log.warn("url-allowlist dns_resolve_failed", {
+          url: e.url,
+          cause: e.cause ?? null,
+        });
         return new Response(
           JSON.stringify({
             error: "dns_resolve_failed",
@@ -220,13 +224,15 @@ async function impl(req: NextRequest) {
         );
       }
       if (e.reason === "resolved_private_ip") {
-        console.error(
-          `[url-allowlist] resolved_private_ip url=${e.url} resolvedIp=${e.resolvedIp ?? "?"} route=compile-capcut`,
-        );
+        log.error("url-allowlist resolved_private_ip", {
+          url: e.url,
+          resolvedIp: e.resolvedIp ?? null,
+        });
       } else {
-        console.warn(
-          `[url-allowlist] denied url=${e.url} reason=${e.reason} route=compile-capcut`,
-        );
+        log.warn("url-allowlist denied", {
+          url: e.url,
+          reason: e.reason,
+        });
       }
       return new Response(
         JSON.stringify({
@@ -237,7 +243,7 @@ async function impl(req: NextRequest) {
       );
     }
     // 详情只进日志，不回客户端 —— 避免泄露文件系统路径 / 内部服务名
-    console.error("[compile-capcut] error:", e);
+    log.error("error", { err: e });
     return new Response(
       JSON.stringify({
         error: "compile_failed",
