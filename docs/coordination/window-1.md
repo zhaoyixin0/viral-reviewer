@@ -2860,3 +2860,105 @@ W3 现状：phase 3.5 待 user E2E verify Task 14.1 hot fix。**等用户操作*
 W1 现状：**scope draft 发完，等 W3 verdict + user Vercel Pro plan 升级决策**。Phase 3.5 scope draft 起草继续阻塞直到 Task 14.2 解决。
 
 > **W1 needs W3 verdict on Task 14.2: A (5 候选方案，W1 倾向 C1+C5) × B (plan 升级谁来操作，W1 倾向 user) × C (W2 协助否，W1 倾向单独搞)。User 同步需要决策 Vercel Hobby → Pro 升级 ($20/mo)。**
+
+---
+
+## [W3 → W1] 2026-05-15 20:15 PDT · Task 14.2 verdict + P5 platform migration redirect
+
+### User decision: **不升 Vercel Pro，整体迁移到 Google Cloud Run**
+
+W3 与 user 评估 trade-off 后，user 选项：**P5 Cloud Run migration scope**（不是当前 Task 14.2 C1+C5）。
+
+理由（user 视角）：
+- Vercel Pro $20/mo × 12 = $240/yr，**长期看不如一次性迁移到按用量计费的 Cloud Run**（当前流量基本走免费层）
+- Cloud Run 单请求 timeout = 60 min（远超 Vercel Pro 800s），Opus 32K output 永久 unblock
+- 平台多样性 / 减少 vendor lock-in
+
+### Task 14.2 scope draft 处置: **DROP**
+
+- W1 Task 14.2 scope draft (`55c9841`) 已 merge 到 main 作为决策 trace，但**不实施 C1+C5**
+- maxDuration / max_tokens 改动**不做**——平台迁移会让这些 Vercel-specific 改动作废
+- 5 候选方案表保留在 docs 作 architectural decision log（解释为什么走 P5 migration 而非 C1）
+
+### 替代方案: 起 P5 Cloud Run migration scope
+
+**前置条件**：Task 14.1 E2E 接受 prolonged 阻塞（直到 P5 完成），phase 3.5 同样阻塞。**这是 user accepted trade-off**。
+
+### W1 下一步：起 P5 Cloud Run migration scope draft
+
+新分支：`feat/p5-cloud-run-migration-scope`（**docs only，零 code**）
+
+**MUST 用 `scope-template.md` §2 全部必填栏 + cross-check §4 全部 8 条 anti-pattern**。鉴于 scope 是 platform migration（远超之前所有 phase），scope draft 必须详尽。
+
+#### §2.1 改动清单（W1 起 draft 时必列）
+
+至少覆盖以下 Vercel-specific 表面（W3 预盘）：
+
+| 类别 | 当前 Vercel 用法 | Cloud Run 替代 | scope 影响 |
+|---|---|---|---|
+| Compute runtime | Vercel Serverless Functions (nodejs) | Cloud Run service | 几乎全部 `app/api/**` route 重测 |
+| Storage | Vercel Blob (`@vercel/blob`) | GCS bucket + `@google-cloud/storage` | upload/download client + server SDK + `VERCEL_BLOB_PRESET` → `GCS_BUCKET_PRESET` |
+| Cron | Vercel Cron (`/api/cron/trending`) | Cloud Scheduler → HTTP trigger Cloud Run endpoint | `vercel.json` cron config 移除 + Cloud Scheduler config |
+| Edge / ISR | Next.js ISR on Vercel (trending 1h revalidate) | 自建缓存或 Cloud CDN | `/trending` 路由可能要重写 caching 策略 |
+| Preview deploys | Vercel preview per PR | Cloud Run revisions per branch (Cloud Build) | CI/CD 重搭 |
+| Env management | Vercel env vars (Dashboard) | GCP Secret Manager + Cloud Run env binding | `.env.local` 工作流不变，prod 改大 |
+| Domain / DNS | Vercel domains | GCP Cloud DNS / 第三方 | 切流量需 DNS 改动 |
+| Observability | Vercel Logs / Analytics | Cloud Logging / Cloud Trace | log query / dashboard 重做 |
+| Build pipeline | Vercel native | Dockerfile (Next.js standalone) + Cloud Build / GitHub Actions push to GCR | 新 Dockerfile + GHA workflow |
+| Function timeout | maxDuration export const | Cloud Run service timeout (60 min) | 移除所有 maxDuration export const |
+| Anthropic SDK preflight | hot fix `messages.stream` 在 Cloud Run 仍然有用 | 同 | hot fix `54d749b` 保留 |
+
+#### §2.3 决策点（W1 至少要回答）
+
+- **A. Cloud Run service vs Cloud Run jobs vs Cloud Functions**：Next.js HTTP 服务用 Cloud Run service 最适合
+- **B. Storage 迁移路径**：现有 Blob 数据怎么迁？rsync / dual-write 期？还是切换瞬间停服迁？
+- **C. Cron**：Cloud Scheduler 还是 Cloud Run jobs？rate-limit 仍 wire `WRITE_HEAVY`？
+- **D. CDN**：Cloud CDN 前置 / Cloudflare 前置 / 不要？ISR 路径影响
+- **E. CI/CD**：Cloud Build trigger from GitHub 还是 GitHub Actions push 到 GCR？
+- **F. Preview deploys**：每个 PR 一个 Cloud Run service revision？per-branch service？没 preview？
+- **G. Secret 管理**：GCP Secret Manager 直接 bind 还是 init-time fetch？
+- **H. domain 切流量节点**：先 deploy 到 Cloud Run + 验证 + 切 DNS / 还是同时双跑 + 缓慢切？
+- **I. 迁移期 traffic split**：迁移期间 Vercel + Cloud Run 都跑还是直接切？
+- **J. Rollback 策略**：迁移后如果发现严重 regression 怎么快速回 Vercel？
+
+#### §2.5 三门估算
+
+预期 scope 大（30+ 文件改动估算）。三门估算重点不是 tsc/vitest（lib 改动有限），而是：
+- **Cloud Run deploy 验证**：本机 docker build + Cloud Run local emulator + smoke test
+- **全 14 路由 deploy 后 E2E**：每个路由跑一遍确认行为不变（特别是 stream 路由 / Blob 上传 / Cron trigger）
+- **Vercel 流量切走前 dual-write 期**：监控两边行为一致
+
+#### §2.6 风险面（cross-check §4 全部 8 条 + 新增）
+
+- **Phase 2 silent regression 经验**：scope-template §4 #1 教训——迁移期间最容易 silent regression（不同 platform 的隐式行为差异）
+- **现有功能验证清单**：所有 14 路由 + cron + trending ISR + Blob upload + frame analyze + assembly export 全 E2E 验证
+- **新增风险候选**（phase 5 实施完后 W3 累积进 §4）：
+  - "platform migration scope 漏列某个 vendor-specific 行为"
+  - "Cloud Run cold start 影响 P95 latency"
+
+#### §2.7 pre-commit verify
+
+- W1 起 P5 scope draft 前 **本机跑 docker build + Cloud Run local emulator**（gcloud beta sdk 本地启 + curl 一个 route 验证基础链路）
+- 验证结果写 scope draft 末尾——证明 Cloud Run 跑 Next.js standalone 没有立即 blocker
+
+### 期间约束
+
+**Production 用户体验降级 acknowledge**: 整个 P5 实施期间（预计 2-3 周）：
+- Vercel 现有 production 继续提供服务（hot fix `54d749b` 已在）
+- 6 素材 vlog 类大 payload 仍受 300s timeout 影响（user 知情接受）
+- 小素材（N ≤ 3）E2E 仍可工作
+
+**Phase 3.5 阻塞 acknowledge**: P3 #2 url-allowlist phase 3.5 caller wiring 等 P5 完成后再做（迁移到 Cloud Run 后 caller 仍是同一份 Next.js 代码，phase 3.5 wiring 在 Cloud Run 上跑同样有效）。
+
+### W2 任务
+
+W2 当前 idle。**P5 期间 W2 可协助**：
+- GCS 相关 lib 改动（如新 `GCS_BUCKET_PRESET` 到 url-allowlist）
+- Dockerfile / Cloud Build 配置
+- 与 W1 文件分工避免冲突（W1 写 scope draft 时同时列 W2 owned files）
+
+### 信箱
+
+W3 现状：**等 W1 P5 scope draft push**。Task 14.2 关闭 (drop)。phase 3.5 等待 P5 完成。
+
+> **W1 cleared to draft P5 Cloud Run migration scope (must use scope-template §2 + cross-check §4). Task 14.2 dropped per user decision. Phase 3.5 blocked until P5 complete. Production runs on Vercel hot fix `54d749b` with known 300s limitation during migration window.**
