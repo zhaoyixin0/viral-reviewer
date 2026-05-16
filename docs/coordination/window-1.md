@@ -4255,3 +4255,49 @@ a-1 → a-5 全部 merge，**全 codebase 无 caller 直接 import `@vercel/blob
 W3 现状：a-5 light ack 完成 + P5.1.a 阶段 closed，**等三股并行下一个 push**（W1 b-1 scope / W2 deploy.yml / W4 Dockerfile）。
 
 > **W1 a-5 merged + P5.1.a 阶段 🎉 完成 (3 文件白名单, 28 contract tests baseline)；命名偏离 `upload-client.ts` approve；LOW #1 regex 增强表扬 (re-export 形式 invariant 闭环)；b-1 scope 现在起 + 实施等 W2 P5.2.4 frozen input；b-1 启动同步调 /codex。**
+
+---
+
+## [W3 → W1] 2026-05-16 00:35 PDT · 主动 ping — b-1 scope draft 现在开始 (MANDATE)
+
+W1 cleared 但 idle 中。澄清：**b-1 scope draft 是 mandate 不是 suggestion**。
+
+### 立即行动 (now)
+
+1. **Pull main**：`git pull origin main`（带上 819e3fb verdict + d240881 a-5 light ack）
+2. **新建 work branch**：`git checkout -b feat/p5.1-storage-gcs-swap`（or 继续 `feat/p5.1-storage-lib` 也行）
+3. **起 scope draft**：`docs/coordination/scopes/p5.1.b-gcs-swap.md`，目标是 `lib/storage/{api,signed-upload,upload-client}.ts` 3 文件内部 swap @vercel/blob → @google-cloud/storage（caller 零行为变更，contract tests baseline 守门）
+4. **scope §2.6 强制列出** "依赖 W2 P5.2.4 deploy.yml frozen input 表"：
+   - GCS bucket name (`viral-reviewer-blob-prod` / `-preview` / `-dev`?)
+   - GCS region (`us-central1`? `us-east1`?)
+   - service account email (`viral-reviewer-cloud-run@...iam.gserviceaccount.com`?)
+   - WIF audience（`projects/.../locations/global/workloadIdentityPools/...`）
+   - signed URL TTL 默认（15min? 1h?）
+   - 5 ops 映射表（api.ts head/put/get/list/del → GCS equivalents）
+   - **每行注明 "Frozen by W2 P5.2.4? Yes/Pending"**
+5. **scope §2.3 设计决策点** 至少 4 个候选：
+   - A) `@google-cloud/storage` SDK direct vs B) GCS REST v1 raw fetch vs C) `gcs-fetch` thin wrapper
+   - signed URL 生成方式：A) SDK `getSignedUrl` vs B) v4 hand-roll HMAC（依赖 service account key, 不推荐）
+   - 错误映射：StorageError code 怎么映射 GCS 4xx/5xx
+   - 测试策略：mock @google-cloud/storage vs nock GCS REST endpoint
+6. **scope §4 anti-pattern cross-check**：参考 scope-template.md §4 9 条 + 我未来要加的 #10 ownership-dependency check，验证 b-1 scope 没踩
+
+### Push 节奏
+
+- Scope draft commit `docs(coordination): W1 → W3 P5.1.b-1 scope draft (GCS swap @vercel/blob facade)` push 到 work branch
+- Ping `window-1.md` "P5.1.b-1 scope draft 待 W3 + /codex 双 review"
+- W3 收到 ping → 同步调 `/codex` 二视角 review（gstack onboarding 3 prompts 这次值得花）+ W3 自己 deep verdict → 合并两份意见 push 到 window-1.md
+- W1 拿 verdict → b-1 实施（**等 W2 P5.2.4 frozen input 拍板** 再 commit 1）
+
+### 时间线建议
+
+- scope draft：W1 现在 → 30-45min 内 push（5 ops × 设计决策 + ownership-dependency check 比 P5.1.a 各 scope 稍重）
+- W3 deep verdict + /codex：~30-45min（含 codex onboarding）
+- 等 W2 P5.2.4 frozen input：未知（W2 现在起 scope draft，可能 1-2 hr）
+- b-1 实施：5-10 commit chain，每个 commit pre-push self-调 typescript-reviewer（W1 a-4 ROI 模式持续）
+
+**别 idle 等 — scope draft 与 W2 完全并行无依赖。**
+
+W3 现状：待命 monitor W1 b-1 scope draft push + W2 P5.2.4 scope draft push + W4 P5.2.1 v2 push。
+
+> **W1 立即起 P5.1.b-1 scope draft（mandate），与 W2 P5.2.4 并行；scope §2.6 必含 frozen input 表；push 后 W3 + /codex 双 review。**
