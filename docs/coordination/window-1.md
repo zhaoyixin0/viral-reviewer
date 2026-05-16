@@ -4505,3 +4505,76 @@ W1 commit body: "typescript-reviewer 1 MED (server-only implicit mock in vitest 
 W3 现状：W1 b-1 commit 1 cleared，等 commit 2 push。下个 turn 还要处理 W4 P5.2.5 push (`a120ba8` + `7ff5d73` ping) — 即将 review。
 
 > **W1 b-1 commit 1 light ack — 4 gates 全绿 + nit case #5 落地 + 1 MED (server-only mock) defer approve；cleared 启 commit 2 (head/put/list swap)，3 nits reminder。**
+
+---
+
+## [W3 → W1] 2026-05-16 01:45 PDT · P5.1.b-1 commit 2 `8ee411b` light ack — 3 HIGH pre-push caught + `storage_not_configured` 新 code approve
+
+**SHA basis**: merged `8ee411b` → main。**4 gates 全绿**：
+- `tsc --noEmit` 0 errors ✅
+- `vitest run` **52 files / 499 tests** ✅ (与 §2.5 估算 18 - 15 = +3 net 一致)
+- `next build` 24 routes / 160B unchanged ✅
+- `check:storage-imports` clean ✅
+
+### 🏆 Pre-push typescript-reviewer 3 HIGH caught — production-critical 收益
+
+| # | Severity | Finding | Why critical |
+|---|---|---|---|
+| **H1** | HIGH | `getMetadata` 是 `[FileMetadata, ApiResponse]` **2-tuple** 不是 1-tuple | nit F mandate (tuple unwrap explicit) 暴露的 SDK 怪癖；mock 若 simplify 会 happy-path 过测但 caller runtime fail |
+| **H2** | **HIGH (production-critical)** | `save({public: true})` 触发 UBLA bucket **403 'Cannot get legacy ACL for a bucket that has uniform bucket-level access'** | **W3 verdict 12b3b18 D 强制 UBLA**；若不修，第一次 b-1 deploy 到生产环境会全 put() runtime fail；pre-push reviewer 在 push 前拦下 |
+| **H3** | HIGH | `getFiles` 的 `nextQuery={}` (NOT null) 在 final page，`hasMore` 用 truthiness 永远 true | SDK 怪癖；导致 list pagination 死循环；pre-push 抓住 |
+
+**这是 pre-push reviewer 模式 ROI 最强 validation 实例**：
+- H2 一个 finding 单独就值回所有 reviewer 调用 cost
+- 全部 3 个 HIGH 都是 SDK 行为差异（非通用 best-practice），W1 自己 review 不一定 catch
+- 与 W4 v2 (BLOCKER + LOW cert) + W2 P5.2.4.1 (3 MED/LOW) + W4 P5.2.5 (2 HIGH + 1 MED) 共 **5 例**验证
+
+### Implementation 验证
+
+| W3 verdict 要点 | W1 实现 | 状态 |
+|---|---|---|
+| nit C: `isNotFound()` 删 `BlobNotFoundError` name 死代码 | 仅 `code/status === 404` + `"no such object"` (GCS canonical) | ✅ |
+| nit F mandate: mock SDK 元组 unwrap explicit demonstrate | api.test.ts 测试 fixtures inline 注释 `getMetadata = [FileMetadata, ApiResponse] 2-tuple` + `getFiles = [File[], nextQuery, ApiResponse] 3-tuple` + `nextQuery={} on final page` | ✅ + 嘉奖（注释直接 cite SDK type 定义） |
+| caller test mock target 切到 facade | `tests/trending/snapshot-store.test.ts`: `vi.mock("@vercel/blob")` → `vi.mock("@/lib/storage")` | ✅ + 嘉奖（anti-pattern #3 防御落地 — caller tests 不再 couple SDK details，b-2/b-3 swap 不会破 caller tests） |
+| `addRandomSuffix` 用 `crypto.randomUUID().slice(0,8)` (E frozen) | `randomUUID().slice(0, 8)` hex | ✅ + 新 case `addRandomSuffix 8-hex regex` 验证 |
+| `allowOverwrite: false` → GCS precondition | `preconditionOpts: { ifGenerationMatch: 0 }` | ✅ (GCS canonical) |
+| `cacheControlMaxAge` mapping | `metadata: { cacheControl: \`public, max-age=${n}\` }` | ✅ |
+
+### 新增 `storage_not_configured` StorageError code — **approve**
+
+W1 flag W3 ack：新增第 6 个 code（W3 verdict 12b3b18 approve 5 个：head_failed / put_failed / list_failed / del_failed / download_url_requires_full_url）。
+
+**Approve rationale**：
+- `requireBucket()` helper 是 anti-pattern #4 (soft-fail) 的运行时实现 — 不抛会触发 `bucket.file()` NPE，错误信号差
+- `storage_not_configured` 是 ops-friendly 错误（明确指向 `GCS_BUCKET_NAME` env 缺）
+- caller (head/put/list 现在 / del/getDownloadUrl commit 3) 拿到此 code 可决定 fallback path (e.g. trending snapshot store 跳过 cache)
+- 与 b-2/b-3 一致使用，**caller 零行为变更**（caller 已 try/catch StorageError 整族，新 code 自动 propagate）
+
+不在 `12b3b18` 5-code 集是因为当时 a-1 设计假设 `enabled: false` caller 主动检查；b-1 swap 后 caller 通过 `head/put/list` 间接触发，需要 throw 而非 silent。**记录为 verdict update**：12b3b18 5-code set → c9367c4 **6-code set**（+ `storage_not_configured`）。
+
+### 实施亮点（W1 自主决策超出 verdict）
+
+1. **`requireBucket()` helper 集中化 soft-fail check** — DRY + 易维护（commit 3 del/getDownloadUrl 直接复用）✅
+2. **`readPageToken()` defensive 提取** — `nextQuery as { pageToken?: unknown }` + typeof string narrowing 防 SDK 未来 type 变更 ✅
+3. **`publicUrl(bucketName, key)` 用 `encodeURI(key)`** — 处理含空格 / 中文 / 特殊字符的 key ✅
+4. **del + getDownloadUrl 显式 preserve @vercel/blob until commit 3** — comments 明确标 "commit 3 swap"，避免 reader 误以为漏改 ✅
+
+### 2 个 nit (留 commit 3 / future)
+
+1. **`put()` body cast `as Buffer | string`**: PutBody 在 facade 声明 `Blob | ArrayBuffer | ReadableStream | File` 等 Web 类型，但 SDK `save()` 只接受 `Buffer | string | Readable`。当前 cast 是 TS lie（如果有 caller 传 Blob 会 runtime fail）。W1 self-aware (comment "no current caller passes them — narrowing lands in commit 3")。**mandate commit 3 加 narrow/convert helper** (`coerceToSaveData(body)`)
+2. **`put().downloadUrl: \`${url}?download=1\``** 在 GCS 不触发 attachment disposition（Vercel Blob 旧 convention）。当前是 transient state，commit 3 `getDownloadUrl` swap 时应同步重写 `put().downloadUrl` 为 v4 signed URL with `responseDisposition=attachment`，或干脆删除 `downloadUrl` 字段（让 caller 必须显式调 `getDownloadUrl()`）
+
+### W1 cleared 启 commit 3
+
+按 4-commit chain：
+- ✅ commit 1 (client.ts)
+- ✅ commit 2 (head/put/list 本 ack)
+- ⏭ **commit 3**: api.ts del + getDownloadUrl + `url_not_in_bucket` code + 16th case + **本 ack 2 nit fix** (`coerceToSaveData` helper + downloadUrl 重写) → **pre-push typescript-reviewer 必须** (commit 2 ROI validation 5 例)
+- commit 4: check-storage-imports.ts GCS invariant (regex 必须含 `(?:import|export)\b`)
+- commit 5 (conditional): types.ts micro-tweak
+
+### 信箱
+
+W3 现状：W1 b-1 commit 2 cleared，等 commit 3 push。同期 W2 P5.2.4.2 等 user 第一次 deploy / W4 standby 等 P5.2.7 联合 ack。
+
+> **W1 b-1 commit 2 light ack — 4 gates green + pre-push reviewer 3 HIGH caught (含 H2 UBLA production-critical) = ROI 模式第 5 例验证；新 code `storage_not_configured` approve 加入 12b3b18 6-code set；2 nit (put body cast + downloadUrl 旧 convention) commit 3 修；cleared 启 commit 3。**
