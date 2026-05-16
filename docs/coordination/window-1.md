@@ -4099,3 +4099,98 @@ W1 a-4 **首次实践 pre-push typescript-reviewer 模式**（与 a-3 post-merge
 W3 现状：a-4 deep verdict 完成 + a-5 cleared，**等 W1 a-5 implement push** (2 commits + ping ack)。
 
 > **W1 a-4 chain merged + 7 findings pre-push fixed + ECC reviewer 模式 ROI positive; a-5 cleared 直接进 (~50 lines, 2 commits); 500 文案 hardcode 中文 approve; /codex 留给 b-1 GCS swap deep verdict。**
+
+---
+
+---
+
+## [W1 → W3] 2026-05-16 00:08 PDT · P5.1.a-5 implemented + pushed — 🎉 P5.1.a 阶段完成
+
+**SHA basis**: rebased onto main `819e3fb`。**Commit**:
+- `f253593` feat(storage): add upload-client browser shim + swap 4 frontend callers (P5.1.a-5; a 阶段完成)
+
+**1 commit** (非 W3 outline 建议的 2 commits)：5 file 同步改属 a-3 同款 atomic swap pattern，颗粒不需更细。
+
+### 4 gates
+
+| 门 | 结果 | 对比 |
+|---|---|---|
+| `tsc --noEmit` | 0 errors ✅ | 一致 |
+| `vitest run` | **51 files / 491 tests** ✅ | 与 a-4 一致（a-5 是 client 改动无新测试） |
+| `next build` | **24 routes** ✅ | 字节数 160B 不变（shim tree-shake 无 overhead） |
+| `npm run check:storage-imports` | **clean** ✅ | **2 文件白名单**（顶层 1 + 子路径 2） |
+
+### 偏离 W3 outline — 命名 collision 自决
+
+W3 outline: `lib/storage/client/upload.ts`
+**W1 改成**: `lib/storage/upload-client.ts` （顶级，平级 sibling `client.ts`）
+
+**理由**：
+- `lib/storage/client.ts` 已存在（server-only `getStorage()` SDK singleton）
+- 同时建 `lib/storage/client/` 子目录会触发 TS/ESLint resolver 在 `@/lib/storage/client` 路径上的 extensionless ambiguity（tsc/Next.js webpack/vitest 优先级可能不同）
+- 平级 `upload-client.ts` 命名对仗清晰：server `client.ts` ↔ browser `upload-client.ts`，grep/导航无歧义
+
+typescript-reviewer pre-push 第 3 项 sanity check：**approve 偏离，建议保持**。
+
+### Pre-push typescript-reviewer findings (0 CRITICAL/HIGH)
+
+| # | 严重度 | 位置 | 处理 |
+|---|---|---|---|
+| LOW #1 | LOW | `scripts/check-storage-imports.ts` TOP_IMPORT/CLIENT_IMPORT regex | **同步修** — 加 `(?:import\|export)\b` 覆盖 `export ... from` 形式（upload-client.ts 自己用 re-export，新 regex 命中但白名单 pass，invariant 增强）|
+| LOW #2 | LOW (已 ack) | upload-client.ts shim 只 re-export `upload`，不含 `PutBlobResult` 等 type | acceptable — P5.1.b 重新设计 shim body 时统一定义 GCS 等价 type |
+
+a-5 reviewer 还 verify 了 4 个点（全部 sanity check pass）：
+- `"use client"` directive 必要（Next.js bundler 阶段切边界 vs 运行时 error）
+- TypeScript type re-export 完整性（当前只 `upload` 充分，未来 caller 扩需求时再扩 shim）
+- `index.ts` 不 re-export shim 设计合理（server-only 污染防御）
+- bundle size impact 零（tree shake 验证 build 字节数不变）
+
+### D3 spot check（per W3 verdict 819e3fb 表 4 行）
+
+W3 deep verdict 提到 D3 推翻 `failOnCompletionHookError` opt-in，但 W1 a-4 ack 7 findings 未 explicit 提，希望 a-5 内验证：
+
+```bash
+$ grep -n "failOnCompletionHookError" lib/storage/signed-upload.ts tests/storage/signed-upload.test.ts
+lib/storage/signed-upload.ts:26: * - D3 推翻：no `failOnCompletionHookError` opt-in (YAGNI; current callers
+```
+
+**唯一命中是 signed-upload.ts:26 docstring 解释 "D3 推翻"**，实际字段未引入。D3 mandate verified ✅。
+
+### 🎉 P5.1.a 阶段完成定义达成
+
+```bash
+$ npm run check:storage-imports
+✓ storage import invariants clean — no out-of-whitelist @vercel/blob[/client] callers.
+```
+
+| Whitelist | Count | Files |
+|---|---|---|
+| 顶层 `@vercel/blob` | 1 | `lib/storage/api.ts` (5 ops facade) |
+| 子路径 `@vercel/blob/client` | 2 | `lib/storage/signed-upload.ts` (server) + `lib/storage/upload-client.ts` (browser) |
+
+**全 codebase 无 caller 直接 import `@vercel/blob*`** —— 所有路径都过 `@/lib/storage` facade。P5.1.b GCS swap 只需改 facade 内部 3 文件 (`api.ts` + `signed-upload.ts` + `upload-client.ts`)，caller 零行为变更。
+
+### Commit chain 进度（P5.1.a 完成）
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| a-1 | `74aa925` | lib/storage 薄包装 | ✅ |
+| a-2 | `a49af05` | contract tests baseline freeze (15) | ✅ |
+| a-3 | `37df55d` | 5 callers switch import | ✅ |
+| a-3 followup | `6e92fd0` | StorageError code+cause log | ✅ |
+| a-4 commit 1 | `8d4a3bc` | signed-upload helper + 13 contract tests | ✅ |
+| a-4 commit 2 | `122f504` | 2 routes swap + CI grep check | ✅ |
+| **a-5** | **`f253593`** | upload-client shim + 4 前端 caller swap | ✅ **pushed** |
+| **🎉 a 阶段完成** | — | grep invariant 干净 / facade 完备 / 28 contract tests baseline freeze | ✅ |
+| b-1 | — | GCS swap api.ts 内部 (5 ops → `@google-cloud/storage`) | ⏳ |
+| b-2 | — | GCS swap signed-upload.ts 内部 (handleUpload → v4 signed POST) | ⏳ |
+| b-3 | — | GCS swap upload-client.ts 内部 (Vercel `upload()` → hand-rolled POST) | ⏳ |
+| b-4 | — | GCS docs + cleanup | ⏳ |
+
+### 待 W3 拍板（如有）
+
+1. **是否 ack a-5 + P5.1.a 阶段完成 verdict**？建议 light ack 单 sentence，不需 deep verdict（reviewer 已通过 sanity check）。
+2. **b-1 ~ b-4 chain 启动是否 wait W2/W4 P5.2 progress**？b-1 GCS swap 需要 W2/W4 的 Cloud Run + GCS bucket 实际可用才能本地真实测；contract tests baseline 可以先准备 mock GCS adapter，但 wall-clock smoke 需要 infra ready。
+3. **/codex deep verdict 在 b-1 启动时调**（W3 verdict 819e3fb 已定）—— W1 起 b-1 scope draft 时 ping W3 + 同时调 `/codex` 视角。
+
+**等 W3 ack a-5 merge + 后续 b-1 节奏建议（即刻开 scope draft？vs 等 W2/W4 P5.2 收尾？）。**
