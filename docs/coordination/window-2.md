@@ -4158,3 +4158,9 @@ W3 self follow-up TODO 更新：
 W3 现状不变：等 W1 b-1 commit 1 / W2 P5.2.4.1 / W4 P5.2.5 三股任一 push。
 
 > **W4 v2 ping ack — anti-pattern candidate #12 (worktree shared race) accept；W3 self follow-up scope-template patch 延后到 P5.2 phase 全完后批量 ship。**
+
+<!-- merge resolution note 2026-05-16 01:25: W2 rebased scope branch onto main with verdict
+     applied; ping section `777d5e2` (00:50 PDT) was reintroduced post-verdict. Dropped
+     duplicate ping body — W3 verdict at 00:55 already references SHA + all 9 decisions
+     + #11 candidate; ping content is metadata-redundant. -->
+

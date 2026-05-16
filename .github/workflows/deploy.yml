@@ -1,0 +1,290 @@
+# Cloud Run prod deploy workflow (P5.2.4.1)
+#
+# Trigger:
+#   - push to main → auto deploy
+#   - workflow_dispatch → manual trigger (first-run debug per W3 P5.2.4 verdict nit #2)
+#
+# Per W3 P5.2.4 deep verdict b751afd (9 decisions all approved + 2 nits applied):
+#   A2: prod path only here; preview-deploy.yml separate (P5.2.4.2, waits prod success)
+#   D:  G1 dual-tag SHA + latest; yq mikefarah/yq v4 for service.yaml IMAGE_TAG/PROJECT_ID replace
+#   E1: docker build --platform linux/amd64 (W4 MED #2 mandate, per scope §2.3 E)
+#   F1: smoke /api/health + /api/trending retry 3×5s; auto-revert to PREV revision on fail
+#   G_runtime: secret bindings in service.yaml (P5.2.3 a6d7d5c) via runtime SA, no secrets here
+#   H: WIF audience default (action infers from WIF_PROVIDER)
+#   I: minimal permissions (contents read + id-token write)
+#   nit#1 (W3): pre-deploy verify 5 secrets exist via explicit for loop (NOT gcloud list --filter)
+#   nit#2 (W3): workflow_dispatch trigger added for first-run / debug
+#
+# Bootstrap dependency (per runbook docs/deploy/cloud-run-setup.md):
+#   - GHA repo secrets: GCP_PROJECT_ID / GCP_PROJECT_NUMBER / WIF_PROVIDER / WIF_SERVICE_ACCOUNT
+#   - AR repo viral-reviewer/web created (runbook §5)
+#   - 5 Secret Manager secrets created (runbook §7 / P5.6 phase)
+#   - cloud-run-runtime SA + cloud-run-deployer SA created (runbook §3)
+
+name: Deploy to Cloud Run (prod)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+# Minimal permissions per W3 P5.2.4 verdict I:
+#   contents:read → checkout
+#   id-token:write → WIF OIDC token mint
+permissions:
+  contents: read
+  id-token: write
+
+# Cancel in-flight runs on same branch (only latest commit matters for prod deploy)
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: false # do NOT cancel; let auto-revert smoke test finish
+
+jobs:
+  deploy:
+    name: Build + Push + Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      REGION: us-central1
+      SERVICE: viral-reviewer-web
+      AR_REPO: viral-reviewer
+      AR_IMAGE: web
+
+    steps:
+      # ---- Checkout ----
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ---- Compute IMAGE_TAG (short SHA per P5.2 verdict G1) ----
+      - name: Compute IMAGE_TAG
+        id: tag
+        run: |
+          IMAGE_TAG="${GITHUB_SHA::7}"
+          echo "IMAGE_TAG=${IMAGE_TAG}" >> "$GITHUB_ENV"
+          echo "tag=${IMAGE_TAG}" >> "$GITHUB_OUTPUT"
+          echo "::notice::Deploying image tag ${IMAGE_TAG}"
+
+      # ---- WIF auth (no SA key stored in GHA secret) ----
+      - name: Authenticate to Google Cloud (WIF OIDC)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+          # audience: default (action infers from WIF_PROVIDER) per W3 verdict H
+
+      - name: Setup gcloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      # ---- Pre-deploy: verify 5 Secret Manager secrets exist (W3 nit #1) ----
+      # Explicit loop instead of `gcloud secrets list --filter` (OR syntax inconsistent
+      # across gcloud SDK versions; wc -l polluted by header / warning lines).
+      - name: Verify required Secret Manager secrets exist
+        run: |
+          REQUIRED_SECRETS=(anthropic-api-key openai-api-key google-api-key apify-token blob-read-write-token)
+          missing=0
+          for secret in "${REQUIRED_SECRETS[@]}"; do
+            if ! gcloud secrets describe "$secret" --project="${{ secrets.GCP_PROJECT_ID }}" >/dev/null 2>&1; then
+              echo "::error::Required Secret Manager secret '${secret}' not found. Run P5.6 bootstrap first (see docs/deploy/cloud-run-setup.md §7)."
+              missing=$((missing+1))
+            fi
+          done
+          if [ $missing -gt 0 ]; then
+            echo "::error::${missing} required secrets missing."
+            exit 1
+          fi
+          echo "::notice::All ${#REQUIRED_SECRETS[@]} required secrets verified."
+
+      # ---- Configure docker auth to Artifact Registry ----
+      - name: Configure docker auth for Artifact Registry
+        run: |
+          gcloud auth configure-docker "${REGION}-docker.pkg.dev" --quiet
+
+      # ---- Build image (single-arch pin per W3 MED #2 mandate + verdict E1) ----
+      # Use traditional `docker build` (host arch = linux/amd64 on ubuntu-latest);
+      # explicit --platform pin defends against future runner upgrade regression.
+      - name: Build Docker image (linux/amd64 single-arch)
+        run: |
+          IMAGE_URL="${REGION}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${AR_REPO}/${AR_IMAGE}"
+          docker build \
+            --platform linux/amd64 \
+            --tag "${IMAGE_URL}:${IMAGE_TAG}" \
+            --tag "${IMAGE_URL}:latest" \
+            --file Dockerfile \
+            .
+
+      # ---- Verify single-arch (defends against multi-arch regression per W3 #11 candidate) ----
+      - name: Verify image is single-arch (linux/amd64)
+        run: |
+          IMAGE_URL="${REGION}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${AR_REPO}/${AR_IMAGE}:${IMAGE_TAG}"
+          ARCH=$(docker image inspect "${IMAGE_URL}" --format='{{.Architecture}}/{{.Os}}')
+          if [ "${ARCH}" != "amd64/linux" ]; then
+            echo "::error::Image arch mismatch: expected amd64/linux, got ${ARCH}"
+            exit 1
+          fi
+          echo "::notice::Image arch verified: ${ARCH}"
+
+      # ---- Push both tags to Artifact Registry ----
+      - name: Push image to Artifact Registry
+        run: |
+          IMAGE_URL="${REGION}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${AR_REPO}/${AR_IMAGE}"
+          docker push "${IMAGE_URL}:${IMAGE_TAG}"
+          docker push "${IMAGE_URL}:latest"
+
+      # ---- Capture previous revision for rollback ----
+      - name: Capture previous Cloud Run revision (for auto-revert)
+        id: prev_rev
+        run: |
+          PREV=$(gcloud run revisions list \
+            --service="${SERVICE}" \
+            --region="${REGION}" \
+            --project="${{ secrets.GCP_PROJECT_ID }}" \
+            --filter="status.conditions.type=Active AND status.conditions.status=True" \
+            --format='value(metadata.name)' \
+            --limit=1 \
+            --sort-by='~metadata.creationTimestamp' 2>/dev/null || echo "")
+          echo "prev=${PREV}" >> "$GITHUB_OUTPUT"
+          if [ -z "${PREV}" ]; then
+            echo "::notice::No previous revision (first deploy); auto-revert disabled this run."
+          else
+            echo "::notice::Previous revision captured for rollback: ${PREV}"
+          fi
+
+      # ---- Render service.deploy.yaml with yq (W3 verdict D specific command) ----
+      # mikefarah/yq v4 (default on ubuntu-latest), NOT kislyuk/yq (Python).
+      - name: Verify yq version (mikefarah/yq v4)
+        run: |
+          yq --version
+          if ! yq --version 2>&1 | grep -q 'mikefarah'; then
+            echo "::error::yq must be mikefarah/yq v4; found unexpected version"
+            yq --version
+            exit 1
+          fi
+
+      - name: Render service.deploy.yaml (replace IMAGE_TAG + PROJECT_ID)
+        run: |
+          # PROJECT_ID placeholder appears in serviceAccountName + 5 secret refs + image
+          # Use envsubst-friendly sed for PROJECT_ID placeholder (literal string replace),
+          # then yq for the image field (YAML-aware, safer for complex value).
+          sed "s|PROJECT_ID|${{ secrets.GCP_PROJECT_ID }}|g" service.yaml > service.deploy.yaml
+          yq e -i '.spec.template.spec.containers[0].image = env(IMAGE_URL)' service.deploy.yaml
+          # security-reviewer finding (LOW): don't echo entire rendered YAML to log
+          # (GHA does mask secret values but 防御 future GCP_PROJECT_ID 升级敏感)
+          # 仅 print 关键字段供 debug：image + service name + container resources
+          echo "::group::Rendered service.deploy.yaml key fields"
+          yq e '.metadata.name, .spec.template.spec.containers[0].image, .spec.template.spec.containers[0].resources.limits' service.deploy.yaml
+          echo "::endgroup::"
+        env:
+          IMAGE_URL: ${{ env.IMAGE_TAG && format('us-central1-docker.pkg.dev/{0}/viral-reviewer/web:{1}', secrets.GCP_PROJECT_ID, env.IMAGE_TAG) || '' }}
+
+      # ---- Deploy: gcloud run services replace ----
+      - name: Deploy to Cloud Run (replace service.yaml)
+        run: |
+          gcloud run services replace service.deploy.yaml \
+            --region="${REGION}" \
+            --project="${{ secrets.GCP_PROJECT_ID }}"
+
+      # ---- Wait for new revision to be Ready ----
+      - name: Wait for new revision Ready
+        run: |
+          # Cloud Run replace + traffic 100% latestRevision (per service.yaml traffic block).
+          # Service URL stable across revisions; just verify status.
+          STATUS=""
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            STATUS=$(gcloud run services describe "${SERVICE}" \
+              --region="${REGION}" \
+              --project="${{ secrets.GCP_PROJECT_ID }}" \
+              --format='value(status.conditions[0].status)')
+            if [ "${STATUS}" = "True" ]; then
+              echo "::notice::Service Ready after ${i} checks"
+              break
+            fi
+            echo "Attempt ${i}/10: status=${STATUS}, sleeping 10s..."
+            sleep 10
+          done
+          # security-reviewer finding (MEDIUM): explicit timeout fail-fast
+          # 避免 silently-not-Ready 后续 smoke test 间接发现（虽然能 auto-revert 但
+          # 错误信号不准确）
+          if [ "${STATUS}" != "True" ]; then
+            echo "::error::Service did not become Ready within 100s (status=${STATUS})"
+            exit 1
+          fi
+
+      # ---- Get service URL for smoke test ----
+      - name: Get service URL
+        id: url
+        run: |
+          URL=$(gcloud run services describe "${SERVICE}" \
+            --region="${REGION}" \
+            --project="${{ secrets.GCP_PROJECT_ID }}" \
+            --format='value(status.url)')
+          echo "url=${URL}" >> "$GITHUB_OUTPUT"
+          echo "::notice::Service URL: ${URL}"
+
+      # ---- Smoke test per W3 verdict F1 ----
+      # Paths: /api/health (must) + /api/trending (exercises Blob read + ffmpeg-static load path)
+      # NOT /api/analyze-video (stateful, triggers LLM cost).
+      # Retry: 3 × 5s interval (let Cloud Run startupProbe complete).
+      - name: Smoke test (3 retries × 5s)
+        id: smoke
+        continue-on-error: true
+        run: |
+          URL="${{ steps.url.outputs.url }}"
+          for endpoint in /api/health /api/trending; do
+            success=0
+            for attempt in 1 2 3; do
+              http_code=$(curl -sS -o /tmp/smoke-resp.txt -w "%{http_code}" --max-time 30 "${URL}${endpoint}" || echo "000")
+              if [ "${http_code}" -ge 200 ] && [ "${http_code}" -lt 400 ]; then
+                echo "::notice::Smoke ${endpoint} attempt ${attempt}: HTTP ${http_code} ✅"
+                success=1
+                break
+              fi
+              echo "::warning::Smoke ${endpoint} attempt ${attempt}: HTTP ${http_code}, sleeping 5s..."
+              head -c 200 /tmp/smoke-resp.txt || true
+              echo ""
+              sleep 5
+            done
+            if [ "${success}" -eq 0 ]; then
+              echo "::error::Smoke ${endpoint} failed all 3 attempts"
+              exit 1
+            fi
+          done
+
+      # ---- Auto-revert on smoke fail (W3 verdict F1) ----
+      - name: Auto-revert on smoke failure
+        if: steps.smoke.outcome == 'failure' && steps.prev_rev.outputs.prev != ''
+        run: |
+          PREV="${{ steps.prev_rev.outputs.prev }}"
+          # security-reviewer finding (MEDIUM): defense-in-depth PREV format validation
+          # Cloud Run revision name 实际 enforce 是 server-side，但 PREV 透 $GITHUB_OUTPUT
+          # 无 type-check；regex 校验防 shell metacharacter injection 进 --to-revisions
+          if [[ ! "${PREV}" =~ ^[a-z0-9-]+$ ]]; then
+            echo "::error::Unexpected revision name format: ${PREV}"
+            exit 1
+          fi
+          echo "::error::Smoke test failed; reverting traffic 100% to previous revision ${PREV}"
+          gcloud run services update-traffic "${SERVICE}" \
+            --region="${REGION}" \
+            --project="${{ secrets.GCP_PROJECT_ID }}" \
+            --to-revisions="${PREV}=100"
+          # Fail the workflow even after successful revert (so CI status reflects bad deploy)
+          exit 1
+
+      - name: Fail workflow if smoke failed (no prev revision case)
+        if: steps.smoke.outcome == 'failure' && steps.prev_rev.outputs.prev == ''
+        run: |
+          echo "::error::Smoke test failed but no previous revision to revert to (first deploy)."
+          echo "::error::Manual intervention required: investigate Cloud Run logs."
+          exit 1
+
+      # ---- Success summary ----
+      - name: Deploy summary
+        if: steps.smoke.outcome == 'success'
+        run: |
+          echo "## ✅ Deploy successful" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Image: \`${REGION}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${AR_REPO}/${AR_IMAGE}:${IMAGE_TAG}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Service URL: ${{ steps.url.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Smoke: /api/health ✅ /api/trending ✅" >> "$GITHUB_STEP_SUMMARY"

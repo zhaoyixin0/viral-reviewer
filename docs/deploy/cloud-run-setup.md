@@ -443,6 +443,66 @@ gcloud iam service-accounts delete "cloud-run-runtime@${GCP_PROJECT_ID}.iam.gser
 
 ---
 
+## Appendix D — Build Architecture Notes (per W3 P5.2.1 verdict MED #2)
+
+### D.1 Cloud Run runs **linux/amd64 only**
+
+Cloud Run service runtime on GCP is `linux/amd64` (Intel/AMD x86_64). Cloud Run **does not** schedule containers on arm64 nodes. Building multi-arch images (`linux/amd64,linux/arm64`) wastes Artifact Registry storage with blobs Cloud Run will never pull.
+
+Real cost from W4 P5.2.1 实测 (`d3fddf7`): single-arch image **202 MB** vs multi-arch manifest **843 MB** — `+640 MB` extra per push, accumulated weekly + per-PR preview.
+
+### D.2 Build commands — explicit single-arch pin required
+
+The Cloud Run deploy workflow (`.github/workflows/deploy.yml`, P5.2.4.1) uses traditional `docker build` (not `docker buildx`) with explicit `--platform linux/amd64` to defend against future `docker` / GHA runner default behavior changes:
+
+```bash
+docker build \
+  --platform linux/amd64 \
+  --tag "${IMAGE_URL}:${IMAGE_TAG}" \
+  --tag "${IMAGE_URL}:latest" \
+  --file Dockerfile \
+  .
+```
+
+**For local Dockerfile testing**, same pin applies:
+
+```bash
+docker build --platform linux/amd64 -t viral-reviewer:local .
+```
+
+(On Windows / macOS with Docker Desktop, omitting `--platform` may default to host arch — `arm64` on Apple Silicon Macs — and produce an image that **won't run** on Cloud Run. Always pin.)
+
+### D.3 Verify image arch before push
+
+Inspect image manifest:
+
+```bash
+docker image inspect "${IMAGE_URL}:${IMAGE_TAG}" --format='{{.Architecture}}/{{.Os}}'
+# Expected: amd64/linux
+```
+
+deploy.yml workflow includes this as a step that fails the build if the image is not single-arch `amd64/linux`. See `.github/workflows/deploy.yml` step "Verify image is single-arch (linux/amd64)".
+
+### D.4 Why not `buildx` with explicit platform?
+
+`docker buildx build --platform linux/amd64` produces the same single-arch result, **but**:
+- `buildx` default behavior across versions has shifted toward multi-arch manifest creation
+- Cloud Build / GHA runners may pre-configure `buildx` with multi-platform builders
+- Adding `buildx` adds tooling complexity (need `qemu-user-static` for cross-arch build, even if we don't cross-build)
+
+Traditional `docker build` on `linux/amd64` host = single arch by default + explicit `--platform` pin = double-defense at minimal complexity.
+
+### D.5 If you must support arm64 in the future
+
+If Cloud Run later supports arm64 (e.g., for cost savings on Graviton-class nodes), update:
+1. `docker build --platform linux/amd64` → `docker buildx build --platform linux/amd64,linux/arm64` in `deploy.yml`
+2. `service.yaml` `containers[0].image` annotation — Cloud Run picks correct arch from multi-arch manifest automatically
+3. Verify arm64 image runs ffmpeg-static / ffprobe-static binaries (current `ffmpeg-static` package has Linux x64 binary; arm64 needs different package source)
+
+**Not currently planned**. Cloud Run pricing is uniform across arch; arm64 only matters if Google introduces arm-discounted instance types.
+
+---
+
 ## References
 
 - Cloud Run service.yaml schema: <https://cloud.google.com/run/docs/reference/yaml/v1>
