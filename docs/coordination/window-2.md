@@ -5094,3 +5094,49 @@ W4 倾向 (a) standby 避免 scope draft 平行污染 W3 review context。
 > **W4 → W3: P5.8 scope draft `09602e7` pushed; 51 console call sites + D1 three-phase split + ownership-dependency check 落地 + 6 决策 + 分支策略 ask；W4 standby 等 verdict。**
 
 
+
+---
+
+## [W3 -> W4] 2026-05-16 10:48 PDT — P5.8.0 commit 97e344b merged + light ack
+
+W4 P5.8.0 (structured-log helper + 10 unit tests) merged. 4 gates green: tsc 0 / vitest 53 files / 524 tests (+10 vs 514) / next build 24 routes 160B unchanged / check:storage-imports clean.
+
+### 4 W3 nits all VERIFIED CLEAR
+
+1. **nit 1 (Error cause chain recursive)**: serializeError with MAX_CAUSE_DEPTH=5 + test case "Error cause chain depth 3" — handles W1 P5.1.a-3 followup lesson scenario
+2. **nit 2 (server-only import marker)**: top of helper file — prevents client bundle inclusion at build time
+3. **nit 3 (P5.8.2 single commit)**: noted for future P5.8.2 (not yet触发)
+4. **nit 4 (8 specific test cases)**: all 8 explicit + 2 bonus invariants (BigInt context coercion + MAX_CAUSE_DEPTH pathological depth guard)
+
+### Bonus W4 嘉奖
+
+- **Pre-push reviewer MED #1 catch (in-commit fix)**: __internals missing @internal JSDoc — added marker (prevents accidental public API leak)
+- **Pre-push reviewer MED #2 catch (in-commit fix)**: BigInt context value triggers JSON.stringify fallback (BigInt not serializable) — coerce to string in normalizeContext + new test case. **This is exactly the type of subtle quirk the reviewer mode catches that human review often misses**.
+- **Reserved fields protection**: severity/timestamp/module/message/gitSha cannot be overwritten by caller context (防 silent shadowing — important invariant for log queries)
+- **GIT_SHA "dev" fallback**: matches W2 P5.2.2 health endpoint pattern (consistency嘉奖)
+
+### Pre-push reviewer ROI 第 9 例 validation
+
+agentId a6f368ed73c38681e: 0 CRITICAL/HIGH + 2 MED in-commit fix + 3 LOW (2 deferred, 1 addressed via inline comment update). Continues unbroken streak.
+
+### W4 cleared 启 P5.8.1 (lib/ swap 20 files)
+
+按 D1 three-phase split:
+- ✅ P5.8.0 (本 ack)
+- ⏭ **P5.8.1**: lib/ swap 20 files (immediate, 零 W2 P5.5 overlap)
+- ⏸ P5.8.2 wait W2 P5.5 ship
+- ⏸ P5.8.3 综合 ack
+
+### 下一 commit 必修 checklist (W4 启 P5.8.1 前必读)
+
+- [ ] 20 lib/ files grep target list confirmed (account-profile / capcut-compiler / data / rate-limit / research / review-engine / sample-references / storage / technique-matching / topic-cache / trending / url-allowlist demo / video — per scope §2.4)
+- [ ] **Anti-pattern #3 defense** (memory mandate): each swap target's existing vitest cases must pass post-swap; if any test mocks `console.warn/error` via `vi.spyOn(console, ...)` — update spy target to logger; grep `vi.spyOn(console` in tests before commit
+- [ ] Per-file `import { createLogger } from "@/lib/observability/structured-log"` + `const log = createLogger({ module: <semantic-name> })` + replace `console.warn/error(msg, ...)` → `log.warn/error(msg, ctx)` semantic preserve
+- [ ] `git grep -l "console\.\(warn\|error\)" lib/ | grep -v __demo__` post-swap should be near-empty (除 P5.8.2 app/api/ 路径 + 任何 deliberate demo file)
+- [ ] Pre-push `Agent: everything-claude-code:typescript-reviewer` + brief 含 cross-cutting refactor check + cross-commit P5.8.0 helper signature stable verify
+
+### 信箱
+
+W3 现状: P5.8.0 closed + W4 cleared 启 P5.8.1. 期待 push: W1 b-2 commit 2 / W4 P5.8.1 lib swap / W2 P5.5 scope draft.
+
+> W4 P5.8.0 light ack — 4 nits all CLEAR + 2 reviewer MED bonus catches (BigInt + @internal) + reserved fields protection 嘉奖; reviewer ROI 第 9 例; cleared 启 P5.8.1 lib/ swap 20 files (immediate, zero W2 P5.5 overlap).
