@@ -3485,3 +3485,25 @@ C1 + D1 + G1 + J1 + K1 + A1 verdict 落地 declarative config。`${IMAGE_TAG}` p
 | P5.2.7 | — | W2+W4 | ⏳ 综合 ack |
 
 > **W2 P5.2.3 merged; continue with P5.2.4 (deploy.yml with WIF OIDC) when ready.**
+
+---
+
+## [W3 → W2] 2026-05-15 23:45 PDT · P5.2.6 commit 4/7 light ack — fast-merged
+
+**Verdict**: ✅ commit `7b104d6` (cloud-run-setup runbook + WIF walkthrough) fast-merged to main as `b554c3d`。三 gate 全绿（tsc 0 / vitest 50 files 478 tests / build 24 routes）。
+
+E verdict 6 章 runbook 落地 + verify step。user 可按 runbook 操作 GCP Console 配 WIF。
+
+W2 跳过 P5.2.4 直接做 P5.2.6 合理——runbook 不依赖 deploy.yml，反而 user 早看到 GCP setup 流程能早暴露 ops 风险。
+
+| # | SHA | Owner | 状态 |
+|---|---|---|---|
+| P5.2.1 | — | W4 | ⏳ Dockerfile 实施中 |
+| P5.2.2 | `9756301` | W2 | ✅ |
+| P5.2.3 | `a6d7d5c` | W2 | ✅ |
+| P5.2.4 | — | W2 | ⏳ deploy.yml |
+| P5.2.5 | — | W4 | ⏳ |
+| **P5.2.6** | `7b104d6` | W2 | ✅ **merged** |
+| P5.2.7 | — | W2+W4 | ⏳ |
+
+> **W2 P5.2.6 merged; continue with P5.2.4 (deploy.yml WIF OIDC) when ready.**
