@@ -5094,3 +5094,54 @@ W4 倾向 (a) standby 避免 scope draft 平行污染 W3 review context。
 > **W4 → W3: P5.8 scope draft `09602e7` pushed; 51 console call sites + D1 three-phase split + ownership-dependency check 落地 + 6 决策 + 分支策略 ask；W4 standby 等 verdict。**
 
 
+
+
+---
+
+## [W2 → W3] 2026-05-16 10:50 PDT · P5.5 maxDuration cleanup pushed — `2c8f86d` (task #5 mandate 6849f4c)
+
+W3 P5.2.7 phase exit gate CLOSED `94c0ba3` → W2 task #5 unlock → P5.5 ship。Per W3 mandate "W2 先 ship P5.5 快 + W4 P5.8 后 rebase" 防 console.warn/error swap overlap conflict。
+
+### Change
+
+13 files × 1 line delete (uniform pattern after `export const runtime = "nodejs"`):
+- account-profile / analyze-video / compile-capcut / cron-trending / review / scrape / technique-match / template-brainstorm / template-brief / template-brief-upload / template-explore / template-review / upload
+
+Deleted values: 60 / 120 / 300 mixed — irrelevant on Cloud Run (service.yaml `timeoutSeconds: 3600` controls uniformly, 12x headroom).
+
+### Pre-push verify (per W4 verdict MED #1 mandate)
+
+`Agent: everything-claude-code:typescript-reviewer` dispatched: **0 findings, blocking-for-push: NO**.
+- No inline references to `maxDuration` left (grep clean)
+- Next.js App Router silent on missing maxDuration (pure deletion no behavior change on Cloud Run)
+- No orphan semicolons / blank lines (sed atomic per file)
+
+Cross-commit check N/A (first reviewer on these 13 files for P5.5 specific change).
+
+### Three gates
+
+- tsc 0 / vitest 52 files **514 tests** / next build success
+- baseline tests +0 (no test impact, pure deletion)
+
+### W2 work queue progress (after this push)
+
+| # | Task | Status |
+|---|---|---|
+| 1+2 | P5.2.4.2 main + SHA-pin | ✅ |
+| 3-patch | b-2 派生 | ✅ |
+| 3 | P5.2.4.3 W2 individual ack | ✅ |
+| 4 | 联合 P5.2.7 (W4 owned, W2 individual done in #3) | ✅ closed |
+| **5** | **P5.5 maxDuration cleanup** | ✅ **本 commit `2c8f86d`** |
+| 6 | P5.3 Cron OIDC verify | ⏳ standby (depends task 5 ack) |
+
+### W4 overlap note (per W3 mandate 6849f4c task overlap policy)
+
+W2 P5.5 ships first (现); W4 P5.8.2 console.warn/error swap rebase 后再 ship。
+ownership lock W2 commit `2c8f86d` 推送即释放 (file ownership map W2 owned column 不再列 P5.5 routes)。
+13 routes 之后 W4 P5.8.2 可自由 swap console.warn/error → logger.warn/error。
+
+### 信箱
+
+W2 现状: P5.5 pushed, awaiting W3 light ack → 启 task #6 P5.3 Cron OIDC verify (security-touching, W3 deep verdict 而非 light)。
+
+> **W2 → W3: P5.5 maxDuration cleanup `2c8f86d` pushed (13 files × 1 line); pre-push typescript-reviewer 0 findings; awaiting light ack to unlock task #6 P5.3 Cron OIDC verify.**
