@@ -4,7 +4,12 @@ import {
   BriefExtractException,
   type ExtractedBrief,
 } from "@/lib/template-review/brief-extract";
-import { createUrlAllowlist, VERCEL_BLOB_PRESET } from "@/lib/url-allowlist";
+import {
+  createUrlAllowlist,
+  fetchWithAllowlist,
+  UrlAllowlistError,
+  VERCEL_BLOB_PRESET,
+} from "@/lib/url-allowlist";
 import {
   createRateLimiter,
   withRateLimit,
@@ -61,7 +66,14 @@ function errResponse(
 
 type LoadResult =
   | { ok: true; buffer: Buffer; fileName: string; sizeBytes: number }
-  | { ok: false; status: number; error: string; message: string };
+  | {
+      ok: false;
+      status: number;
+      error: string;
+      message: string;
+      /** Phase 3.5: when set, impl adds `Retry-After: <N>` header（dns_resolve_failed transient） */
+      retryAfterSec?: number;
+    };
 
 async function loadFromMultipart(req: NextRequest): Promise<LoadResult> {
   let formData: FormData;
@@ -127,25 +139,55 @@ async function loadFromBlobUrl(req: NextRequest): Promise<LoadResult> {
   }
   const { blobUrl } = parsed.data;
   const fileName = parsed.data.fileName ?? "brief.pdf";
-  // P3 #2 phase 2：替换旧 inline isVercelBlobUrl。lib allowlist 在 hostname suffix
-  // 之外额外强制 https: + 阻私有 IP（旧实现只 hostname endsWith）。W3 verdict B2：
-  // response 用统一 url_denied enum，不暴露 deny reason；server console.warn 写完整。
-  const allowlistResult = URL_ALLOWLIST.check(blobUrl);
-  if (!allowlistResult.ok) {
-    console.warn(
-      `[url-allowlist] denied url=${blobUrl} reason=${allowlistResult.reason} route=template-brief`,
-    );
-    return {
-      ok: false,
-      status: 400,
-      error: "url_denied",
-      message: "提供的 URL 不在允许列表中",
-    };
-  }
+  // P3 #2 phase 2 + phase 3.5 (2026-05-15)：fetchWithAllowlist 统一 sync deny + DNS
+  // rebinding 防御 + 实际 fetch（undici Pool with resolved-IP + SNI），单 helper 调用。
+  // Caller error mapping per W3 verdict 5357c41 §C:
+  //   - sync deny (invalid_url / scheme_denied / host_denied / private_ip): 400 url_denied
+  //     + console.warn（user fix request can resolve）
+  //   - dns_resolve_failed: 502 dns_resolve_failed + Retry-After: 5（transient,可重试）
+  //   - resolved_private_ip: 400 url_denied + console.error（**security event** SSRF probe,
+  //     运维必须知道,但 response 用 url_denied 与 host_denied 同 enum 防 SSRF probe）
   let blobRes: Response;
   try {
-    blobRes = await fetch(blobUrl);
+    blobRes = await fetchWithAllowlist(blobUrl, URL_ALLOWLIST);
   } catch (e) {
+    if (e instanceof UrlAllowlistError) {
+      if (e.reason === "dns_resolve_failed") {
+        console.warn(
+          `[url-allowlist] dns_resolve_failed url=${blobUrl} cause=${e.cause ?? "?"} route=template-brief`,
+        );
+        return {
+          ok: false,
+          status: 502,
+          error: "dns_resolve_failed",
+          message: "无法解析 URL（DNS 解析失败），稍后重试",
+          retryAfterSec: 5,
+        };
+      }
+      if (e.reason === "resolved_private_ip") {
+        // SECURITY EVENT: DNS rebinding 尝试。response 与 host_denied 同 enum 防 SSRF probe，
+        // server log 用 error level（运维 alert 触发 desired）。
+        console.error(
+          `[url-allowlist] resolved_private_ip url=${blobUrl} resolvedIp=${e.resolvedIp ?? "?"} route=template-brief`,
+        );
+        return {
+          ok: false,
+          status: 400,
+          error: "url_denied",
+          message: "提供的 URL 不在允许列表中",
+        };
+      }
+      // Sync deny reasons (invalid_url / scheme_denied / host_denied / private_ip)
+      console.warn(
+        `[url-allowlist] denied url=${blobUrl} reason=${e.reason} route=template-brief`,
+      );
+      return {
+        ok: false,
+        status: 400,
+        error: "url_denied",
+        message: "提供的 URL 不在允许列表中",
+      };
+    }
     return {
       ok: false,
       status: 502,
@@ -191,7 +233,11 @@ async function impl(
     : await loadFromMultipart(req);
 
   if (!loaded.ok) {
-    return errResponse(loaded.status, loaded.error, loaded.message);
+    const res = errResponse(loaded.status, loaded.error, loaded.message);
+    if (loaded.retryAfterSec) {
+      res.headers.set("Retry-After", String(loaded.retryAfterSec));
+    }
+    return res;
   }
 
   try {
