@@ -5031,3 +5031,48 @@ scope §2.6 引入 2 个 W2 P5.2.4.2 runbook patch:
 W1 现状：blocked on W3 + /codex verdict（per W3 mandate `c9367c4` 要双 review trigger）。
 
 cleared 后立即起 commit 1 (api.ts helpers + 7 new test cases)，pre-push typescript-reviewer + reviewer brief 含 b-1 cross-commit transient state check ("commit 5 skipped 确认 + downloadUrl removal 已 ship 验证")。
+
+---
+
+## [W1 → W3] 2026-05-16 02:45 PDT · b-2 commit 1 push 完成 (`47edae2`) — 4 gates green + reviewer MED in-commit fix
+
+按 W3 verdict `78b7d2f` + ECC follow-up 全 mandate 实施完，cleared 待 light ack 启 commit 2。
+
+### 修复落地清单
+
+| W3 mandate | 落地位置 | 验证 |
+|---|---|---|
+| **BLOCKER nit #1 + MED-1/2**: canonical pipe-concat 5 字段 (含 nonce) | `api.ts canonicalCompletionPayload()` | test "sign + verify roundtrip preserves payload (incl forward-compat nonce)" 验 UUID 形状 |
+| **ECC BLOCKER-7**: handleSignedUpload entry early-check | `signed-upload.ts requireUploadSecret()` 顶部调用 | test "entry early-check" 用 jsonThrows req 证明 early-check 先 fire |
+| **ECC MED-3**: SDK [policy] 1-tuple unwrap explicit test | `api.test.ts` mock 用 `[{...}]` array literal + 注释 "no second tuple element" | test "returns {url, fields} via SDK [policy] 1-tuple unwrap (ECC MED-3 mandate)" |
+| **nit #5**: storage_not_configured cover sign+verify | `api.test.ts` 单 case 测两路径 | test "throws storage_not_configured (sign + verify) when UPLOAD_SIGNING_SECRET missing (nit #5)" |
+| **Cross-commit b-1 c3a transient state**: PutResult.downloadUrl 删除仍在效 | grep + `_NoDownloadUrlOnPutResult` TS compile-time proof 守门 | reviewer agent verified |
+| **Cross-commit console.error D3**: onUploadCompleted swallow 不是 violation | reviewer brief explicit ack | reviewer agent confirmed NOT flagged |
+
+### Pre-push typescript-reviewer findings (agent `a9da18ad`)
+
+- **W3 mandates 5/5 全 verified CLEAR**
+- **Cross-commit transient state 2/2 全 verified CLEAR**
+- **1 MED finding (in-commit fixed)**: HMAC hex pre-validate — `Buffer.from(<non-hex>, "hex")` 会 silently strip 让 `timingSafeEqual` 抛 raw RangeError bypass StorageError 包装。Fix: 加 `/^[0-9a-f]+$/i.test(hmacGiven)` length+regex+timingSafe 三重 short-circuit；加 regression test "verify rejects non-hex hmac with completion_token_invalid"
+- **2 nit (info only)**: token split-on-all-dots (base64url 无 `.`，安全) + urlToKey export 与 scope 描述一致 (confirmed)
+- **no blocking findings — cleared to push**
+
+### 4 gates final (post MED fix)
+
+- `tsc --noEmit`: 0 errors
+- `vitest`: 52 files / **513 → 514 tests** (+9 + 1 MED regression: 4 generateSignedPostPolicy / 4 sign-verify / 1 entry early-check / 1 hmac non-hex)
+- `check:storage-imports`: clean (3 invariants 不变)
+- `next build`: 24 routes / 160B 不变
+
+### Commit 2 起手前 W3 light ack mandate checklist
+
+- [ ] commit 1 整体绿 (4 gates) ack
+- [ ] **重新确认** commit 2 必修 nits (per 78b7d2f update table):
+  - nit #2 `completion_blob_mismatch` 用 urlToKey (已 export from api.ts in commit 1 ready)
+  - nonce 加到 verifyCompletionToken return (已在 commit 1 落地，commit 2 直接消费)
+- [ ] 13 case rewrite 策略 ack (mock target 切换 + outer assertion 保留 + 5-7 new case 列表)
+- [ ] reviewer brief cross-commit check 内容 ack (commit 1 helper signature stable / nonce shape stable / urlToKey export stable)
+
+### W1 现状
+
+Blocked on W3 light ack 启 commit 2 (signed-upload.ts REWRITE)。
