@@ -2,31 +2,73 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { readFile } from "fs/promises";
 import { basename } from "path";
 import { tmpdir } from "os";
+
+// Mock undici Pool (used by fetchWithAllowlist) — must hoist Pool tracking.
+const { mockPoolInstances, mockPoolCtor } = vi.hoisted(() => {
+  type MockPoolInstance = {
+    origin: string;
+    connect: { servername?: string };
+    close: ReturnType<typeof vi.fn>;
+  };
+  const instances: MockPoolInstance[] = [];
+  const ctor = vi.fn();
+  return { mockPoolInstances: instances, mockPoolCtor: ctor };
+});
+
+vi.mock("undici", () => {
+  class MockPool {
+    origin: string;
+    connect: { servername?: string };
+    close = vi.fn().mockResolvedValue(undefined);
+    constructor(origin: string, opts: { connect?: { servername?: string } }) {
+      this.origin = origin;
+      this.connect = opts.connect ?? {};
+      mockPoolCtor(origin, opts);
+      mockPoolInstances.push(this);
+    }
+  }
+  return { Pool: MockPool };
+});
+
+// Mock node:dns/promises for checkAsync DNS resolve
+vi.mock("node:dns", async () => {
+  const actual = await vi.importActual<typeof import("node:dns")>("node:dns");
+  return {
+    ...actual,
+    promises: {
+      resolve4: vi.fn(),
+      resolve6: vi.fn(),
+    },
+  };
+});
+
+import { promises as dns } from "node:dns";
 import { cleanupAssets, prepareAssets } from "@/lib/capcut-compiler/assets";
 import {
   createUrlAllowlist,
   VERCEL_BLOB_PRESET,
   UrlAllowlistError,
 } from "@/lib/url-allowlist";
+import {
+  mockDnsNxDomain,
+  mockDnsRebinding,
+  mockDnsResolve,
+  resetDnsMocks,
+} from "@/tests/__stubs__/dns-mock";
 
 /**
  * 测试 fixture URL 域 `example.test` —— P3 #2 phase 2 后 prepareAssets 入口 SSRF
  * check 需要 allowlist 实例。这里用宽松 preset 让既有 fixture 通过；新增 SSRF
  * deny 路径在 tests/url-allowlist/*.test.ts 已覆盖。
+ *
+ * Phase 3.5 (W3 verdict 5357c41 §D2): use shared dns-mock helper to drive
+ * checkAsync DNS resolution paths (covers happy / rebinding / nxdomain).
  */
 const PERMISSIVE_TEST_ALLOWLIST = createUrlAllowlist({
   allowedSchemes: ["https:"],
   allowedHosts: [{ suffix: ".example.test" }],
   blockPrivateIps: false,
 });
-
-/**
- * Task 7：prepareAssets 多视频并发下载用例。
- *
- * 走 vi.stubGlobal('fetch') mock 网络，保留真文件系统（写入 OS tmpdir）。
- * 成功用例 afterEach 主动 cleanupAssets；失败用例 prepareAssets 内部已
- * cleanup（防止 partial workDir 残留），测试不用兜底。
- */
 
 type FetchMock = ReturnType<typeof vi.fn>;
 
@@ -49,11 +91,14 @@ function makeErrorResponse(status: number): Response {
   } as unknown as Response;
 }
 
-describe("prepareAssets (Task 7 multi-video)", () => {
+describe("prepareAssets (Task 7 multi-video, phase 3.5 async)", () => {
   let fetchMock: FetchMock;
   const trackedWorkDirs: string[] = [];
 
   beforeEach(() => {
+    resetDnsMocks(dns);
+    mockPoolInstances.length = 0;
+    mockPoolCtor.mockReset();
     fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);
   });
@@ -73,6 +118,8 @@ describe("prepareAssets (Task 7 multi-video)", () => {
   });
 
   it("downloads a single video to input-0.mp4 under a fresh workDir", async () => {
+    // PERMISSIVE_TEST_ALLOWLIST has blockPrivateIps=false → checkAsync 跳过 DNS。
+    // fetchWithAllowlist 走 plain fetch (no Pool) 分支。
     fetchMock.mockResolvedValueOnce(makeOkResponse(TEXT_BYTES("video-0")));
 
     const ws = await prepareAssets(["https://example.test/a.mp4"], undefined, {
@@ -258,16 +305,17 @@ describe("prepareAssets (Task 7 multi-video)", () => {
 });
 
 /**
- * P3 #2 phase 2：`prepareAssets` 入口 SSRF allowlist check 覆盖。
- *
- * 全部用真实 `VERCEL_BLOB_PRESET`（与生产路径一致），不 mock fetch ——
- * deny 必须在任何 fetch 发起前发生，断言 `fetchMock` zero call 守住 fail-fast。
+ * P3 #2 phase 2：`prepareAssets` 入口 SSRF allowlist check 覆盖（sync deny paths
+ * unchanged from phase 3.5 because checkAsync short-circuits on sync deny without
+ * triggering DNS）。
  */
-describe("prepareAssets · P3 #2 phase 2 SSRF allowlist gate", () => {
+describe("prepareAssets · P3 #2 phase 2 SSRF allowlist gate (sync deny short-circuit)", () => {
   let fetchMock: ReturnType<typeof vi.fn>;
   const VERCEL_BLOB_ALLOWLIST = createUrlAllowlist(VERCEL_BLOB_PRESET);
 
   beforeEach(() => {
+    resetDnsMocks(dns);
+    mockPoolCtor.mockReset();
     fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);
   });
@@ -287,6 +335,7 @@ describe("prepareAssets · P3 #2 phase 2 SSRF allowlist gate", () => {
       url: "not-a-url",
     });
     expect(fetchMock).not.toHaveBeenCalled();
+    expect(mockPoolCtor).not.toHaveBeenCalled();
   });
 
   it("throws UrlAllowlistError with reason=scheme_denied when videoUrl uses http://", async () => {
@@ -326,7 +375,7 @@ describe("prepareAssets · P3 #2 phase 2 SSRF allowlist gate", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it("fail-fast: 1st denied URL aborts before checking next URLs", async () => {
+  it("fail-fast (all-or-nothing): 1st denied URL aborts batch", async () => {
     await expect(
       prepareAssets(
         [
@@ -353,5 +402,151 @@ describe("prepareAssets · P3 #2 phase 2 SSRF allowlist gate", () => {
       url: "https://evil.com/bgm.mp3",
     });
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+});
+
+/**
+ * P3 #2 phase 3.5: 新增 async deny paths (DNS rebinding / DNS failure / public
+ * resolve happy path)。验证 checkAsync + fetchWithAllowlist 完整链路。
+ */
+describe("prepareAssets · P3 #2 phase 3.5 DNS rebinding / DNS failure", () => {
+  let fetchMock: ReturnType<typeof vi.fn>;
+  const VERCEL_BLOB_ALLOWLIST = createUrlAllowlist(VERCEL_BLOB_PRESET);
+  const trackedWorkDirs: string[] = [];
+
+  beforeEach(() => {
+    resetDnsMocks(dns);
+    mockPoolInstances.length = 0;
+    mockPoolCtor.mockReset();
+    fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+  });
+
+  afterEach(async () => {
+    vi.unstubAllGlobals();
+    for (const dir of trackedWorkDirs.splice(0)) {
+      await cleanupAssets(dir);
+    }
+  });
+
+  it("throws UrlAllowlistError reason=resolved_private_ip when DNS resolves to 127.0.0.1", async () => {
+    mockDnsResolve(
+      dns,
+      "x.public.blob.vercel-storage.com",
+      ["127.0.0.1"],
+    );
+    await expect(
+      prepareAssets(
+        ["https://x.public.blob.vercel-storage.com/a.mp4"],
+        undefined,
+        { urlAllowlist: VERCEL_BLOB_ALLOWLIST },
+      ),
+    ).rejects.toMatchObject({
+      name: "UrlAllowlistError",
+      reason: "resolved_private_ip",
+      resolvedIp: "127.0.0.1",
+    });
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(mockPoolCtor).not.toHaveBeenCalled();
+  });
+
+  it("throws UrlAllowlistError reason=dns_resolve_failed when DNS rejects", async () => {
+    mockDnsNxDomain(dns);
+    await expect(
+      prepareAssets(
+        ["https://x.public.blob.vercel-storage.com/a.mp4"],
+        undefined,
+        { urlAllowlist: VERCEL_BLOB_ALLOWLIST },
+      ),
+    ).rejects.toMatchObject({
+      name: "UrlAllowlistError",
+      reason: "dns_resolve_failed",
+    });
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(mockPoolCtor).not.toHaveBeenCalled();
+  });
+
+  it("DNS rebinding: second call's resolved IP catches private rebind", async () => {
+    // First call (pre-stream checkAsync) sees public; second call (in
+    // fetchWithAllowlist's internal checkAsync) sees private → reject before
+    // Pool construction.
+    mockDnsRebinding(
+      dns,
+      "x.public.blob.vercel-storage.com",
+      ["1.1.1.1"],
+      ["127.0.0.1"],
+    );
+
+    await expect(
+      prepareAssets(
+        ["https://x.public.blob.vercel-storage.com/a.mp4"],
+        undefined,
+        { urlAllowlist: VERCEL_BLOB_ALLOWLIST },
+      ),
+    ).rejects.toMatchObject({
+      name: "UrlAllowlistError",
+      reason: "resolved_private_ip",
+      resolvedIp: "127.0.0.1",
+    });
+    // Pool never constructed (rebound detected before any TCP)
+    expect(mockPoolCtor).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("all-or-nothing: any URL resolving to private IP aborts entire batch", async () => {
+    // Two URLs; second resolves to AWS metadata. Use mock impl via the
+    // already-mocked vi.fn refs (not reassignment, which breaks vi.mock binding).
+    const resolve4Mock = dns.resolve4 as unknown as ReturnType<typeof vi.fn>;
+    const resolve6Mock = dns.resolve6 as unknown as ReturnType<typeof vi.fn>;
+    resolve4Mock.mockImplementation((host: string) => {
+      if (host === "ok.public.blob.vercel-storage.com") {
+        return Promise.resolve(["1.1.1.1"]);
+      }
+      if (host === "evil.public.blob.vercel-storage.com") {
+        return Promise.resolve(["169.254.169.254"]);
+      }
+      return Promise.resolve([]);
+    });
+    resolve6Mock.mockResolvedValue([]);
+
+    await expect(
+      prepareAssets(
+        [
+          "https://ok.public.blob.vercel-storage.com/a.mp4",
+          "https://evil.public.blob.vercel-storage.com/b.mp4",
+        ],
+        undefined,
+        { urlAllowlist: VERCEL_BLOB_ALLOWLIST },
+      ),
+    ).rejects.toMatchObject({
+      reason: "resolved_private_ip",
+      resolvedIp: "169.254.169.254",
+    });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("happy path: DNS resolves to public IP, fetchWithAllowlist routes through Pool", async () => {
+    mockDnsResolve(
+      dns,
+      "x.public.blob.vercel-storage.com",
+      ["1.2.3.4"],
+    );
+    fetchMock.mockResolvedValueOnce(makeOkResponse(TEXT_BYTES("ok")));
+
+    const ws = await prepareAssets(
+      ["https://x.public.blob.vercel-storage.com/a.mp4"],
+      undefined,
+      { urlAllowlist: VERCEL_BLOB_ALLOWLIST },
+    );
+    trackedWorkDirs.push(ws.workDir);
+
+    // Pool ctor called for the actual fetch (after batch checkAsync passed)
+    expect(mockPoolCtor).toHaveBeenCalledTimes(1);
+    expect(mockPoolCtor.mock.calls[0]?.[0]).toBe("https://1.2.3.4:443");
+    expect(mockPoolCtor.mock.calls[0]?.[1]).toMatchObject({
+      connect: { servername: "x.public.blob.vercel-storage.com" },
+    });
+    // Pool closed in finally
+    expect(mockPoolInstances[0]?.close).toHaveBeenCalledTimes(1);
   });
 });
