@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { put } from "@/lib/storage";
+import { put, StorageError } from "@/lib/storage";
 import {
   prepareAssets,
   readAsset,
@@ -169,7 +169,18 @@ async function impl(req: NextRequest) {
         sizeBytes: zipBytes.byteLength,
       });
     } catch (e) {
-      console.error("[compile-capcut] blob upload failed:", e);
+      // Node 默认不展开 Error.cause；StorageError 把原始 @vercel/blob 错误
+      // 包在 .cause 里，所以要显式把 code + cause 一起打出来，否则 Vercel
+      // Logs 里看不到底层根因（typescript-reviewer 2026-05-15 a-3 finding A）。
+      if (e instanceof StorageError) {
+        console.error(
+          `[compile-capcut] blob upload failed code=${e.code} message=${e.message}`,
+          "cause:",
+          e.cause,
+        );
+      } else {
+        console.error("[compile-capcut] blob upload failed:", e);
+      }
       return new Response(
         JSON.stringify({
           error: "blob_upload_failed",
