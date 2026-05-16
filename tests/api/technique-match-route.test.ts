@@ -88,7 +88,7 @@ function jsonReq(body: unknown): NextRequest {
 
 describe("POST /api/technique-match · P3 #2 phase 2 SSRF allowlist gate", () => {
   it("rejects denied host with 400 url_denied before stream starts", async () => {
-    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const warnSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       const res = await POST(
         jsonReq({ videoUrls: ["https://evil.com/a.mp4"] }),
@@ -100,7 +100,7 @@ describe("POST /api/technique-match · P3 #2 phase 2 SSRF allowlist gate", () =>
       expect(
         warned.some(
           (m) =>
-            m.includes("host_denied") && m.includes("route=technique-match"),
+            m.includes("host_denied") && m.includes('"module":"api/technique-match"'),
         ),
       ).toBe(true);
     } finally {
@@ -109,7 +109,7 @@ describe("POST /api/technique-match · P3 #2 phase 2 SSRF allowlist gate", () =>
   });
 
   it("rejects http:// scheme with 400 url_denied (scheme_denied)", async () => {
-    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const warnSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       const res = await POST(
         jsonReq({
@@ -127,7 +127,7 @@ describe("POST /api/technique-match · P3 #2 phase 2 SSRF allowlist gate", () =>
   });
 
   it("rejects private IP with 400 url_denied (private_ip)", async () => {
-    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const warnSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       const res = await POST(
         jsonReq({ videoUrls: ["https://169.254.169.254/foo.mp4"] }),
@@ -143,7 +143,7 @@ describe("POST /api/technique-match · P3 #2 phase 2 SSRF allowlist gate", () =>
   });
 
   it("batch fail-fast: 1st denied URL aborts before stream", async () => {
-    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const warnSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       const res = await POST(
         jsonReq({
@@ -160,7 +160,7 @@ describe("POST /api/technique-match · P3 #2 phase 2 SSRF allowlist gate", () =>
       // P3 #3 phase 2: rate-limit memory backend warn-once 也命中 spy，
       // 这里只统计 url-allowlist 的 warn 行
       const urlAllowlistWarns = warnSpy.mock.calls.filter((c) =>
-        String(c[0]).includes("[url-allowlist]"),
+        String(c[0]).includes('"message":"url-allowlist denied"'),
       );
       expect(urlAllowlistWarns.length).toBe(1);
       expect(String(urlAllowlistWarns[0][0])).toContain("evil-1.com");
@@ -191,7 +191,7 @@ describe("POST /api/technique-match · P3 #2 phase 2 SSRF allowlist gate", () =>
 
 describe("POST /api/technique-match · phase 3.5 dns_resolve_failed + resolved_private_ip pre-stream", () => {
   it("dns_resolve_failed: 502 + Retry-After: 5 BEFORE stream starts (no NDJSON)", async () => {
-    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const warnSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       mockDnsNxDomain(dns);
       const res = await POST(
@@ -210,7 +210,7 @@ describe("POST /api/technique-match · phase 3.5 dns_resolve_failed + resolved_p
         warned.some(
           (m) =>
             m.includes("dns_resolve_failed") &&
-            m.includes("route=technique-match"),
+            m.includes('"module":"api/technique-match"'),
         ),
       ).toBe(true);
       expect(mockPoolCtor).not.toHaveBeenCalled();
@@ -220,7 +220,7 @@ describe("POST /api/technique-match · phase 3.5 dns_resolve_failed + resolved_p
   });
 
   it("resolved_private_ip: 400 url_denied + console.error BEFORE stream starts", async () => {
-    const errSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const errSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       mockDnsResolve(
         dns,
@@ -243,7 +243,7 @@ describe("POST /api/technique-match · phase 3.5 dns_resolve_failed + resolved_p
           (m) =>
             m.includes("resolved_private_ip") &&
             m.includes("127.0.0.1") &&
-            m.includes("route=technique-match"),
+            m.includes('"module":"api/technique-match"'),
         ),
       ).toBe(true);
       // No Pool ctor: zero connection attempt to rebound IP
@@ -254,7 +254,7 @@ describe("POST /api/technique-match · phase 3.5 dns_resolve_failed + resolved_p
   });
 
   it("all-or-nothing batch: 1 of N URLs rebinds → entire batch rejected pre-stream", async () => {
-    const errSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const errSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       const resolve4Mock = dns.resolve4 as unknown as ReturnType<typeof vi.fn>;
       const resolve6Mock = dns.resolve6 as unknown as ReturnType<typeof vi.fn>;

@@ -12,6 +12,9 @@ import {
 } from "@/lib/review-engine/llm";
 import type { ReviewInput } from "@/lib/review-engine/types";
 import type { AccountProfile } from "@/lib/account-profile/types";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "api/review" });
 import {
   createRateLimiter,
   clientIp,
@@ -191,7 +194,7 @@ export async function POST(req: NextRequest) {
             mode = "llm";
             modelId = `${selection.provider}/${selection.modelId}`;
           } catch (e) {
-            console.error("[review] LLM failed, falling back to mock:", e);
+            log.error("LLM failed, falling back to mock", { err: e });
             result = buildMockReview(input, formula);
           }
         } else {
@@ -208,7 +211,7 @@ export async function POST(req: NextRequest) {
           },
         });
       } catch (e) {
-        console.error("[review] error:", e);
+        log.error("error", { err: e });
         send({ type: "error", message: (e as Error).message });
       } finally {
         controller.close();

@@ -6,6 +6,9 @@ import { probeVideoMeta } from "@/lib/video/ffprobe-meta";
 import { analyzeMaterialPotential } from "@/lib/video/analyze-potential";
 import { loadReferenceCutPlans } from "@/lib/sample-references";
 import { matchTechniques } from "@/lib/technique-matching/match-engine";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "api/technique-match" });
 import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
 import {
   createUrlAllowlist,
@@ -126,9 +129,10 @@ export async function POST(req: NextRequest) {
   } catch (e) {
     if (e instanceof UrlAllowlistError) {
       if (e.reason === "dns_resolve_failed") {
-        console.warn(
-          `[url-allowlist] dns_resolve_failed url=${e.url} cause=${e.cause ?? "?"} route=technique-match`,
-        );
+        log.warn("url-allowlist dns_resolve_failed", {
+          url: e.url,
+          cause: e.cause ?? null,
+        });
         return new Response(
           JSON.stringify({
             error: "dns_resolve_failed",
@@ -145,14 +149,16 @@ export async function POST(req: NextRequest) {
       }
       if (e.reason === "resolved_private_ip") {
         // SECURITY EVENT (W3 verdict §C): DNS rebinding 尝试。response 同 url_denied
-        // 防 SSRF probe，server console.error 触发运维 alert。
-        console.error(
-          `[url-allowlist] resolved_private_ip url=${e.url} resolvedIp=${e.resolvedIp ?? "?"} route=technique-match`,
-        );
+        // 防 SSRF probe，server log.error 触发运维 alert。
+        log.error("url-allowlist resolved_private_ip", {
+          url: e.url,
+          resolvedIp: e.resolvedIp ?? null,
+        });
       } else {
-        console.warn(
-          `[url-allowlist] denied url=${e.url} reason=${e.reason} route=technique-match`,
-        );
+        log.warn("url-allowlist denied", {
+          url: e.url,
+          reason: e.reason,
+        });
       }
       return new Response(
         JSON.stringify({
@@ -408,7 +414,7 @@ export async function POST(req: NextRequest) {
           },
         });
       } catch (e) {
-        console.error("[technique-match] error:", e);
+        log.error("error", { err: e });
         send({ type: "error", message: (e as Error).message });
       } finally {
         if (workDir) {

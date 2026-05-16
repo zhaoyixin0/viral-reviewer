@@ -6,6 +6,9 @@ import {
   generateCompareSummary,
   detectDiversityWarning,
 } from "@/lib/template-review/brainstorm-llm";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "api/template-brainstorm" });
 import type {
   BrainstormInput,
   BrainstormResult,
@@ -181,7 +184,7 @@ export async function POST(req: NextRequest) {
           },
         });
       } catch (e) {
-        console.error("[template-brainstorm] error:", e);
+        log.error("error", { err: e });
         send({ type: "error", message: (e as Error).message });
       } finally {
         controller.close();

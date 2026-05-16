@@ -2,6 +2,9 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import { loadVideos } from "@/lib/data/load-videos";
 import { generateExploreWithLLM } from "@/lib/template-review/explore-llm";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "api/template-explore" });
 import {
   createRateLimiter,
   clientIp,
@@ -112,7 +115,7 @@ export async function POST(req: NextRequest) {
           },
         });
       } catch (e) {
-        console.error("[template-explore] error:", e);
+        log.error("error", { err: e });
         send({ type: "error", message: (e as Error).message });
       } finally {
         controller.close();

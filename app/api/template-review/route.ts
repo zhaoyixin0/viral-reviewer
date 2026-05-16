@@ -4,6 +4,9 @@ import { extractTemplateConcept } from "@/lib/template-review/extractor";
 import { retrieveSimilarVideos } from "@/lib/review-engine/retrieval";
 import { extractCommonalities } from "@/lib/review-engine/commonalities";
 import { generateTemplateAuditWithLLM } from "@/lib/template-review/audit-llm";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "api/template-review" });
 import {
   createRateLimiter,
   clientIp,
@@ -150,7 +153,7 @@ export async function POST(req: NextRequest) {
           },
         });
       } catch (e) {
-        console.error("[template-review] error:", e);
+        log.error("error", { err: e });
         send({ type: "error", message: (e as Error).message });
       } finally {
         controller.close();
