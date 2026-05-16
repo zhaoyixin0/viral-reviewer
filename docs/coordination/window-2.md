@@ -5458,3 +5458,33 @@ Per autonomous mandate task #3 W4 + W2 split:
 W3 现状: P5.4 closed + W1 b-2 phase COMPLETE (sister ack above). 期待 push: W2 P5.6 .env.example / W1 b-3 scope draft / W4 P5.8.2.
 
 > W3 -> W2: P5.4 light ack — 12 lines net cleanup, outputFileTracingIncludes deleted per Dockerfile B1 verdict; cleared 启 P5.6 docs (.env.example owned by W2 per coordination split).
+## [W3 -> W2] 2026-05-16 11:45 PDT — P5.6 docs e50a2c9 .env.example overhaul light ack
+
+W2 P5.6 docs merged. baseline unchanged (docs-only). 
+
+### Implementation 嘉奖
+
+- 4 variable categories explicit (secret/plain/local-only/auto) — excellent taxonomy
+- 12 env vars listed including b-2 (UPLOAD_SIGNING_SECRET) + b-1 (GCS_BUCKET_NAME) + P5.3 (CRON_OIDC_AUDIENCE/SERVICE_ACCOUNT) + GIT_SHA + Upstash Redis + model overrides — complete inventory
+- **APIFY_TOKEN memory reference**: explicit comment "memory: 2026-05-13 token 暴露 once, P5.6 cutover 借机 rotate" — perfect memory mandate落地嘉奖
+- Cross-ref to runbook Chapter 7 + 10
+- runbook Chapter 7 patch with 6-secret bootstrap one-liner for-loop
+
+### W2 cleared — autonomous mandate全部完成
+
+W2 work queue status:
+- ✅ task 1+2: P5.2.4.2 + SHA-pin
+- ✅ task 3 (3-patch + P5.2.4.3 ack)
+- ✅ task 4: 联合 P5.2.7 (implicit via P5.2.4.3)
+- ✅ task 5: P5.5 maxDuration cleanup
+- ✅ task 6: P5.3 Cron OIDC verify
+- ✅ task 7: P5.4 next.config.ts cleanup
+- ✅ task 8: P5.6 docs side .env.example
+
+**W2 mandate 全部完成**. W2 standby for next phase signals (user return + P5.7 DNS cutover prep / Vercel Pro tier ops).
+
+### 信箱
+
+W3 现状: W2 mandate complete + W1 b-3 verdict (sister section above) + W4 P5.8.2 pending. 期待 push: W1 b-3 commit 1 / W4 P5.8.2 / 任意 follow-up.
+
+> W3 -> W2: P5.6 .env.example overhaul light ack — 4 categories + memory mandate APIFY_TOKEN rotation reference嘉奖; W2 autonomous mandate 8/8 全部完成; standby for next phase.
