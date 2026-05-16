@@ -3,8 +3,15 @@
  *
  * Per W3 P5.1 verdict 12b3b18:
  * - All callers MUST import from `@/lib/storage` (not `@vercel/blob` or
- *   `@google-cloud/storage` directly). Grep invariant enforced after P5.1.a-3.
- * - P5.1.a (current): thin wrapper around `@vercel/blob`.
+ *   `@google-cloud/storage` directly). Grep invariants enforced after a-4:
+ *
+ *   1. `from "@vercel/blob"` — only `lib/storage/api.ts`.
+ *   2. `from "@vercel/blob/client"` — only `lib/storage/signed-upload.ts`
+ *      (server) + 3 client components: `components/technique-match/InputPanel.tsx`,
+ *      `components/technique-match/CapCutExport.tsx`, `components/review/InputPanel.tsx`.
+ *      The 3 client components are TO BE REMOVED in P5.1.a-5 via `lib/storage/client/upload.ts`.
+ *
+ * - P5.1.a (current): thin wrappers around `@vercel/blob` / `@vercel/blob/client`.
  * - P5.1.b (planned): internal swap to `@google-cloud/storage`, zero caller change.
  */
 
@@ -21,6 +28,14 @@ export {
   getStorage,
   type StorageClient,
 } from "./client";
+
+export {
+  handleSignedUpload,
+  InvalidUploadBodyError,
+  type SignedUploadCompletion,
+  type UploadEnvelope,
+  type UploadPolicy,
+} from "./signed-upload";
 
 export {
   type BlobInfo,
