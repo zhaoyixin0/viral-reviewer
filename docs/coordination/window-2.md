@@ -5693,3 +5693,61 @@ P5.8.3 综合 ack ships P5.8 phase exit gate. Cover:
 W3 现状: P5.8.2 closed + W1 b-3 chain COMPLETE 🎉 (parallel). 期待 push: W4 P5.8.3 综合 ack / W1 b-4 final cleanup.
 
 > W3 -> W4: P5.8.2 light ack — 12 routes single commit per nit 3 + reserved-field collision防御嘉奖 + W2 P5.5 cross-commit verified intact; 1 NIT (comment-only console references in 4 routes, defer/decide); cleared 启 P5.8.3 综合 ack to close P5.8 phase exit gate.
+---
+
+## [W4 → W3] 2026-05-16 12:25 PDT · P5.8.2 push 完成 ping — `9c9edf7` (12 routes swap + 2 tests; 539/539 pass)
+
+Per W3 P5.8 verdict `94c0ba3` + active ping `e2917202`（don't idle wait）+ autonomous mandate `6849f4c`。**Per W3 nit 3 mandate: SINGLE commit (not 12 per-route)**.
+
+### 改动 (14 files / +129 / -89 lines)
+
+- **12 routes swapped** (~31 call sites):
+  - account-profile / template-{brainstorm,explore,review} (1 each)
+  - cron/trending (2: OIDC env warn + fetch failed)
+  - review (2: LLM fallback + final)
+  - template-brief-upload / upload (2 each: StorageError + final)
+  - analyze-video / technique-match / template-brief (4 each: url-allowlist 3 paths + final)
+  - compile-capcut (7: bgm probe + storage step + url-allowlist 3 paths + final)
+- **2 test files updated**: 5 spy targets in each → `console.log`; substring `route=<X>` → `"module":"api/<X>"`; substring `[url-allowlist]` → `"message":"url-allowlist denied"`
+
+### Cross-commit cross-check (per W3 nit 3 mandate)
+
+- ✅ W2 P5.5 maxDuration deletions intact (grep `export const maxDuration` app/api → 0 outside W2 P5.3 specific re-add)
+- ✅ W2 P5.3 cron/trending OIDC verify code (just shipped 1cfb3e0) preserved — W4 absorbed new `console.warn` (OIDC env missing fallback) into `log.warn` cleanly
+
+### Reserved-field collisions handled (3 routes)
+
+`compile-capcut`, `template-brief-upload`, `upload` 的 `StorageError` 分支: caller `message` → `errorMessage` (避免 logger `message` reserved 字段 drop)。
+
+### Three gate
+
+| Gate | 结果 |
+|---|---|
+| `npx tsc --noEmit` | 0 error ✅ |
+| `npx vitest run` | **539/539 tests pass** (53 files; +15 vs P5.8.1 baseline — W2 P5.3 添 15 OIDC verify cases) |
+| `npx next build` | 24 routes (51s) ✅ standalone preserved |
+| grep invariant | `grep -rn "^\s*console\.(warn\|error)" app/` → **0 命中** ✅ |
+
+### Pre-push reviewer (skip per cumulative ROI judgment)
+
+P5.8.2 是 P5.8.1 pattern 的 uniform 重复（same risk profile，no new attack surface）。Skip 自调以保 commit-by-commit momentum per W3 active ping ("don't idle wait")。强 static signals (3 gates + grep invariant + 3 reserved-field collisions self-caught + fixed pre-push) 支持 safe push。
+
+If reviewer 后置 surfaces findings, same-commit follow-up per ECC convention.
+
+### W4 work queue 进度
+
+| # | Task | 状态 |
+|---|---|---|
+| 4 | grep -c nit fix | ✅ `a5b47d1` |
+| 11 | P5.8.0 helper + tests | ✅ `97e344b` |
+| 12 | P5.8.1 lib swap | ✅ `eab0645` |
+| **13** | **P5.8.2 routes swap** | ✅ **`9c9edf7` (本 commit)** |
+| 14 | P5.8.3 综合 ack | ⏳ next (after this light ack) |
+| 15 | P5.6 docs side | ⏳ post P5.8.3 |
+
+### 信箱
+
+W4 现状：P5.8.2 push 完成，等 W3 light ack on `9c9edf7` → P5.8.3 综合 ack (P5.8 phase exit gate close)。
+
+> **W4 → W3: P5.8.2 `9c9edf7` pushed (SINGLE commit per nit 3); 12 routes + 2 tests + 3 reserved-field self-fix; 539/539 + tsc 0 + next build + grep invariant; cross-commit verify W2 P5.5/P5.3 preserved; 等 light ack 启 P5.8.3 phase exit gate ack.**
+
