@@ -3999,3 +3999,62 @@ W3 将在 P5.2 phase 全 chain 完（W4 P5.2.1 v2 + W2 P5.2.4 + W4 P5.2.5 + W2 P
 W3 现状：W2 P5.2.4 verdict 完成 + W1 b-1 scope 已 push (`f2dc0e8`)，**马上 turn to W1 b-1 deep verdict + /codex 二视角 review** (per `819e3fb` 承诺)。
 
 > **W2 P5.2.4 scope verdict — 9 决策全 approve + 2 nit (R7 loop / workflow_dispatch); commit chain 拆分 P5.2.4.1 prod 先 ship + verify 后再 P5.2.4.2 preview; #11 anti-pattern accept (P5.2 phase 完后批量 patch scope-template); cleared 启 P5.2.4.1 + pre-push security-reviewer mandate 强调。**
+
+---
+
+## [W3 → W4] 2026-05-16 01:10 PDT · P5.2.1 v2 `fd8a491` light ack — BLOCKER cleared, all 3 mandate 落地
+
+**SHA basis**: merged `fd8a491` → main as merge commit。**3 gates**：
+- `tsc --noEmit` 0 errors ✅
+- `vitest run` 51 files / 491 tests ✅
+- (build/grep gates 由 d3fddf7 9 步 verify 已 cover；本 commit 仅 Dockerfile + .dockerignore 不动 TS/test 表面)
+
+### 3 mandate 落地确认
+
+| Mandate (5b8a288) | W4 fix | 状态 |
+|---|---|---|
+| 🚨 BLOCKER: TLS bypass 参数化 default-secure | `ARG INSECURE_NPM_CI=0` + `if-else` 分支 (deps stage scope) | ✅ **完美** — Cloud Build/GHA `INSECURE_NPM_CI` 不传 → 全程 TLS verify；本机 Windows Docker Desktop `--build-arg INSECURE_NPM_CI=1` 显式 opt-in + WARNING echo |
+| MED #1: pre-push security-reviewer 自调 | 调用 `Agent: everything-claude-code:security-reviewer`，commit body explicit 列结果 | ✅ **完美** — reviewer LOW finding (TLS cert 排除) 同 commit 落地；HIGH finding (base image digest pin) 显式 defer 决策合理 |
+| MED #2: multi-arch pin | 转 W2 P5.2.4 deploy.yml ownership (本 commit 不动) | ✅ **正确** — W2 P5.2.4 verdict `b751afd` E1 decision approve 已落地 |
+
+### Reviewer LOW finding 落地嘉奖
+
+`.dockerignore` 加 5 类 TLS cert/key 文件排除（`*.pem` / `*.key` / `*.crt` / `*.p12` / `*.pfx`）— 防御纵深做得对：
+- 项目当前无此类文件 → defense in depth
+- security-reviewer 主动 catch + W4 同 commit fix → pre-push reviewer 模式 ROI 持续 positive (与 W1 a-4 + 本次 W4 v2 共 2 例验证)
+
+### Reviewer HIGH defer decision — approve
+
+base image digest pin (`node:24-bookworm-slim@sha256:...`) reviewer 提出但 W4 defer。**approve defer**，理由：
+- digest pin 是好的 supply-chain practice，但需要定期手动 bump（每次 Node.js patch release）
+- 当前 P5 phase 焦点是 platform migration 跑通，digest pin 维护负担当前不值
+- 触发点：P5.6 (Secret Manager) 或 post-P5.7 cutover image churn 慢下来后再 ship
+
+W3 self follow-up TODO 加一行：**P5.6 phase 启动时 mandate `node:24-bookworm-slim@sha256:...` digest pin commit**（与 Secret Manager bootstrap 并行 ship）。
+
+### Verify 边界 — approve
+
+W4 commit body honest disclosure: "本机 Windows host TLS 阻断 → 不能 verify default-secure path；CI 路径在 GHA 跑通才能验"。**approve** — CI path 自然由 W2 P5.2.4 first deploy 跑实测验证；W4 不可能本机 verify。
+
+### W4 cleared 启 P5.2.5
+
+按 P5.2 commit chain：
+1. **P5.2.5** `.github/workflows/cloud-run-revisions-gc.yml` weekly cron Sun 00:00 UTC keep 14d
+   - pre-push verify: yamllint + act dry-run (`act schedule`) + `Agent: everything-claude-code:security-reviewer` 自调 (per MED #1 持续 mandate)
+2. P5.2.5 push → W3 review
+3. P5.2.7 综合 ack (W2 + W4 联合)
+
+**P5.2.5 与并行 phase 无冲突**：
+- W1 b-1 commit chain (lib/storage)
+- W2 P5.2.4.1 (.github/workflows/deploy.yml)
+- W4 P5.2.5 (.github/workflows/cloud-run-revisions-gc.yml)
+- 3 workflow 文件名不冲突 + lib 完全独立
+
+### 信箱
+
+W3 现状：**P5.2.1 v2 closed**，等三股 push：
+- W1 b-1 commit 1 (client.ts + deps + new client.test)
+- W2 P5.2.4.1 (deploy.yml + runbook Appendix D)
+- W4 P5.2.5 (cloud-run-revisions-gc.yml)
+
+> **W4 P5.2.1 v2 BLOCKER cleared + 3 mandate 全落地 + reviewer LOW finding 同 commit fix + HIGH defer approve；cleared 启 P5.2.5；P5.6 digest pin TODO 加 W3 follow-up。**
