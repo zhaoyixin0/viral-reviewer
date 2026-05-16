@@ -4957,3 +4957,77 @@ W3 现状：W1 整 chain closed + 流程升级 mandate 落地，**等 W1 commit 
 4. **push scope draft** → ping window-1.md "b-2 scope draft 待 W3 + /codex 双 review"
 
 > **W1 FULL AUTONOMY — commit 5 autonomous skip 预期 → b-2 scope draft 现起 → W3 调 /codex 双 review → b-2/3/4 chain；技术决策升级 W3 不升级 user；cloud-side ops defer user 回来。**
+
+---
+
+## [W1 → W3] 2026-05-16 02:25 PDT · commit 5 autonomous SKIP + b-2 scope draft push 完成 (待双 review)
+
+按 W3 autonomous mandate `6849f4c` 步骤 2-4 执行完。
+
+### Commit 5 autonomous SKIP 决策（不 ship types.ts micro-tweak）
+
+依据：
+- 当前 BlobInfo 5 字段 (url / pathname / contentType? / size? / uploadedAt?) caller 实际用全覆盖 (snapshot-store / topic-cache / account-profile / signed-upload completion)
+- GCS object metadata 多余字段 (generation / etag / md5Hash / crc32c) 当前 0 caller 用
+- W3 light ack `3361e7a` 已 explicit "决策权 W1，无需 W3 verdict"
+- 与 W3 倾向一致 ("current 5 cases 不依赖 generation/etag/md5Hash")
+
+**结论**：commit 5 不 ship；P5.1.b-1 phase 正式 closed at chain (1+2+3+3a+4) merged。Future scope 需 GCS metadata 字段时（optimistic concurrency / integrity verify）再 dedicated micro-scope 加。
+
+### b-2 scope draft push 完成
+
+文件：`docs/coordination/scopes/p5.1.b-2-signed-upload-swap.md` (~332 lines)
+
+核心设计：
+- **A1 POST policy** (不 PUT signed URL) — server-side `content-length-range` 200MB cap mandatory；不能让 attacker 绕开
+- **B1 browser ping completion** (不 Pub/Sub) — 避免 W2 deploy infra 新依赖；维持 b-1 同 "lib code can start now" 原则
+- **C1 HMAC-SHA256 stateless completion token** (不 Redis/KV) — payload `{finalKey, contentType, maxBytes, expiresAt}` 防 client tamper + replay；新 env `UPLOAD_SIGNING_SECRET` 32-byte hex
+- **D1 60min/60min TTL** — 与 W3 frozen write TTL 一致 + 覆盖 200MB 慢网络
+- **E** 保 4 现 code + 新 3 (`completion_token_invalid` / `completion_token_expired` / `completion_blob_mismatch`)
+- **F** UploadEnvelope brand 保留 + TS compile-time proof (复用 b-1 commit 3a `_NoFieldsOnUploadEnvelope` pattern)
+- **G** `addRandomSuffix` server-side enforce via POST policy condition `[["eq", "$key", finalKey]]`
+
+13 case rewrite 策略：outer assertion 100% 保留 + 5-7 new GCS-specific case (completion token verify path)
+4-commit chain estimate (+1 conditional commit 5)
+三门 baseline: 52 files / 504 tests → 52 files / 515-517 tests
+
+### **新 cross-window 协调点 (mandate W3 ack)**
+
+scope §2.6 引入 2 个 W2 P5.2.4.2 runbook patch:
+
+1. **`UPLOAD_SIGNING_SECRET`** Secret Manager bootstrap line:
+   ```
+   | upload-signing-secret | `openssl rand -hex 32` | b-2 HMAC completion token signing | env: UPLOAD_SIGNING_SECRET |
+   ```
+
+2. **GCS bucket CORS** for browser direct POST:
+   ```bash
+   gcloud storage buckets update gs://${BUCKET} --cors-file=cors.json
+   # cors.json: [{"maxAgeSeconds":3600,"method":["POST","OPTIONS"],"origin":["https://${VERCEL_DOMAIN}","https://*.vercel.app"],"responseHeader":["Content-Type","x-goog-*"]}]
+   ```
+
+请 W3 verdict 时同步 dispatch 给 W2（让 W2 P5.2.4.2 patch 里 append，不要等 b-2 merge）。
+
+### 新 anti-pattern #12 提议 (W3 verdict 时 ack approve)
+
+"Untrusted client-driven webhook (no signing) → impersonation"。GCS 没 webhook 等价物（Pub/Sub 是 server-driven 但需 infra），client-driven ping 必须 HMAC + TTL + payload-content 校验三重防御才可信。W3 ack 后写入 `scope-template.md §4 #12` 成 reference example，同步写 `feedback_untrusted_completion_webhook.md` memory。
+
+### 净增 case 显式 ack 申请
+
+- api.test.ts: 23 → 30 (+7) 新增 generateSignedPostPolicy 4 + sign/verify 3
+- signed-upload.test.ts: 13 → 18-20 (+5-7) 13 rewrite + new completion path coverage
+
+总 +11-13 test，**52 files / 515-517 tests** 三门预期。
+
+### /codex 二视角必查 (scope §3 W3 review point #5)
+
+1. HMAC payload `JSON.stringify` 是否 stable key order (Node 是稳定但文档无 spec 保证)?
+2. `generateSignedPostPolicyV4` SDK 返一元组 vs 多元组 (b-1 SDK quirks 教训主动 verify)?
+3. `crypto.createHmac` 在 Node 24 LTS deprecation warning?
+4. completion token 在 `?` query 还是 `body` 传 (URL 2KB limit)?
+
+### W1 现状 + 下一步
+
+W1 现状：blocked on W3 + /codex verdict（per W3 mandate `c9367c4` 要双 review trigger）。
+
+cleared 后立即起 commit 1 (api.ts helpers + 7 new test cases)，pre-push typescript-reviewer + reviewer brief 含 b-1 cross-commit transient state check ("commit 5 skipped 确认 + downloadUrl removal 已 ship 验证")。
