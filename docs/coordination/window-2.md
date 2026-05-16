@@ -5751,3 +5751,49 @@ W4 现状：P5.8.2 push 完成，等 W3 light ack on `9c9edf7` → P5.8.3 综合
 
 > **W4 → W3: P5.8.2 `9c9edf7` pushed (SINGLE commit per nit 3); 12 routes + 2 tests + 3 reserved-field self-fix; 539/539 + tsc 0 + next build + grep invariant; cross-commit verify W2 P5.5/P5.3 preserved; 等 light ack 启 P5.8.3 phase exit gate ack.**
 
+
+---
+
+## [W3 -> W4] 2026-05-16 13:35 PDT — task #14 + #15 final close-out signal
+
+W4 work queue shows 2 pending: #14 P5.8.3 综合 ack + #15 P5.6 docs side. Close-out clarification:
+
+### task #14 P5.8.3 综合 ack — proceed (ship now)
+
+Per my P5.8.2 ack (e73fb37) you're cleared. Ship single ack section to window-2.md closing P5.8 phase exit gate. Cover:
+- 3 chain commits status (P5.8.0 helper + 10 tests / P5.8.1 lib 17 files + 5 tests / P5.8.2 routes 12 + 2 tests)
+- Total delta: 53 → 54 files / +50 tests / 51 call sites swapped to structured logger
+- Pre-push reviewer ROI count (W4 contribution: 3 dispatches: P5.8.0 + P5.8.1 + P5.8.2)
+- Reserved-field collision discipline (3 routes pattern `message → errorMessage`)
+- Cross-cutting wins (logger factory + Cloud Logging native JSON + GIT_SHA + cause chain serialize)
+- Cloud Logging integration ready (Cloud Run `console.log` → structured JSON auto-parse)
+
+### task #15 P5.6 docs side — CLOSED (absorbed by W2 + W3)
+
+W2 shipped P5.6 docs in commit `e50a2c9` (per W3 verdict assigned to W2 for ownership lock — .env.example single owner). Coverage:
+- `.env.example` overhaul (+83 lines): 4 category taxonomy (secret/plain/local-only/auto) + 12 env vars listed (incl UPLOAD_SIGNING_SECRET / CRON_OIDC_AUDIENCE/SERVICE_ACCOUNT / GCS_BUCKET_NAME)
+- runbook Chapter 7 patch (+30 lines): cross-ref + 6-secret bootstrap one-liner for-loop
+- APIFY_TOKEN memory reference (per memory rotation TODO)
+
+W3 cloud-side bootstrap also documented LIVE artifacts via actual gcloud execution (not docs but the real thing):
+- 6 Secret Manager secrets created
+- 2 SAs + WIF + IAM bindings
+- AR repo + GCS bucket + CORS
+
+**task #15 is therefore obsolete / duplicate**. W4 work queue 实际 14/14 complete after #14 P5.8.3.
+
+### P5 phase status update (just FYI)
+
+🎉 **Cloud Run prod LIVE** (this session, post your active period):
+- Service URL: https://viral-reviewer-web-wowcshiskq-wl.a.run.app
+- Region: us-west2 (user override from us-central1 — code patched in 5b07601)
+- /api/health + /api/trending verified 200
+- GHA deploy.yml workflow green end-to-end (after 3 hot fixes: PORT removal / `${IMAGE_TAG}` sed / public invoker IAM)
+- OPENAI_API_KEY real value bound (v2, replaces placeholder)
+- Cloud Run revision `viral-reviewer-web-00003-28x` serving 100% traffic
+
+### After P5.8.3 ack — W4 standby
+
+W4 mandate 100% complete after P5.8.3 ships. Standby for next phase signals (none currently expected — P5 phase nearly done, only user-side cloud ops + DNS cutover remaining).
+
+> W3 -> W4: ship P5.8.3 综合 ack now to close P5.8 phase exit gate; task #15 P5.6 docs CLOSED (W2 absorbed at e50a2c9); W4 mandate 14/14 then standby.
