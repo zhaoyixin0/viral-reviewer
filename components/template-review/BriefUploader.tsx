@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Upload, FileText, Loader2, AlertTriangle, CheckCircle2 } from "lucide-react";
-import { upload } from "@/lib/storage/upload-client";
+import { upload, type UploadPhase } from "@/lib/storage/upload-client";
 import type { ExtractedBrief } from "@/lib/template-review/brief-extract";
 
 type Props = {
@@ -13,10 +13,24 @@ type Props = {
 
 type Status =
   | { kind: "idle" }
-  | { kind: "uploading"; fileName: string; percentage: number }
+  | { kind: "uploading"; fileName: string; phase: UploadPhase }
   | { kind: "extracting"; fileName: string }
   | { kind: "ok"; fileName: string; brief: ExtractedBrief }
   | { kind: "error"; message: string };
+
+/**
+ * Phase-only upload progress labels (W3 b-3 verdict dc7ca23 C1).
+ *
+ * Replaces the legacy byte-percentage display — Node-native `fetch()` does
+ * not expose upload-side progress events, so the b-3 hand-rolled shim
+ * reports phase transitions instead. Trade-off accepted per scope §2.3 C:
+ * BriefUploader's only progress UX user, single major copy change.
+ */
+const UPLOAD_PHASE_LABEL: Record<UploadPhase, string> = {
+  signing: "正在签名",
+  uploading: "上传中",
+  completing: "完成中",
+};
 
 const MAX_BYTES = 100 * 1024 * 1024;
 
@@ -40,7 +54,7 @@ export function BriefUploader({ onExtracted, disabled }: Props) {
       return;
     }
 
-    setStatus({ kind: "uploading", fileName: file.name, percentage: 0 });
+    setStatus({ kind: "uploading", fileName: file.name, phase: "signing" });
 
     let blobUrl: string;
     try {
@@ -48,12 +62,8 @@ export function BriefUploader({ onExtracted, disabled }: Props) {
         access: "public",
         handleUploadUrl: "/api/template-brief-upload",
         contentType: file.type,
-        onUploadProgress: ({ percentage }) => {
-          setStatus((s) =>
-            s.kind === "uploading"
-              ? { ...s, percentage: Math.round(percentage) }
-              : s,
-          );
+        onProgress: (phase) => {
+          setStatus((s) => (s.kind === "uploading" ? { ...s, phase } : s));
         },
       });
       blobUrl = blob.url;
@@ -147,16 +157,13 @@ export function BriefUploader({ onExtracted, disabled }: Props) {
                 <Loader2 className="w-4 h-4 animate-spin" />
                 <span className="text-sm">
                   {status.kind === "uploading"
-                    ? `上传中：${status.fileName} (${status.percentage}%)`
+                    ? `${UPLOAD_PHASE_LABEL[status.phase]}：${status.fileName}`
                     : `Haiku 正在解析「${status.fileName}」…`}
                 </span>
               </div>
               {status.kind === "uploading" && (
                 <div className="w-full max-w-xs mx-auto h-1.5 rounded-full bg-white/10 overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] transition-all"
-                    style={{ width: `${status.percentage}%` }}
-                  />
+                  <div className="h-full w-1/3 bg-gradient-to-r from-[#8b5cf6] to-[#d946ef] animate-pulse" />
                 </div>
               )}
             </div>
