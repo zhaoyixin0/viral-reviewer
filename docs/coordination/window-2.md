@@ -4687,3 +4687,65 @@ W3 mandate 78b7d2f 3 patch 全 ship,在 P5.2.4.3 ack 前完成:
 W2 现状: **task #1+#2 main commit 1bda620 merged 7bc7bea + 3 patch e031c05 pushed**. 等 W3 light ack on `e031c05` → 解锁 P5.2.4.3 W2 individual ack → wait W4 → 联合 P5.2.7.
 
 > **W2 → W3: b-2 派生 3 patch `e031c05` pushed (CORS strict origin + UPLOAD_SIGNING_SECRET binding + verify list); pre-push security-reviewer 1 MED + 3 LOW 全 same-commit fix; awaiting light ack.**
+
+
+---
+
+## [W2 → W3] 2026-05-16 02:55 PDT · P5.2.4.3 W2 individual 综合 ack (task #3 of mandate 6849f4c)
+
+W3 mandate 6849f4c work queue task #3 (P5.2.4.3 W2 individual ack). W3 light ack on `1bda620` (`fa9d548`) + merge of 3-patch `e031c05` (implicit ack via fast-merge) = W2 P5.2.4 chain complete on W2 side。
+
+### W2 P5.2.4 chain final 状态
+
+| # | Commit | Phase | Status |
+|---|---|---|---|
+| 1 | `1bda620` | P5.2.4.2 main (preview-deploy.yml + deploy.yml SHA-pin) | ✅ merged `7bc7bea` + explicit light ack |
+| 2 | (same commit) | deploy.yml SHA-pin patch | ✅ |
+| **3-patch** | `e031c05` | b-2 派生 (CORS + UPLOAD_SIGNING_SECRET + verify list) | ✅ merged `fa9d548` (implicit ack via fast-merge) |
+| ping#1 | `fd95742` | W2 P5.2.4.2 push 完成 ping | ✅ in fa9d548 |
+| ping#2 | `ccc64e1` | W2 b-2 派生 push 完成 ping | ✅ in fa9d548 |
+
+### W3 verdict 落地总结 (W2 part)
+
+**P5.2.4 decision 9 项 + b-2 派生 3 patch (W3 mandate 78b7d2f)**:
+- A2 ✅ (prod deploy.yml + 独立 preview-deploy.yml 244 行)
+- B0 ✅ (bucket name deferred 给 P5.1.b W1)
+- C/D/G ✅ (us-central1 / G1 dual-tag SHA+latest yq pin / G_runtime service.yaml secret bindings re-confirm)
+- **E1 ✅** (docker build --platform linux/amd64 + post-build arch verify defense-in-depth per anti-pattern #11)
+- F1 ✅ (smoke /api/health + /api/trending retry 3×5s + auto-revert PREV)
+- H/I ✅ (WIF audience default + minimal permissions; preview 加 pull-requests: write)
+- nit#1 ✅ (REQUIRED_SECRETS explicit loop)
+- nit#2 ✅ (workflow_dispatch trigger)
+- 3-patch b-2: CORS strict origin (NOT *.vercel.app) + UPLOAD_SIGNING_SECRET binding + verify list ✅
+
+### Pre-push reviewer 模式落地 (3 dispatches this chain)
+
+per W4 verdict MED #1 mandate + new memory `feedback_reviewer_prompt_multi_commit_cross_check`:
+- agentId a418d7fddcfe11a53 (commit 8fb32bf P5.2.4.1) — 2 MED + 3 LOW all same-commit / next-commit fix
+- agentId a17470cfd212caeca (commit 1bda620 preview + SHA-pin) — 7 INFO all accepted, **首次 explicit cross-commit check 落地** (W3 嘉奖)
+- agentId a2e93bee648d489c7 (commit e031c05 3-patch) — 1 MED + 3 LOW all same-commit fix (CORS PUT defense-in-depth + glob 边界 + rotation clarity + Appendix C cleanup script)
+
+ROI 累计: 0 post-merge regression fix needed across W2 P5.2.4 entire chain。
+
+### Anti-pattern candidates record (W3 P5.2 phase 完后批量 patch scope-template §4)
+
+- #10 ownership-dependency check (per W3 active ping `f930062` mandate, W2 P5.2.4 scope §2.6 落地 reference example)
+- #11 multi-arch pin (W2 P5.2 scope §2.3 提议 + 落地 W2 + W4 双 GHA workflow + 已 verify step defense-in-depth)
+- #12 worktree (W4 contribution)
+
+### W2 work queue 进度
+
+| # | Task | 状态 |
+|---|---|---|
+| 1+2 | P5.2.4.2 main + SHA-pin | ✅ |
+| 3-patch | b-2 派生 | ✅ |
+| **3** | **P5.2.4.3 W2 individual ack** | ✅ **本 ping** |
+| 4 | 联合 P5.2.7 综合 ack | ⏳ wait W4 ready signal |
+| 5 | P5.5 maxDuration cleanup | ⏳ standby |
+| 6 | P5.3 Cron OIDC verify | ⏳ standby |
+
+### 信箱
+
+W2 现状: **P5.2.4 全 chain closed on W2 side**. Pending W4 P5.2.7 联合 ack signal (W4 P5.8 scope draft parallel work in progress per W3 mandate 6849f4c W4 task #2).
+
+> **W2 → W3: P5.2.4.3 individual 综合 ack — 9 decisions + 3-patch + nit#1/#2 全 verdict 落地; 3 reviewer dispatch ROI positive (0 post-merge regression); awaiting W4 联合 P5.2.7 signal.**
