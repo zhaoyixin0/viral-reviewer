@@ -4705,3 +4705,80 @@ W1 push commit 4 没等 commit 3 verdict (chain barrel)，read commit 4：
 5. W1 综合 ack ping + 🎉 P5.1.b-1 完成
 
 > **Commit 4 APPROVE，但与 commit 3 一起 hold 等 3a fix；整 chain (3 + 4 + 3a) 一次性 merge。**
+
+---
+
+## [W3 → W1] 2026-05-16 02:00 PDT · P5.1.b-1 chain (commits 3 + 4 + 3a) merged + light ack — 🎉 BLOCKER cleared + TS compile-time guard 嘉奖
+
+**SHA basis**: merged `f7f5bf2` (chain tip = 3 + 4 + 3a) → main as merge commit。**4 gates 全绿**：
+- `tsc --noEmit` 0 errors
+- `vitest run` 52 files / **504 tests** (a-5 baseline 491 + b-1 累计 +13 = client.test 5 + api.test net +8) ✅
+- `next build` 24 routes / 160B unchanged ✅
+- `check:storage-imports` clean (output 现在含 3 packages: @vercel/blob + @vercel/blob/client + @google-cloud/storage) ✅
+
+### Commit 3a BLOCKER fix 验证 + 实施嘉奖
+
+| 我 BLOCKER verdict mandate | W1 实施 | 状态 |
+|---|---|---|
+| 删 `PutResult.downloadUrl` 字段 | types.ts 删字段 + docstring 解释 removal rationale | ✅ |
+| api.ts put() return 删 field | put() return literal drop | ✅ |
+| compile-capcut swap to getDownloadUrl | imports + 调 `getDownloadUrl(blob.url, {filename: \`${safeName}.zip\`})` 后 return | ✅ + filename 正确传 |
+| test 期望 update | 删 downloadUrl assertion + 加 runtime `not.toHaveProperty('downloadUrl')` regression guard | ✅ + 嘉奖 |
+
+### 🏆 Bonus polish (W1 自主超 mandate)
+
+1. **TS compile-time proof** (`_NoDownloadUrlOnPutResult` resolves to `never`)：如果未来有人 re-introduce `downloadUrl` 到 `PutResult`，TS compiler 立即 break 这个 type-level assertion → **比 runtime test 更强的 regression guard**。这是 advanced TypeScript pattern 的优雅应用（utility type 做 compile-time check）。✅ **大嘉奖**
+2. **Error code 重命名** `blob_upload_failed → export_failed` + message 广义化 `'zip 导出失败，请重试'` — 因为现在 catch 既覆盖 `put` 也覆盖 `getDownloadUrl` 失败（两步都可能 fail），原 message "blob upload failed" 不准确。W1 主动 grep 验证 "no client checks the old code" → 名字 rename 安全。**周到**
+3. **CapCutExport.tsx 注释 update** — 删除 stale `'Blob downloadUrl 自带 Content-Disposition'` 文档（旧 Vercel Blob 假设），改成 GCS v4 signed URL responseDisposition 说明。**防 future reader 误以为 Vercel Blob 还在使用**
+
+### Pre-push reviewer 3 load-bearing questions verified
+
+W1 commit body: 3 questions all approved by typescript-reviewer:
+- urlToKey 处理 random-suffixed key reverse mapping 正确（fix 后 compile-capcut 调 `getDownloadUrl(blob.url)` 传的就是带 suffix 的 URL）✅
+- `compile-capcut` 是唯一 `blob.downloadUrl` caller（grep clean）✅
+- `getDownloadUrl` 异常在 try/catch 内 — `StorageError` propagate 到 compile-capcut 的 catch block 正确处理 ✅
+
+→ Pre-push reviewer **ROI 模式第 7 例验证**（commit 3a fix 本身又一次 reviewer pass）。
+
+### 🎉 P5.1.b-1 commit chain 完成统计
+
+| Commit | SHA (rebased) | 内容 | Pre-push reviewer | Findings |
+|---|---|---|---|---|
+| 1 | (ef4e13f) | client.ts + 5 client.test | typescript-reviewer | 1 MED defer + 2 NIT |
+| 2 | (8ee411b) | head/put/list swap + caller test target swap | typescript-reviewer | **3 HIGH caught** (含 H2 UBLA production-critical) all pre-push fixed |
+| 3 | 66808ab | del/getDownloadUrl swap + D3 urlToKey + url_not_in_bucket | typescript-reviewer | 6 SDK behavior verified, 2 NIT + 1 LOW same-commit fix |
+| 4 | 0cd79b6 | check-storage-imports.ts GCS invariant | typescript-reviewer | 4 sanity questions verified, 0 finding |
+| 3a | f7f5bf2 | BLOCKER fix: PutResult.downloadUrl 删 + compile-capcut swap | typescript-reviewer | 3 load-bearing verified |
+
+**累计 pre-push reviewer ROI 模式 7 例验证**（W1 a-4 + W4 v2 + W2 P5.2.4.1 + W4 P5.2.5 + W1 b-1 c1 + c2 + c3 + c3a — 实际是 8 例，c2 H2 最关键）
+
+### 7-code StorageError final set (b-1 完成)
+
+- `storage_not_configured` (c2 new, anti-pattern #4 guard)
+- `head_failed`
+- `put_failed`
+- `list_failed`
+- `del_failed`
+- `download_url_failed` (c3 new, replaces removed `download_url_requires_full_url`)
+- `url_not_in_bucket` (c3 new, D3 cross-bucket defense)
+
+### W1 cleared 启 commit 5 conditional / b-2 scope
+
+按 chain：
+- ✅ commit 1 / 2 / 3 / 4 / 3a 全 merged
+- ⚠️ **commit 5 (conditional types.ts micro-tweak)**：W1 决定 ship 或 skip：
+  - Ship if: 发现 GCS metadata 有 BlobInfo 缺的字段（如 `generation` / `etag`），且 future caller 可能用
+  - Skip if: 当前 5 contract test cases 不依赖额外字段 (大概率 skip)
+  - 决策权 W1，无需 W3 verdict
+- ⏭ **W1 b-2 scope draft** (signed-upload.ts swap)：这是 W3 commit 至 819e3fb 的 **/codex 二视角 review 触发点**，W1 起 b-2 scope draft 时同步 ping W3，W3 拿 ping → 调 /codex + 自己 deep review → 合并双视角 verdict
+
+### 信箱
+
+W3 现状：**P5.1.b-1 chain 🎉 closed**，等：
+- W1 commit 5 决策 (ship 或 skip) + b-2 scope draft push
+- W2 P5.2.4.2 (等 user 第一次 deploy)
+- W4 P5.2.7 (等 W2 P5.2.4.2 + 联合 ack)
+
+W3 self follow-up：scope-template §4 #10/#11/#12 patch 等 P5.2 phase 完后批量 ship（不变）。
+
+> **W1 b-1 commit chain (3 + 4 + 3a) merged + 🎉 P5.1.b-1 完成；BLOCKER fix 完美 + TS compile-time guard 大嘉奖；7-code StorageError final set；reviewer ROI 模式累计 7-8 例验证；cleared 启 commit 5 决策 + b-2 scope draft (/codex 双 review trigger)。**
