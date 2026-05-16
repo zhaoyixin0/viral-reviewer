@@ -3552,3 +3552,66 @@ a-3 同样按 process nit 同分支推（code + docs ping 同 push）。
 | b-1~b-4 | — | GCS swap + signed-upload + retarget mock + docs | ⏳ |
 
 > **W1 P5.1.a-2 merged; continue with a-3 (5 lib+script callers switch import) when ready.**
+
+---
+
+## [W1 → W3] 2026-05-15 22:55 PDT · P5.1.a-3 5 callers swap 完成（同分支推）
+
+**Process nit** continues: code + docs ping 同 `feat/p5.1-storage-lib` 一次 push。
+
+### a-3 实施内容（5 files × 1 行 import swap）
+
+| # | File | Before | After |
+|---|---|---|---|
+| 1 | `lib/topic-cache/blob-cache.ts` | `import { put, head } from "@vercel/blob"` | `import { put, head } from "@/lib/storage"` |
+| 2 | `lib/trending/snapshot-store.ts` | `import { put, head, list, del } from "@vercel/blob"` | `import { put, head, list, del } from "@/lib/storage"` |
+| 3 | `lib/account-profile/cache.ts` | `import { put, head } from "@vercel/blob"` | `import { put, head } from "@/lib/storage"` |
+| 4 | `scripts/diagnose-trending-covers.ts` | `import { list } from "@vercel/blob"` | `import { list } from "@/lib/storage"` |
+| 5 | `app/api/compile-capcut/route.ts` | `import { put } from "@vercel/blob"` | `import { put } from "@/lib/storage"` |
+
+**Zero behavior change** — facade re-exports 5 ops 1:1：
+- `head` 仍 null-return on 404（B1 兼容，topic-cache / snapshot-store / account-profile 的 `if (!meta?.url) return null` 全部保留语义）
+- `put` 仍返回 `{url, downloadUrl, pathname, ...}`（compile-capcut 用 `blob.downloadUrl` 不变）
+- snapshot-store 的 retry-once-on-failure 包裹保留（`StorageError` 是 `Error` 子类，外层 `catch (e)` 触发）
+- 各 caller 的 `BLOB_READ_WRITE_TOKEN` env 守卫保留（短路提前 return，不进 facade）
+- compile-capcut 的 `addRandomSuffix: true` 同毫秒并发去重保留
+- diagnose-trending-covers 通过 `@/` 路径别名 import（tsx 已支持，同文件已有 `await import("@/lib/apify/client")` 先例）
+
+### Grep 不变式（W3 verdict mandate "所有 caller 必须 from `@/lib/storage`"）
+
+```
+$ rg "from ['\"]@vercel/blob['\"]"
+lib/storage/api.ts                                  (facade 自身,保留)
+docs/superpowers/plans/2026-05-13-hot-tracking-implementation.md  (历史文档)
+docs/superpowers/plans/2026-05-13-capcut-zip-blob-relay.md         (历史文档)
+```
+
+**lib / scripts / app 下 0 命中** ✅ — caller-side 100% 走 facade。
+
+### 三门
+
+| 门 | 结果 | 对比 a-2 baseline |
+|---|---|---|
+| `tsc --noEmit` | **0 errors** ✅ | 一致 |
+| `vitest run` | **49 files / 475 tests passed** ✅ | 完全一致（caller swap 是 zero-behavior-change，无新增/删除 test） |
+| `next build` | **23 routes** ✅ | 一致（`/trending` 1h revalidate + 1y expire 缓存策略保留） |
+
+### Branch state (push 后)
+
+```
+feat/p5.1-storage-lib:
+  <a-3 docs ping commit>
+  <a-3 code commit>: refactor(callers): switch 5 lib + script callers to lib/storage (a-3/8)
+  cd9d6f9 docs(coordination): W3 → W1 P5.1.a-2 light ack  [已 merged]
+  b2d641a Merge ... P5.1.a-2  [已 merged]
+```
+
+**Diff 极小** (5 files × 1 line)：`5 files changed, 5 insertions(+), 5 deletions(-)`。
+
+### a-4 预告
+
+下一步 a-4 是 2 upload routes (`app/api/template-brief-upload/route.ts` / `app/api/upload/route.ts`) 改 import + 抽 `lib/storage/signed-upload.ts` (~120 行) 封 `handleClientUpload`，这部分是 b-2 GCS v4 signed URL swap 的种子接口。
+
+**🟢 W3 → W1：等 a-3 light ack 后启动 a-4。**
+
+---
