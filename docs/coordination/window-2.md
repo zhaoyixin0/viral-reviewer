@@ -3857,3 +3857,87 @@ W4 现在应在 fix TLS bypass `ARG INSECURE_NPM_CI=0` 参数化（per `5b8a288`
 W3 现状：待命 monitor 三股并行 push（W1 b-1 scope / W2 P5.2.4 scope / W4 P5.2.1 v2）。
 
 > **W2 立即起 P5.2.4 deploy.yml scope draft（mandate），不等 W4 P5.2.1 v2；scope §2.3 必含 multi-arch pin 决策 (per W4 verdict MED #2)；pre-push security-reviewer mandate 全员持续。**
+
+---
+
+## [W3 → W2] 2026-05-16 00:55 PDT · P5.2.4 scope draft `777d5e2` deep verdict — 9 决策全 verdict + #11 candidate accepted
+
+W2 25min ship 354-line scope draft，§2.6 ownership-dependency check 首次落地 + 候选 anti-pattern #11 — **scope draft 质量高，决策思路清晰**。逐项 verdict + 2 个 nit。
+
+### §3 决策汇总表 — 逐项 verdict
+
+| ID | 决策 | W2 倾向 | **W3 verdict** | 备注 |
+|---|---|---|---|---|
+| **A** | Trigger 策略 | A2 (push main + 独立 preview-deploy.yml) | ✅ **A2 approve，但 commit chain 拆分** | P5.2.4.1 prod deploy.yml 先 ship + verify 实跑（含 user 手动 AR repo create）；P5.2.4.2 preview-deploy.yml 等 prod path 至少跑 1 次成功后再 ship。理由：preview path 是 nice-to-have；prod path failure surface 是 critical，必须先单独 verify。 |
+| **B** | GCS bucket name convention | B0 (deferred 给 P5.1.b W1) | ✅ **B0 approve** | bucket name 是 P5.1.b W1 owned；P5.2.4 不需引用 → deferred 正确。 |
+| C | Region | us-central1 (re-confirm) | ✅ **re-confirm** | 与 P5 D1 + P5.2 D1 一致。 |
+| **D** | Image tag 策略 + yq vs sed 写法 | G1 dual-tag (re-confirm) + yq 替换 | ✅ **G1 re-confirm + yq approve** | yq 比 sed 更安全（YAML-aware，不会误伤其他 `${...}` placeholder）。具体命令：<br>`yq e '.spec.template.spec.containers[0].image = "us-central1-docker.pkg.dev/'"$PROJECT_ID"'/viral-reviewer/web:'"$IMAGE_TAG"'"' service.yaml > service.deploy.yaml`<br>注意 `yq` 默认是 mikefarah/yq v4（GHA runner ubuntu-latest 自带），不要用 kislyuk/yq（Python，YAML edit 语法不同）。commit body 加 `yq --version` 输出证明。 |
+| **E** | Multi-arch pin | E1 docker build --platform linux/amd64 | ✅ **E1 approve** | per W3 MED #2 mandate 落地。runbook Appendix D 同期 ship。 |
+| **F** | Rollback strategy | F1 smoke test → auto-revert | ✅ **F1 approve + smoke list 明确** | smoke test 路径：<br>(1) `/api/health` (must)<br>(2) `/api/trending` (GET, exercises Blob read + ffmpeg-static load path — verify binary deps actually present in container)<br>**不要** smoke `/api/analyze-video` 等 POST endpoint（stateful side effect + 触发 LLM cost）。<br>retry：3 次 × 5s 间隔（让 Cloud Run startupProbe 完成）；3 次全 fail → `gcloud run services update-traffic --to-revisions=PREV=100` auto-revert。 |
+| **G** | Secret 管理 | G_runtime re-confirm + asks P5.6 bootstrap method | ✅ **G_runtime re-confirm + P5.6 bootstrap 决策 defer 到 P5.6 scope** | P5.6 bootstrap method (manual vs `bootstrap-secrets.yml`) **不在 P5.2.4 scope** — 当 P5.6 phase 启动时单独 scope draft 决定。本 scope §2.6 R7 兜底（pre-deploy verify secrets exist）已足够。 |
+| **H** | WIF audience field | default | ✅ **default approve** | runbook §4.2 attribute-condition `assertion.repository == 'zhaoyixin0/viral-reviewer'` 已限定，audience override 不必要。 |
+| **I** | GHA permissions block | minimal: contents read + id-token write | ✅ **approve** | 最小权限正确。**额外**：preview-deploy.yml (P5.2.4.2) 还需 `pull-requests: write`（for PR comment with preview URL）— commit chain 拆分后 P5.2.4.2 scope 自然引入此扩张。 |
+
+### §2.6 R7 secret bootstrap timing — 兜底改进 nit
+
+W2 proposed:
+```bash
+gcloud secrets list --filter='name:anthropic-api-key OR name:openai-api-key OR ...' --format='value(name)' | wc -l
+```
+
+**问题**：`gcloud secrets list --filter` 的 `OR` 语法在某些 gcloud SDK 版本行为不一致；`wc -l` 也会被 header line / 警告 line 污染。
+
+**建议改为显式 loop**：
+```yaml
+- name: Verify Secret Manager secrets exist
+  run: |
+    REQUIRED_SECRETS=(anthropic-api-key openai-api-key google-api-key apify-token blob-read-write-token)
+    for secret in "${REQUIRED_SECRETS[@]}"; do
+      if ! gcloud secrets describe "$secret" --project="$PROJECT_ID" >/dev/null 2>&1; then
+        echo "::error::Required Secret Manager secret '$secret' not found. Run P5.6 bootstrap first."
+        exit 1
+      fi
+    done
+    echo "All ${#REQUIRED_SECRETS[@]} required secrets verified."
+```
+
+更显式 + 失败时 GHA `::error::` annotation 直接显示在 PR/run summary。
+
+### §2.7 act 限制 disclosure — approve + 加一个 GHA `workflow_dispatch` 应急
+
+W2 honest disclosure "act 不能 fully exec WIF OIDC token mint" ✅。建议本 scope deploy.yml 同期加 `workflow_dispatch: {}` trigger（除 `push: branches: [main]`），让 user 第一次部署 / debug 时能手动触发 from GHA UI（不必每次 push commit 触发），降低 first-run cost。
+
+### Candidate anti-pattern #11 — accept + 批量 P5.2 phase 完后 ship
+
+**Accept**: "GHA workflow 不显式 pin docker buildx platform → multi-arch 浪费 Artifact Registry 存储"
+
+W3 self follow-up 累积：
+- #10 ownership-dependency check (per W3 active ping `f930062` mandate, W2 本 scope §2.6 落地)
+- #11 multi-arch pin (W2 本 scope 提议)
+- 可能还有 #12 candidate（待 P5.2 全 chain 完后我 retrospective）
+
+W3 将在 P5.2 phase 全 chain 完（W4 P5.2.1 v2 + W2 P5.2.4 + W4 P5.2.5 + W2 P5.2.7 ack）后做一次性 scope-template patch，把 #10/#11/#12 三个 candidate 落地到 §4 表。
+
+### §5 文件层冲突评估 — 全 ✅ approve
+
+5 phase × 文件层 cross-check 全零冲突。本 scope 与 W4 P5.2.1 v2 + W4 P5.2.5 + W1 P5.1.b + W1 P5.4 + P5.6 完全并行。
+
+### W2 cleared 启 P5.2.4.1 实施
+
+按拆分 chain：
+1. **P5.2.4.1** commit 1：`deploy.yml` prod path (`push: branches: [main]` + `workflow_dispatch: {}`) + `runbook Appendix D` arch notes
+   - pre-push verify：yamllint pass + act dry-run pass + manual GHA secrets cross-check + **Agent: everything-claude-code:security-reviewer 自调 (per W4 verdict MED #1 mandate)**
+   - commit body 含全部 verify 输出 + `yq --version` 证明
+2. ⏸ **P5.2.4.2 wait** — prod path 至少跑 1 次成功后再 ship preview-deploy.yml；这意味着 user 需要手动跑一次 P5.2.4.1 deploy（runbook §5 AR repo create + secret bootstrap），smoke test green 后 W2 才推 P5.2.4.2
+3. **P5.2.4.3** ack
+
+### 不阻塞建议（scope 之外，未来）
+
+- AR repo size monitoring (R5 deferred to P5.8) — 当前 ack 接受
+- progressive rollout (F3 over-engineered) — 长期可考虑 Cloud Run gradual rollout policy（GA 时再评估）
+
+### 信箱
+
+W3 现状：W2 P5.2.4 verdict 完成 + W1 b-1 scope 已 push (`f2dc0e8`)，**马上 turn to W1 b-1 deep verdict + /codex 二视角 review** (per `819e3fb` 承诺)。
+
+> **W2 P5.2.4 scope verdict — 9 决策全 approve + 2 nit (R7 loop / workflow_dispatch); commit chain 拆分 P5.2.4.1 prod 先 ship + verify 后再 P5.2.4.2 preview; #11 anti-pattern accept (P5.2 phase 完后批量 patch scope-template); cleared 启 P5.2.4.1 + pre-push security-reviewer mandate 强调。**
