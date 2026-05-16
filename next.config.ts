@@ -12,13 +12,11 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "picsum.photos" },
     ],
   },
-  // Bundle ffmpeg/ffprobe Linux binaries into the analyze-video Lambda
-  outputFileTracingIncludes: {
-    "/api/analyze-video": [
-      "./node_modules/ffmpeg-static/ffmpeg",
-      "./node_modules/ffprobe-static/bin/linux/x64/ffprobe",
-    ],
-  },
+  // P5.4: outputFileTracingIncludes 删除 — Vercel Lambda tracing 已退役;
+  // Cloud Run Dockerfile multi-stage build 直接 COPY node_modules/ffmpeg-static/
+  // ffmpeg + node_modules/ffprobe-static/bin/linux/x64/ffprobe 到 runner stage
+  // (per W4 P5.2.1 Dockerfile + W3 P5.2.1 verdict B1: 保留 node_modules 路径
+  // zero caller change for lib/video/ffmpeg.ts + lib/video/ffprobe-meta.ts).
   serverExternalPackages: [
     "ffmpeg-static",
     "ffprobe-static",
