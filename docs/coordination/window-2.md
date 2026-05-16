@@ -2988,3 +2988,110 @@ W3 现状：phase 3.5 全部 merged + scope-template §4 #4 已扩，**等 W1 P5
 
 > **W2 phase 3.5 全部 6/6 commits merged + 综合 verdict 完成; W2 cleared from phase 3.5; next: P5.1 协助 W1 (monitor feat/p5.1-* push events).**
 
+
+---
+
+## [W3 → W2] 2026-05-15 22:50 PDT · W2 idle 任务派单 — P5.2 (Dockerfile + Cloud Build) scope draft
+
+### 背景
+
+W2 当前 idle（phase 3.5 完成，P5.1 由 W1 主推中）。User 建议 W2 不要继续 standby，**提前启 P5.2 scope draft**（W2 是 P5.2 原计划 owner）：
+
+- W1 还在 P5.1.a-3 (5 callers switch)，预计还有 1-2 天到 P5.1 完成
+- W2 现在起 P5.2 scope draft + 等 W3 verdict，**P5.1 完成时 W2 已 scope-cleared，立刻进 P5.2 实施**
+- 节省 P5.2 启动延迟 1 天
+- W4 worker 在 P5.2 实施启动时加（按既定计划），W2 仍是 P5.2 主推 owner
+
+### W2 任务
+
+起 P5.2 scope draft（**docs only，零 code**）：
+
+- **新分支**: `feat/p5.2-dockerfile-cloud-build-scope`
+- **新独立文件**: `docs/coordination/scopes/p5.2-dockerfile-cloud-build.md`（借鉴 P5 / P5.1 独立文件模式）
+- **必须用** `scope-template.md` §2 全部必填栏 + cross-check §4 全部 8 anti-pattern
+- **process nit confirmed mode**: code + docs ping 同分支 push（不要用老 worktree-capcut-link）
+
+### Scope 边界（W3 预盘）
+
+P5.2 涉及 3 大块：
+
+**1. Dockerfile**（base + multi-stage build）
+- base: **node:24-bookworm-slim**（W3 P5 verdict §额外 4 确认 glibc 兼容 ffmpeg-static）
+- multi-stage: deps install → next build standalone → runner（3 stage 标准）
+- COPY ffmpeg-static + ffprobe-static binaries 进 runner stage
+- WORKDIR / EXPOSE 8080 / CMD `node server.js`
+- `.dockerignore`（next standalone 输出 + node_modules + .git + tests + docs）
+
+**2. CI/CD (GitHub Actions per E1 verdict)**
+- `.github/workflows/deploy.yml`: push to main → docker build → push Artifact Registry → `gcloud run deploy`
+- Workload Identity Federation OIDC（per E verdict，不存 SA key in GitHub Secret）
+- preview deploys: per-PR Cloud Run revision with traffic tag URL（per F1 verdict）
+- revision GC cron（per F verdict "每周日 GC 14 天前 untagged revisions"）—— 这是单独 GHA workflow
+
+**3. Cloud Run service config**
+- service name + region us-central1（per D verdict）
+- min-instances=1 prod（per P5 verdict 不阻塞建议 #4 cold start mitigation）
+- timeout=3600s（per A1 verdict service-only 解 Vercel 300s）
+- env binding from Secret Manager（per G verdict + P5.6 协同）
+- max-instances 设上限（防 DDoS / 失控成本）
+
+### 决策点（W2 scope draft 必含）
+
+W2 scope draft 至少回答：
+
+- **A**: Dockerfile build cache 策略（pnpm/npm install cache layer? next build cache?）
+- **B**: ffmpeg-static binaries 怎么 COPY 进 runner（保留 node_modules vs 抽出来）
+- **C**: Cloud Run service yaml 用 declarative `service.yaml` (gcloud apply) 还是 imperative `gcloud run deploy` flags
+- **D**: Artifact Registry repo 命名 / region / multi-region
+- **E**: WIF setup user walkthrough（user 需要在 GCP Console 操作哪些步骤）
+- **F**: preview revision GC 策略（cron 每周日删 14 天前 vs deploy hook 删最老的）
+- **G**: docker image tag 命名（git SHA / semver / latest）
+- **H**: `.dockerignore` 内容列表（next standalone 优化必须排除哪些）
+- **I**: 本机 docker build verify 流程（pre-commit verify mechanism）
+
+### File ownership lock（W3 强制）
+
+P5.2 实施期 W2 **owned files**:
+- ✅ `Dockerfile` (NEW)
+- ✅ `.dockerignore` (NEW)
+- ✅ `.github/workflows/deploy.yml` (NEW)
+- ✅ `.github/workflows/cloud-run-revisions-gc.yml` (NEW, F verdict cron GC)
+- ✅ `service.yaml` 或 `cloudbuild.yaml`（按决策 C 选）
+- ✅ `docs/deploy/cloud-run-setup.md` (NEW)
+
+**不动**:
+- ❌ `lib/storage/**`（W1 P5.1 owned）
+- ❌ `app/api/*/route.ts`（W1 P5.1 a-4 owned）
+- ❌ `lib/url-allowlist/**`（W2 phase 3 + 3.5 已完，不再动）
+- ❌ `lib/capcut-compiler/assets.ts` / `lib/video/ffmpeg.ts` / `lib/account-profile/frame-analyze.ts`（W2 phase 3.5 已完）
+
+### Pre-commit verify mechanism（§2.7 mandate）
+
+W2 scope draft §2.7 必须含：
+1. 本机 `docker build` + `docker run -p 8080:8080` smoke test（curl `/api/trending` 返 200）
+2. `.dockerignore` 验证 image size < 500MB（Next.js standalone 应 ~200MB）
+3. cold start 时间实测（first request latency，与 Vercel Fluid Compute 对比）
+
+### Worker window W4 加入时机
+
+- **P5.2 scope verdict 通过时**（W3 verdict 后立即）加 W4
+- W4 专攻：**Dockerfile 实施 bucket**（pre-commit verify + local build optimization）
+- W2 主推 GitHub Actions + Cloud Run service config bucket
+- W3 verdict 会显式拆 file ownership 给 W2 / W4
+
+### Scope draft 写完后
+
+1. W2 push `feat/p5.2-dockerfile-cloud-build-scope` 分支
+2. window-2.md append `[W2 → W3] P5.2 scope draft push 完成 ping`
+3. **不动 code，等 W3 verdict**
+4. W3 verdict 后启动 W4 worker + P5.2 实施
+
+### 与 W1 P5.1 文件层冲突评估
+
+零冲突 ✅。W1 P5.1 改 `lib/storage/**` + `app/api/upload/*/route.ts`；W2 P5.2 改 infra 文件（Dockerfile / GHA / Cloud Run config / deploy docs）。
+
+### 信箱
+
+W3 现状：**等 W2 起 P5.2 scope draft**（与 W1 P5.1 完全并行无冲突）。
+
+> **W2 cleared for P5.2 (Dockerfile + Cloud Build) scope draft. 独立文件 `docs/coordination/scopes/p5.2-dockerfile-cloud-build.md` + 新分支 `feat/p5.2-dockerfile-cloud-build-scope`. File ownership: W2 owns Dockerfile/GHA/Cloud Run config; W1 P5.1 仍 owns lib/storage/**.**
