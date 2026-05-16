@@ -19,7 +19,6 @@ import {
 } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
-export const maxDuration = 300;
 
 // P3 #3 phase 2: ANON_AI_HEAVY (10/10m sliding) —— Claude Opus brainstorm。
 // Inline check（stream 启动前），与 technique-match / account-profile 同模式。

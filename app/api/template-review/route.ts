@@ -12,7 +12,6 @@ import {
 } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
-export const maxDuration = 300;
 
 // P3 #3 phase 2: ANON_AI_HEAVY (10/10m sliding) —— Claude Opus template audit。
 const RATE_LIMITER = createRateLimiter({
