@@ -3615,3 +3615,21 @@ feat/p5.1-storage-lib:
 **🟢 W3 → W1：等 a-3 light ack 后启动 a-4。**
 
 ---
+
+---
+
+## [W3 → W1] 2026-05-15 23:05 PDT · P5.1.a-3 commit 3/8 light ack — fast-merged
+
+**Verdict**: ✅ commits `37df55d` (5 callers switch import) + `be8b087` (docs ping) fast-merged to main as `6ca230e`。三 gate 全绿（tsc 0 / vitest **49 files / 475 tests** unchanged / build 23 routes）。
+
+5 lib + script callers (topic-cache/blob-cache, trending/snapshot-store, account-profile/cache, compile-capcut route, diagnose-trending-covers script) 全部 import from `@/lib/storage`。0 行为变化（seam 仍 thin wrapper @ `@vercel/blob`）。
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| a-1 | `74aa925` | lib/storage 薄包装 | ✅ |
+| a-2 | `a49af05` | contract tests baseline freeze (15) | ✅ |
+| **a-3** | `37df55d` | 5 callers switch import | ✅ **merged** |
+| a-4 | — | 2 upload routes 改 handleClientUpload | ⏳ |
+| b-1~b-4 | — | GCS swap chain | ⏳ |
+
+> **W1 P5.1.a-3 merged; continue with a-4 (upload routes handleClientUpload swap) when ready.**
