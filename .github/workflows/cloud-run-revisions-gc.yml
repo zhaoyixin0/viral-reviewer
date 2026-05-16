@@ -160,7 +160,13 @@ jobs:
 
           # comm -23 = lines in STALE not in ACTIVE
           DELETE_LIST=$(comm -23 <(echo "${STALE_REVISIONS}" | sort) <(echo "${ACTIVE_REVISIONS}" | sort) || true)
-          DELETE_COUNT=$(echo "${DELETE_LIST}" | grep -c '^' || echo 0)
+          # security-reviewer LOW #5 fix: `grep -c '^'` on 空字符串返 1 而非 0 (空 echo 仍有 1 行).
+          # 改用空字符串短路 + wc -l (skip blank lines via grep '\S' 过滤).
+          if [ -z "${DELETE_LIST}" ]; then
+            DELETE_COUNT=0
+          else
+            DELETE_COUNT=$(printf '%s\n' "${DELETE_LIST}" | grep -c '\S' || echo 0)
+          fi
 
           echo "Revisions to delete (${DELETE_COUNT}):"
           echo "${DELETE_LIST}" | sed 's/^/  /'
