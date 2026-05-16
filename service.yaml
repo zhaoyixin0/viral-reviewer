@@ -1,0 +1,154 @@
+# Cloud Run service declarative config — viral-reviewer (P5.2.3)
+#
+# Per W3 P5.2 verdict f7d46bb:
+#   A1: multi-stage Docker build (separate Dockerfile — W4 owned, P5.2.1)
+#   C1: declarative service.yaml (this file) over imperative `gcloud run deploy` flags
+#   D1: image registry us-central1-docker.pkg.dev/<PROJECT>/viral-reviewer/web
+#   G1: image tag = git short SHA; ${IMAGE_TAG} placeholder replaced by GHA yq at deploy
+#   J1: HTTP probe at /api/health (W2 P5.2.2 commit 9756301)
+#   K1: dedicated runtime SA separate from deployer SA (least privilege)
+#
+# Deploy:
+#   IMAGE_TAG=$(git rev-parse --short HEAD)
+#   yq e ".spec.template.spec.containers[0].image |= sub(\"\\\${IMAGE_TAG}\", \"${IMAGE_TAG}\")" \
+#     service.yaml > service.deploy.yaml
+#   gcloud run services replace service.deploy.yaml --region=us-central1
+#
+# Rollback:
+#   git revert <deploy commit>  → service.yaml 自带前一个 immutable image SHA → replace
+#
+# PROJECT_ID placeholder is replaced by GHA at deploy time via yq (alongside IMAGE_TAG).
+# Local dry-run: `gcloud run services replace service.yaml --dry-run --region=us-central1`
+#                (requires GCP project context; CI verifies)
+
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: viral-reviewer-web
+  labels:
+    cloud.googleapis.com/location: us-central1
+  annotations:
+    # BETA needed for startup-cpu-boost + cpu-throttling=false (both Cloud Run-specific Beta features)
+    run.googleapis.com/launch-stage: BETA
+    # Public ingress; Cloudflare proxy (per P5 verdict D1) handles edge cache
+    run.googleapis.com/ingress: all
+
+spec:
+  template:
+    metadata:
+      annotations:
+        # --- Scaling (annotation values MUST be strings) ---
+        # min=1 prod 恒定 1 实例 ~$5/月 防 cold start (per P5 verdict 不阻塞建议 #4)
+        autoscaling.knative.dev/minScale: "1"
+        # max=10 防 DDoS / 失控成本 (per W2 scope §2.3 + R-bounded)
+        autoscaling.knative.dev/maxScale: "10"
+        # Always-allocated CPU (不 throttle 空闲实例,让 Next.js 后台任务能跑)
+        run.googleapis.com/cpu-throttling: "false"
+        # Cold start cpu boost (减启动延迟)
+        run.googleapis.com/startup-cpu-boost: "true"
+
+    spec:
+      # K1 verdict: runtime SA separate from cloud-run-deployer (least privilege)
+      # 需 P5.6 阶段 grant roles: secretmanager.secretAccessor + storage.objectAdmin (GCS bucket)
+      serviceAccountName: cloud-run-runtime@PROJECT_ID.iam.gserviceaccount.com
+
+      # A1 verdict: service-only,解 Vercel 300s 限制 (Opus 4.7 N=6 实测 3-5min,留 N=10 余量)
+      # 字段名 timeoutSeconds (不是 timeout)
+      timeoutSeconds: 3600
+
+      # Next.js SSR 无状态,默认 80 合理 (内存压力大时降到 32 或 16)
+      containerConcurrency: 80
+
+      containers:
+        - name: web
+          # G1 verdict: ${IMAGE_TAG} 占位,GHA deploy.yml 用 yq 替换为 git short SHA
+          # 每个 deploy commit 在 git 历史里都有 immutable image ref → rollback = git revert
+          image: us-central1-docker.pkg.dev/PROJECT_ID/viral-reviewer/web:${IMAGE_TAG}
+
+          ports:
+            # http1 = HTTP/1.1 (Cloud Run 前端到容器走 HTTP/1.1,Next.js 用这个)
+            # h2c 留给 gRPC; viral-reviewer 不需要
+            - name: http1
+              containerPort: 8080
+
+          resources:
+            # Cloud Run v1 YAML 只读 limits;requests 字段会被忽略,不要写
+            # cpu="1" (1 vCPU) 给 Next.js SSR + ffmpeg 偶发抽帧合理
+            # memory=2Gi 覆盖 standalone server (~150MB) + ffmpeg 抽帧 buffer (~500MB) + headroom
+            limits:
+              cpu: "1"
+              memory: "2Gi"
+
+          env:
+            # --- Plain env ---
+            - name: NODE_ENV
+              value: "production"
+            # Cloud Run 默认注入 PORT=8080,这里显式写一份方便本机 docker run 验证
+            - name: PORT
+              value: "8080"
+            # G1: GHA deploy.yml 在 yq 替换 IMAGE_TAG 时同步 inject GIT_SHA
+            # → /api/health 返 {ok:true, version: GIT_SHA} 便于审计 image ↔ commit
+            - name: GIT_SHA
+              value: "${IMAGE_TAG}"
+
+            # --- Secret Manager bindings ---
+            # P5.6 phase 在 Secret Manager 创建以下 secrets;命名约定 <env-name-lowercased-dashes>
+            # 若 P5.6 落地不同 convention,update name 字段即可,本 service.yaml 结构不变
+            # key="latest" valid;也可 pin 具体版本如 "3"
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: anthropic-api-key
+                  key: "latest"
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: openai-api-key
+                  key: "latest"
+            - name: GOOGLE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: google-api-key
+                  key: "latest"
+            - name: APIFY_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: apify-token
+                  key: "latest"
+            # BLOB_READ_WRITE_TOKEN 在 P5.1.b GCS swap 后会替换为 GCS auth (Workload Identity)
+            # P5.2 阶段 service.yaml 仍 bind,让 P5.1.a 阶段的 lib/storage thin wrapper 能用
+            - name: BLOB_READ_WRITE_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: blob-read-write-token
+                  key: "latest"
+
+          # --- Startup probe (J1 verdict) ---
+          # 从 /api/health (W2 P5.2.2 commit 9756301) sync GET 5 LoC
+          # 容器启动后立即 probe;Next.js standalone server cold ready ~3-5s
+          # failureThreshold=6 + period=5 → 最多等 30s,够 Next.js boot + ffmpeg-static binary load
+          startupProbe:
+            httpGet:
+              path: /api/health
+              port: 8080
+            initialDelaySeconds: 0
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 6
+
+          # --- Liveness probe (J1 verdict) ---
+          # 注意: Cloud Run 不支持 livenessProbe.initialDelaySeconds (Knative 兼容但 Cloud Run reject)
+          # 只用 period / timeout / failureThreshold
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8080
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+  traffic:
+    # Prod main: 100% latestRevision (新 deploy 立即 100% 切流量)
+    # PR preview 用 `gcloud run deploy --tag pr-NNN --no-traffic` 单独跑,不动本 traffic 块
+    - latestRevision: true
+      percent: 100
