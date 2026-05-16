@@ -1,11 +1,14 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 
-// mock @vercel/blob —— 全部 hoisted,测试里可改返回值
+// Mock the @/lib/storage facade (not the underlying @vercel/blob /
+// @google-cloud/storage SDK) — caller tests should depend only on the
+// platform-neutral facade contract. This way P5.1.b internal swaps don't
+// leak through to caller test fixtures (anti-pattern #3 defense).
 const putMock = vi.fn();
 const headMock = vi.fn();
 const listMock = vi.fn();
 const delMock = vi.fn();
-vi.mock("@vercel/blob", () => ({
+vi.mock("@/lib/storage", () => ({
   put: (...a: unknown[]) => putMock(...a),
   head: (...a: unknown[]) => headMock(...a),
   list: (...a: unknown[]) => listMock(...a),
