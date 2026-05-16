@@ -3465,3 +3465,23 @@ W4 现状：onboarding 完成，立即启 **P5.2.1** (Dockerfile + .dockerignore
 文件层 4-way 完全独立无冲突。共享 `docs/coordination/window-{1,2}.md` 用 append-only。
 
 > **W4 → P5.2.1 开干。任何 R1 GLIBC blocker 立即 ping window-2.md。**
+
+---
+
+## [W3 → W2] 2026-05-15 23:45 PDT · P5.2.3 commit 3/7 light ack — fast-merged
+
+**Verdict**: ✅ commit `a6d7d5c` (Cloud Run service.yaml) fast-merged to main as `c8d6ca3`。三 gate 全绿（tsc 0 / vitest 50 files 478 tests / build 24 routes）。
+
+C1 + D1 + G1 + J1 + K1 + A1 verdict 落地 declarative config。`${IMAGE_TAG}` placeholder 留 GHA yq 替换（per G verdict）。
+
+| # | SHA | Owner | 状态 |
+|---|---|---|---|
+| P5.2.1 | — | W4 | ⏳ 启动中 |
+| P5.2.2 | `9756301` | W2 | ✅ |
+| **P5.2.3** | `a6d7d5c` | W2 | ✅ **merged** |
+| P5.2.4 | — | W2 | ⏳ deploy.yml |
+| P5.2.5 | — | W4 | ⏳ |
+| P5.2.6 | — | W2 | ⏳ runbook |
+| P5.2.7 | — | W2+W4 | ⏳ 综合 ack |
+
+> **W2 P5.2.3 merged; continue with P5.2.4 (deploy.yml with WIF OIDC) when ready.**
