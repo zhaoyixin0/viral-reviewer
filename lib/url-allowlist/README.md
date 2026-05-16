@@ -99,16 +99,36 @@ try {
 - fetch URL 用 hostname → `Host:` header 正确
 - per-call Pool + `finally close`（防泄漏）
 
-## Phase 3.5 wiring 待办（W1 owner）
+## Phase 3.5 caller wiring (完成 · 2026-05-15)
 
-phase 3 lib primitive 完工，但**未在任何 route handler 接入**。phase 3.5 W1 owner 任务：
+phase 3.5 由 W2 接手实施（W3 ownership transfer `baf1780`）。所有 phase 2 wired routes 已升级 async checkAsync + fetchWithAllowlist；ffmpeg 走 alt path（fetchWithAllowlist 下 /tmp → ffmpeg 读本地）。
 
-1. 把 phase 2 wired routes（`account-profile` / `compile-capcut` / `template-brief` / `analyze-video` / `analyze`）从 sync `check` 升级 async `checkAsync` + `fetchWithAllowlist`
-2. `lib/video/analyze.ts extractFramesAndAudio` ffmpeg path 走 alt-path（先 fetch → tmp file → ffmpeg 本地）
-3. `lib/account-profile/frame-analyze.ts` 同上
-4. Cache 策略（DNS resolve 高 QPS 优化）按 caller 业务场景决策
+| Caller | 升级 |
+|---|---|
+| `lib/capcut-compiler/assets.ts prepareAssets` | sync check → Promise.all(checkAsync) + per-video fetchWithAllowlist + SSRF event 立即 propagate（不进 download stats） |
+| `lib/video/ffmpeg.ts extractFramesAndAudio` | sync check + fetch → 单 fetchWithAllowlist（B1 完全替）|
+| `lib/video/analyze.ts analyzeVideo` | pass-through |
+| `lib/account-profile/frame-analyze.ts` | pass-through，resolved_private_ip 升级 console.error (fail-soft 行为不变) |
+| `app/api/template-brief/route.ts` | fetchWithAllowlist + dns/private reason mapping (502 retry / 400 url_denied + console.error) |
+| `app/api/technique-match/route.ts` | pre-stream batch Promise.all(checkAsync) + in-stream fetchWithAllowlist（NDJSON stream §4 #4 防御） |
+| `app/api/compile-capcut/route.ts` | UrlAllowlistError mapping 扩 dns/private reason |
+| `app/api/analyze-video/route.ts` | 同上 |
+| `app/api/account-profile/route.ts` | 继承 fail-soft chain |
 
-参考 `docs/coordination/window-1.md` P3 #2 phase 3.5 scope draft。
+### Caller error mapping (W3 verdict 5357c41 §C)
+
+| Reason | HTTP status | Server log | Response body | Client retry |
+|---|---|---|---|---|
+| `invalid_url` / `scheme_denied` / `host_denied` / `private_ip` | 400 `url_denied` | `console.warn` | 不暴露 reason 详情 (防 SSRF probe) | ❌ |
+| `dns_resolve_failed` | **502** + `Retry-After: 5` | `console.warn` 含 `cause` | 暴露 `dns_resolve_failed` 标识 | ✅ |
+| `resolved_private_ip` | **400 `url_denied`** (同 host_denied 防 SSRF probe) | **`console.error`** 含 `resolvedIp` | 不暴露 reason | ❌ |
+
+### Phase 3.5 不在 scope（留 phase 4+）
+
+- DNS cache shared singleton (QPS 优化) — caller 按业务场景决策
+- Observability metrics（rebinding alert count / resolve latency）
+- CI Node version matrix (18/20/22)
+- Hex-encoded IPv4-mapped IPv6 (`::ffff:7f00:1`) — ipaddr.js
 
 ## 设计决策日志
 
