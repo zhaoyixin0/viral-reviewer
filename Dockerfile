@@ -35,12 +35,27 @@ COPY package.json package-lock.json ./
 # .npmrc 仅本机/CI 安装行为 (fetch retry / engine-strict); 不需要进 image
 # npm ci 在 bookworm-slim 用默认 registry; ffmpeg-static / ffprobe-static / youtube-dl-exec 的
 # postinstall 会下载 binaries 到 node_modules/<pkg>/... (linux/x64 glibc)
-# NOTE (local Docker Desktop TLS workaround): NODE_TLS_REJECT_UNAUTHORIZED=0 inline only for
-# this build step. Cloud Build / GHA environments do NOT need this (real CA chain works).
-# Removed in production CI via build-arg before main-branch merge; kept here for local verify
-# to succeed on Windows Docker Desktop (host TLS interception affects container postinstalls
-# of github-hosted binaries: ffmpeg-static, ffprobe-static).
-RUN NODE_TLS_REJECT_UNAUTHORIZED=0 npm ci --no-audit --no-fund
+# TLS verify default-secure; opt-in workaround for Windows Docker Desktop host TLS interception.
+#
+# Cloud Build / GHA / Cloud Run production: INSECURE_NPM_CI 不传 (default 0)
+#   → npm ci 全程 TLS verify ✅ (supply-chain safe)
+# Local Windows Docker Desktop only (W4 dev verify):
+#   docker build --build-arg INSECURE_NPM_CI=1 -t viral-reviewer:local .
+#   → ffmpeg-static / ffprobe-static postinstall TLS download 跳过 cert verify
+#     (host TLS interception 导致 UNABLE_TO_GET_ISSUER_CERT_LOCALLY)
+#
+# 长期根因 fix (follow-up): 文档化 Windows host TLS intercept cert 挂载方法
+# (mount host CA → /usr/local/share/ca-certificates/ + update-ca-certificates inside container);
+# 之后可移除 INSECURE_NPM_CI ARG。
+#
+# Per W3 P5.2.1 deep verdict 5b8a288 BLOCKER fix mandate: default-secure parameterization.
+ARG INSECURE_NPM_CI=0
+RUN if [ "$INSECURE_NPM_CI" = "1" ]; then \
+      echo "⚠️  WARNING: TLS verification DISABLED for npm ci (local Windows Docker Desktop only — supply-chain attack surface; NEVER use in CI/prod)"; \
+      NODE_TLS_REJECT_UNAUTHORIZED=0 npm ci --no-audit --no-fund; \
+    else \
+      npm ci --no-audit --no-fund; \
+    fi
 
 # ============================================
 # Stage 2: builder  -- produce .next/standalone

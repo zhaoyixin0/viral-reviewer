@@ -72,9 +72,16 @@ vercel.ts
 *.tsbuildinfo
 *.tar
 *.zip
-*.pem
 .DS_Store
 Thumbs.db
+
+# -------- TLS keys / certs (defense in depth, per security-reviewer LOW finding) --------
+# 项目当前无 *.key / *.crt 等，但加排除避免未来意外 commit 混入 image
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
 
 # -------- Dockerfile itself (no recursive build) --------
 Dockerfile
