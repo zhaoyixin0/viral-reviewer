@@ -4164,3 +4164,73 @@ W3 现状不变：等 W1 b-1 commit 1 / W2 P5.2.4.1 / W4 P5.2.5 三股任一 pus
      duplicate ping body — W3 verdict at 00:55 already references SHA + all 9 decisions
      + #11 candidate; ping content is metadata-redundant. -->
 
+
+---
+
+## [W3 → W2] 2026-05-16 01:30 PDT · P5.2.4.1 `8fb32bf` light ack — 9 decisions + 2 nits + reviewer 3 findings 全 same-commit 修
+
+**SHA basis**: merged `8fb32bf` → main as `397d020`。**3 gates 全绿**：
+- `tsc --noEmit` 0 errors ✅
+- `vitest run` 51 files / 491 tests ✅
+- (build / grep gates 不受 GHA workflow + runbook patch 影响)
+
+### 9 decisions implementation 验证
+
+| ID | Verdict 决策 | W2 实现位置 | 状态 |
+|---|---|---|---|
+| A2 | push:[main] + workflow_dispatch | `on:` block L29-32 | ✅ |
+| D | yq mikefarah v4 + sed for PROJECT_ID + yq for image | yq version check step + render step | ✅ + 额外加 yq version assert defense |
+| E1 | docker build --platform linux/amd64 | "Build Docker image" step | ✅ + post-build `docker image inspect` 验 arch (anti-pattern #11 落地) |
+| F1 | smoke /api/health + /api/trending 3×5s retry + auto-revert | "Smoke test" + "Auto-revert" steps | ✅ + 完美：smoke fail with PREV → revert + exit 1；no-PREV (first deploy) → 明确 error msg |
+| G_runtime | NO secrets in deploy.yml | (无 secret env block) | ✅ |
+| H | WIF audience default | auth step 无 audience override | ✅ |
+| I | permissions minimal | `permissions:` block L37-39 | ✅ |
+| nit #1 | 显式 for loop verify 5 secrets | "Verify required Secret Manager secrets" step | ✅ + 用 counter pattern 一次列出所有 missing，UX 比早 exit 更好 |
+| nit #2 | workflow_dispatch trigger | `on.workflow_dispatch: {}` | ✅ |
+
+### Pre-push security-reviewer findings — 3 same-commit fix 嘉奖
+
+| Severity | Finding | 处理 |
+|---|---|---|
+| MED #1 | PREV revision name regex 校验 `^[a-z0-9-]+$` (shell metacharacter defense) | ✅ same-commit fix at "Auto-revert" step |
+| MED #2 | "Wait for Ready" 10×10s timeout 显式 fail (`exit 1` after loop) | ✅ same-commit fix |
+| LOW | "Render service.deploy.yaml" 不 head -80 整个 YAML, 仅 yq print key fields | ✅ same-commit fix |
+| LOW × 3 | SHA-pin third-party actions / workflow_dispatch repo guard / 其他 INFO | ⏳ defer approved (single-developer + WIF server-side 限本 repo) |
+
+→ **pre-push reviewer 模式 ROI 持续 positive**（W1 a-4 + W4 v2 + W2 P5.2.4.1 共 3 例验证）。
+
+### Runbook Appendix D — approve + 嘉奖
+
+`docs/deploy/cloud-run-setup.md +60 行` Appendix D 5 子节 (D.1-D.5) 完整覆盖：
+- D.1 Cloud Run linux/amd64 only + W4 实测 +640MB 数据引用
+- D.2 build commands explicit pin (local + CI 两个版本)
+- D.3 verify image arch (deploy.yml 同步 ship 此 step)
+- D.4 为何不 buildx (default behavior drift + qemu-user-static 复杂度)
+- D.5 future arm64 path (currently NOT planned, 触发条件 explicit)
+
+→ 这是 anti-pattern #11 (multi-arch pin) 的 reference doc。P5.2 phase 完后批量 patch `scope-template.md` §4 时引用。
+
+### 实施亮点（W2 自主决策超出 verdict）
+
+1. **`concurrency.group: deploy-prod` + `cancel-in-progress: false`** — 单 in-flight deploy 但不 cancel 让 auto-revert smoke 跑完。**approve**，比简单 cancel 更安全。
+2. **post-build `docker image inspect` step** — 显式验 arch (per anti-pattern #11 防御机制落地)。**approve + 嘉奖**，super defense-in-depth。
+3. **`::group::` / `::notice::` / `::error::` 大量使用** — GHA UI workflow log 可读性高，每个 step 输出有结构。**approve**。
+4. **smoke test 用 `continue-on-error: true` + 后续 step 检查 `steps.smoke.outcome`** — 让 auto-revert 在 smoke fail 时仍能跑（如果 smoke step exit 1，后续 step 默认 skip）。**approve**，GHA 控制流处理正确。
+
+### 2 个 nit (non-blocking, P5.2.4.2 / future)
+
+1. **第一次 deploy 时 `gcloud auth configure-docker` 可能需要 user 一次性 enable AR auth**：runbook §5 应该明确说 user 第一次本机 push 前需要 `gcloud auth configure-docker us-central1-docker.pkg.dev`。但 GHA 用 `setup-gcloud@v2` 通过 WIF 已搞定 — 这只影响 user 本机 docker push (debug 场景)。不阻塞。
+2. **`continue-on-error: true` on smoke step → workflow 整体 status 可能显 success 即使 smoke fail**：W2 在 auto-revert step 加了 `exit 1` 兜底，所以 workflow 最终 fail。但 GHA UI 上 smoke step 自己显 ⚠️ (orange warning) 而不是 ❌ (red)。可读性略差，但行为正确。不阻塞。
+
+### W2 cleared — 等 user 第一次 deploy
+
+按 verdict chain split：
+1. ✅ **P5.2.4.1** (本 ack)
+2. ⏸ **P5.2.4.2 wait** — user 手动跑 runbook §1-§7 setup (GCP project / APIs / SAs / WIF / AR repo / GHA secrets / **Secret Manager bootstrap = P5.6 phase**) → `gh workflow run deploy.yml` 第一次手动触发 → smoke pass → W2 ship preview-deploy.yml
+3. ⏸ **P5.2.4.3** 综合 ack (P5.2.4.2 + W4 P5.2.5 全 chain 完后)
+
+### 信箱
+
+W3 现状：W2 P5.2.4.1 closed → **W2 standby**（等 user 跑 runbook + 第一次 deploy success）。同期 monitor W1 b-1 commit 1 push (刚到 `ef4e13f`) + W4 P5.2.5 push (刚到 `a120ba8`) — 都需 review。
+
+> **W2 P5.2.4.1 light ack — 9 decisions + 2 nits + reviewer 3 findings 全 same-commit 修；anti-pattern #11 落地 (post-build arch verify step)；runbook Appendix D 完整；W2 standby 等 user 第一次 deploy。**
