@@ -1,6 +1,9 @@
 import { createMemoryBackend } from "./memory-backend";
 import { createUpstashBackend } from "./upstash-backend";
 import type { RateLimitBackend } from "./types";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "rate-limit/backend" });
 
 /**
  * Backend dispatch:env 齐 → Upstash;否则 in-memory + warn-once。
@@ -20,9 +23,8 @@ export function getBackend(): RateLimitBackend {
   }
 
   if (!memoryWarned) {
-    console.warn(
-      "[rate-limit] in-memory backend; not safe for production. " +
-        "Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN to enable Upstash.",
+    log.warn(
+      "in-memory backend; not safe for production. Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN to enable Upstash.",
     );
     memoryWarned = true;
   }

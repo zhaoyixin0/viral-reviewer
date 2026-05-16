@@ -16,6 +16,9 @@ import {
 } from "./types";
 import { IG_HOT_HASHTAGS } from "./ig-hot-hashtags";
 import type { ViralVideo } from "@/lib/review-engine/types";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "trending/fetch" });
 
 // spec「成本估算 → 钉死的抓取参数」段定义的常量 —— 调大会线性涨成本,不要随意改
 const TT_TRENDING_FETCH_LIMIT = 20;  // Stage 1 趋势榜抓回条数;Stage 1 是单 run,成本与条数基本无关,20 给 top-5 选取留余量
@@ -52,7 +55,7 @@ async function fetchTikTokTwoStage(): Promise<{
     hashtags = stage1.hashtags;
     runId = stage1.runId;
   } catch (e) {
-    console.error("[trending/fetch] TikTok Stage 1 failed:", e);
+    log.error("TikTok Stage 1 failed", { err: e });
     return { hashtags: [], videos: [], runId: "", ok: false };
   }
 
@@ -76,7 +79,7 @@ async function fetchTikTokTwoStage(): Promise<{
         });
       }
     } catch (e) {
-      console.error(`[trending/fetch] TikTok Stage 2 failed for #${h.name}:`, e);
+      log.error("TikTok Stage 2 failed", { hashtag: h.name, err: e });
     }
   }
 
@@ -84,11 +87,9 @@ async function fetchTikTokTwoStage(): Promise<{
   // 不让「TikTok 成功但 0 视频」的假成功快照落盘。
   const ok = !(topHashtags.length > 0 && videos.length === 0);
   if (!ok) {
-    console.error(
-      "[trending/fetch] TikTok Stage 2 produced 0 videos from",
-      topHashtags.length,
-      "hashtags — marking TikTok failed",
-    );
+    log.error("TikTok Stage 2 produced 0 videos, marking TikTok failed", {
+      hashtagCount: topHashtags.length,
+    });
   }
   return { hashtags, videos, runId, ok };
 }
@@ -132,7 +133,7 @@ export async function fetchTrendingSnapshot(): Promise<TrendingSnapshot> {
   } else {
     // fetchTikTokTwoStage 内部已 catch Stage 1 错误并返回 ok:false,
     // 走到这里是 fetchTikTokTwoStage 本身的意外 throw —— 防御性分支。
-    console.error("[trending/fetch] TikTok unexpected rejection:", ttResult.reason);
+    log.error("TikTok unexpected rejection", { reason: ttResult.reason });
   }
 
   if (igResult.status === "fulfilled") {
@@ -145,7 +146,7 @@ export async function fetchTrendingSnapshot(): Promise<TrendingSnapshot> {
       ok: true,
     };
   } else {
-    console.error("[trending/fetch] Instagram scrape failed:", igResult.reason);
+    log.error("Instagram scrape failed", { reason: igResult.reason });
   }
 
   if (!ttMeta.ok && !igMeta.ok) {

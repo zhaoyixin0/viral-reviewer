@@ -6,6 +6,9 @@ import { loadTechniqueIndex } from "@/lib/technique-index/load-index";
 import { scoreCandidates } from "@/lib/technique-index/similarity";
 import { retrieveSimilarVideos } from "@/lib/review-engine/retrieval";
 import type { ReviewInputVideo, ViralVideo } from "@/lib/review-engine/types";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "sample-references/index" });
 
 const ENRICHED_DIR = "data/enriched-cutplans";
 const FALLBACK_DIR = "lib/sample-references/cutplans";
@@ -66,7 +69,7 @@ async function loadEnriched(): Promise<CutPlan[]> {
       const raw = await readFile(join(dir, f), "utf-8");
       results.push(CutPlanSchema.parse(JSON.parse(raw)));
     } catch (e) {
-      console.warn(`[sample-references] skip ${f}: ${(e as Error).message}`);
+      log.warn("skip file", { file: f, err: e });
     }
   }
   return results;
@@ -251,7 +254,7 @@ export async function loadReferenceCutPlans(
         };
       }
     } catch (e) {
-      console.warn("[sample-references] live fallback failed:", (e as Error).message);
+      log.warn("live fallback failed", { err: e });
     }
   }
 

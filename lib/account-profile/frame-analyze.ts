@@ -3,6 +3,9 @@ import Anthropic from "@anthropic-ai/sdk";
 import { extractFramesAndAudio, cleanupWorkspace } from "@/lib/video/ffmpeg";
 import { UrlAllowlistError, type UrlAllowlist } from "@/lib/url-allowlist";
 import type { AccountFrameInsight } from "./types";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "account-profile/frame-analyze" });
 
 const FRAME_VISION_SYSTEM = `你是 TikTok / Instagram Reels 创作者画像分析师。
 我会给你 N 张按时间顺序排列的抽样帧（来自一条该创作者的爆款视频）。
@@ -84,10 +87,7 @@ export async function analyzeAccountTopVideo(
     try {
       parsed = JSON.parse(stripCodeFence(text));
     } catch (e) {
-      console.error(
-        `[frame-analyze] JSON parse failed for ${videoId}:`,
-        (e as Error).message,
-      );
+      log.error("JSON parse failed", { videoId, err: e });
       return null;
     }
 
@@ -103,14 +103,13 @@ export async function analyzeAccountTopVideo(
     // log 用 error level + 记 resolvedIp 触发 ops alert（fail-soft 行为不变,仍返回
     // null,让 account-profile UI 退化到"无 frame 分析"而非整请求失败）。
     if (e instanceof UrlAllowlistError && e.reason === "resolved_private_ip") {
-      console.error(
-        `[frame-analyze] SECURITY: resolved_private_ip videoId=${videoId} url=${e.url} resolvedIp=${e.resolvedIp ?? "?"}`,
-      );
+      log.error("SECURITY resolved_private_ip", {
+        videoId,
+        url: e.url,
+        resolvedIp: e.resolvedIp ?? null,
+      });
     } else {
-      console.error(
-        `[frame-analyze] failed for ${videoId}:`,
-        (e as Error).message,
-      );
+      log.error("frame analyze failed", { videoId, err: e });
     }
     return null;
   } finally {

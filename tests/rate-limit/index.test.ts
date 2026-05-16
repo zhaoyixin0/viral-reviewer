@@ -34,7 +34,7 @@ describe("createRateLimiter — entry validation + memory dispatch", () => {
   });
 
   it("enforces limit via in-memory backend fallback", async () => {
-    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const warn = vi.spyOn(console, "log").mockImplementation(() => {});
     const rl = createRateLimiter({
       identifier: "fb-test",
       limit: 1,
@@ -48,7 +48,7 @@ describe("createRateLimiter — entry validation + memory dispatch", () => {
   });
 
   it("warns only once across multiple createRateLimiter calls in same process", async () => {
-    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const warn = vi.spyOn(console, "log").mockImplementation(() => {});
     const rl1 = createRateLimiter({
       identifier: "warn-1",
       limit: 1,
@@ -61,8 +61,9 @@ describe("createRateLimiter — entry validation + memory dispatch", () => {
     });
     await rl1.check("u");
     await rl2.check("u");
+    // P5.8: logger emits JSON with module="rate-limit/backend"
     const rateLimitWarns = warn.mock.calls.filter((c) =>
-      String(c[0]).includes("[rate-limit]"),
+      String(c[0]).includes('"module":"rate-limit/backend"'),
     );
     expect(rateLimitWarns).toHaveLength(1);
   });

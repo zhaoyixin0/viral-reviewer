@@ -69,8 +69,8 @@ describe("resolveTransitionConfig", () => {
     expect(onUnknown).toHaveBeenCalledWith("zoom_blur_3d_glitch");
   });
 
-  it("默认 onUnknown 用 console.warn 不抛", () => {
-    const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
+  it("默认 onUnknown 用 structured logger warn 不抛 (emits via console.log JSON)", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       const cfg = resolveTransitionConfig("future_ai_transition");
       expect(cfg).not.toBeNull();

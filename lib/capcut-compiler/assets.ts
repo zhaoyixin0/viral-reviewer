@@ -9,6 +9,9 @@ import {
   UrlAllowlistError,
   type UrlAllowlist,
 } from "@/lib/url-allowlist";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "capcut-compiler/assets" });
 
 if (ffmpegStatic) ffmpeg.setFfmpegPath(ffmpegStatic);
 if (ffprobeStatic?.path) ffmpeg.setFfprobePath(ffprobeStatic.path);
@@ -37,7 +40,7 @@ type DownloadFailure = { index: number; status: number | "fetch_error"; message:
  *   - 视频并发下载到 `input-${i}.mp4`，BGM 与视频组并行
  *   - 任一视频或 BGM 失败 → 抛错并标注失败 index，避免 partial 状态进入下游 build
  *     （编译每段都要齐才能产出 zip）
- *   - 单个失败原因写 console.error 带 index，主错误也带 index 列表
+ *   - 单个失败原因 log.error 带 index，主错误也带 index 列表
  *
  * 调用方用完必须调 cleanupAssets。
  *
@@ -114,7 +117,9 @@ export async function prepareAssets(
       const reason = r.reason as Error & { __status?: number };
       const status = typeof reason?.__status === "number" ? reason.__status : "fetch_error";
       const message = reason?.message ?? String(reason);
-      console.error(`[capcut-compiler/assets] video #${i} download failed (${status}): ${message}`);
+      // structured-log reserves the top-level `message` field; use `failureReason`
+      // so the per-failure detail (e.g. "ECONNRESET", "404") is preserved in JSON.
+      log.error("video download failed", { index: i, status, failureReason: message });
       videoFailures.push({ index: i, status, message });
     }
   });
@@ -139,7 +144,7 @@ export async function prepareAssets(
       await writeFile(bgmPath, Buffer.from(await res.arrayBuffer()));
     } catch (e) {
       const msg = (e as Error).message ?? String(e);
-      console.error(`[capcut-compiler/assets] bgm download failed: ${msg}`);
+      log.error("bgm download failed", { err: e });
       await rm(workDir, { recursive: true, force: true }).catch(() => {});
       throw new Error(`Failed to download BGM: ${msg}`);
     }

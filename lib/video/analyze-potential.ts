@@ -18,6 +18,9 @@ import {
   SceneTransitionCandidateSchema,
 } from "@/lib/cut-plan/material-potential";
 import { CutPlanSchema, type CutPlan } from "@/lib/cut-plan/schema";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "video/analyze-potential" });
 import { normalizeTimeCode } from "@/lib/cut-plan/time-code";
 import type { VideoMeta } from "./ffprobe-meta";
 
@@ -277,13 +280,16 @@ async function dumpDebug(
     );
     if (err && typeof err === "object" && "issues" in err) {
       const issues = (err as { issues: unknown[] }).issues;
-      console.error(`[${stage}] Zod issues (first 10):`);
-      for (const i of issues.slice(0, 10)) {
+      const sample = issues.slice(0, 10).map((i) => {
         const issue = i as { path?: unknown[]; message?: string; received?: unknown };
-        console.error(
-          `  - path=${JSON.stringify(issue.path)} msg="${issue.message}" received=${JSON.stringify(issue.received)}`,
-        );
-      }
+        return { path: issue.path, message: issue.message, received: issue.received };
+      });
+      log.error("Zod issues (first 10)", {
+        stage,
+        videoId,
+        totalIssues: issues.length,
+        issues: sample,
+      });
     }
   } catch {
     /* ignore */
@@ -456,10 +462,7 @@ export async function analyzeMaterialPotential(
     try {
       if (uploaded.name) await ai.files.delete({ name: uploaded.name });
     } catch (e) {
-      console.warn(
-        "[analyze-potential] file cleanup failed:",
-        (e as Error).message,
-      );
+      log.warn("file cleanup failed", { uploadedName: uploaded.name, err: e });
     }
   }
 }

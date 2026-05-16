@@ -8,6 +8,9 @@ import {
   type ScrapeProgress,
   type ScrapeResult,
 } from "./types";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "account-profile/scrape" });
 
 const TOP_VIDEOS_DEFAULT = 3;
 const COMMENTS_PER_VIDEO_DEFAULT = 10;
@@ -131,7 +134,7 @@ async function fetchTikTokComments(
       commentsPerPost: perVideo,
     });
   } catch (e) {
-    console.error("[account-scrape] tiktok comments failed:", e);
+    log.error("tiktok comments failed", { err: e, videoCount: videoUrls.length });
     return {};
   }
   const { items } = await client.dataset(run.defaultDatasetId).listItems();
@@ -258,7 +261,7 @@ async function fetchInstagramComments(
       resultsLimit: perPost * postUrls.length,
     });
   } catch (e) {
-    console.error("[account-scrape] instagram comments failed:", e);
+    log.error("instagram comments failed", { err: e, postCount: postUrls.length });
     return {};
   }
   const { items } = await client.dataset(run.defaultDatasetId).listItems();

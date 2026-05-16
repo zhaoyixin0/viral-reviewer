@@ -2,6 +2,9 @@ import "server-only";
 import { put, head } from "@/lib/storage";
 import type { ViralVideo } from "@/lib/review-engine/types";
 import { getIsoWeek } from "@/lib/utils/iso-week";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "topic-cache/blob-cache" });
 
 const CACHE_PREFIX = "topic-cache";
 
@@ -64,6 +67,6 @@ export async function writeTopicCache(args: {
       allowOverwrite: true,
     });
   } catch (e) {
-    console.error("[topic-cache] write failed:", (e as Error).message);
+    log.error("write failed", { topic: args.topic, err: e });
   }
 }

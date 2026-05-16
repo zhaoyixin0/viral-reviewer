@@ -80,15 +80,17 @@ describe("writeSnapshot", () => {
   });
 
   it("logs a warn on first failure then an error when both put attempts fail", async () => {
-    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
-    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    // P5.8: both severities emit via console.log JSON; distinguish via "severity" field
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     putMock.mockRejectedValue(new Error("persistent failure"));
     await writeSnapshot(SNAP);
     expect(putMock).toHaveBeenCalledTimes(2);
-    expect(warnSpy).toHaveBeenCalledTimes(1);
-    expect(errorSpy).toHaveBeenCalledTimes(1);
-    warnSpy.mockRestore();
-    errorSpy.mockRestore();
+    const lines = logSpy.mock.calls.map((c) => String(c[0]));
+    const warnings = lines.filter((m) => m.includes('"severity":"WARNING"'));
+    const errors = lines.filter((m) => m.includes('"severity":"ERROR"'));
+    expect(warnings).toHaveLength(1);
+    expect(errors).toHaveLength(1);
+    logSpy.mockRestore();
   });
 });
 
