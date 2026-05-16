@@ -179,13 +179,38 @@ async function impl(req: NextRequest) {
       );
     }
   } catch (e) {
-    // P3 #2 phase 2：SSRF allowlist 拒绝 → 400 url_denied
-    // W3 verdict B2：response 不暴露 deny reason 防 probe；server 用 console.warn
-    // （不是 error）写完整 url + reason 方便后续 grep 看真实流量
+    // P3 #2 phase 2 + phase 3.5 (W3 verdict 5357c41 §C mapping):
+    // - sync deny → 400 url_denied + console.warn (response 不暴露 reason 防 probe)
+    // - dns_resolve_failed → 502 + Retry-After: 5 (transient, caller 可重试)
+    // - resolved_private_ip → 400 url_denied + console.error (security event, ops alert)
     if (e instanceof UrlAllowlistError) {
-      console.warn(
-        `[url-allowlist] denied url=${e.url} reason=${e.reason} route=compile-capcut`,
-      );
+      if (e.reason === "dns_resolve_failed") {
+        console.warn(
+          `[url-allowlist] dns_resolve_failed url=${e.url} cause=${e.cause ?? "?"} route=compile-capcut`,
+        );
+        return new Response(
+          JSON.stringify({
+            error: "dns_resolve_failed",
+            message: "无法解析 URL（DNS 解析失败），稍后重试",
+          }),
+          {
+            status: 502,
+            headers: {
+              "content-type": "application/json",
+              "Retry-After": "5",
+            },
+          },
+        );
+      }
+      if (e.reason === "resolved_private_ip") {
+        console.error(
+          `[url-allowlist] resolved_private_ip url=${e.url} resolvedIp=${e.resolvedIp ?? "?"} route=compile-capcut`,
+        );
+      } else {
+        console.warn(
+          `[url-allowlist] denied url=${e.url} reason=${e.reason} route=compile-capcut`,
+        );
+      }
       return new Response(
         JSON.stringify({
           error: "url_denied",
