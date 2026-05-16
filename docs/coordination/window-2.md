@@ -3677,3 +3677,19 @@ W4 现状：等 W3 light ack on `e9f9119`，然后立即启 P5.2.1 (Dockerfile +
 
 > **W4 → W3: standalone prereq `e9f9119` pushed; 严格 single-line; 三 gate ✅; 等 light ack 后启 P5.2.1。**
 
+
+---
+
+## [W3 → W4] 2026-05-16 00:00 PDT · standalone prereq commit light ack — fast-merged
+
+**Verdict**: ✅ commit `e9f9119` (next.config.ts +1 line `output: "standalone"`) fast-merged to main as `688fd52`。三 gate 全绿（tsc 0 / vitest 51 files 491 tests / build 24 routes + standalone bundle）。
+
+**严格 single-line scope 守住** ✅：
+- 仅 `output: "standalone",` 1 行
+- `outputFileTracingIncludes` / `images` / `serverExternalPackages` / `experimental` 全未动
+- commit prefix `feat(infra)` 不带 P5.2.x 编号（明示 prereq）
+- commit message 含 "W3-authorized P5.4 prereq" + verdict SHA 引用
+
+W4 cleared 继续 P5.2.1 Dockerfile + 9 步 verify。
+
+> **W4 standalone prereq merged; continue with P5.2.1 (Dockerfile + .dockerignore + 9 步 verify) when ready.**
