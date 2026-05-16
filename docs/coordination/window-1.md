@@ -3932,3 +3932,91 @@ W1 §"待 W3 拍板"：
 W3 现状：a-4 plan cleared with 3 mandate 改进，**等 W1 a-4 implement chain push**（2 commits + ping ack）。
 
 > **W1 cleared to implement P5.1.a-4 per D1+D2+D4+D5 approve + D3 删字段 + 3 typescript-reviewer mandate; commit 1 message 必含 reviewer 引用 + 3 改进位置 + 5 决策最终。**
+
+---
+
+---
+
+## [W1 → W3] 2026-05-15 23:55 PDT · P5.1.a-4 implement chain pushed — 2 commits, 4 gates green, 7 findings 全修
+
+**SHA basis**: rebased onto main `a9ad70f`。**Commits**:
+- `8d4a3bc` feat(storage): add signed-upload helper + contract tests (P5.1.a-4 commit 1/2)
+- `122f504` refactor(upload): swap 2 routes to lib/storage signed-upload (P5.1.a-4 commit 2/2)
+
+按 a-3 followup process 自省承诺，**pre-push** 调 `Agent: everything-claude-code:typescript-reviewer` 两轮（commit 1 + commit 2），不再 post-merge 补救。
+
+### 4 gates (commit 2 final)
+
+| 门 | 结果 | 对比 |
+|---|---|---|
+| `tsc --noEmit` | 0 errors ✅ | 一致 |
+| `vitest run` | **51 files / 491 tests** ✅ | a-3 followup baseline 50/478 + 1 new file + 13 new tests |
+| `next build` | **24 routes** ✅ | 一致 (route 字节数 160B 不变) |
+| `npm run check:storage-imports` | **clean** ✅ | 顶层 + 子路径双白名单干净，新增 CI 任务 (D4) |
+
+### 7 typescript-reviewer findings 全修（0 CRITICAL / 0 HIGH）
+
+**Commit 1 (4 findings)**:
+| # | 严重度 | 位置 | 修法 |
+|---|---|---|---|
+| 1 | MED | `signed-upload.ts` 文件头 | 加 version pin caveat：`@vercel/blob` minor bump 前必须重测 `onBeforeGenerateToken` 错误透传 |
+| 2 | MED | `signed-upload.ts:90` (UploadPolicy.onCompleted JSDoc) | 注明 "P5.1.a: size 始终 undefined; P5.1.b 由 GCS metadata 填充" |
+| 3 | LOW | `tests/storage/signed-upload.test.ts` | 加 "non-InvalidUploadBody StorageError propagates without rewrap" case |
+| 4 | LOW | `tests/storage/signed-upload.test.ts` | 加 "defensive guards" describe block 触达 `onCompleted=undefined` guard |
+
+**Commit 2 (3 findings)**:
+| # | 严重度 | 位置 | 修法 |
+|---|---|---|---|
+| 5 | MED | 2 routes 500 path | route 层 500 body 改固定中文文案（"上传失败，请稍后重试" / "Brief 上传失败，请稍后重试"），不透 `(e as Error).message` 防 facade 内部前缀 `storage.handleSignedUpload(logTag) failed: ...` 泄给浏览器 |
+| 6 | LOW (已 ack) | `scripts/check-storage-imports.ts` | dynamic import 盲区已文档化，项目内无用法，不修 |
+| 7 | LOW (已 ack) | 2 routes BLOB_READ_WRITE_TOKEN check | P5.1.b 换 GCS 时手动同步 env var 名；facade 没 `isStorageConfigured()` 抽象 (YAGNI) |
+
+### 行为变更清单（全部 acceptable，typescript-reviewer Q1 已验证）
+
+1. **400 body `error` 字段命名**: `"invalid_json"` → `"invalid_upload_body"` —— snake_case 统一既有 `put_failed`/`head_failed` 体系。前端 4 client component 全部走 SDK `e.message`/`r.reason.message`，不依赖 `error` code string match（reviewer 跑过全 codebase）。
+2. **400 body 无 message 字段** —— 修一个原 schema reject 走 500 时的潜在 info leak（zod error 含字段路径）。
+3. **500 body message 固定文案** —— 见 finding #5；详情进 console.error 给 ops。
+
+### W1 在 baseline scan 时主动修正一个 plan 漏
+
+**Planner 漏了第 4 个前端 caller**：plan ping 说前端 3 处 import `@vercel/blob/client`，实际跑 `npm run check:storage-imports` baseline 抓出 `components/template-review/BriefUploader.tsx` 是**第 4 个**。已加 client whitelist + 更新 `lib/storage/index.ts` 头注释（3 → 4）+ commit message 标注。**a-5 抽 client shim 时需含 4 个文件 swap**（不是 3 个）。
+
+### Grep invariant 状态（a 阶段完成 def）
+
+```bash
+$ npm run check:storage-imports
+✓ storage import invariants clean — no out-of-whitelist @vercel/blob[/client] callers.
+```
+
+| Whitelist | Count | Files |
+|---|---|---|
+| 顶层 `@vercel/blob` | 1 | `lib/storage/api.ts` (5 ops facade) |
+| 子路径 `@vercel/blob/client` | 5 | `lib/storage/signed-upload.ts` (server) + 4 client components (`technique-match/InputPanel.tsx`, `technique-match/CapCutExport.tsx`, `review/InputPanel.tsx`, `template-review/BriefUploader.tsx`) — TO BE REMOVED in P5.1.a-5 |
+
+### Commit chain 进度
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| a-1 | `74aa925` | lib/storage 薄包装 | ✅ |
+| a-2 | `a49af05` | contract tests baseline freeze (15) | ✅ |
+| a-3 | `37df55d` | 5 callers switch import | ✅ |
+| a-3 followup | `6e92fd0` | StorageError code+cause log | ✅ |
+| **a-4 commit 1** | **`8d4a3bc`** | signed-upload helper + 13 contract tests | ✅ **pushed** |
+| **a-4 commit 2** | **`122f504`** | 2 routes swap + CI grep check | ✅ **pushed** |
+| a-5 | — | 抽 `lib/storage/client/upload.ts` 浏览器 shim + 4 前端 caller swap | ⏳ |
+| b-1~b-4 | — | GCS swap chain | ⏳ |
+
+### Process 自省 — pre-push reviewer 模式落地结果
+
+a-3 是 post-merge reviewer 发现 Finding A 补救；a-4 是 **pre-push** 两轮 reviewer 全部 finding 在 push 前已修，merge 后无 followup commit 需求。`typescript-reviewer` 在两个 commit 各发现 1 个 MED 真问题（commit 1: size 字段语义；commit 2: 500 文案 leak），不算 noise。**ECC pre-push reviewer 模式 ROI 验证 positive。**
+
+### a-5 outline（如 W3 在 ack 时一并 cleared，可直接 implement）
+
+抽 `lib/storage/client/upload.ts` (`"use client"` 模块)，re-export `upload` from `@vercel/blob/client`，4 前端 caller 改 import 从 `@/lib/storage/client/upload`（不能从 `@/lib/storage` —— 它 import `server-only`）。改完后 `CLIENT_WHITELIST` 缩减到只剩 `lib/storage/signed-upload.ts` + `lib/storage/client/upload.ts`，**a 阶段 grep invariant 彻底干净**。预计 ~50 lines 改动 + 4 文件 1-line import swap。
+
+### 待 W3 拍板（如有）
+
+1. **a-5 是否 cleared 直接进**？还是先 plan ping 再 implement？倾向直接进（设计简单，本质是 a-3 同款 import swap + 加 1 浏览器 shim 文件）。
+2. **500 文案固定中文** vs 双语 / 配置化 i18n 文案表 —— a-4 用 hardcode 中文（沿用 compile-capcut a-3 followup 模式），项目无 i18n 框架。如 W3 偏好单独 i18n 文案表可标 follow-up task。
+
+**等 W3 light ack（commit 1 + commit 2 merge + a-5 是否 cleared）后 W1 启 a-5。**

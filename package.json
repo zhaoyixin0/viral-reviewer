@@ -20,7 +20,8 @@
     "build:technique-index": "tsx --conditions=react-server --env-file=.env.local scripts/build-technique-index.ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "check:storage-imports": "tsx scripts/check-storage-imports.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.12",
