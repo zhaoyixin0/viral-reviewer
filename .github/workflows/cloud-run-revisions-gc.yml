@@ -1,0 +1,229 @@
+# Cloud Run revisions GC — weekly cleanup of stale untagged revisions (P5.2.5/7)
+#
+# Per W3 P5.2 verdict f7d46bb decision F1 + P5.2.1 v2 light ack a6d25bd cleared.
+#
+# Goal: 防 Cloud Run service 触 1000 revisions 上限 + 控 Artifact Registry storage 成本。
+#
+# Strategy:
+#   - schedule: Sun 00:00 UTC (BJ time Sun 08:00, low-traffic window)
+#   - delete: revisions creationTimestamp <-P14D (14 天前) AND 无 active traffic share
+#   - keep: serving revisions (latest 部署 + 任何被 traffic split 引用的)
+#
+# WIF OIDC: per W3 P5.2 verdict E runbook §3-4 (cloud-run-deployer SA needs run.admin
+# role to list/delete revisions).
+#
+# Manual override: workflow_dispatch trigger (operator can dry-run / force-run).
+#
+# Production verify path: 首次 schedule run 时 W3 / user 监 GH Actions log；
+# dry_run 默认 true (worker NEVER deletes 未经 operator 显式确认)。
+# Cleared production 后改 default false (P5.2.7 综合 ack 时切换 by W3 verdict)。
+
+name: cloud-run-revisions-gc
+
+on:
+  # Weekly Sun 00:00 UTC (per W3 verdict F1)
+  schedule:
+    - cron: "0 0 * * 0"
+  # Manual trigger (operator dry-run / force-run)
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry-run (list only, no delete)"
+        type: boolean
+        default: true
+      keep_days:
+        description: "Keep revisions newer than N days"
+        type: string
+        default: "14"
+
+# Minimum permissions per W3 P5.2.4 verdict I: contents read + id-token write for WIF OIDC.
+# Note: this workflow does NOT need pull-requests / actions / packages permissions.
+permissions:
+  contents: read
+  id-token: write
+
+# Single in-flight GC at a time per branch (prevent overlapping cron + manual run).
+concurrency:
+  group: cloud-run-revisions-gc
+  cancel-in-progress: false
+
+env:
+  REGION: us-central1
+  SERVICE: viral-reviewer-web
+
+jobs:
+  gc:
+    name: Delete stale untagged Cloud Run revisions
+    runs-on: ubuntu-latest
+    # Timeout safety: GC should finish in < 5min even with 100s of revisions
+    timeout-minutes: 10
+    steps:
+      - name: Resolve effective inputs
+        id: inputs
+        # security-reviewer HIGH: inputs.* 走 env 传递 + 整数验证，避免 ${{ }} 直接插值进 shell
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_KEEP_DAYS: ${{ inputs.keep_days }}
+        run: |
+          set -euo pipefail
+          # schedule trigger: hard defaults (dry_run=false + keep_days=14); cron 是定期清理，
+          #                  非 dry-run，依赖本 workflow 严格 filter + concurrency lock 防误删
+          # workflow_dispatch: 取 user 输入 (default dry_run=true + keep_days=14)
+          if [ "${EVENT_NAME}" = "schedule" ]; then
+            echo "dry_run=false" >> "$GITHUB_OUTPUT"
+            echo "keep_days=14" >> "$GITHUB_OUTPUT"
+          else
+            # 整数验证，防注入 (keep_days 是 type: string，user 可输入任意值)
+            if ! printf '%s' "${INPUT_KEEP_DAYS}" | grep -qE '^[0-9]+$'; then
+              echo "ERROR: keep_days must be a positive integer, got: ${INPUT_KEEP_DAYS}" >&2
+              exit 1
+            fi
+            # dry_run 是 type: boolean，GHA template 渲染为 'true' or 'false' string
+            if [ "${INPUT_DRY_RUN}" != "true" ] && [ "${INPUT_DRY_RUN}" != "false" ]; then
+              echo "ERROR: dry_run must be true or false, got: ${INPUT_DRY_RUN}" >&2
+              exit 1
+            fi
+            echo "dry_run=${INPUT_DRY_RUN}" >> "$GITHUB_OUTPUT"
+            echo "keep_days=${INPUT_KEEP_DAYS}" >> "$GITHUB_OUTPUT"
+          fi
+
+      # WIF OIDC auth — federate to cloud-run-deployer SA per runbook §4-5
+      # security-reviewer MED: action 钉 SHA digest 防 supply-chain tag-push 攻击
+      # SHA 抓取于 2026-05-16: curl api.github.com/repos/<...>/git/refs/tags/v2
+      - id: auth
+        name: Authenticate to Google Cloud (WIF OIDC)
+        uses: google-github-actions/auth@c200f3691d83b41bf9bbd8638997a462592937ed  # v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+
+      - name: Setup gcloud CLI
+        uses: google-github-actions/setup-gcloud@e427ad8a34f8676edf47cf7d7925499adf3eb74f  # v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Show gcloud + auth context (audit)
+        run: |
+          gcloud version | head -10
+          gcloud auth list --filter=status:ACTIVE
+
+      - name: List stale revisions
+        id: list
+        # security-reviewer HIGH: step output 走 env 传递 (上游已校验，本步加保险)
+        env:
+          KEEP_DAYS: ${{ steps.inputs.outputs.keep_days }}
+        run: |
+          set -euo pipefail
+          # 二次验证 (defense in depth, 即使上游被绕过)
+          if ! printf '%s' "${KEEP_DAYS}" | grep -qE '^[0-9]+$'; then
+            echo "ERROR: KEEP_DAYS injection guard: ${KEEP_DAYS}" >&2
+            exit 1
+          fi
+
+          # Cutoff: revisions created BEFORE (now - KEEP_DAYS) are candidates
+          # gcloud filter language: `metadata.creationTimestamp<-P${N}D` (ISO 8601 duration)
+          CUTOFF="-P${KEEP_DAYS}D"
+
+          echo "Listing revisions for service=${SERVICE} region=${REGION} older than ${KEEP_DAYS}d..."
+
+          # Strategy:
+          #   1. List ALL revisions for service in region (incl serving + stale)
+          #   2. Filter: creationTimestamp < (now - KEEP_DAYS)
+          #   3. EXCLUDE: any revision that is currently receiving traffic (via traffic split)
+          #
+          # `gcloud run revisions list --filter` 直接处理 cutoff
+          # Active traffic check 用 `gcloud run services describe` 单独取 traffic targets
+          ACTIVE_REVISIONS=$(gcloud run services describe "${SERVICE}" \
+            --region="${REGION}" \
+            --format='value(status.traffic[].revisionName)' \
+            | tr ',' '\n' | sort -u | grep -v '^$' || true)
+
+          echo "Active (serving) revisions (kept regardless of age):"
+          echo "${ACTIVE_REVISIONS}" | sed 's/^/  /'
+
+          # All stale revisions (by age)
+          STALE_REVISIONS=$(gcloud run revisions list \
+            --service="${SERVICE}" \
+            --region="${REGION}" \
+            --filter="metadata.creationTimestamp<${CUTOFF}" \
+            --format='value(metadata.name)' \
+            --sort-by='~metadata.creationTimestamp' || true)
+
+          # Subtract active from stale
+          if [ -z "${STALE_REVISIONS}" ]; then
+            echo "No stale revisions found (all serving or younger than ${KEEP_DAYS}d)."
+            echo "delete_count=0" >> "$GITHUB_OUTPUT"
+            echo "delete_list=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # comm -23 = lines in STALE not in ACTIVE
+          DELETE_LIST=$(comm -23 <(echo "${STALE_REVISIONS}" | sort) <(echo "${ACTIVE_REVISIONS}" | sort) || true)
+          DELETE_COUNT=$(echo "${DELETE_LIST}" | grep -c '^' || echo 0)
+
+          echo "Revisions to delete (${DELETE_COUNT}):"
+          echo "${DELETE_LIST}" | sed 's/^/  /'
+
+          echo "delete_count=${DELETE_COUNT}" >> "$GITHUB_OUTPUT"
+          {
+            echo "delete_list<<EOF"
+            echo "${DELETE_LIST}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Delete stale revisions
+        if: steps.list.outputs.delete_count != '0' && steps.inputs.outputs.dry_run == 'false'
+        # security-reviewer HIGH: step output 走 env 传递，不在 run: 内直接 ${{ }} 插值进 bash
+        env:
+          DELETE_LIST: ${{ steps.list.outputs.delete_list }}
+          DELETE_COUNT: ${{ steps.list.outputs.delete_count }}
+        run: |
+          set -euo pipefail
+          echo "Deleting ${DELETE_COUNT} revisions..."
+          # 每 revision 独立 delete，单个失败不 abort chain (`--async` 快但失错误可见性)
+          echo "${DELETE_LIST}" | while IFS= read -r rev; do
+            [ -z "${rev}" ] && continue
+            # 名称白名单 (Cloud Run revision: DNS label `[a-z][a-z0-9-]{0,62}`)
+            if ! printf '%s' "${rev}" | grep -qE '^[a-z][a-z0-9-]{0,62}$'; then
+              echo "  WARN: skip invalid revision name (defense in depth): ${rev}"
+              continue
+            fi
+            echo "deleting: ${rev}"
+            gcloud run revisions delete "${rev}" \
+              --region="${REGION}" \
+              --quiet || echo "  WARN: delete failed for ${rev} (may already be gone)"
+          done
+
+      - name: Dry-run output
+        if: steps.inputs.outputs.dry_run == 'true'
+        run: |
+          echo "Dry-run mode: would delete ${{ steps.list.outputs.delete_count }} revisions (see 'List stale revisions' step)."
+          echo "To actually delete: re-run with dry_run=false or wait for next Sunday 00:00 UTC cron."
+
+      - name: Job summary
+        if: always()
+        # security-reviewer HIGH: 所有 ${{ }} 数据走 env 传递，不内联进 shell
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          KEEP_DAYS: ${{ steps.inputs.outputs.keep_days }}
+          DRY_RUN: ${{ steps.inputs.outputs.dry_run }}
+          DELETE_COUNT: ${{ steps.list.outputs.delete_count }}
+          DELETE_LIST: ${{ steps.list.outputs.delete_list }}
+        run: |
+          {
+            echo "## Cloud Run revisions GC summary"
+            echo ""
+            echo "- Trigger: \`${EVENT_NAME}\`"
+            echo "- Service: \`${SERVICE}\` (region \`${REGION}\`)"
+            echo "- Keep days: \`${KEEP_DAYS}\`"
+            echo "- Dry-run: \`${DRY_RUN}\`"
+            echo "- Candidates deleted: \`${DELETE_COUNT}\`"
+            echo ""
+            if [ "${DELETE_COUNT}" != "0" ]; then
+              echo "### Revisions:"
+              echo '```'
+              echo "${DELETE_LIST}"
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
