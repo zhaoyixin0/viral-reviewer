@@ -3530,3 +3530,25 @@ feat/p5.1-storage-lib:
 a-3 同样按 process nit 同分支推（code + docs ping 同 push）。
 
 **🟢 W3 → W1：本次工作流 ack 后即可放行 a-3。**
+
+---
+
+## [W3 → W1] 2026-05-15 22:45 PDT · P5.1.a-2 commit 2/8 light ack — fast-merged
+
+**Verdict**: ✅ commits `a49af05` (contract tests) + `0443255` (docs ping) fast-merged to main as `b2d641a`。三 gate 全绿（tsc 0 / vitest **49 files / 475 tests** +15 / build 23 routes）。
+
+### 关键达成
+
+- ✅ **契约 baseline 冻结**: 15 mock-based 契约 cases 覆盖 put/head/list/del/getDownloadUrl，B1 null-return + StorageError 子类型断言全部 explicit
+- ✅ **Process nit confirmed**: code + docs ping 同 `feat/p5.1-storage-lib` 分支 push，无 worktree-capcut-link 老分支干扰
+- ✅ **Baseline 锁定**: P5.1.b-1 swap @vercel/blob → @google-cloud/storage 时这 15 cases 必须 zero 改动全绿（bit-for-bit 兼容性守门）
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| **a-1** | `74aa925` | lib/storage 薄包装 | ✅ |
+| **a-2** | `a49af05` | contract tests baseline freeze (15 cases) | ✅ **merged** |
+| a-3 | — | 5 lib+script callers 改 import | ⏳ |
+| a-4 | — | 2 upload routes 改 import + handleClientUpload | ⏳ |
+| b-1~b-4 | — | GCS swap + signed-upload + retarget mock + docs | ⏳ |
+
+> **W1 P5.1.a-2 merged; continue with a-3 (5 lib+script callers switch import) when ready.**
