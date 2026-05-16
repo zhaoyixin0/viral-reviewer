@@ -6,13 +6,17 @@
  * facade. All callers MUST go through `@/lib/storage`.
  *
  *   1. `@vercel/blob`         only in `lib/storage/api.ts`         (P5.1.a)
- *      (← retired in P5.1.b commit 3: api.ts no longer imports it, but
+ *      (← retired in P5.1.b-1 commit 2: api.ts no longer imports it, but
  *      the whitelist entry is preserved until b-4 removes the dep so a
  *      stray reintroduction here is still caught.)
- *   2. `@vercel/blob/client`  only in `lib/storage/signed-upload.ts`
- *      and `lib/storage/upload-client.ts`                          (P5.1.a)
+ *   2. `@vercel/blob/client`  only in `lib/storage/upload-client.ts` (P5.1.a)
+ *      (← signed-upload.ts retired in P5.1.b-2 commit 2 — lifecycle now
+ *      goes through api.ts helpers, no direct SDK import. b-3 retires
+ *      upload-client.ts similarly. b-4 removes the dep.)
  *   3. `@google-cloud/storage` only in `lib/storage/api.ts` and
  *      `lib/storage/client.ts`                                     (P5.1.b)
+ *      (← signed-upload.ts in b-2 DELIBERATELY goes through the api.ts
+ *      facade helpers — keeps the SDK touch surface to 2 files.)
  *
  * Why a custom script (not `npm run lint`): grep invariant violations need
  * a precise, ungated failure message pointing at the offending file —
@@ -75,31 +79,35 @@ const GCS_IMPORT = /(?:^|\n)\s*(?:import|export)\b[^"']*?from\s+["']@google-clou
 const TOP_WHITELIST = new Set<string>(["lib/storage/api.ts"]);
 
 /**
- * Files allowed to import `@vercel/blob/client`. Both are facades:
+ * Files allowed to import `@vercel/blob/client`. Only `upload-client.ts`
+ * (browser shim re-exporting `upload` for 4 frontend callers) remains after
+ * P5.1.b-2 commit 3 — `signed-upload.ts` was rewritten in b-2 commit 2 to
+ * go through `api.ts` helpers (`generateSignedPostPolicy` +
+ * `signCompletionToken` + `verifyCompletionToken` + `urlToKey`) and no
+ * longer touches the Vercel SDK directly.
  *
- * - `lib/storage/signed-upload.ts` (server): handleUpload integration for
- *   the 2 upload routes (P5.1.a-4).
- * - `lib/storage/upload-client.ts` (browser): re-exports `upload` for the
- *   4 frontend callers (P5.1.a-5; previously 4 client components imported
- *   `@vercel/blob/client` directly).
- *
- * A 阶段 grep invariant 完成 = these 2 are the only callers.
+ * b-3 will rewrite `upload-client.ts` (hand-roll multipart POST to GCS v4
+ * signed POST URL, no SDK call); b-4 will remove the `@vercel/blob` dep
+ * entirely + delete this whitelist + the matching regex.
  */
 const CLIENT_WHITELIST = new Set<string>([
-  "lib/storage/signed-upload.ts",
   "lib/storage/upload-client.ts",
 ]);
 
 /**
  * Files allowed to import `@google-cloud/storage` (P5.1.b).
  *
- * - `lib/storage/api.ts`: head/put/list/del/getDownloadUrl swapped to GCS
- *   in P5.1.b-1 commits 2 + 3
+ * - `lib/storage/api.ts`: head/put/list/del/getDownloadUrl +
+ *   generateSignedPostPolicy (P5.1.b-1 commits 2-3 + b-2 commit 1)
  * - `lib/storage/client.ts`: lazy Storage singleton constructed here
  *   (P5.1.b-1 commit 1)
  *
- * b-2 (signed-upload.ts) and b-3 (upload-client.ts) will join this set
- * when those swaps land.
+ * P5.1.b-2 deliberately did NOT add `signed-upload.ts` here (scope §2.1
+ * row 6 anticipated it would) — the b-2 rewrite goes through api.ts
+ * helpers rather than touching the SDK directly, keeping the SDK touch
+ * surface at exactly 2 files. b-3 (upload-client.ts) is browser-side and
+ * also will NOT join this set (it will hand-roll a fetch POST with no
+ * Node SDK call).
  */
 const GCS_WHITELIST = new Set<string>([
   "lib/storage/api.ts",

@@ -1,20 +1,25 @@
 /**
  * Platform-neutral storage facade.
  *
- * Per W3 P5.1 verdict 12b3b18 + c9367c4:
+ * Per W3 P5.1 verdict 12b3b18 + c9367c4 + 78b7d2f:
  * - All callers MUST import from `@/lib/storage` (not `@vercel/blob` or
  *   `@google-cloud/storage` directly). THREE grep invariants enforced:
  *
  *   1. `from "@vercel/blob"` — only `lib/storage/api.ts`
- *      (whitelist preserved for P5.1.b transient state; api.ts no longer
- *      imports it after b-1 commit 3, b-4 removes the dep entirely).
- *   2. `from "@vercel/blob/client"` — only `lib/storage/signed-upload.ts`
- *      (server, handleUpload integration) + `lib/storage/upload-client.ts`
+ *      (whitelist preserved as a tripwire for accidental re-introduction;
+ *      api.ts no longer imports it after b-1 commit 2. b-4 removes the dep
+ *      AND this whitelist entry + regex.)
+ *   2. `from "@vercel/blob/client"` — only `lib/storage/upload-client.ts`
  *      (browser shim, `"use client"`, re-exports `upload` for 4 frontend
- *      callers). b-2 + b-3 will retire these.
+ *      callers). `signed-upload.ts` retired in b-2 commit 2 (lifecycle
+ *      now via api.ts helpers, no direct SDK touch). b-3 retires
+ *      upload-client.ts; b-4 removes the dep.
  *   3. `from "@google-cloud/storage"` — only `lib/storage/api.ts` and
- *      `lib/storage/client.ts` (P5.1.b-1 commits 1-3). b-2 will add
- *      `signed-upload.ts` to this whitelist.
+ *      `lib/storage/client.ts` (P5.1.b-1 commits 1-3 + b-2 commit 1
+ *      added generateSignedPostPolicy to api.ts). b-2 deliberately did
+ *      NOT widen this set — signed-upload.ts goes through api.ts helpers
+ *      rather than touching SDK directly, keeping the SDK touch surface
+ *      at exactly 2 files.
  *
  *   `upload-client.ts` NOT re-exported here — index.ts is `server-only`-tainted;
  *   client components must use the deep path.
@@ -22,9 +27,11 @@
  *   CI enforcement: `npm run check:storage-imports` (scripts/check-storage-imports.ts).
  *
  * - P5.1.a (complete): thin wrappers around `@vercel/blob` / `@vercel/blob/client`.
- * - P5.1.b-1 (current after commit chain): api.ts + client.ts on
- *   `@google-cloud/storage`. signed-upload.ts + upload-client.ts still on
- *   `@vercel/blob/client` until b-2 + b-3.
+ * - P5.1.b-1 (complete): api.ts + client.ts on `@google-cloud/storage`.
+ * - P5.1.b-2 (current after commit chain): signed-upload.ts lifecycle
+ *   rewritten to GCS v4 signed POST policy + HMAC completion ping
+ *   (per W3 deep verdict 78b7d2f). upload-client.ts still on
+ *   `@vercel/blob/client` until b-3.
  */
 
 export {
