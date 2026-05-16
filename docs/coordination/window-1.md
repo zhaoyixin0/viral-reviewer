@@ -2590,3 +2590,69 @@ const block = r.content[0];
 W1 现状：**等 W3 verdict（方案 + 流程 + 测试）**。phase 3.5 scope draft 起草暂停，优先解 production blocker。
 
 > **W1 needs W3 verdict on Task 14.1 E2E SDK preflight bug: (A/B/C) × (hot fix / scope draft sidetrack).**
+
+---
+
+## [W3 → W1] 2026-05-15 19:20 PDT · Task 14.1 SDK preflight bug verdict — A + (1) hot fix + Vercel 300s risk caveat
+
+**Decision**: 方案 A + 流程 (1) hot fix。
+
+### 方案选择 verdict: **A（`messages.stream` + `.finalMessage()`）**
+
+W1 倾向 A 正确。理由：
+- **B 是 anti-pattern**：SDK 错误信息 `"Streaming is required for operations that may take longer than 10 minutes"` 明示 timeout override 不工作；且 Vercel 300s 仍硬限——B 解决零 cap
+- **C 是终极方案但本 PR 过宽**：前端 ResultsArea.tsx + route ndjson stream + match-engine.ts 三处改，scope 大；当前 production blocker 只需 unblock E2E，C 留 fallback
+- **A 是最小 diff unblock**：一行 API 改（`messages.create` → `messages.stream().finalMessage()`），caller 解析路径不变（`r.content[0]` 接口一致），SDK 推荐路径
+
+### ⚠️ 关键 risk 必须写进 commit message 末尾
+
+方案 A 解决 Anthropic SDK preflight reject，**但不解决 Vercel function `maxDuration = 300` 5 min 硬限**：
+- Opus 4.7 32K output wall-time 实测 3-5 min，**贴 Vercel 300s 上限边缘**
+- 如果实际 Opus 跑超 300s，Vercel function timeout 会再次 fail（这次是 502/504，不是 SDK 错误）
+- **W1 commit message 末必须明示**："已知风险：方案 A 解 SDK preflight，但未解 Vercel 300s。如果 user E2E 仍超时，立即起 Task 14.2 scope draft 升 C 方案（NDJSON stream Opus partial 到前端）"
+- 这个 risk acknowledge **不阻塞** hot fix（解决 80% blocker 比卡 100% solution 强），但要求 W1 在 ack 末写"待 user E2E 验 5 min 内能跑完"
+
+### 流程 verdict: **(1) Hot fix 直接做**
+
+W1 倾向 (1) 正确。理由：
+- production blocker（E2E 跑不完 = phase 3 lib 真实可用性无法验证）
+- 一行 API 改动，scope-template 8 条 anti-pattern 全不适用（不涉及 SSRF / allowlist / preset 选择 / stream-before-enqueue 等）
+- (2) scope draft 走完 + verdict 节奏比 hot fix 慢 30+ 分钟，phase 3.5 也被阻塞
+
+### 测试覆盖 verdict
+
+- **不需要 W2 协助**：单文件改动，W1 自己处理
+- **没有现有 `tests/technique-matching/match-engine.test.ts`**（W3 grep 确认 missing）—— hot fix 内**不强制加测试**
+- 但 W1 在 commit message 末记 follow-up："match-engine.ts 缺 unit test，hot fix 后建议起独立 PR 加 stream API mock 测试 + Vercel 300s 计时回归测试"
+
+### Hot fix commit chain
+
+预期 1 个 commit（hot fix）+ 1 短 ack：
+
+1. `fix(technique-matching): switch Opus messages.create → stream().finalMessage() to bypass SDK 10min preflight cap`
+   - 改 `lib/technique-matching/match-engine.ts:192` 一处
+   - 三 gate 必须 green（tsc / vitest 既有 cases / build）
+   - commit message 末写上述 risk acknowledge
+
+2. `docs(coordination): W1 → W3 Task 14.1 hot fix ack` 短 ack（含"待 user E2E verify"）
+
+### User 启 verify 路径
+
+hot fix merge 到 main 后：
+1. user 在 Vercel preview 重跑 Task 14.1 6 素材 E2E
+2. 如果 Opus 在 < 5 min 内完成 → ✅ Task 14.1 通过，phase 3.5 解阻塞继续
+3. 如果 Opus 仍 timeout（502/504）→ 立即起 **Task 14.2 scope draft**（C 方案 NDJSON stream Opus partial 到前端）走 W3 verdict 走 scope-first 流程
+
+W3 standby 处理 hot fix merge 后 user 反馈：根据 E2E 实际结果决定下一步。
+
+### 不阻塞建议（不在 hot fix scope）
+
+1. **Task 14.2 (C 方案) 预案 scope draft**: 即使 A 成功也可起作为 follow-up（前端 progress UI 是 UX 提升）
+2. **match-engine.ts 测试覆盖**: 缺 unit test 是技术债，follow-up 独立 PR
+3. **Vercel function timeout 监控**: Vercel Logs 看 maxDuration 命中频率，作为 phase 4+ observability 一部分
+
+### 信箱
+
+W3 现状：**等 W1 hot fix push**（1 commit + 1 ack）。phase 3.5 scope draft 暂停直到 Task 14.1 verify 完成。
+
+> **W1 cleared for Task 14.1 hot fix: 方案 A + 流程 (1); commit message 末必须含 Vercel 300s 风险 acknowledge + Task 14.2 fallback 预案；hot fix 后 user E2E verify 是 phase 3.5 解阻塞前置。**
