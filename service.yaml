@@ -122,6 +122,16 @@ spec:
                 secretKeyRef:
                   name: blob-read-write-token
                   key: "latest"
+            # UPLOAD_SIGNING_SECRET — HMAC-SHA256 signs completion token for
+            # browser-direct-upload ping (W1 P5.1.b-2 design + W3 b-2 verdict +
+            # W3 78b7d2f mandate 2 to W2 P5.2.4.x patch chain).
+            # Value: openssl rand -hex 32 (32 bytes / 64 hex chars), 一次性生成
+            # P5.6 phase create with `gcloud secrets create upload-signing-secret`.
+            - name: UPLOAD_SIGNING_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: upload-signing-secret
+                  key: "latest"
 
           # --- Startup probe (J1 verdict) ---
           # 从 /api/health (W2 P5.2.2 commit 9756301) sync GET 5 LoC

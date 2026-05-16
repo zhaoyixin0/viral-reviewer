@@ -310,8 +310,36 @@ P5.6 scope (separate phase) 在 Secret Manager 创建以下 5 个 secrets, `serv
 | `google-api-key` | 当前 Vercel env `GOOGLE_API_KEY` |
 | `apify-token` | 当前 Vercel env `APIFY_TOKEN` (memory: 2026-05-13 暴露, P5.6 借机 rotate) |
 | `blob-read-write-token` | 当前 Vercel env `BLOB_READ_WRITE_TOKEN` (P5.1.b GCS swap 后退役) |
+| `upload-signing-secret` | **新增** (per W3 mandate 78b7d2f patch 2). HMAC-SHA256 sign completion token for browser-direct-upload ping (W1 P5.1.b-2 design). Value: `openssl rand -hex 32` (32 bytes / 64 hex chars). 一次性生成, 不源自 Vercel env. |
 
 **未在本 P5.2.6 runbook 跑** — 实际创建命令见 P5.6 scope. P5.2.6 仅文档化命名约定避免 `service.yaml` (本 PR P5.2.3) 与 P5.6 实际命名 drift.
+
+### 7.1 Bootstrap upload-signing-secret (P5.6 phase)
+
+```bash
+# 生成 32 byte (256-bit) random hex secret
+SECRET_VALUE=$(openssl rand -hex 32)
+
+# 创建 Secret Manager secret with initial version
+echo -n "${SECRET_VALUE}" | gcloud secrets create upload-signing-secret \
+  --data-file=- \
+  --replication-policy=automatic \
+  --project="$GCP_PROJECT_ID"
+
+# 验证创建成功
+gcloud secrets versions access latest \
+  --secret=upload-signing-secret \
+  --project="$GCP_PROJECT_ID" | head -c 8
+# 期: 输出 8 hex chars (secret 前 8 位)
+```
+
+**⚠️ Rotation policy**: 不能 hot-rotate (会让 in-flight HMAC token invalid). 必要时:
+1. 创建新 version (`gcloud secrets versions add upload-signing-secret --data-file=- < /dev/stdin`)
+2. service.yaml 保持 `key: "latest"` deploy (新 revision 启动自动拿新 version, 无需改 yaml)
+3. 等所有 in-flight token TTL 过期 (15 min)
+4. 删旧 version (`gcloud secrets versions destroy <old-version-num>`)
+
+可选额外步骤: 若要审计每次 deploy 用了哪个 secret version, 改 `key:` 从 `"latest"` 改成具体 version 号; 但这增加 deploy + rotation 的耦合, 一般不必。
 
 ---
 
@@ -349,6 +377,85 @@ gcloud logging read \
   --limit=20 --project="$GCP_PROJECT_ID"
 # 期: 看到 startup log + /api/health probe 200 log
 ```
+
+---
+
+## Chapter 9 — GCS Bucket Setup (for P5.1.b browser-direct upload)
+
+P5.1.b GCS swap (W1 owned phase, P5.2 完后启) 用 GCS bucket 取代 Vercel Blob。该 chapter 文档化 bucket create + **CORS 严格 origin 配置**（per W3 mandate 78b7d2f patch 1 + ECC HIGH-2 finding）。
+
+### 9.1 创建 bucket
+
+```bash
+# bucket name 由 P5.1.b W1 scope 决定 (e.g. viral-reviewer-prod-blob)
+export GCS_BUCKET_NAME="viral-reviewer-prod-blob"
+
+gsutil mb -p "$GCP_PROJECT_ID" -l "$GCP_REGION" -b on \
+  "gs://${GCS_BUCKET_NAME}"
+# -b on = uniform bucket-level access (推荐, ACL granularity 已 deprecated)
+```
+
+### 9.2 配置 CORS — **严格 origin (CRITICAL security)**
+
+**⚠️ 不要写 `*.vercel.app` 作 allowed origin** — 任何 Vercel 用户都可注册一个 `attacker.vercel.app` 进 CORS preflight，盗 signed upload URL → 越权写 bucket。**必须用项目名 prefix glob**。
+
+`cors.json`:
+
+```json
+[
+  {
+    "origin": [
+      "https://viral-reviewer.vercel.app",
+      "https://viral-reviewer-*-zhaoyixin0.vercel.app"
+    ],
+    "method": ["POST", "PUT", "OPTIONS"],
+    "responseHeader": [
+      "Content-Type",
+      "x-goog-acl",
+      "x-goog-content-length-range",
+      "x-goog-meta-*",
+      "ETag",
+      "Location"
+    ],
+    "maxAgeSeconds": 3600
+  }
+]
+```
+
+Apply:
+
+```bash
+gsutil cors set cors.json "gs://${GCS_BUCKET_NAME}"
+```
+
+### 9.3 Origin pattern 解释
+
+- `https://viral-reviewer.vercel.app` — prod domain (W2 service 切流量后此 origin)
+- `https://viral-reviewer-*-zhaoyixin0.vercel.app` — Vercel preview pattern (`<project>-<branch-hash>-<vercel-username>.vercel.app`)
+- **不含** `*.vercel.app` (任意 Vercel 用户域名都会通过 = CORS bypass + signed URL theft)
+- **不含** `https://*.run.app` (Cloud Run 也是 multi-tenant, 用户域 `<service>-<hash>-<region>.run.app` 可任意; P5.7 cutover 后用户域名替代时再 update CORS)
+
+**⚠️ glob 边界注意 (security-reviewer 2026-05-16 LOW finding)**: 同账户 `zhaoyixin0` 下若另开 Vercel 项目命名以 `viral-reviewer-` 开头（如 `viral-reviewer-experiment`），其 preview URL `viral-reviewer-experiment-<hash>-zhaoyixin0.vercel.app` 同样命中本 glob pattern。如有此类项目, 评估其受信任度 (你的账户 = 你信任). Vercel username `zhaoyixin0` 全局唯一 (Vercel namespace flat, 与 GitHub 同机制), 攻击者不能 squat 该 username。
+
+P5.7 DNS cutover 后 update cors.json origin 加 `https://<your-custom-domain>` 后重 apply。
+
+### 9.4 **Verify**
+
+```bash
+gsutil cors get "gs://${GCS_BUCKET_NAME}"
+# 期: 输出与 cors.json 一致 (2 origin, 2 method, responseHeader 列表)
+
+# Negative test: 用 disallowed origin curl preflight 期 fail
+curl -i -X OPTIONS \
+  -H "Origin: https://attacker.vercel.app" \
+  -H "Access-Control-Request-Method: POST" \
+  "https://storage.googleapis.com/${GCS_BUCKET_NAME}/test.txt"
+# 期: response 不含 Access-Control-Allow-Origin (CORS 拒绝)
+```
+
+### 9.5 Lifecycle (per P5.1 scope §2.3 G defer)
+
+P5.1.b scope §2.3 G: "暂不设 lifecycle (P5.1 不做)"。Cleanup 走 cron (per W4 P5.2.5 `cloud-run-revisions-gc.yml` 同模式扩展未来 phase)。
 
 ---
 
@@ -428,8 +535,8 @@ gcloud run services delete viral-reviewer-web --region="$GCP_REGION" --project="
 # Artifact Registry repo (含所有 image)
 gcloud artifacts repositories delete viral-reviewer --location="$GCP_REGION" --project="$GCP_PROJECT_ID"
 
-# Secret Manager secrets (P5.6 创建的)
-for s in anthropic-api-key openai-api-key google-api-key apify-token blob-read-write-token; do
+# Secret Manager secrets (P5.6 创建的 + b-2 mandate upload-signing-secret)
+for s in anthropic-api-key openai-api-key google-api-key apify-token blob-read-write-token upload-signing-secret; do
   gcloud secrets delete "$s" --project="$GCP_PROJECT_ID" --quiet
 done
 
