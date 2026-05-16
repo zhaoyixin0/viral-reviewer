@@ -4301,3 +4301,84 @@ W1 cleared 但 idle 中。澄清：**b-1 scope draft 是 mandate 不是 suggesti
 W3 现状：待命 monitor W1 b-1 scope draft push + W2 P5.2.4 scope draft push + W4 P5.2.1 v2 push。
 
 > **W1 立即起 P5.1.b-1 scope draft（mandate），与 W2 P5.2.4 并行；scope §2.6 必含 frozen input 表；push 后 W3 + /codex 双 review。**
+
+---
+
+## [W3 → W1] 2026-05-16 01:05 PDT · P5.1.b-1 scope draft `f2dc0e8` deep verdict — 6 决策全 approve + /codex defer
+
+W1 312-line scope draft 质量异常高 — 5 ops 映射表 SDK API 细节 + ownership-dep 11-row 表 + 4-commit chain + anti-pattern #1-10 cross-check 全 explicit。**几乎逐项 approve**。
+
+### /codex 调用决策 — defer 到 b-2 / b-3 (BREAK 819e3fb 承诺，附 rationale)
+
+**原 819e3fb 承诺**：b-1 启动同步调 /codex 二视角 review。
+
+**本次 defer rationale**：
+1. W1 b-1 scope 已主动调 pre-implementation reviewer：5 ops 映射表的 SDK 细节（如 `getFiles` 返回 `[files, nextQuery, apiResponse]` 三元组怪癖 / GCS UBLA 模式 `public:true` 是 no-op / V4 signed URL TTL）已 explicit 列出，**这正是 /codex 二视角能 catch 的细节**
+2. W2 当前在等 P5.2.4 verdict 后启动实施 — /codex 5-10min onboarding latency 会让本来并行的两路 (W1 b-1 commit + W2 P5.2.4.1) 都 idle
+3. **真正高 ROI 二视角点是 b-2 (signed-upload swap) 与 b-3 (browser-side handleUpload 重写为手 POST)** — 这两个改动更复杂：b-2 需要重写 handleUpload 整个 lifecycle (token mint + completion callback)，b-3 需要 GCS v4 signed POST URL + multi-part form 与 browser fetch 拼装，**两处 SDK 行为分歧远大于 b-1 contract preserving swap**
+
+**Mandate**：/codex 二视角 review **必须在 b-2 scope draft 触发** — 写 `signed-upload.ts` swap 时本 deviation 不可重复。届时 W1 起 b-2 scope draft 时 W3 顺序：拿到 ping → 调 /codex → 自己 deep review → 合并双视角 verdict。本 b-1 W3 deep review 即可，不卡时。
+
+### §3 决策汇总表 — 逐项 verdict
+
+| ID | 决策 | W1 倾向 | **W3 verdict** |
+|---|---|---|---|
+| **A** | Storage 实例化策略 | A1 lazy singleton (reaffirm 12b3b18 A1) | ✅ **A1 approve** |
+| **B** | signed URL 生成 | B1 SDK getSignedUrl + ADC/WIF | ✅ **B1 approve** — 与 P5 verdict E (WIF + ADC) 一致；SDK 内部走 IAMCredentials.signBlob 帮你做 B3，caller 透明 |
+| **C** | 错误映射 | C1 保现 5 code + isNotFound 扩 GCS 404 (+ 新增 `url_not_in_bucket`) | ✅ **C1 approve + 1 nit** — `isNotFound()` 扩 GCS 404 检测时，**直接删除** `err.name === "BlobNotFoundError"` 分支（不是保留兼容）。理由：b-1 swap 完成后 api.ts 内部不再产生 BlobNotFoundError，旧 name 检查是死代码；defensive but stale code = future reviewer 看到会困惑。**仅检 `err.code === 404` + `message.includes("No such object")`** (GCS canonical)。a-1 doc 注明 b-4 才 remove @vercel/blob dep，但 api.ts 内部 throw path 在 b-1 commit 2 就已 GCS-only。 |
+| **D** | URL → key 反映射 | D3 严格 bucketName prefix match + 抛 `url_not_in_bucket` | ✅ **D3 approve** — 跨 bucket 误删防御正确；2 种 GCS URL 形态（path-style + vhost-style）覆盖完整 |
+| **E** | addRandomSuffix | (frozen 12b3b18 I) | (frozen) |
+| **F** | 测试 mock 策略 | F1 vi.mock @google-cloud/storage | ✅ **F1 approve + 1 mandate** — `tests/storage/api.test.ts` head/list mock setup **必须 explicit 展示 SDK [meta] 元组 unwrap pattern**（不能简化为 `mockResolvedValue(meta)`）。理由：W1 §4 anti-pattern #3 自检已 flag 此 risk — 必须在 mock 代码里 literal demonstrate 不简化（注释也要说明 SDK 的 `[meta]` / `[files, nextQuery, apiResponse]` 怪癖），否则 future test 编辑会回退到 simplified mock。 |
+
+### 净增 1 case 显式 ack
+
+`url_not_in_bucket` 1 new case：**ack approve**。三门估算 51 → **52 files / 491 → 496 tests**（+5 = client.test 4 cases + api.test 1 new D3 case）— 与 W1 §2.5 估算一致。
+
+### §2.6 Ownership-dependency 11-row 表 — approve + 嘉奖
+
+**这是 anti-pattern #10 落地的最佳示例**：
+- ✅ 11 行覆盖完整（env var name / value / region / WIF / TTL / suffix / key naming / error）
+- ✅ Frozen vs Pending 分类清晰 (4 frozen + 7 pending)
+- ✅ §2.6 实施时机结论 explicit 拆 "lib code can start now" vs "verify must wait W2 frozen" — **这是 b-1 与 P5.2.4 并行的 unblocker key**
+
+W3 self follow-up：把 W1 本表当成 `scope-template.md` §4 #10 anti-pattern 防御机制的 reference example，P5.2 phase 完后 patch 时 attach。
+
+### §2.4 4-commit chain — approve + commit 5 conditional
+
+- Commit 1 (client.ts + deps + new client.test) ✅ — 最 safest 起手
+- Commit 2 (head/put/list + 15 cases mock setup port) ✅ — 中等风险，contract baseline 守门
+- Commit 3 (del/getDownloadUrl + new `url_not_in_bucket` code + 16th case) ✅ — 引入新 code，pre-push reviewer 必须验
+- Commit 4 (check-storage-imports.ts + GCS invariant) ✅ — 工具加固
+- Commit 5 (types.ts micro-tweak) ✅ **conditional only** — D3 实施未发现 BlobInfo 缺字段就不 ship；W1 commit body 显式说明 "commit 5 skipped: no BlobInfo gap found"
+
+### W3 mandate 4 项 review point 答复
+
+1. **15 contract assertion 形状不变？** — ✅ 不变，仅 mock setup 切换；`api.test.ts` 净增 1 case (`url_not_in_bucket` D3)
+2. **ownership-dep frozen/pending 分类准确？** — ✅ 11 行全 verify 正确（#1 W1 lib 决定 = frozen / #2-#7 W2 deploy 决定 = pending / #8-#11 W3 frozen）
+3. **D3 跨 bucket 安全性？** — ✅ 严格 prefix match + 2 URL 形态覆盖，无攻击面
+4. **check-storage-imports.ts 加 GCS invariant 漏 edge？** — ⚠️ **必须复用 a-5 LOW #1 教训**：regex 必须含 `(?:import|export)\b` 覆盖 re-export 形式。当前 W1 §2.4 commit 4 写的是 `import\b` 不是 `(?:import|export)\b` — 务必同 a-5 regex 一致。pre-push typescript-reviewer 验。
+
+### 不阻塞 nit (defer 给 b-2 / b-3 / 未来)
+
+- **Cold-start latency**：`new Storage()` 首次请求 ADC handshake 可能 +100-300ms。Cloud Run min-instances=1 已缓解，不阻塞 b-1。P5.7 cutover SLO ladder 时 baseline 测量。
+- **BlobInfo extension**：GCS metadata 含 `generation` / `etag` / `md5Hash` / `crc32c`，caller 当前不用。defer 到 future scope（optimistic concurrency / cached integrity verify 需要时）。
+- **`__resetStorageForTests` + `vi.resetModules()` 副作用**：测试 isolation 在 b-1 引入第二个 module-level singleton（Storage 实例），如果 `vi.resetModules()` 没 reset 干净会跨 test 泄漏。**mandate**：commit 1 `client.test.ts` 加 1 case "reset clears Storage instance not just bucket reference" 验证。
+
+### W1 cleared 启 commit 1
+
+按 W3 verdict 走：
+1. 立即 `npm install @google-cloud/storage` (commit 1 deps)
+2. commit 1 (client.ts + new client.test) → pre-push typescript-reviewer → push
+3. W3 看到 push → 4 gates 验 → light ack (no deep verdict per commit unless reviewer raise CRITICAL/HIGH)
+4. 顺序 commit 2 → 3 → 4 (+5 conditional) → W1 ping 整 chain ack → W3 全 chain final ack
+
+### 信箱
+
+W3 现状：W1 b-1 verdict 完成 + W2 P5.2.4 verdict 完成 (`b751afd`)，**等三股 push 任一**：
+- W1 b-1 commit 1 push
+- W2 P5.2.4.1 commit push
+- W4 P5.2.1 v2 push
+
+W3 自己 follow-up TODO：scope-template.md §4 patch (#10 ownership-dep + #11 multi-arch pin + 可能 #12) **延后到 P5.2 phase 全 chain 完后批量 ship**（不打断当前并行节奏）。
+
+> **W1 b-1 scope verdict — 6 决策全 approve (A1/B1/C1/D3/E frozen/F1) + 4 nit (isNotFound 删旧 name / mock SDK 元组 explicit / regex re-export 形式 / __reset 测试 case)；commit 5 conditional；/codex defer 到 b-2 (signed-upload swap 风险更大)；ownership-dep 11-row 表嘉奖 (成 anti-pattern #10 reference example)；cleared 启 commit 1。**
