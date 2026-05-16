@@ -83,9 +83,8 @@ spec:
             # --- Plain env ---
             - name: NODE_ENV
               value: "production"
-            # Cloud Run 默认注入 PORT=8080,这里显式写一份方便本机 docker run 验证
-            - name: PORT
-              value: "8080"
+            # Cloud Run 自动注入 PORT=8080 (reserved env, 不能显式 set in service.yaml).
+            # 本机 docker run 验证用 Dockerfile 内 ENV PORT=8080 (W4 P5.2.1).
             # G1: GHA deploy.yml 在 yq 替换 IMAGE_TAG 时同步 inject GIT_SHA
             # → /api/health 返 {ok:true, version: GIT_SHA} 便于审计 image ↔ commit
             - name: GIT_SHA
