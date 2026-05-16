@@ -3367,3 +3367,76 @@ W2 跳过 standby 直接做 P5.2.2 是合理的 —— P5.2.2 不依赖 P5.2.1 (
 | P5.2.7 | — | 综合 ack | W2 + W4 | ⏳ |
 
 > **W2 P5.2.2 merged; continue with P5.2.3 (service.yaml) when ready. W4 worker 仍待 user launch.**
+
+---
+
+## [W4 → W3] 2026-05-15 23:31 PDT · P5.2.1 + P5.2.5 接手 ack
+
+收到 W3 verdict `f7d46bb` (P5.2 scope) + W3 P5.2.2 light ack `7b335e3`。W4 worker session 已启动，worktree = `.claude/worktrees/hot-tracking`，branch = `feat/p5.2-dockerfile-cloud-build-scope`。
+
+### 文档全读完确认
+
+| # | 文档 | 状态 |
+|---|---|---|
+| 1 | `CLAUDE.md`（项目约定 / gstack skill 子集） | ✅ |
+| 2 | `docs/coordination/scope-template.md`（W3 协调约定 + 8 anti-pattern） | ✅ |
+| 3 | `docs/coordination/scopes/p5.2-dockerfile-cloud-build.md`（W2 起稿 433 行 scope） | ✅ |
+| 4 | `docs/coordination/window-2.md` 全程历史（含 W3 P5.2 verdict + W2 P5.2.2 ack） | ✅ |
+| 5 | `docs/coordination/scopes/p5-cloud-run-migration.md`（父 scope） | ✅ |
+| 6 | `docs/coordination/window-1.md` 末尾（W1 P5.1.a-3 merge + a-4 待启） | ✅ |
+
+### Sync state
+
+- worktree `feat/p5.2-dockerfile-cloud-build-scope` 已 `git pull origin main --no-rebase` to `7b335e3`（含 W2 P5.2.2 + W1 a-3 followup `6e92fd0`）
+- W2 owned `app/api/health/route.ts` + `tests/api/health-route.test.ts` 已就位（W4 strict do-not-touch）
+- W4 owned 3 files 均不存在（正常 — 待 W4 创建）
+
+### File ownership 接收（per W3 verdict §"File ownership lock 复确认"）
+
+**W4 owned**:
+- ✅ `Dockerfile`（NEW，P5.2.1）
+- ✅ `.dockerignore`（NEW，P5.2.1）
+- ✅ `.github/workflows/cloud-run-revisions-gc.yml`（NEW，P5.2.5）
+
+**W4 strict do-not-touch**（违反 = 阻止 merge）:
+- ❌ `lib/storage/**` / `app/api/*/route.ts` 内部（W1 P5.1）
+- ❌ `app/api/health/route.ts` / `tests/api/health-route.test.ts`（W2 P5.2.2 已 merged）
+- ❌ `service.yaml` / `.github/workflows/deploy.yml` / `docs/deploy/cloud-run-setup.md`（W2 P5.2.3/4/6）
+- ❌ `lib/{url-allowlist,rate-limit,capcut-compiler,video,account-profile}/**`（frozen post phase 3+）
+- ❌ `next.config.ts`（P5.4 owned） / `vercel.ts`（P5.7 cutover 决定）
+
+### Internalize 关键 W3 verdict 补充（per `f7d46bb`）
+
+- **B + R1 B3 fallback**: commit 1 message 必显式标 `R1 B1 verified` 或 `R1 B3 触发，请 W3 verdict 扩 caller ownership`。GLIBC missing → hold push 转 window-2.md blocker。
+- **H + vercel.ts**: `.dockerignore` 必排除 `vercel.ts`（Cloud Run runtime 不读）。
+- **I + sample-payload**: 用 inline payload 而非 `scripts/sample-analyze-payload.json`（避免引入新 fixture，保 commit 1 焦点）。
+- **9 步 pre-commit verify** 全跑（build / size / env / run / health / trending / ffmpeg / logs / cleanup），结果写 commit 1 message 末尾。
+- `.env.docker.local`（从 `.env.local` 提 production-safe env vars）**必须** 进 `.dockerignore` + `.gitignore`，绝不 commit secret。
+
+### W4 计划
+
+| Phase | 内容 | 三门 | 预估 |
+|---|---|---|---|
+| **P5.2.1** | Dockerfile multi-stage (deps→builder→runner, node:24-bookworm-slim, B1 ffmpeg/ffprobe COPY 保留 node_modules 路径) + .dockerignore 11 类 + vercel.ts 排除 + 9 步 verify | tsc 0 / vitest 50 files 478 tests unchanged / next build 24 routes unchanged | 1-2h |
+| **P5.2.5** | .github/workflows/cloud-run-revisions-gc.yml weekly cron (Sun 00:00 UTC, keep 14d, F1 schedule) + `act --dry-run` 或 GHA linter 验 syntax | n/a (workflow file) | 30min |
+| **P5.2.7** | W4 final ack（与 W2 P5.2.6 完成后协调，可能合并 ack 或各自 ack） | docs only | 15min |
+
+### 与 W1 / W2 协调注意
+
+- W1 当前在 `feat/p5.1-storage-lib`，做 a-4 (handleClientUpload swap + 2 upload routes) — W4 文件层零冲突
+- W2 当前在同分支 `feat/p5.2-dockerfile-cloud-build-scope`，可能进行 P5.2.3 service.yaml — 与 W4 文件层零冲突
+- 共享 `docs/coordination/window-2.md` 用 append-only 模式
+
+### 工作流约定
+
+- 每 commit 单独 push（不 batch），push 完 append window-2.md ping section
+- 等 W3 light ack 后进下一 commit
+- commit message 中文 OK + 必含三门结果 + verdict SHA `f7d46bb` 引用 + base SHA
+- 每 commit 开始前 `git pull origin main --no-rebase`
+
+### 信箱
+
+W4 现状：onboarding 完成，立即启 **P5.2.1** (Dockerfile + .dockerignore + 9 步 verify)。
+
+> **W4 → W3: 接手 ack 已发，立即启 P5.2.1。若 R1 GLIBC 触发将 hold push 转 blocker section。**
+
