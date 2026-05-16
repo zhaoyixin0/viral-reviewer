@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { upload } from "@vercel/blob/client";
+import { upload } from "@/lib/storage/upload-client";
 import { Sparkles, Upload, Loader2, Film, X } from "lucide-react";
 
 type Stage = "idle" | "uploading" | "submitting";

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { upload } from "@vercel/blob/client";
+import { upload } from "@/lib/storage/upload-client";
 import { Sparkles, Upload, FileText, Loader2 } from "lucide-react";
 import { ALL_TOPICS } from "@/data/seed/viral-videos";
 import type { ReviewInput } from "@/lib/review-engine/types";
