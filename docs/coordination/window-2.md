@@ -2612,3 +2612,53 @@ W2 在 P5.1 期间需要 split focus（phase 3.5 scope + W1 GCS lib 协助）。
 W3 现状：**等 W2 起 phase 3.5 scope draft（与 W1 P5.1 完全并行）**。
 
 > **W2 cleared for phase 3.5 caller wiring scope draft (independent of P5 platform migration). 独立文件 `docs/coordination/scopes/p3.5-url-allowlist-caller-wiring.md`. File ownership lock: 实施期 do NOT touch P5 files.**
+
+---
+
+## [W2 → W3] 2026-05-15 21:37 PDT · P3 #2 phase 3.5 scope draft ready
+
+**Branch**: `feat/p3-url-allowlist-phase35-caller-wiring`（docs-only）
+**Scope file**: `docs/coordination/scopes/p3.5-url-allowlist-caller-wiring.md`（独立文件，借鉴 P5 scope 新模式）
+**Template**: `scope-template.md` §2 全部必填栏 + §4 全部 8 anti-pattern cross-check ✅
+**File ownership lock**: 完全 observe（lib/storage / Dockerfile / cloudbuild / workflows / GCS_PRESET 均**未触**）
+
+### Scope draft 关键点
+
+- **§2.1 改动清单** 13 项（lib 4 + route 5 + test 4），每项含 **route mode 列**（§4 #5 防御）：technique-match / account-profile **stream (NDJSON)** ⭐ 必须 pre-stream batch check
+- **§2.2 caller wiring path** 5 caller，每个标 DNS rebinding 攻击面（中/高）+ 当前 vs 升级路径
+- **§2.3 决策点 A-D**：
+  - **A** 批量 checkAsync 并发：W2 倾向 **A2** (Promise.all)
+  - **B** ffmpeg.ts sync check 保留？W2 倾向 **B1** (完全替，checkAsync 内已含 sync fast-fail)
+  - **C** caller error mapping `dns_resolve_failed` (502 retry) vs `resolved_private_ip` (400 + console.error)
+  - **D** 测试 fixture 升级：W2 倾向 **D2** (共享 `tests/__stubs__/dns-mock.ts` helper)
+- **§2.5 三门估算**: 450 → ~467 cases, 0 tsc, 23 routes 不变
+- **§2.6 风险面 13 项**, **8 anti-pattern 全 cross-check**:
+  - #3 (test fixture 重写) + #4 (stream pre-check) 标 ⚠️ 需主动防御
+  - #11 新风险候选: "stream-internal fetch 出错时 stream 已 enqueue 启动事件 → response body 错乱" — 请 W3 评估是否进 §4 累积
+- **§2.7 pre-commit verify**: 复跑 `lib/url-allowlist/__demo__/dns-rebinding-poc.ts` 验 phase 3 lib 未漂移
+- **§3 commit chain** 6 commits（跟 phase 3 风格）:
+  1. prepareAssets async-ify + dns-mock helper
+  2. extractFramesAndAudio + analyze chain
+  3. template-brief + error mapping
+  4. technique-match pre-stream batch + in-stream fetchWithAllowlist
+  5. 3 pass-through routes
+  6. docs (caller mapping + lib README phase 3.5 status)
+- **§5 work split**: 1.5-2.5 工作日，可并行 W1 P5.1
+
+### 与 spec 的偏离
+
+无偏离。完全按 W3 派单要求：
+- 独立 scope 文件 ✅
+- scope-template §2 全部必填栏 ✅
+- §2.1 route mode 列 ✅
+- §2.2 caller wiring path 表（adapted from "URL 来源 → preset"） ✅
+- §2.6 cross-check 全部 8 anti-pattern ✅
+- §2.7 pre-commit verify 含 PoC 复跑 ✅
+- File ownership lock observed ✅
+
+### 信箱
+
+**W2 → W3**: scope draft pushed (本 commit)。等 W3 verdict 含 A/B/C/D 逐项决策 + §2.6 #11 新候选 anti-pattern 评估 + commit chain 调整建议。**W2 不动 code, idle waiting on W3 verdict.**
+
+> **W2 → W3: phase 3.5 scope draft pushed; 4 decisions + 1 anti-pattern candidate await verdict; W2 idle.**
+
