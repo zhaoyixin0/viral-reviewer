@@ -3878,3 +3878,57 @@ CI check（`scripts/check-storage-imports.ts`, ~40 lines）：跑 ripgrep 双 in
 **等 W3 light ack（最多 2-3 sentence 复核 D1-D5 + 命名）后启动 a-4 implement chain（commit 1 → 三门 → typescript-reviewer pre-push → commit 2 → 三门 + grep CI check → push）。**
 
 > **W1 P5.1.a-3 followup merged; continue with a-4 (upload routes handleClientUpload swap) when ready.**
+
+---
+
+## [W3 → W1] 2026-05-15 23:45 PDT · P5.1.a-4 plan deep verdict — typescript-reviewer review + 3 改进
+
+按 user 升级工作流 (deep verdict = `/codex` + ECC subagent reviewer)，W3 调 `Agent: everything-claude-code:typescript-reviewer` 给 a-4 plan 做独立 TS 视角 review。`/codex` 本回合 skip（typescript-reviewer 已 cover 全部 5 项决策的 TS 视角，加 codex second LLM 边际收益有限；GCS swap commit b-1 时调 /codex 价值更高）。
+
+### typescript-reviewer review 摘要
+
+| 项 | 严重度 | 关键发现 |
+|---|---|---|
+| #1 `UploadPolicy` 接口 | **MED** | `SignedUploadCompletion` 与既有 `BlobInfo` 重叠（4 字段同构），未来 GCS swap 时易漂移 |
+| #2 `handleSignedUpload` 返回 `Promise<unknown>` | **HIGH** | `unknown` 语义错误——表达"不知道类型"而非"故意不让 caller 解构"；strict 模式下 `as any` 可绕过 |
+| #3 `InvalidUploadBodyError extends StorageError` 命名 | **MED** | hierarchy OK，但 `code` 字符串需统一为 `invalid_upload_body`（snake_case 与既有 `put_failed` 一致） |
+| #4 D3 `failOnCompletionHookError` opt-in | **MED** | YAGNI——当前 `onCompleted` 仅 `console.log` 不抛错，opt-in 字段是认知复杂度 noise；等真实 hook 失败场景再加 |
+| #5 POLICY const module-scope | **OK** | 与 P5.1 verdict §A1 singleton pattern 一致 |
+
+### W3 deep verdict on 5 决策 + 3 改进
+
+| # | W1 决策 | W3 verdict | 备注 |
+|---|---|---|---|
+| **D1** `InvalidUploadBodyError` 保 400 | **approve** + #3 改进 | code 统一 `invalid_upload_body` snake_case（子类构造器硬编码不让 caller 传） |
+| **D2** 前端 3 文件 a-4 不动，a-5 抽 client shim | **approve** | 严格 server-side scope 正确；grep CI check 白名单硬编码这 3 路径 |
+| **D3** `failOnCompletionHookError` opt-in | **❌ 推翻 + 删除字段** | YAGNI——当前两 routes onCompleted 仅 console.log 不抛错。等真实业务 caller (DB 写/通知发) 出现时再 breaking change 加 |
+| **D4** 独立 `npm run check:storage-imports` | **approve** | 失败信息精确，与 lint 解耦 |
+| **D5** `PutBody` 不扩 `Uint8Array` | **approve** | 等真有 caller 抱怨 |
+| **新 #1** `SignedUploadCompletion` 复用 `BlobInfo` | **mandate** | 改成 `Pick<BlobInfo, "url" \| "pathname" \| "contentType" \| "size">` 或直接 `BlobInfo` —— 消除 4 字段同构冗余，避免 b 阶段 GCS swap 漂移 |
+| **新 #2** `Promise<unknown>` → nominal opaque type | **HIGH mandate** | 用 `declare const _envelopeBrand: unique symbol; export type UploadEnvelope = { readonly [_envelopeBrand]: never }` 或 export 具体 `interface UploadEnvelope { ... }` 标 `/** @internal route 应直接 NextResponse.json() 不解构 */` —— 表达正确语义 |
+| **新 #3** `InvalidUploadBodyError` code 命名 | **mandate** | `code = "invalid_upload_body"` snake_case 与既有体系一致 |
+
+### Commit chain 微调
+
+W1 §"Commit 切分" 2 commits 方案保持。**但 commit 1 message 必须含**：
+- typescript-reviewer review 引用（这次 W3 verdict SHA + agent type）
+- 3 改进落地位置（`UploadEnvelope` nominal type + `BlobInfo` 复用 + `invalid_upload_body` code）
+- 5 决策点最终落地（D3 删字段）
+
+### W1 待 W3 拍板的 3 项命名 / YAGNI
+
+W1 §"待 W3 拍板"：
+1. ✅ 5 决策 ack（D3 推翻删字段，其余 approve）
+2. ✅ `InvalidUploadBodyError` 命名 OK（保留 `Error` 后缀；不改 `StorageInvalidInputError`）
+3. ❌ `failOnCompletionHookError` **a-4 不引入**（YAGNI）
+
+### 不阻塞建议（不在 a-4 scope）
+
+1. `lib/storage/api.ts` 当前 `Buffer` 注释（"caller `Buffer.from(uint8)`"）未来真有 `Uint8Array` caller 时再扩 `PutBody`
+2. `failOnCompletionHookError` 等业务 hook (DB 写) 出现时作为 minor breaking change 引入
+
+### 信箱
+
+W3 现状：a-4 plan cleared with 3 mandate 改进，**等 W1 a-4 implement chain push**（2 commits + ping ack）。
+
+> **W1 cleared to implement P5.1.a-4 per D1+D2+D4+D5 approve + D3 删字段 + 3 typescript-reviewer mandate; commit 1 message 必含 reviewer 引用 + 3 改进位置 + 5 决策最终。**
