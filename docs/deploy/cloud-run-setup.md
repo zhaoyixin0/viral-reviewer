@@ -459,6 +459,109 @@ P5.1.b scope §2.3 G: "暂不设 lifecycle (P5.1 不做)"。Cleanup 走 cron (pe
 
 ---
 
+## Chapter 10 — Cloud Scheduler OIDC Setup (P5.3 cron 主路径)
+
+P5.3 用 Google Cloud Scheduler 替换 Vercel Cron。Cloud Scheduler → 自动签 OIDC ID token → POST `/api/cron/trending` with `Authorization: Bearer <token>` → server-side `OAuth2Client.verifyIdToken()` 校验。
+
+### 10.1 创建专用 SA for Cloud Scheduler
+
+```bash
+gcloud iam service-accounts create cloud-scheduler \
+  --display-name="Cloud Scheduler OIDC caller" \
+  --project="$GCP_PROJECT_ID"
+```
+
+**最小权限**: Cloud Scheduler 调 Cloud Run service 需要 `roles/run.invoker` on the **specific service**:
+
+```bash
+gcloud run services add-iam-policy-binding viral-reviewer-web \
+  --member="serviceAccount:cloud-scheduler@${GCP_PROJECT_ID}.iam.gserviceaccount.com" \
+  --role="roles/run.invoker" \
+  --region="$GCP_REGION" \
+  --project="$GCP_PROJECT_ID"
+```
+
+(不要 grant project-wide `roles/run.invoker` — 限定到本 service 防 SA 被滥用调其他 service。)
+
+### 10.2 创建 Cloud Scheduler job
+
+```bash
+# 取 Cloud Run service URL (与 service.yaml CRON_OIDC_AUDIENCE 一致)
+SERVICE_URL=$(gcloud run services describe viral-reviewer-web \
+  --region="$GCP_REGION" --project="$GCP_PROJECT_ID" \
+  --format='value(status.url)')
+
+# 每周一 08:00 UTC (与 vercel.ts 的 cron schedule 一致)
+gcloud scheduler jobs create http trending-snapshot \
+  --location="$GCP_REGION" \
+  --project="$GCP_PROJECT_ID" \
+  --schedule="0 8 * * 1" \
+  --time-zone="UTC" \
+  --uri="${SERVICE_URL}/api/cron/trending" \
+  --http-method=POST \
+  --oidc-service-account-email="cloud-scheduler@${GCP_PROJECT_ID}.iam.gserviceaccount.com" \
+  --oidc-token-audience="${SERVICE_URL}/api/cron/trending" \
+  --description="Weekly trending snapshot fetch (P5.3 replaces vercel.ts cron)"
+```
+
+**关键参数**:
+- `--oidc-service-account-email` — Cloud Scheduler 用此 SA 签 token; **必须** match service.yaml `CRON_OIDC_SERVICE_ACCOUNT` env 值
+- `--oidc-token-audience` — token 的 `aud` claim; **必须** match service.yaml `CRON_OIDC_AUDIENCE` env 值
+- 任一不匹配 → server `verifyIdToken()` 抛 → fallback secret compare → 401 (fail-secure)
+
+### 10.3 更新 service.yaml env vars (P5.7 cutover 后)
+
+`service.yaml` 已 ship 含 2 个 placeholder env:
+
+```yaml
+- name: CRON_OIDC_AUDIENCE
+  value: "https://viral-reviewer-web/api/cron/trending"
+- name: CRON_OIDC_SERVICE_ACCOUNT
+  value: "cloud-scheduler@PROJECT_ID.iam.gserviceaccount.com"
+```
+
+P5.7 DNS cutover 前 / first deploy 时:
+- `CRON_OIDC_AUDIENCE` 改成真实 Cloud Run service URL (e.g. `https://viral-reviewer-web-abc-uc.a.run.app/api/cron/trending`)
+- `CRON_OIDC_SERVICE_ACCOUNT` 改 `PROJECT_ID` 为真实 GCP project ID (deploy.yml 的 yq 替换会自动处理)
+
+### 10.4 P5.7 cutover 期: 三认证并存 (fallback chain)
+
+P5.3-P5.6 期间 `isAuthorized()` 三层 fallback:
+1. **Google OIDC** (Cloud Scheduler 生产路径, P5.7 cutover 后)
+2. **CRON_SECRET** (Vercel Cron 遗留, 转生产期保留, P5.7 cutover 完成后可退役)
+3. **ADMIN_TRIGGER_SECRET** (手动降级, 始终保留)
+
+任一通过即 200。OIDC 校验需 ~100ms (首次 JWKS fetch, 之后 cached)，secret compare 微秒级，不显著影响 cron 性能。
+
+### 10.5 **Verify**
+
+```bash
+# 看 scheduler job 配置
+gcloud scheduler jobs describe trending-snapshot \
+  --location="$GCP_REGION" --project="$GCP_PROJECT_ID"
+# 期: oidcToken.serviceAccountEmail + oidcToken.audience 与 service.yaml env 一致
+
+# 手动触发一次 verify OIDC 路径 (不依赖 cron schedule 等)
+gcloud scheduler jobs run trending-snapshot \
+  --location="$GCP_REGION" --project="$GCP_PROJECT_ID"
+
+# 看 Cloud Logging
+gcloud logging read \
+  "resource.type=cloud_run_revision AND resource.labels.service_name=viral-reviewer-web AND textPayload:trending" \
+  --limit=10 --project="$GCP_PROJECT_ID"
+# 期: 200 trending snapshot fetch log
+```
+
+### 10.6 Retire `CRON_SECRET` (P5.7 cutover 完成后)
+
+P5.7 DNS cutover 完成 + Cloud Scheduler 1 周稳定后:
+- Vercel project 设 `CRON_SECRET=""` (空值停用 Vercel cron auth)
+- 或直接停 Vercel deploy (Vercel cron 会自然失效)
+- `service.yaml` 仍可保留 `CRON_SECRET` env (其值不再生效, 但删 env 需重新 deploy 风险更高)
+- `ADMIN_TRIGGER_SECRET` 永远保留 (`gcloud scheduler jobs run` 失败时人手 fallback)
+
+---
+
 ## Appendix A — Troubleshooting
 
 ### A.1 GHA deploy fails with `Failed to get federated access token`
