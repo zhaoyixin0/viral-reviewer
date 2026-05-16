@@ -53,6 +53,7 @@
     "react-dom": "^19.0.0",
     "server-only": "^0.0.1",
     "tailwind-merge": "^2.6.0",
+    "undici": "^7.25.0",
     "youtube-dl-exec": "^3.1.6",
     "zod": "^3.24.1"
   },
