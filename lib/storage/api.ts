@@ -365,9 +365,12 @@ export interface CompletionTokenPayload {
  * contentType containing special characters.
  *
  * Field separator (`|`) is reserved — any field carrying `|` must be
- * rejected upstream. None of the current 5 fields can: `finalKey` is
- * sanitized by `addRandomSuffix`, `contentType` is restricted by
- * `allowedContentTypes`, the other three are typed (number/uuid).
+ * rejected upstream. `finalKey` and `contentType` come from the browser
+ * request schema in signed-upload.ts and are explicitly regex-rejected
+ * at the schema boundary (`/^[^|]+$/`) before reaching this function —
+ * see `GenerateSignedUrlSchema` (pre-push reviewer HIGH 2026-05-16). The
+ * other three fields are typed (number / uuid hex). `maxBytes` is a
+ * Number serialized via template literal — no `|` possible.
  */
 function canonicalCompletionPayload(p: CompletionTokenPayload): string {
   return `${p.finalKey}|${p.contentType}|${p.maxBytes}|${p.expiresAt}|${p.nonce}`;
