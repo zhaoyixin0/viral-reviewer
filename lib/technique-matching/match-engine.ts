@@ -7,6 +7,9 @@ import { TECHNIQUE_MATCH_SYSTEM_PROMPT } from "./match-prompt";
 import { normalizeTimeCode } from "@/lib/cut-plan/time-code";
 import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
 import type { CutPlan } from "@/lib/cut-plan/schema";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "technique-matching/match-engine" });
 
 /**
  * Opus 4.7 · 双向技法匹配引擎（多视频版）
@@ -284,17 +287,23 @@ export async function matchTechniques(
     );
     if (e && typeof e === "object" && "issues" in e) {
       const issues = (e as { issues: unknown[] }).issues;
-      console.error(`[match-engine] Zod issues (first 10):`);
-      for (const i of issues.slice(0, 10)) {
+      const sample = issues.slice(0, 10).map((i) => {
         const issue = i as {
           path?: unknown[];
           message?: string;
           received?: unknown;
         };
-        console.error(
-          `  - path=${JSON.stringify(issue.path)} msg="${issue.message}" received=${JSON.stringify(issue.received)}`,
-        );
-      }
+        return {
+          path: issue.path,
+          message: issue.message,
+          received: issue.received,
+        };
+      });
+      log.error("Zod issues (first 10)", {
+        videoId: primary.videoId,
+        totalIssues: issues.length,
+        issues: sample,
+      });
     }
     throw e;
   }

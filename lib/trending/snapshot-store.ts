@@ -3,6 +3,9 @@ import { put, head, list, del } from "@/lib/storage";
 import { getIsoWeek } from "@/lib/utils/iso-week";
 import type { TrendingSnapshot } from "./types";
 import { TrendingSnapshotSchema } from "./types";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "trending/snapshot-store" });
 
 const PREFIX = "trending";
 
@@ -24,7 +27,7 @@ export async function readSnapshot(
     const json = await res.json();
     const parsed = TrendingSnapshotSchema.safeParse(json);
     if (!parsed.success) {
-      console.warn(`[snapshot-store] readSnapshot: invalid snapshot JSON for ${week}, ignoring`);
+      log.warn("readSnapshot: invalid snapshot JSON, ignoring", { week });
       return null;
     }
     return parsed.data as unknown as TrendingSnapshot;
@@ -58,7 +61,7 @@ export async function readLatestTwoSnapshots(): Promise<{
       const json = await res.json();
       const parsed = TrendingSnapshotSchema.safeParse(json);
       if (!parsed.success) {
-        console.warn("[snapshot-store] readLatestTwoSnapshots: invalid snapshot JSON, ignoring");
+        log.warn("readLatestTwoSnapshots: invalid snapshot JSON, ignoring");
         return null;
       }
       return parsed.data as unknown as TrendingSnapshot;
@@ -87,13 +90,11 @@ export async function writeSnapshot(snapshot: TrendingSnapshot): Promise<void> {
   try {
     await put(key, body, opts);
   } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e);
-    console.warn("[snapshot-store] write failed, retrying once:", msg);
+    log.warn("write failed, retrying once", { week: snapshot.week, err: e });
     try {
       await put(key, body, opts);
     } catch (e2) {
-      const msg2 = e2 instanceof Error ? e2.message : String(e2);
-      console.error("[snapshot-store] write failed after retry:", msg2);
+      log.error("write failed after retry", { week: snapshot.week, err: e2 });
     }
   }
 }
@@ -114,8 +115,7 @@ export async function pruneOldSnapshots(keepWeeks = 8): Promise<void> {
     if (stale.length === 0) return;
     await del(stale.map((b) => b.url));
   } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e);
-    console.error("[snapshot-store] prune failed:", msg);
+    log.error("prune failed", { keepWeeks, err: e });
   }
 }
 

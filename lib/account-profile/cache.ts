@@ -1,6 +1,9 @@
 import "server-only";
 import { put, head } from "@/lib/storage";
 import type { AccountProfile, Platform } from "./types";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "account-profile/cache" });
 
 const CACHE_PREFIX = "account-profile";
 
@@ -59,9 +62,6 @@ export async function writeAccountProfileCache(
       allowOverwrite: true,
     });
   } catch (e) {
-    console.error(
-      "[account-cache] write failed:",
-      (e as Error).message,
-    );
+    log.error("write failed", { cacheKey: profile.cacheKey, err: e });
   }
 }

@@ -167,7 +167,7 @@ describe("prepareAssets (Task 7 multi-video, phase 3.5 async)", () => {
   });
 
   it("throws with failed index and logs per-failure error when one video 404s", async () => {
-    const errSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const errSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       fetchMock.mockImplementation(async (url: string) => {
         const idx = Number(/idx=(\d+)/.exec(url)![1]);
@@ -188,8 +188,9 @@ describe("prepareAssets (Task 7 multi-video, phase 3.5 async)", () => {
       ).rejects.toThrow(/Failed to download videos: #1/);
 
       const calls = errSpy.mock.calls.map((c) => String(c[0]));
+      // P5.8: logger emits JSON, structure {"index":1,"status":404,...} replaces "video #1...404"
       expect(
-        calls.some((m) => m.includes("video #1") && m.includes("404")),
+        calls.some((m) => m.includes('"index":1') && m.includes('"status":404')),
       ).toBe(true);
       expect(fetchMock).toHaveBeenCalledTimes(3);
     } finally {
@@ -198,7 +199,7 @@ describe("prepareAssets (Task 7 multi-video, phase 3.5 async)", () => {
   });
 
   it("lists all failed indexes in throw message when multiple videos fail", async () => {
-    const errSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const errSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       fetchMock.mockImplementation(async (url: string) => {
         const idx = Number(/idx=(\d+)/.exec(url)![1]);
@@ -219,8 +220,9 @@ describe("prepareAssets (Task 7 multi-video, phase 3.5 async)", () => {
       ).rejects.toThrow(/#0, #2 \(2\/3\)/);
 
       const errMsgs = errSpy.mock.calls.map((c) => String(c[0]));
+      // P5.8: logger emits JSON with message "video download failed"
       expect(
-        errMsgs.filter((m) => m.includes("download failed")),
+        errMsgs.filter((m) => m.includes("video download failed")),
       ).toHaveLength(2);
     } finally {
       errSpy.mockRestore();
@@ -228,7 +230,7 @@ describe("prepareAssets (Task 7 multi-video, phase 3.5 async)", () => {
   });
 
   it("treats fetch network rejection as failure with index", async () => {
-    const errSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const errSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       fetchMock.mockImplementation(async (url: string) => {
         const idx = Number(/idx=(\d+)/.exec(url)![1]);
@@ -248,8 +250,9 @@ describe("prepareAssets (Task 7 multi-video, phase 3.5 async)", () => {
       ).rejects.toThrow(/#0/);
 
       const errMsgs = errSpy.mock.calls.map((c) => String(c[0]));
+      // P5.8: logger emits JSON {"index":0, ...} with stringified message containing "ECONNRESET"
       expect(
-        errMsgs.some((m) => m.includes("video #0") && m.includes("ECONNRESET")),
+        errMsgs.some((m) => m.includes('"index":0') && m.includes("ECONNRESET")),
       ).toBe(true);
     } finally {
       errSpy.mockRestore();
@@ -277,7 +280,7 @@ describe("prepareAssets (Task 7 multi-video, phase 3.5 async)", () => {
   });
 
   it("throws and logs when BGM download fails even if videos succeeded", async () => {
-    const errSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const errSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       fetchMock.mockImplementation(async (url: string) => {
         if (url.endsWith("bgm.mp3")) return makeErrorResponse(403);

@@ -9,6 +9,9 @@ import {
   parseGeminiTimestamp,
 } from "@/lib/cut-plan/time-code";
 import type { VideoMeta } from "./ffprobe-meta";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "video/gemini-understand" });
 
 /**
  * Gemini 2.5 Pro 视频理解 → CutPlan IR
@@ -260,10 +263,7 @@ export async function understandVideoAsCutPlan(
         await ai.files.delete({ name: uploaded.name });
       }
     } catch (e) {
-      console.warn(
-        "[gemini-understand] file cleanup failed:",
-        (e as Error).message,
-      );
+      log.warn("file cleanup failed", { uploadedName: uploaded.name, err: e });
     }
   }
 }

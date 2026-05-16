@@ -1,3 +1,7 @@
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "capcut-compiler/transitions" });
+
 /**
  * 编排枚举 → CapCut TransitionMaterial 配置映射表
  *
@@ -8,7 +12,7 @@
  * 落地约定（与 Task 8/10 衔接）：
  *   - hard_cut → resolveTransitionConfig 返回 null，Task 10 不创建 material、
  *     不在 segment 的 extra_material_refs 写引用
- *   - 未知 type → 降级 cross_dissolve（叠化）并调用 onUnknown 回调（默认 console.warn）
+ *   - 未知 type → 降级 cross_dissolve（叠化）并调用 onUnknown 回调（默认 structured logger warn）
  *   - is_overlap 必须按映射表逐条配置（**非恒 true**，0514 实测：运镜/模糊/故障
  *     三类是 false，其余 true）。CapCut 渲染层用它驱动视觉重叠，写错可能错位
  *   - default_duration_us 仅为兜底；caller 应优先用 AssemblyClip.incomingTransition
@@ -176,9 +180,7 @@ const DISTORT_CONFIG: CapCutTransitionConfig = {
 const FALLBACK_CONFIG = CROSS_DISSOLVE_CONFIG;
 
 function defaultOnUnknown(type: string): void {
-  console.warn(
-    `[transitions] unknown transition type "${type}", falling back to cross_dissolve`,
-  );
+  log.warn("unknown transition type, falling back to cross_dissolve", { type });
 }
 
 /**
@@ -186,7 +188,7 @@ function defaultOnUnknown(type: string): void {
  *
  * @param type      编排层 type 字符串。已知值见 AssemblyTransitionType；其它
  *                  字符串（含 Opus 自由发挥）走 fallback（cross_dissolve）
- * @param onUnknown 可选回调，未知 type 时调用。默认 console.warn。Task 10/12 跑批
+ * @param onUnknown 可选回调，未知 type 时调用。默认 structured logger warn。Task 10/12 跑批
  *                  时可注入收集器统计降级率
  *
  * @returns null 表示 hard_cut（caller 不应创建 TransitionMaterial / 不写 ref）；

@@ -5,6 +5,9 @@ import { createReadStream } from "fs";
 import type { ReviewInputVideo } from "@/lib/review-engine/types";
 import type { UrlAllowlist } from "@/lib/url-allowlist";
 import { extractFramesAndAudio, cleanupWorkspace } from "./ffmpeg";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "video/analyze" });
 
 const VISION_SYSTEM = `你是 TikTok 视频内容分析师。我会给你 N 张按时间顺序排列的抽样帧（来自一条短视频），你需要分析整支视频的：
 
@@ -107,7 +110,7 @@ async function transcribeAudio(audioPath: string): Promise<string> {
     });
     return r.text ?? "";
   } catch (e) {
-    console.error("[transcribe] failed:", (e as Error).message);
+    log.error("transcribe failed", { audioPath, err: e });
     return "";
   }
 }

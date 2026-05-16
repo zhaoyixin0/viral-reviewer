@@ -3,6 +3,9 @@ import { readFile, readdir } from "fs/promises";
 import { join } from "path";
 import type { ViralVideo } from "@/lib/review-engine/types";
 import { SEED_VIDEOS } from "@/data/seed/viral-videos";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "data/load-videos" });
 
 let cache: ViralVideo[] | null = null;
 let cacheTime = 0;
@@ -58,7 +61,7 @@ export async function loadVideos(): Promise<ViralVideo[]> {
       }
     }
   } catch (e) {
-    console.warn("[load-videos] scraped dir unreadable:", (e as Error).message);
+    log.warn("scraped dir unreadable", { dir, err: e });
   }
 
   if (result.length === 0) {

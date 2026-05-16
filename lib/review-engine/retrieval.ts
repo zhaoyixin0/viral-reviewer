@@ -14,6 +14,9 @@ import {
   type InferredTopic,
 } from "@/lib/research/topic-inference";
 import { readLatestTwoSnapshots } from "@/lib/trending/snapshot-store";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "review-engine/retrieval" });
 
 function rankByEngagement(pool: ViralVideo[], topK: number): ViralVideo[] {
   return [...pool]
@@ -241,7 +244,7 @@ export async function retrieveSimilarVideos(
       },
     });
   } catch (e) {
-    console.error("[retrieval] topic inference failed:", e);
+    log.error("topic inference failed", { err: e });
     // 兜底：用用户填的 topic；若用户也没填，走 fallback
     const fallback = userTopic || "通用";
     inference = {
@@ -323,7 +326,7 @@ export async function retrieveSimilarVideos(
       }
     }
   } catch (e) {
-    console.error("[retrieval] snapshot fallback failed:", e);
+    log.error("snapshot fallback failed", { err: e });
   }
 
   // 4) Cache miss → 实时搜索 TikTok + Instagram top 10（TT 5 + IG 5）
@@ -356,7 +359,7 @@ export async function retrieveSimilarVideos(
       };
     }
   } catch (e) {
-    console.error("[retrieval] live research failed:", e);
+    log.error("live research failed", { canonicalTopic, err: e });
   }
 
   // 5) Fallback：跨题材通用爆款

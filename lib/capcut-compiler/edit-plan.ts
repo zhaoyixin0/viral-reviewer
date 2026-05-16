@@ -23,6 +23,9 @@ import type {
 } from "@/lib/technique-matching/types";
 import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
 import type { VideoMeta } from "@/lib/video/ffprobe-meta";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "capcut-compiler/edit-plan" });
 import type { Keyframe } from "./schema";
 
 export type TrimRange = {
@@ -351,19 +354,23 @@ export function planFromAssemblyTimeline(
     const sStart = clampToRange(clip.sourceStartSec, 0, maxDur);
     const sEnd = clampToRange(clip.sourceEndSec, 0, maxDur);
     if (overranSource) {
-      console.warn(
-        `[edit-plan] clip clamped to meta.durationSec=${maxDur}: ` +
-          `sourceVideoIndex=${idx} requested [${clip.sourceStartSec}, ${clip.sourceEndSec}]`,
-      );
+      log.warn("clip clamped to meta.durationSec", {
+        sourceVideoIndex: idx,
+        maxDurSec: maxDur,
+        requestedStartSec: clip.sourceStartSec,
+        requestedEndSec: clip.sourceEndSec,
+      });
     }
 
     const dur = sEnd - sStart;
     if (dur < 1e-3) {
-      console.warn(
-        `[edit-plan] degenerate clip after clamping (dur=${dur.toFixed(3)}s), skipping: ` +
-          `sourceVideoIndex=${idx}, requested=[${clip.sourceStartSec}, ${clip.sourceEndSec}], ` +
-          `meta.durationSec=${maxDur}`,
-      );
+      log.warn("degenerate clip after clamping, skipping", {
+        sourceVideoIndex: idx,
+        durSec: dur,
+        requestedStartSec: clip.sourceStartSec,
+        requestedEndSec: clip.sourceEndSec,
+        maxDurSec: maxDur,
+      });
       continue;
     }
 
@@ -388,10 +395,10 @@ function resolveSourceVideoIndex(
 ): number {
   const raw = clip.sourceVideoIndex;
   if (!Number.isInteger(raw) || raw < 0 || raw >= totalVideos) {
-    console.warn(
-      `[edit-plan] sourceVideoIndex out of range: got ${raw}, ` +
-        `expected 0..${Math.max(0, totalVideos - 1)} — clamping to 0`,
-    );
+    log.warn("sourceVideoIndex out of range, clamping to 0", {
+      raw,
+      expectedMax: Math.max(0, totalVideos - 1),
+    });
     return 0;
   }
   return raw;

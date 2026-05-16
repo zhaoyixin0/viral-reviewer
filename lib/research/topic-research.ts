@@ -6,6 +6,9 @@ import {
 import { generateHashtagsForTopic } from "./hashtag-generator";
 import { enrichBatch } from "./enrich-one";
 import type { ViralVideo } from "@/lib/review-engine/types";
+import { createLogger } from "@/lib/observability/structured-log";
+
+const log = createLogger({ module: "research/topic-research" });
 
 /** P0 时间窗:30 天。爆款"新鲜度"边界。 */
 const PUBLISH_WINDOW_MS = 30 * 24 * 60 * 60 * 1000;
@@ -93,7 +96,7 @@ export async function researchTopicLive(
       .sort((a, b) => b.views - a.views)
       .slice(0, 5);
   } catch (e) {
-    console.error("[topic-research] TikTok scrape failed:", e);
+    log.error("TikTok scrape failed", { topic, err: e });
   }
 
   // 3) Instagram scrape
@@ -115,7 +118,7 @@ export async function researchTopicLive(
       .sort((a, b) => b.views - a.views || b.likes - a.likes)
       .slice(0, 5);
   } catch (e) {
-    console.error("[topic-research] Instagram scrape failed:", e);
+    log.error("Instagram scrape failed", { topic, err: e });
   }
 
   const merged = [...tiktokVideos, ...instagramVideos];
