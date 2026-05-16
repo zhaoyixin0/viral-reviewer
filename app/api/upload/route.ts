@@ -49,51 +49,77 @@ const POLICY: UploadPolicy = {
 };
 
 /**
- * Vercel Blob client-direct upload token endpoint.
+ * Client-direct upload signed-policy + completion endpoint.
  *
- * 浏览器调用 @vercel/blob/client 的 upload()，它先 POST 到这里换签名 token，
- * 然后用 token 直接 PUT 到 Blob（绕过 Next.js function 的 4.5MB body 限制）。
+ * Browser flow (post-P5.1.b-2):
+ *   1. POST {type:"generate-signed-url",...} → returns opaque envelope
+ *      with GCS POST policy `url` + `fields` + HMAC `completionToken`.
+ *   2. Browser POSTs multipart/form-data directly to GCS (bucket CORS allows).
+ *   3. POST {type:"completion", completionToken, blobInfo} → verify + fire
+ *      policy.onCompleted (D3 swallow + log).
  *
- * P5.1.a-4: handleUpload 集成搬进 @/lib/storage facade。GCS swap (P5.1.b)
- * 时 route 一行不动；facade 内部把 Vercel handleUpload 换成 GCS v4 signed POST URL。
+ * `BLOB_READ_WRITE_TOKEN` env check retired in P5.1.b-2 commit 4: the
+ * lib now fail-fasts via `requireUploadSecret()` (UPLOAD_SIGNING_SECRET)
+ * + `requireBucket()` (GCS_BUCKET_NAME), surfaced here as
+ * `storage_not_configured` → 503 below.
  */
 async function impl(req: NextRequest) {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    return NextResponse.json(
-      {
-        error: "blob_not_configured",
-        message: "Set BLOB_READ_WRITE_TOKEN in .env.local",
-      },
-      { status: 503 },
-    );
-  }
-
   try {
     return NextResponse.json(await handleSignedUpload(req, POLICY));
   } catch (e) {
-    // 400 路径：req.json() parse fail 或 clientPayload schema reject。
-    // 不回 message 防 schema 内部错信息泄露（zod error 含字段路径但仍偏服务端实现细节）。
-    if (e instanceof InvalidUploadBodyError) {
-      return NextResponse.json({ error: "invalid_upload_body" }, { status: 400 });
-    }
-    // 500 路径：StorageError("signed_upload_failed") 或未预期错。
-    // StorageError 显式 log code+cause（a-3 followup 模式）让 ops 看到根因。
-    if (e instanceof StorageError) {
-      console.error(
-        `[upload] error code=${e.code} message=${e.message}`,
-        "cause:",
-        e.cause,
-      );
-    } else {
-      console.error("[upload] error:", e);
-    }
-    // 固定文案不透 (e as Error).message —— facade 内部错前缀会泄实现细节
-    // (typescript-reviewer 2026-05-15 a-4 commit 2 MED)。详情进 console.error 给 ops。
-    return NextResponse.json(
-      { error: "upload_failed", message: "上传失败，请稍后重试" },
-      { status: 500 },
-    );
+    return mapUploadError(e);
   }
+}
+
+/**
+ * Map storage errors to HTTP status per W3 verdict 78b7d2f nit #6:
+ *   - invalid_upload_body         → 400 (parse / schema / contentType / allowlist)
+ *   - completion_blob_mismatch    → 400 (cross-bucket / wrong-key blobInfo)
+ *   - completion_token_invalid    → 401 (HMAC mismatch / tampered)
+ *   - completion_token_expired    → 401 (TTL exceeded)
+ *   - storage_not_configured      → 503 (env missing — ops-level failure)
+ *   - all others (signed_upload_failed, unknown)  → 500
+ *
+ * Response shape: `{error: <code>, message?: <user-facing>}`. Message is
+ * fixed text per upload-route to avoid leaking facade internals (per
+ * typescript-reviewer 2026-05-15 a-4 commit 2 MED). Full code+cause goes
+ * to console.error for ops triage (a-3 followup pattern).
+ */
+function mapUploadError(e: unknown): NextResponse {
+  if (e instanceof InvalidUploadBodyError) {
+    return NextResponse.json({ error: "invalid_upload_body" }, { status: 400 });
+  }
+  if (e instanceof StorageError) {
+    console.error(
+      `[upload] error code=${e.code} message=${e.message}`,
+      "cause:",
+      e.cause,
+    );
+    switch (e.code) {
+      case "storage_not_configured":
+        return NextResponse.json(
+          { error: "storage_not_configured", message: "上传服务暂未配置，请稍后重试" },
+          { status: 503 },
+        );
+      case "completion_token_invalid":
+      case "completion_token_expired":
+        return NextResponse.json(
+          { error: e.code, message: "上传凭证已失效，请刷新页面重试" },
+          { status: 401 },
+        );
+      case "completion_blob_mismatch":
+        return NextResponse.json(
+          { error: "completion_blob_mismatch", message: "上传校验失败" },
+          { status: 400 },
+        );
+    }
+  } else {
+    console.error("[upload] error:", e);
+  }
+  return NextResponse.json(
+    { error: "upload_failed", message: "上传失败，请稍后重试" },
+    { status: 500 },
+  );
 }
 
 export const POST = withRateLimit(RATE_LIMITER, clientIp, impl);
