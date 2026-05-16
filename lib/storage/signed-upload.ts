@@ -11,6 +11,32 @@ import {
 import { type BlobInfo, StorageError } from "./types";
 
 /**
+ * Throw `storage_not_configured` when `UPLOAD_SIGNING_SECRET` is missing.
+ *
+ * Per W3 verdict 78b7d2f ECC follow-up BLOCKER-7: the GCS swap (commit 2)
+ * makes signed-upload.ts depend on `UPLOAD_SIGNING_SECRET` for HMAC
+ * completion tokens. Fail-fast at the lib entry — mirroring
+ * `requireBucket()` in api.ts — defends the chain's intermediate state:
+ * if commit 1-3 are merged but commit 4 (route 503 mapping) is not,
+ * an unset secret still surfaces a canonical StorageError code that the
+ * route's outer catch can recognize, rather than a generic 500.
+ *
+ * Activated NOW in commit 1 (anticipatory): the current Vercel handleUpload
+ * lifecycle does not consume the secret, so this check only impacts
+ * deployments that have NOT yet bootstrapped `UPLOAD_SIGNING_SECRET` (W2
+ * P5.2.4.2 Secret Manager line). Production / preview deploys MUST set
+ * the env var before merging commit 1; local dev sets it in `.env.local`.
+ */
+function requireUploadSecret(): void {
+  if (!process.env.UPLOAD_SIGNING_SECRET) {
+    throw new StorageError(
+      "storage_not_configured",
+      "UPLOAD_SIGNING_SECRET is not set — completion token signing unavailable",
+    );
+  }
+}
+
+/**
  * Server-side helper for client-direct uploads.
  *
  * Wraps `@vercel/blob/client.handleUpload` behind a provider-neutral policy
@@ -135,6 +161,10 @@ export async function handleSignedUpload(
   req: NextRequest,
   policy: UploadPolicy,
 ): Promise<UploadEnvelope> {
+  // BLOCKER-7 (W3 verdict 78b7d2f ECC follow-up): early-check
+  // UPLOAD_SIGNING_SECRET so an unset env surfaces canonical
+  // storage_not_configured even before commit 2 wires the helpers in.
+  requireUploadSecret();
   let body: HandleUploadBody;
   try {
     body = (await req.json()) as HandleUploadBody;

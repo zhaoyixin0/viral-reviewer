@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { z } from "zod";
 
 // Mock @vercel/blob/client — hoisted to top of module per vitest semantics.
@@ -18,6 +18,17 @@ import type { NextRequest } from "next/server";
 
 beforeEach(() => {
   handleUploadMock.mockReset();
+  // P5.1.b-2 commit 1 BLOCKER-7 (ECC follow-up 78b7d2f): handleSignedUpload
+  // now requireUploadSecret() at entry — without UPLOAD_SIGNING_SECRET, every
+  // case here would throw storage_not_configured before reaching the
+  // happy/failure assertions. Hex 32-byte test value (matches the
+  // `openssl rand -hex 32` runbook line W2 P5.2.4.2 will provision in prod).
+  process.env.UPLOAD_SIGNING_SECRET =
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
+});
+
+afterEach(() => {
+  delete process.env.UPLOAD_SIGNING_SECRET;
 });
 
 /**
@@ -258,6 +269,25 @@ describe("handleSignedUpload — failure paths", () => {
     const err = await handleSignedUpload(makeReq({}), BASE_POLICY).catch((e) => e);
     expect(err).toBe(customErr);
     expect(err.code).toBe("provider_specific");
+  });
+});
+
+describe("handleSignedUpload — entry early-check (BLOCKER-7 78b7d2f)", () => {
+  it("throws storage_not_configured before req.json() when UPLOAD_SIGNING_SECRET missing", async () => {
+    // ECC follow-up BLOCKER-7: lib entry-level requireUploadSecret() fires
+    // BEFORE handleUpload lifecycle. Verify by passing a req whose .json()
+    // would throw — if the early-check is missing, the test would instead
+    // see InvalidUploadBodyError. The presence of storage_not_configured
+    // proves the early-check ran first.
+    delete process.env.UPLOAD_SIGNING_SECRET;
+    await expect(
+      handleSignedUpload(makeReq(null, { jsonThrows: true }), BASE_POLICY),
+    ).rejects.toMatchObject({
+      name: "StorageError",
+      code: "storage_not_configured",
+    });
+    // handleUpload (Vercel lifecycle) must not have been invoked either.
+    expect(handleUploadMock).not.toHaveBeenCalled();
   });
 });
 

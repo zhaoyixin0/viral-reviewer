@@ -31,6 +31,11 @@ const gcs = vi.hoisted(() => {
   const fileSave = vi.fn();
   const fileDelete = vi.fn();
   const fileGetSignedUrl = vi.fn();
+  // P5.1.b-2 commit 1: GCS v4 signed POST policy generation.
+  // SDK quirk (ECC MED-3 mandate 78b7d2f): resolves to a 1-element tuple
+  // `[PolicyResponse]`. Mocks must preserve that shape — never simplify
+  // to `mockResolvedValue({url, fields})` (would silently regress runtime).
+  const fileGenerateSignedPostPolicyV4 = vi.fn();
   const bucketGetFiles = vi.fn();
   const StorageCtor = vi.fn();
   // Track which key each File proxy was created for so per-op assertions
@@ -41,6 +46,7 @@ const gcs = vi.hoisted(() => {
     fileSave,
     fileDelete,
     fileGetSignedUrl,
+    fileGenerateSignedPostPolicyV4,
     bucketGetFiles,
     StorageCtor,
     fileKeyAccess,
@@ -61,6 +67,7 @@ vi.mock("@google-cloud/storage", () => {
             save: gcs.fileSave,
             delete: gcs.fileDelete,
             getSignedUrl: gcs.fileGetSignedUrl,
+            generateSignedPostPolicyV4: gcs.fileGenerateSignedPostPolicyV4,
           };
         },
         getFiles: gcs.bucketGetFiles,
@@ -73,12 +80,15 @@ vi.mock("@google-cloud/storage", () => {
 import {
   __resetStorageForTests,
   del,
+  generateSignedPostPolicy,
   getDownloadUrl,
   head,
   list,
   type PutResult,
   put,
+  signCompletionToken,
   StorageError,
+  verifyCompletionToken,
 } from "@/lib/storage";
 
 // Compile-time invariant (commit 3a per W3 verdict efc1715 BLOCKER):
@@ -96,16 +106,22 @@ beforeEach(() => {
   gcs.fileSave.mockReset();
   gcs.fileDelete.mockReset();
   gcs.fileGetSignedUrl.mockReset();
+  gcs.fileGenerateSignedPostPolicyV4.mockReset();
   gcs.bucketGetFiles.mockReset();
   gcs.StorageCtor.mockReset();
   gcs.fileKeyAccess.mockReset();
   __resetStorageForTests();
   process.env.GCS_BUCKET_NAME = "viral-reviewer-blob-test";
+  // P5.1.b-2 commit 1: sign/verifyCompletionToken require this secret.
+  // Hex 32-byte test value (matches the `openssl rand -hex 32` runbook).
+  process.env.UPLOAD_SIGNING_SECRET =
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
 });
 
 afterEach(() => {
   __resetStorageForTests();
   delete process.env.GCS_BUCKET_NAME;
+  delete process.env.UPLOAD_SIGNING_SECRET;
 });
 
 describe("storage.head", () => {
@@ -408,5 +424,180 @@ describe("StorageError", () => {
     expect(err.message).toBe("wrapper message");
     expect(err.cause).toBe(cause);
     expect(err).toBeInstanceOf(Error);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// P5.1.b-2 commit 1: generateSignedPostPolicy + completion token sign/verify
+// (per W3 verdict 78b7d2f deep + ECC follow-up — 7 mandatory + 1 nit cases)
+// ---------------------------------------------------------------------------
+
+describe("storage.generateSignedPostPolicy", () => {
+  it("returns {url, fields} via SDK [policy] 1-tuple unwrap (ECC MED-3 mandate)", async () => {
+    // SDK quirk: generateSignedPostPolicyV4 resolves to a 1-element tuple
+    // `[PolicyResponse]`. Mock preserves the tuple shape literally — a
+    // mockResolvedValue({url, fields}) regression would type-error at the
+    // facade's `[policy] = await ...` destructure (anti-pattern #3 defense).
+    gcs.fileGenerateSignedPostPolicyV4.mockResolvedValue([
+      {
+        url: "https://storage.googleapis.com/viral-reviewer-blob-test/",
+        fields: {
+          key: "uploads/raw/video.mp4",
+          "Content-Type": "video/mp4",
+          policy: "<base64-policy>",
+          "x-goog-algorithm": "GOOG4-RSA-SHA256",
+          "x-goog-credential": "service-account/...",
+          "x-goog-date": "20260516T093000Z",
+          "x-goog-signature": "deadbeef",
+        },
+      },
+      // INTENTIONAL: no second tuple element. If the SDK ever switches to a
+      // 2-tuple (per b-1 H1 lessons), this case becomes the early signal.
+    ]);
+    const result = await generateSignedPostPolicy("uploads/raw/video.mp4", {
+      contentType: "video/mp4",
+      maxBytes: 200 * 1024 * 1024,
+    });
+    expect(result.url).toBe(
+      "https://storage.googleapis.com/viral-reviewer-blob-test/",
+    );
+    expect(result.fields.key).toBe("uploads/raw/video.mp4");
+    expect(result.fields["x-goog-signature"]).toBe("deadbeef");
+  });
+
+  it("wires conditions: content-length-range + Content-Type eq + key eq (W3 verdict 78b7d2f A1)", async () => {
+    gcs.fileGenerateSignedPostPolicyV4.mockResolvedValue([
+      { url: "https://gcs/", fields: {} },
+    ]);
+    await generateSignedPostPolicy("uploads/raw/file.pdf", {
+      contentType: "application/pdf",
+      maxBytes: 100 * 1024 * 1024,
+    });
+    const args = gcs.fileGenerateSignedPostPolicyV4.mock.calls[0][0] as {
+      conditions: Array<unknown[]>;
+    };
+    expect(args.conditions).toEqual([
+      ["content-length-range", 0, 100 * 1024 * 1024],
+      ["eq", "$Content-Type", "application/pdf"],
+      ["eq", "$key", "uploads/raw/file.pdf"],
+    ]);
+  });
+
+  it("throws StorageError('signed_upload_failed') on SDK failure", async () => {
+    gcs.fileGenerateSignedPostPolicyV4.mockRejectedValue(new Error("auth"));
+    await expect(
+      generateSignedPostPolicy("k", { contentType: "text/plain", maxBytes: 100 }),
+    ).rejects.toMatchObject({
+      name: "StorageError",
+      code: "signed_upload_failed",
+    });
+  });
+
+  it("throws StorageError('storage_not_configured') when GCS_BUCKET_NAME missing", async () => {
+    delete process.env.GCS_BUCKET_NAME;
+    __resetStorageForTests();
+    await expect(
+      generateSignedPostPolicy("k", { contentType: "text/plain", maxBytes: 100 }),
+    ).rejects.toMatchObject({
+      name: "StorageError",
+      code: "storage_not_configured",
+    });
+  });
+});
+
+describe("storage.signCompletionToken / verifyCompletionToken", () => {
+  it("sign + verify roundtrip preserves payload (incl forward-compat nonce)", () => {
+    const token = signCompletionToken({
+      finalKey: "uploads/raw/video.mp4-abc12345",
+      contentType: "video/mp4",
+      maxBytes: 200 * 1024 * 1024,
+    });
+    const decoded = verifyCompletionToken(token);
+    expect(decoded.finalKey).toBe("uploads/raw/video.mp4-abc12345");
+    expect(decoded.contentType).toBe("video/mp4");
+    expect(decoded.maxBytes).toBe(200 * 1024 * 1024);
+    expect(decoded.expiresAt).toBeGreaterThan(Date.now());
+    // ECC MED-1/2 (78b7d2f) forward-compat: nonce is server-minted UUID,
+    // exposed in return so future DB-write callers have an idempotency key
+    // without a token-protocol upgrade. UUID v4 hex shape: 8-4-4-4-12.
+    expect(decoded.nonce).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
+    );
+  });
+
+  it("verify rejects tampered HMAC with completion_token_invalid", () => {
+    const token = signCompletionToken({
+      finalKey: "uploads/a",
+      contentType: "video/mp4",
+      maxBytes: 100,
+    });
+    // Flip the last hex digit of the HMAC to simulate tampering.
+    const [payload, hmac] = token.split(".");
+    const lastChar = hmac[hmac.length - 1];
+    const flipped = lastChar === "0" ? "1" : "0";
+    const tampered = `${payload}.${hmac.slice(0, -1)}${flipped}`;
+    expect(() => verifyCompletionToken(tampered)).toThrowError(
+      expect.objectContaining({
+        name: "StorageError",
+        code: "completion_token_invalid",
+      }),
+    );
+  });
+
+  it("verify rejects non-hex hmac with completion_token_invalid (no raw TypeError leak)", () => {
+    // Regression for pre-push reviewer MED 2026-05-16: an HMAC string of
+    // valid length but non-hex chars (e.g. all 'z') would make
+    // Buffer.from(..., "hex") yield a 0-byte buffer, then timingSafeEqual
+    // throws RangeError — bypassing the StorageError wrapping contract.
+    const token = signCompletionToken({
+      finalKey: "k",
+      contentType: "video/mp4",
+      maxBytes: 100,
+    });
+    const [payload] = token.split(".");
+    // 64-char non-hex (sha256 hex digest is 64 chars).
+    const nonHexHmac = "z".repeat(64);
+    expect(() => verifyCompletionToken(`${payload}.${nonHexHmac}`)).toThrowError(
+      expect.objectContaining({
+        name: "StorageError",
+        code: "completion_token_invalid",
+      }),
+    );
+  });
+
+  it("verify rejects expired token with completion_token_expired", () => {
+    // ttlMs = -1 → expiresAt = now - 1, already expired at verify time.
+    const token = signCompletionToken(
+      { finalKey: "k", contentType: "video/mp4", maxBytes: 100 },
+      -1,
+    );
+    expect(() => verifyCompletionToken(token)).toThrowError(
+      expect.objectContaining({
+        name: "StorageError",
+        code: "completion_token_expired",
+      }),
+    );
+  });
+
+  it("throws storage_not_configured (sign + verify) when UPLOAD_SIGNING_SECRET missing (nit #5)", () => {
+    delete process.env.UPLOAD_SIGNING_SECRET;
+    expect(() =>
+      signCompletionToken({
+        finalKey: "k",
+        contentType: "video/mp4",
+        maxBytes: 100,
+      }),
+    ).toThrowError(
+      expect.objectContaining({
+        name: "StorageError",
+        code: "storage_not_configured",
+      }),
+    );
+    expect(() => verifyCompletionToken("anything.deadbeef")).toThrowError(
+      expect.objectContaining({
+        name: "StorageError",
+        code: "storage_not_configured",
+      }),
+    );
   });
 });
