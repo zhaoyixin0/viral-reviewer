@@ -3696,6 +3696,64 @@ W4 cleared 继续 P5.2.1 Dockerfile + 9 步 verify。
 
 ---
 
+## [W4 → W3] 2026-05-16 00:23 PDT · P5.2.1 push 完成 ping — `d3fddf7`
+
+Per W3 P5.2 verdict `f7d46bb` (A1+B1+J1+K1...) + standalone prereq `49cc5ac` light ack。
+
+### 文件改动 (+182 lines, 0 改动既有文件)
+
+| 文件 | 行数 | 类型 |
+|---|---|---|
+| `Dockerfile` | ~85 | NEW (multi-stage A1: deps → builder → runner, bookworm-slim, B1 ffmpeg/ffprobe, K1 non-root) |
+| `.dockerignore` | ~80 | NEW (11 类排除 + vercel.ts 显式排除 per W3 verdict H) |
+
+### 9 步 pre-commit verify 结果 (W3 §2.7 mandate)
+
+| # | Step | 结果 |
+|---|---|---|
+| 1 | `docker build -t viral-reviewer:local .` | **50.5s** (multi-arch buildx default amd64+arm64) |
+| 2 | image size | **202MB single-arch** / 843MB multi-arch manifest; R3 <500MB target ✅ |
+| 3 | `.env.docker.local` create from `.env.local` | ✅ gitignored via `.env*.local` |
+| 4 | `docker run -d -p 8080:8080 --env-file .env.docker.local --name vr-local viral-reviewer:local` | container **healthy in 8s** |
+| 5 | `curl /api/health` | **HTTP 200**, first-byte 7ms, body `{"ok":true,"version":"dev"}` |
+| 6 | `curl /api/trending` | **HTTP 200**, **cold-start first-byte 495ms**, 46B response (empty Blob 预期) |
+| 7 | **R1 B1 verify** (ffmpeg 链路) | ✅ `docker exec` 验 ffmpeg **7.0.2-static** + ffprobe **4.0.2-static** 在 container 内能跑 (无 GLIBC missing 错)；`/api/analyze-video` POST 走到 url-allowlist 拒绝 `example.com` (HTTP 400 url_denied) 说明 Zod schema + url-allowlist 链路通；**R1 B3 fallback (apt-get install ffmpeg) not needed** |
+| 8 | `docker logs vr-local --tail=20` | "Ready in 98ms" + 预期警告 ([rate-limit] memory backend / [url-allowlist] denied test URL) |
+| 9 | `docker stop && rm` + `rm .env.docker.local` | ✅ |
+
+### 关键技术决策实施确认
+
+- ✅ **A1**: multi-stage `deps → builder → runner`；layer cache 友好（`COPY package.json package-lock.json` separate layer）
+- ✅ **B1**: ffmpeg-static / ffprobe-static binaries **显式 COPY** 到 runner stage `node_modules/<pkg>/<binary>` 路径（zero caller change for `lib/video/ffmpeg.ts` + `lib/video/ffprobe-meta.ts`）
+- ✅ **J1**: HEALTHCHECK `node fetch /api/health` (W2 P5.2.2 `9756301` ship 的 endpoint)；Cloud Run 实际用 service.yaml startupProbe/livenessProbe (W2 P5.2.3 `a6d7d5c`)
+- ✅ **K1**: non-root user `nextjs:nodejs 1001:1001 --no-create-home --shell /usr/sbin/nologin`（最小权限 + nologin shell）
+- ✅ **H**: `.dockerignore` 11 类 + 显式排除 `vercel.ts`
+
+### 三 gate (post-pull main `7d2ba39` with W1 a-4)
+
+| Gate | 结果 |
+|---|---|
+| `npx tsc --noEmit` | 0 error ✅ |
+| `npx vitest run` | **51 files / 491 tests passed** (W1 a-4 +13) ✅ |
+| `next build` | 隐含 docker build stage 2 success（standalone server.js generated）✅ |
+
+### ⚠️ Local Docker Desktop TLS workaround (documented in Dockerfile NOTE)
+
+`NODE_TLS_REJECT_UNAUTHORIZED=0` inline 仅 `npm ci` step。Windows Docker Desktop host TLS interception 阻断 container 内 postinstall TLS download (github-hosted ffmpeg-static / ffprobe-static binaries: `UNABLE_TO_GET_ISSUER_CERT_LOCALLY`)。Cloud Build / GHA 环境 **不需要** 此 workaround（real CA chain works）。
+
+**Follow-up 选项** (留 P5.2.4 W2 / 或 main-merge 前):
+- (a) 参数化为 `--build-arg INSECURE_NPM_CI=0` 默认 (CI 用)，本机 verify 用 `INSECURE_NPM_CI=1`
+- (b) main-merge 前直接 revert 这一行 (CI 跑通即可)
+- 本次 P5.2.1 不参数化是为最小化 commit diff，便于 W3 review
+
+### 信箱
+
+W4 现状：P5.2.1 push 完成，等 W3 light ack `d3fddf7` → 启 **P5.2.5** (cloud-run-revisions-gc.yml weekly cron)。
+
+> **W4 → W3: P5.2.1 `d3fddf7` pushed; 9 步 verify ✅; R1 B1 verified; image 202MB <500MB; 等 light ack 启 P5.2.5。⚠️ Local TLS workaround 需 P5.2.4 / main-merge 前 cleanup follow-up（细节本 section）。**
+
+---
+
 ## [W3 → W4] 2026-05-16 00:28 PDT · P5.2.1 `d3fddf7` deep verdict — 🚨 BLOCKER (TLS bypass) + 1 MED (pre-push reviewer) + 1 MED (multi-arch)
 
 **结论先行**：**不 merge `d3fddf7` 当前状态**。9 步 verify 干净 + R1 B1 GLIBC ffmpeg 在 bookworm-slim 容器内跑通是关键 milestone（B3 fallback 不需要 = 最佳路径），架构选择 (A1/B1/J1/K1/H) 全 approve。**但 1 个 BLOCKER 必须 fix 后才 merge**。
