@@ -109,7 +109,7 @@ W3 verdict 末尾必须明确：
 | Caller 选错 preset → silent regression | P3 #2 phase 2 (`account-profile` frame analyze 100% disabled) | §2.2 "URL host pattern → preset" 必填栏 + W3 核查 |
 | Lib 函数 optional 参数 → caller 漏传 = runtime SSRF 漏洞 | P3 #2 phase 2 (lib opt-in 设计) | W3 verdict 要求把 `urlAllowlist` 改 required + tsc 编译期堵漏 |
 | Test fixture 假设旧 API 行为 → 新 API 测试覆盖率虚高 | Task 14 / phase 2 (`template-brief-route.test.ts`) | scope draft §2.6 风险面强制列"既有 test fixture 是否需更新" |
-| Stream 启动后 fail-fast → HTTP 200 but stream error event | P3 #2 phase 2 `technique-match` | W3 verdict 提示 "stream 启动前必须 batch check" |
+| Stream 启动后 fail-fast → HTTP 200 but stream error event；**衍生**: stream 内调 fetch 必须用 `fetchWithAllowlist` 或 helper（pre-batch checkAsync 已防御，但 stream 内部 caller 必须用 helper 防回归） | P3 #2 phase 2 `technique-match` + P3 #2 phase 3.5 caller wiring | W3 verdict 提示 "stream 启动前必须 batch check"；衍生防御：stream 内 fetch 必须用 helper（P3 #2 phase 3.5 `a9d615d` 落地） |
 | Scope 列 route 模式（wrapper/inline）但实施时未复核 route 实际行为（stream vs non-stream） | P3 #3 phase 2 commit 3（W1 主动 deviation：4 routes scope 列 wrapper 但实际是 NDJSON stream） | scope draft §2.1 改动清单加 "route mode (stream/non-stream)" 必填栏 + 实施前 `grep -r "ReadableStream" app/api/<route>/` 复核 |
 | DNS resolve 用 `dns.lookup`（libc getaddrinfo）→ 受 OS hosts file 干扰 → 测试 / CI / runtime 行为不可重复 | P3 #2 phase 3 commit 1（W2 选 `dns.resolve4/6` 而非 lookup） | SSRF 防御 lib 必用 `dns.promises.resolve4` + `resolve6`，绕 libc 直查 authoritative |
 | Fetch with IP literal 不传 SNI / Host header → TLS cert validation fail + virtual host routing 错 | P3 #2 phase 3 commit 3（W2 用 undici Pool `connect.servername`） | `fetchWithAllowlist` 用 undici Pool with `origin: <resolvedIp>:<port>` + `connect: { servername: hostname }`；caller 一行用 helper 不可漏 |

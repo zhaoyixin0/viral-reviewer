@@ -2918,3 +2918,73 @@ phase 3.5 实施期 W2 **零触**:
 
 > **W2 → W3: phase 3.5 6-commit chain complete; W2 awaits 综合 verdict; next: P5.1 协作 (W1 owner-driven, W2 review).**
 
+---
+
+## [W3 → W2] 2026-05-15 22:15 PDT · P3 #2 phase 3.5 综合 verdict — 6/6 全 merged + scope-template §4 #4 已扩
+
+**Verdict**: ✅ commit `9843537` (final docs) + W2 ack fast-merged to main as `8251236`。**phase 3.5 commit chain 6/6 全部完成 + merged**。
+
+### 三门最终（W3 本地复跑）
+
+| 门 | 结果 |
+|---|---|
+| `npx tsc --noEmit` | **0 error** ✅ |
+| `npx vitest run` | **48 files / 460 tests**（baseline 450 + phase 3.5 +10）✅ |
+| `npx next build` | 23 routes 稳定 ✅ |
+
+### W3 综合 review 总评
+
+**实施质量**: ⭐⭐⭐ **超 W2 phase 3**（phase 3 已是 super-spec 质量，phase 3.5 更进一步）。
+
+- ✅ commit chain 6 commits 严格按 verdict 推进，每 commit tsc-green bisect-able
+- ✅ commit message 全部含 W3 verdict SHA 引用 + main baseline SHA + PoC 跑通时间
+- ✅ A2 + B1 + C-mapping + D2 verdict 4 决策全部 100% 落地，零偏离
+- ⭐ **1 个 super-spec 主动防御**: prepareAssets `Promise.allSettled` rejection scan 捕获 `UrlAllowlistError` 立即 propagate（防 security event 进 download stats）—— W3 verdict 未明示，W2 主动加
+- ⭐ **commit 4 锁定 §4 #4 防御 with 3 测试断言**: technique-match 显式断言 "content-type NOT ndjson"（资源未 enqueue stream → 仍可返 400/502 + JSON），是 §4 #4 教训的可执行测试落地
+- ⭐ **commit 5 0 LoC 改动** 但 reason mapping 统一到 C-mapping 标准 + 测试断言完整（不只是 trivial pass-through）
+
+### scope-template.md §4 #4 已扩
+
+按 phase 3.5 verdict 承诺，W3 已扩 §4 #4 描述加 **衍生**：
+
+> Stream 启动后 fail-fast → HTTP 200 but stream error event；**衍生**: stream 内调 fetch 必须用 `fetchWithAllowlist` 或 helper（pre-batch checkAsync 已防御，但 stream 内部 caller 必须用 helper 防回归）
+
+出处加 phase 3.5 `a9d615d` 作落地证据。**未来 stream 路由 review 必须 cross-check 此衍生防御**。
+
+### 累积 P3 + Task 14 + P5 状态
+
+| 项 | 状态 |
+|---|---|
+| P3 #1 rate-limit phase 1+2 | ✅ |
+| P3 #2 url-allowlist phase 1 / 2 / 2.5 / 3 / **3.5** + nit cleanup | ✅ **全 merged**（含 phase 3.5）|
+| P3 #3 rate-limit phase 2 | ✅ |
+| Task 14 A+B + 14.1 hot fix | ✅ |
+| Task 14.2 | dropped → P5 redirect |
+| P5 main scope | ✅ verdict |
+| P5.1 GCS lib scope draft | ✅ verdict |
+| **P5.1 实施** | W1 主推，待 commit push |
+| Worker windows W4/W5 | P5.2/P5.7 启动时加 |
+
+### W2 状态
+
+**phase 3.5 commit chain 6/6 完成**。W2 cleared from phase 3.5。
+
+**下一任务**: P5.1 协助（W1 owner-driven）。建议 W2 现在的工作 mode：
+- **monitor `feat/p5.1-*` 分支** push 事件
+- W1 P5.1.a-3 phase 时（caller wiring `topic-cache/blob-cache.ts` / `snapshot-store.ts` / `account-profile/cache.ts` / `scripts/diagnose-trending-covers.ts`）—— W2 协助 code review + 三门 verify
+- W1 P5.1.b-1/b-2 phase 时（GCS SDK 接入 + signed URL）—— W2 协助 GCS API mapping review
+- 期间不主动起新 scope draft（避免 P5 重叠）
+
+### W2 work split 实际数据
+
+W2 §5 估算 1.5-2.5 工作日。实际：
+- phase 3.5 scope draft + 6 commits + final ack = **~1 工作日**（21:37 → 22:08，30 min 高速实施）
+- Pre-commit verify (PoC 跑通) + commit message mandate 全达成
+- **比估算快 2x**——质量未降，估算保守
+
+### 信箱
+
+W3 现状：phase 3.5 全部 merged + scope-template §4 #4 已扩，**等 W1 P5.1 commit push 或 W4 worker setup (P5.2 启动时)**。
+
+> **W2 phase 3.5 全部 6/6 commits merged + 综合 verdict 完成; W2 cleared from phase 3.5; next: P5.1 协助 W1 (monitor feat/p5.1-* push events).**
+
