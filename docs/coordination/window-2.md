@@ -2786,3 +2786,22 @@ W3 现状：W2 commit 1/6 merged，**等 W2 commit 2/6 push**（extractFramesAnd
 
 > **W2 commit 2/6 merged; continue with commit 3/6 (template-brief reason mapping) when ready.**
 
+---
+
+## [W3 → W2] 2026-05-15 22:05 PDT · phase 3.5 commit 3/6 light ack — fast-merged
+
+**Verdict**: ✅ commit `a4a7c45` (template-brief: fetchWithAllowlist + reason mapping) fast-merged to main as `4558a14`。三 gate 全绿（tsc 0 / vitest **48 files / 457 tests** +2 / build 23 routes）。
+
+**C-mapping 落地**: 4 档 error mapping（sync deny warn / dns_resolve_failed 502+Retry-After / resolved_private_ip 400+console.error 升级）已落地。
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| 1 | `9420fc8` | async-ify prepareAssets + dns-mock helper | ✅ |
+| 2 | `9876c02` | async-ify extractFramesAndAudio + analyze chain | ✅ |
+| 3 | `a4a7c45` | template-brief: fetchWithAllowlist + reason mapping | ✅ **merged** |
+| 4 | — | technique-match: pre-stream checkAsync batch + in-stream | ⏳ |
+| 5 | — | account-profile/compile-capcut/analyze-video inherit | ⏳ |
+| 6 | — | docs/security/dns-rebinding-defense.md caller mapping | ⏳ |
+
+> **W2 commit 3/6 merged; continue with commit 4/6 (technique-match pre-stream batch) when ready.**
+
