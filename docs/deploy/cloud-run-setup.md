@@ -299,9 +299,11 @@ GHA workflow (P5.2.4) 用 `google-github-actions/auth@v2` action 拿 WIF token �
 
 ---
 
-## Chapter 7 — Secret Manager (P5.6 phase, runbook 仅占位)
+## Chapter 7 — Secret Manager (P5.6 phase)
 
-P5.6 scope (separate phase) 在 Secret Manager 创建以下 5 个 secrets, `service.yaml` 已 bind:
+> **Quick cross-ref**: `.env.example` 在 repo root, 含全 env 列表 + production binding 注解 (secret vs plain vs auto vs local-only). 本 chapter 是 GCP-side bootstrap; local dev 直接 copy `.env.example` → `.env.local` + 填值。
+
+P5.6 scope 在 Secret Manager 创建以下 6 个 secrets, `service.yaml` 已 bind:
 
 | Secret name | Source |
 |---|---|
@@ -312,9 +314,33 @@ P5.6 scope (separate phase) 在 Secret Manager 创建以下 5 个 secrets, `serv
 | `blob-read-write-token` | 当前 Vercel env `BLOB_READ_WRITE_TOKEN` (P5.1.b GCS swap 后退役) |
 | `upload-signing-secret` | **新增** (per W3 mandate 78b7d2f patch 2). HMAC-SHA256 sign completion token for browser-direct-upload ping (W1 P5.1.b-2 design). Value: `openssl rand -hex 32` (32 bytes / 64 hex chars). 一次性生成, 不源自 Vercel env. |
 
-**未在本 P5.2.6 runbook 跑** — 实际创建命令见 P5.6 scope. P5.2.6 仅文档化命名约定避免 `service.yaml` (本 PR P5.2.3) 与 P5.6 实际命名 drift.
+### 7.1 Bootstrap 6 secrets (P5.6 phase — user 跑一次性)
 
-### 7.1 Bootstrap upload-signing-secret (P5.6 phase)
+**5 个来自 Vercel env** (interactive paste; 不出 shell history):
+
+```bash
+# 逐个 secret 创建. interactive prompt 安全粘贴 Vercel env 值.
+for secret_name in anthropic-api-key openai-api-key google-api-key apify-token blob-read-write-token; do
+  echo "Enter value for ${secret_name} (paste from Vercel project env):"
+  read -rs SECRET_VALUE
+  echo  # newline after silent read
+  echo -n "${SECRET_VALUE}" | gcloud secrets create "${secret_name}" \
+    --data-file=- \
+    --replication-policy=automatic \
+    --project="$GCP_PROJECT_ID"
+  unset SECRET_VALUE
+done
+```
+
+**关键安全 flags**:
+- `read -rs` → silent (不回显) + raw (no backslash escape)
+- `echo -n` → 防尾部 newline 进 secret value (HMAC drift 源)
+- `--data-file=-` → 走 stdin (不进 shell history / process list)
+- `unset SECRET_VALUE` → 清 shell variable scope
+
+**APIFY 借机 rotate** (memory: 2026-05-13 token 暴露): Vercel env 粘当前 value bootstrap, P5.7 cutover 完成切流量后立即 rotate (Apify Console → 重生成 + Vercel + SM 双更新).
+
+### 7.2 Bootstrap upload-signing-secret (W1 P5.1.b-2 design)
 
 ```bash
 # 生成 32 byte (256-bit) random hex secret
@@ -456,6 +482,109 @@ curl -i -X OPTIONS \
 ### 9.5 Lifecycle (per P5.1 scope §2.3 G defer)
 
 P5.1.b scope §2.3 G: "暂不设 lifecycle (P5.1 不做)"。Cleanup 走 cron (per W4 P5.2.5 `cloud-run-revisions-gc.yml` 同模式扩展未来 phase)。
+
+---
+
+## Chapter 10 — Cloud Scheduler OIDC Setup (P5.3 cron 主路径)
+
+P5.3 用 Google Cloud Scheduler 替换 Vercel Cron。Cloud Scheduler → 自动签 OIDC ID token → POST `/api/cron/trending` with `Authorization: Bearer <token>` → server-side `OAuth2Client.verifyIdToken()` 校验。
+
+### 10.1 创建专用 SA for Cloud Scheduler
+
+```bash
+gcloud iam service-accounts create cloud-scheduler \
+  --display-name="Cloud Scheduler OIDC caller" \
+  --project="$GCP_PROJECT_ID"
+```
+
+**最小权限**: Cloud Scheduler 调 Cloud Run service 需要 `roles/run.invoker` on the **specific service**:
+
+```bash
+gcloud run services add-iam-policy-binding viral-reviewer-web \
+  --member="serviceAccount:cloud-scheduler@${GCP_PROJECT_ID}.iam.gserviceaccount.com" \
+  --role="roles/run.invoker" \
+  --region="$GCP_REGION" \
+  --project="$GCP_PROJECT_ID"
+```
+
+(不要 grant project-wide `roles/run.invoker` — 限定到本 service 防 SA 被滥用调其他 service。)
+
+### 10.2 创建 Cloud Scheduler job
+
+```bash
+# 取 Cloud Run service URL (与 service.yaml CRON_OIDC_AUDIENCE 一致)
+SERVICE_URL=$(gcloud run services describe viral-reviewer-web \
+  --region="$GCP_REGION" --project="$GCP_PROJECT_ID" \
+  --format='value(status.url)')
+
+# 每周一 08:00 UTC (与 vercel.ts 的 cron schedule 一致)
+gcloud scheduler jobs create http trending-snapshot \
+  --location="$GCP_REGION" \
+  --project="$GCP_PROJECT_ID" \
+  --schedule="0 8 * * 1" \
+  --time-zone="UTC" \
+  --uri="${SERVICE_URL}/api/cron/trending" \
+  --http-method=POST \
+  --oidc-service-account-email="cloud-scheduler@${GCP_PROJECT_ID}.iam.gserviceaccount.com" \
+  --oidc-token-audience="${SERVICE_URL}/api/cron/trending" \
+  --description="Weekly trending snapshot fetch (P5.3 replaces vercel.ts cron)"
+```
+
+**关键参数**:
+- `--oidc-service-account-email` — Cloud Scheduler 用此 SA 签 token; **必须** match service.yaml `CRON_OIDC_SERVICE_ACCOUNT` env 值
+- `--oidc-token-audience` — token 的 `aud` claim; **必须** match service.yaml `CRON_OIDC_AUDIENCE` env 值
+- 任一不匹配 → server `verifyIdToken()` 抛 → fallback secret compare → 401 (fail-secure)
+
+### 10.3 更新 service.yaml env vars (P5.7 cutover 后)
+
+`service.yaml` 已 ship 含 2 个 placeholder env:
+
+```yaml
+- name: CRON_OIDC_AUDIENCE
+  value: "https://viral-reviewer-web/api/cron/trending"
+- name: CRON_OIDC_SERVICE_ACCOUNT
+  value: "cloud-scheduler@PROJECT_ID.iam.gserviceaccount.com"
+```
+
+P5.7 DNS cutover 前 / first deploy 时:
+- `CRON_OIDC_AUDIENCE` 改成真实 Cloud Run service URL (e.g. `https://viral-reviewer-web-abc-uc.a.run.app/api/cron/trending`)
+- `CRON_OIDC_SERVICE_ACCOUNT` 改 `PROJECT_ID` 为真实 GCP project ID (deploy.yml 的 yq 替换会自动处理)
+
+### 10.4 P5.7 cutover 期: 三认证并存 (fallback chain)
+
+P5.3-P5.6 期间 `isAuthorized()` 三层 fallback:
+1. **Google OIDC** (Cloud Scheduler 生产路径, P5.7 cutover 后)
+2. **CRON_SECRET** (Vercel Cron 遗留, 转生产期保留, P5.7 cutover 完成后可退役)
+3. **ADMIN_TRIGGER_SECRET** (手动降级, 始终保留)
+
+任一通过即 200。OIDC 校验需 ~100ms (首次 JWKS fetch, 之后 cached)，secret compare 微秒级，不显著影响 cron 性能。
+
+### 10.5 **Verify**
+
+```bash
+# 看 scheduler job 配置
+gcloud scheduler jobs describe trending-snapshot \
+  --location="$GCP_REGION" --project="$GCP_PROJECT_ID"
+# 期: oidcToken.serviceAccountEmail + oidcToken.audience 与 service.yaml env 一致
+
+# 手动触发一次 verify OIDC 路径 (不依赖 cron schedule 等)
+gcloud scheduler jobs run trending-snapshot \
+  --location="$GCP_REGION" --project="$GCP_PROJECT_ID"
+
+# 看 Cloud Logging
+gcloud logging read \
+  "resource.type=cloud_run_revision AND resource.labels.service_name=viral-reviewer-web AND textPayload:trending" \
+  --limit=10 --project="$GCP_PROJECT_ID"
+# 期: 200 trending snapshot fetch log
+```
+
+### 10.6 Retire `CRON_SECRET` (P5.7 cutover 完成后)
+
+P5.7 DNS cutover 完成 + Cloud Scheduler 1 周稳定后:
+- Vercel project 设 `CRON_SECRET=""` (空值停用 Vercel cron auth)
+- 或直接停 Vercel deploy (Vercel cron 会自然失效)
+- `service.yaml` 仍可保留 `CRON_SECRET` env (其值不再生效, 但删 env 需重新 deploy 风险更高)
+- `ADMIN_TRIGGER_SECRET` 永远保留 (`gcloud scheduler jobs run` 失败时人手 fallback)
 
 ---
 

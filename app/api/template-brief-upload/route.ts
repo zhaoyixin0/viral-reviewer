@@ -33,47 +33,62 @@ const POLICY: UploadPolicy = {
 };
 
 /**
- * Vercel Blob client-direct upload token endpoint for PDF brief documents.
+ * Client-direct upload signed-policy + completion endpoint for PDF brief
+ * documents. See app/api/upload/route.ts for the full browser flow doc;
+ * this route differs only in POLICY (allowedContentTypes / maxBytes / logTag).
  *
- * 前端调 @vercel/blob/client 的 upload()，先 POST 这里换签名 token，
- * 再用 token 直接 PUT 到 Blob —— 绕过 Next.js function 4.5MB body 限制，支持 100MB。
- *
- * P5.1.a-4: handleUpload 集成搬进 @/lib/storage facade。GCS swap (P5.1.b)
- * 时 route 一行不动；facade 内部把 Vercel handleUpload 换成 GCS v4 signed POST URL。
+ * `BLOB_READ_WRITE_TOKEN` env check retired in P5.1.b-2 commit 4 — same
+ * fail-fast path as /api/upload (`storage_not_configured` → 503 below).
  */
 async function impl(req: NextRequest) {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    return NextResponse.json(
-      {
-        error: "blob_not_configured",
-        message: "Set BLOB_READ_WRITE_TOKEN in env",
-      },
-      { status: 503 },
-    );
-  }
-
   try {
     return NextResponse.json(await handleSignedUpload(req, POLICY));
   } catch (e) {
-    if (e instanceof InvalidUploadBodyError) {
-      return NextResponse.json({ error: "invalid_upload_body" }, { status: 400 });
-    }
-    if (e instanceof StorageError) {
-      console.error(
-        `[brief-upload] error code=${e.code} message=${e.message}`,
-        "cause:",
-        e.cause,
-      );
-    } else {
-      console.error("[brief-upload] error:", e);
-    }
-    // 固定文案不透 (e as Error).message —— facade 内部错前缀会泄实现细节
-    // (typescript-reviewer 2026-05-15 a-4 commit 2 MED)。详情进 console.error 给 ops。
-    return NextResponse.json(
-      { error: "upload_failed", message: "Brief 上传失败，请稍后重试" },
-      { status: 500 },
-    );
+    return mapUploadError(e);
   }
+}
+
+/**
+ * Same HTTP status mapping rules as /api/upload (W3 verdict 78b7d2f nit #6).
+ * Duplicated (vs imported) because user-facing messages differ ("Brief"
+ * prefix) and the log tag is different — extracting a generic helper would
+ * couple the two routes' UX strings.
+ */
+function mapUploadError(e: unknown): NextResponse {
+  if (e instanceof InvalidUploadBodyError) {
+    return NextResponse.json({ error: "invalid_upload_body" }, { status: 400 });
+  }
+  if (e instanceof StorageError) {
+    console.error(
+      `[brief-upload] error code=${e.code} message=${e.message}`,
+      "cause:",
+      e.cause,
+    );
+    switch (e.code) {
+      case "storage_not_configured":
+        return NextResponse.json(
+          { error: "storage_not_configured", message: "Brief 上传服务暂未配置，请稍后重试" },
+          { status: 503 },
+        );
+      case "completion_token_invalid":
+      case "completion_token_expired":
+        return NextResponse.json(
+          { error: e.code, message: "Brief 上传凭证已失效，请刷新页面重试" },
+          { status: 401 },
+        );
+      case "completion_blob_mismatch":
+        return NextResponse.json(
+          { error: "completion_blob_mismatch", message: "Brief 上传校验失败" },
+          { status: 400 },
+        );
+    }
+  } else {
+    console.error("[brief-upload] error:", e);
+  }
+  return NextResponse.json(
+    { error: "upload_failed", message: "Brief 上传失败，请稍后重试" },
+    { status: 500 },
+  );
 }
 
 export const POST = withRateLimit(RATE_LIMITER, clientIp, impl);

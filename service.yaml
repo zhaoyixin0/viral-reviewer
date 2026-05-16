@@ -90,6 +90,16 @@ spec:
             # → /api/health 返 {ok:true, version: GIT_SHA} 便于审计 image ↔ commit
             - name: GIT_SHA
               value: "${IMAGE_TAG}"
+            # P5.3 Cron OIDC verify (Google Cloud Scheduler 主路径).
+            # 非敏感(audience 是 public URL, SA email 也非密码); 走 plain env.
+            # CRON_OIDC_AUDIENCE: Cloud Scheduler 配的 target URL (匹配 token aud claim)
+            # CRON_OIDC_SERVICE_ACCOUNT: Cloud Scheduler 用的 SA email (匹配 token email claim)
+            # 缺值 → /api/cron/trending isAuthorized() OIDC 路径 fail-secure short-circuit,
+            # 仍回 CRON_SECRET / ADMIN_TRIGGER_SECRET fallback (转 P5.7 cutover 期).
+            - name: CRON_OIDC_AUDIENCE
+              value: "https://viral-reviewer-web/api/cron/trending"
+            - name: CRON_OIDC_SERVICE_ACCOUNT
+              value: "cloud-scheduler@PROJECT_ID.iam.gserviceaccount.com"
 
             # --- Secret Manager bindings ---
             # P5.6 phase 在 Secret Manager 创建以下 secrets;命名约定 <env-name-lowercased-dashes>

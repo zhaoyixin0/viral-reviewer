@@ -1,68 +1,54 @@
 import "server-only";
 
+import { randomUUID } from "node:crypto";
+
 import type { NextRequest } from "next/server";
-import type { ZodType } from "zod";
+import { z, type ZodType } from "zod";
 
 import {
-  handleUpload,
-  type HandleUploadBody,
-} from "@vercel/blob/client";
-
+  generateSignedPostPolicy,
+  signCompletionToken,
+  urlToKey,
+  verifyCompletionToken,
+} from "./api";
+import { getStorage } from "./client";
 import { type BlobInfo, StorageError } from "./types";
-
-/**
- * Throw `storage_not_configured` when `UPLOAD_SIGNING_SECRET` is missing.
- *
- * Per W3 verdict 78b7d2f ECC follow-up BLOCKER-7: the GCS swap (commit 2)
- * makes signed-upload.ts depend on `UPLOAD_SIGNING_SECRET` for HMAC
- * completion tokens. Fail-fast at the lib entry — mirroring
- * `requireBucket()` in api.ts — defends the chain's intermediate state:
- * if commit 1-3 are merged but commit 4 (route 503 mapping) is not,
- * an unset secret still surfaces a canonical StorageError code that the
- * route's outer catch can recognize, rather than a generic 500.
- *
- * Activated NOW in commit 1 (anticipatory): the current Vercel handleUpload
- * lifecycle does not consume the secret, so this check only impacts
- * deployments that have NOT yet bootstrapped `UPLOAD_SIGNING_SECRET` (W2
- * P5.2.4.2 Secret Manager line). Production / preview deploys MUST set
- * the env var before merging commit 1; local dev sets it in `.env.local`.
- */
-function requireUploadSecret(): void {
-  if (!process.env.UPLOAD_SIGNING_SECRET) {
-    throw new StorageError(
-      "storage_not_configured",
-      "UPLOAD_SIGNING_SECRET is not set — completion token signing unavailable",
-    );
-  }
-}
 
 /**
  * Server-side helper for client-direct uploads.
  *
- * Wraps `@vercel/blob/client.handleUpload` behind a provider-neutral policy
- * interface so 2 upload routes (`/api/upload`, `/api/template-brief-upload`)
- * don't import `@vercel/blob/client` directly.
+ * P5.1.b-2 commit 2: lifecycle swapped from `@vercel/blob/client.handleUpload`
+ * to GCS v4 signed POST policy + HMAC-signed completion ping (W3 deep verdict
+ * 78b7d2f A1+B1+C1+D1+E+F+G). Browser POSTs to the same endpoint with two
+ * shapes (`generate-signed-url` / `completion`); the facade routes by `type`.
  *
- * Per W3 P5.1.a-4 plan deep verdict cd7f45a (typescript-reviewer review):
+ * Per W3 P5.1.a-4 plan deep verdict cd7f45a (preserved through b-2):
  * - #1 mandate: `SignedUploadCompletion` reuses `BlobInfo` (Pick) — no duplicate shape
  * - #2 mandate: returns nominal `UploadEnvelope` brand type (not `unknown`) —
  *   expresses "opaque to callers, must not destructure" semantics correctly
  * - #3 mandate: `InvalidUploadBodyError.code` is fixed `"invalid_upload_body"`
  *   (snake_case, consistent with existing `put_failed` / `head_failed` codes)
  * - D3 推翻：no `failOnCompletionHookError` opt-in (YAGNI; current callers
- *   only `console.log`, never throw). Hook errors are swallowed + logged,
- *   matching default `@vercel/blob` behavior (webhook failures shouldn't 502 the client).
+ *   only `console.log`, never throw). Hook errors are swallowed + logged.
  *
- * P5.1.b will swap `@vercel/blob/client` internals here for GCS v4 signed
- * POST URL flow with a client-side completion ping (no equivalent webhook
- * in GCS), keeping `UploadPolicy` / `handleSignedUpload` shape stable.
+ * Lifecycle change summary (P5.1.b-2):
  *
- * Version pin caveat (per typescript-reviewer 2026-05-15 a-4 commit 1 MED #1):
- * The "InvalidUploadBodyError propagates through onBeforeGenerateToken
- * without re-wrapping" guarantee relies on `@vercel/blob`'s current
- * implementation NOT catching callback errors. Do not minor-bump `@vercel/blob`
- * before P5.1.b without re-running tests AND skim-verifying that
- * `handleUpload`'s `onBeforeGenerateToken` branch still propagates errors raw.
+ *   ┌─────── browser ────────────┐                ┌─────── lib/storage ────────────┐
+ *   │ POST {type:"generate-      │ ─── req ──▶    │ validate schema + clientPayload │
+ *   │   signed-url",pathname,    │                │ + contentType allowlist;        │
+ *   │   contentType,clientPayload│                │ derive finalKey;                │
+ *   │ }                          │                │ generateSignedPostPolicy +      │
+ *   │                            │ ◀── envelope ──│ signCompletionToken;            │
+ *   │                            │ {url,fields,   │ return signed-upload-policy.    │
+ *   │                            │  completionToken,finalKey}                       │
+ *   │ POST multipart/form-data   │                │                                 │
+ *   │   to GCS (using fields)    │ ── direct ──▶  │   GCS bucket (CORS: POST)       │
+ *   │ POST {type:"completion",   │ ── ping ──▶    │ verifyCompletionToken +         │
+ *   │   completionToken,blobInfo}│                │ urlToKey strict bucket+key match│
+ *   │                            │                │ (per W3 nit #2 HIGH replacing   │
+ *   │                            │ ◀── ack ───────│ .includes substring);           │
+ *   │                            │                │ invoke onCompleted (D3 swallow).│
+ *   └────────────────────────────┘                └─────────────────────────────────┘
  */
 
 declare const _uploadEnvelopeBrand: unique symbol;
@@ -70,15 +56,15 @@ declare const _uploadEnvelopeBrand: unique symbol;
 /**
  * Opaque envelope returned by `handleSignedUpload`. Route handlers MUST pass
  * it directly to `NextResponse.json()` — never destructure. Internal shape
- * is provider-specific (today: `@vercel/blob/client` token JSON; b 阶段: a
- * GCS-shaped envelope routed through the same handler).
+ * is provider-specific: post-b-2 it's either a `signed-upload-policy` (url
+ * + fields + completionToken + finalKey) or a `completion-ack` (success bool).
+ * The brand type prevents callers from reading those fields at compile time.
  */
 export type UploadEnvelope = { readonly [_uploadEnvelopeBrand]: never };
 
 /**
- * Subset of `BlobInfo` passed to `onCompleted` hooks. `uploadedAt` is
- * intentionally omitted — Vercel's `onUploadCompleted` callback receives
- * a `blob` without this field, and GCS swap (P5.1.b) won't synthesize it.
+ * Subset of `BlobInfo` passed to `onCompleted` hooks. Per W3 cd7f45a #1
+ * mandate (reuse `BlobInfo` via Pick), preserved through b-2.
  */
 export type SignedUploadCompletion = Pick<
   BlobInfo,
@@ -95,8 +81,9 @@ export interface UploadPolicy {
   readonly maxBytes: number;
   /**
    * Whether the storage provider should append a random suffix to the key.
-   * P5.1.a: forwarded to `@vercel/blob`'s `addRandomSuffix`.
-   * P5.1.b: facade emulates by appending `crypto.randomUUID().slice(0, 8)`.
+   * P5.1.b-2: server-side enforced via GCS POST policy condition
+   * `["eq", "$key", finalKey]` — the browser cannot replace `$key` once the
+   * policy is signed.
    */
   readonly addRandomSuffix?: boolean;
   /**
@@ -106,26 +93,20 @@ export interface UploadPolicy {
    */
   readonly clientPayloadSchema: ZodType<unknown>;
   /**
-   * Optional server-side hook fired when an upload completes.
-   * P5.1.a: invoked by `@vercel/blob`'s `onUploadCompleted` webhook.
-   * P5.1.b: triggered by facade after the client-side completion ping.
+   * Optional server-side hook fired when the browser completion ping arrives
+   * with a verified token. Hook errors are always swallowed + logged
+   * (W3 cd7f45a D3 推翻).
    *
-   * Per W3 D3 推翻 (cd7f45a): hook errors are always swallowed + logged.
-   * Don't add business logic that needs at-least-once semantics here without
-   * extending the policy interface first (breaking-change is acceptable;
-   * silently dropping a DB write is not).
-   *
-   * `info.size` semantics (per typescript-reviewer 2026-05-15 a-4 commit 1 MED #2):
-   * - P5.1.a: ALWAYS undefined — Vercel's `PutBlobResult` lacks `size`.
-   * - P5.1.b (planned): populated from GCS object metadata when available.
-   * Callers MUST treat `size` as optional regardless of provider.
+   * `info.size` is reported when the browser includes it in `blobInfo`;
+   * the GCS POST flow does NOT auto-fill it (no equivalent webhook). Callers
+   * must treat `size` as optional.
    */
   readonly onCompleted?: (info: SignedUploadCompletion) => Promise<void>;
 }
 
 /**
- * Subclass for 4xx-shaped failures: invalid JSON body, or `clientPayload`
- * rejected by `policy.clientPayloadSchema`. Routes catch this separately to
+ * Subclass for 4xx-shaped failures: invalid JSON body, schema rejection,
+ * or clientPayload schema rejection. Routes catch this separately to
  * return 400 instead of the default 500 (`signed_upload_failed`).
  *
  * `code` is hardcoded to `"invalid_upload_body"` (snake_case, per W3 mandate #3).
@@ -138,89 +119,250 @@ export class InvalidUploadBodyError extends StorageError {
 }
 
 /**
+ * Throw `storage_not_configured` when `UPLOAD_SIGNING_SECRET` is missing.
+ *
+ * Per W3 verdict 78b7d2f ECC follow-up BLOCKER-7: the GCS swap depends on
+ * `UPLOAD_SIGNING_SECRET` for HMAC completion tokens. Fail-fast at the lib
+ * entry — mirroring `requireBucket()` in api.ts — defends the chain's
+ * intermediate states (commit 1-3 merged, commit 4 route status mapping
+ * pending) by surfacing a canonical StorageError code.
+ */
+function requireUploadSecret(): void {
+  if (!process.env.UPLOAD_SIGNING_SECRET) {
+    throw new StorageError(
+      "storage_not_configured",
+      "UPLOAD_SIGNING_SECRET is not set — completion token signing unavailable",
+    );
+  }
+}
+
+/**
+ * Discriminated union of request shapes the browser sends to the upload
+ * endpoint. The `type` discriminator routes inside `handleSignedUpload`.
+ *
+ * Per W3 verdict 78b7d2f §2.2: `generate-signed-url` mints a POST policy +
+ * completion token; `completion` fires the policy.onCompleted hook after
+ * the browser confirms upload success.
+ */
+const GenerateSignedUrlSchema = z.object({
+  type: z.literal("generate-signed-url"),
+  /**
+   * Bucket-relative key the browser wants to upload to (sans random suffix).
+   * MUST NOT contain `|` — that char is the reserved separator inside the
+   * canonical completion-token payload (`finalKey|contentType|...`). A `|`
+   * would split the payload into 6+ fields and break verifyCompletionToken's
+   * `fields.length !== 5` guard, surfacing a misleading
+   * `completion_token_invalid` instead of the correct `invalid_upload_body`.
+   * Reject at the schema boundary so the failure is a clean 400. Per pre-push
+   * typescript-reviewer HIGH finding 2026-05-16 (b-2 commit 2).
+   */
+  pathname: z.string().min(1).regex(/^[^|]+$/, "pathname must not contain '|'"),
+  /**
+   * Browser-declared MIME — server cross-checks against
+   * `policy.allowedContentTypes`. `|` is rejected here for the same reason
+   * as `pathname` (canonical-payload separator).
+   */
+  contentType: z
+    .string()
+    .min(1)
+    .regex(/^[^|]+$/, "contentType must not contain '|'"),
+  /** Forward-compatible escape hatch — validated by `policy.clientPayloadSchema`. */
+  clientPayload: z.unknown(),
+});
+
+const BlobInfoFromBrowserSchema = z.object({
+  url: z.string().min(1),
+  pathname: z.string().min(1),
+  contentType: z.string().optional(),
+  size: z.number().optional(),
+});
+
+const CompletionSchema = z.object({
+  type: z.literal("completion"),
+  /** HMAC token minted by `signCompletionToken` in the gen-policy phase. */
+  completionToken: z.string().min(1),
+  /** Browser-reported upload result — server cross-checks url against token. */
+  blobInfo: BlobInfoFromBrowserSchema,
+});
+
+const SignedUploadRequestSchema = z.discriminatedUnion("type", [
+  GenerateSignedUrlSchema,
+  CompletionSchema,
+]);
+
+/**
  * Handle a signed client-direct upload request.
  *
- * Lifecycle:
- *  1. Parse `req.json()` as `HandleUploadBody`; failure → `InvalidUploadBodyError`.
- *  2. Validate `clientPayload` against `policy.clientPayloadSchema`;
- *     rejection → `InvalidUploadBodyError`.
- *  3. Forward `allowedContentTypes` / `maximumSizeInBytes` / `addRandomSuffix`
- *     to `@vercel/blob`'s token generator.
- *  4. On completion, invoke `policy.onCompleted` if provided. Hook errors are
- *     swallowed + `console.error`-logged (does NOT fail the upload).
+ * Lifecycle (per W3 verdict 78b7d2f):
+ *  1. Entry early-check `UPLOAD_SIGNING_SECRET` (ECC BLOCKER-7).
+ *  2. Parse + zod-validate body to discriminated union.
+ *  3. If `type === "generate-signed-url"`:
+ *     a. clientPayload via `policy.clientPayloadSchema`.
+ *     b. contentType in `policy.allowedContentTypes`.
+ *     c. `finalKey = pathname + "-" + uuid8()` if `addRandomSuffix`.
+ *     d. `generateSignedPostPolicy` + `signCompletionToken` → return envelope.
+ *  4. If `type === "completion"`:
+ *     a. `verifyCompletionToken` (throws _invalid / _expired).
+ *     b. `urlToKey(blobInfo.url, bucketName)` strict bucket prefix match
+ *        (W3 nit #2 HIGH replacing `.includes()` substring check). Extracted
+ *        key MUST equal `token.finalKey` or `completion_blob_mismatch`.
+ *     c. Invoke `policy.onCompleted` (errors swallowed + logged per D3).
+ *     d. Return completion-ack envelope.
  *
  * Caller responsibilities (NOT done here):
  *  - Rate limiting (route layer via `withRateLimit`).
- *  - `BLOB_READ_WRITE_TOKEN` env presence check (route layer; 503 on miss).
+ *  - HTTP status code mapping (route layer; per W3 nit #6 — commit 4
+ *    will add `storage_not_configured → 503`, `completion_token_*` → 401,
+ *    `completion_blob_mismatch` → 400, `invalid_upload_body` → 400).
  *
  * Errors:
- *  - `InvalidUploadBodyError` ("invalid_upload_body") for parse / schema failures.
- *  - `StorageError` ("signed_upload_failed") for token generation / webhook errors.
+ *  - `InvalidUploadBodyError` ("invalid_upload_body") for parse / schema / allowlist.
+ *  - `StorageError` ("signed_upload_failed") for SDK policy gen failure.
+ *  - `StorageError` ("completion_token_invalid" / "_expired") for token failure.
+ *  - `StorageError` ("completion_blob_mismatch") for cross-bucket / wrong-key blobInfo.
+ *  - `StorageError` ("storage_not_configured") for missing env (UPLOAD_SIGNING_SECRET
+ *    via requireUploadSecret; GCS_BUCKET_NAME via getStorage().enabled check).
  */
 export async function handleSignedUpload(
   req: NextRequest,
   policy: UploadPolicy,
 ): Promise<UploadEnvelope> {
-  // BLOCKER-7 (W3 verdict 78b7d2f ECC follow-up): early-check
-  // UPLOAD_SIGNING_SECRET so an unset env surfaces canonical
-  // storage_not_configured even before commit 2 wires the helpers in.
   requireUploadSecret();
-  let body: HandleUploadBody;
+
+  let body: unknown;
   try {
-    body = (await req.json()) as HandleUploadBody;
+    body = await req.json();
   } catch (e) {
     throw new InvalidUploadBodyError("upload body is not valid JSON", e);
   }
 
+  const parsed = SignedUploadRequestSchema.safeParse(body);
+  if (!parsed.success) {
+    throw new InvalidUploadBodyError(
+      `upload body rejected by schema: ${parsed.error.message}`,
+      parsed.error,
+    );
+  }
+
+  if (parsed.data.type === "generate-signed-url") {
+    return await handleGenerateSignedUrl(parsed.data, policy);
+  }
+  return await handleCompletion(parsed.data, policy);
+}
+
+async function handleGenerateSignedUrl(
+  data: z.infer<typeof GenerateSignedUrlSchema>,
+  policy: UploadPolicy,
+): Promise<UploadEnvelope> {
+  const cpResult = policy.clientPayloadSchema.safeParse(data.clientPayload);
+  if (!cpResult.success) {
+    throw new InvalidUploadBodyError(
+      `clientPayload rejected by schema: ${cpResult.error.message}`,
+      cpResult.error,
+    );
+  }
+
+  if (!policy.allowedContentTypes.includes(data.contentType)) {
+    throw new InvalidUploadBodyError(
+      `contentType "${data.contentType}" not in allowlist for ${policy.logTag}`,
+    );
+  }
+
+  const finalKey = policy.addRandomSuffix
+    ? `${data.pathname}-${randomUUID().slice(0, 8)}`
+    : data.pathname;
+
   try {
-    const json = await handleUpload({
-      body,
-      request: req,
-      onBeforeGenerateToken: async (_pathname, clientPayload) => {
-        const parsed = policy.clientPayloadSchema.safeParse(clientPayload);
-        if (!parsed.success) {
-          throw new InvalidUploadBodyError(
-            `clientPayload rejected by schema: ${parsed.error.message}`,
-            parsed.error,
-          );
-        }
-        return {
-          allowedContentTypes: [...policy.allowedContentTypes],
-          maximumSizeInBytes: policy.maxBytes,
-          addRandomSuffix: policy.addRandomSuffix,
-        };
-      },
-      onUploadCompleted: async ({ blob }) => {
-        if (!policy.onCompleted) return;
-        try {
-          // `size` is intentionally omitted: Vercel's `PutBlobResult` (the
-          // `blob` type on onUploadCompleted) doesn't include it. GCS's
-          // object metadata callback in P5.1.b will populate `size` when
-          // available — current callers must treat it as optional.
-          await policy.onCompleted({
-            url: blob.url,
-            pathname: blob.pathname,
-            contentType: blob.contentType,
-          });
-        } catch (hookError) {
-          console.error(
-            `[${policy.logTag}] onCompleted hook failed:`,
-            hookError,
-          );
-        }
-      },
+    const { url, fields } = await generateSignedPostPolicy(finalKey, {
+      contentType: data.contentType,
+      maxBytes: policy.maxBytes,
     });
-    // Brand cast: route handlers must pass envelope to NextResponse.json()
-    // opaquely (see UploadEnvelope docstring).
-    return json as unknown as UploadEnvelope;
+    const completionToken = signCompletionToken({
+      finalKey,
+      contentType: data.contentType,
+      maxBytes: policy.maxBytes,
+    });
+    return {
+      type: "signed-upload-policy",
+      url,
+      fields,
+      completionToken,
+      finalKey,
+    } as unknown as UploadEnvelope;
   } catch (e) {
     if (e instanceof StorageError) throw e;
     throw new StorageError(
       "signed_upload_failed",
-      `storage.handleSignedUpload(${policy.logTag}) failed: ${
+      `storage.handleSignedUpload(${policy.logTag}) generate failed: ${
         e instanceof Error ? e.message : String(e)
       }`,
       e,
     );
   }
+}
+
+async function handleCompletion(
+  data: z.infer<typeof CompletionSchema>,
+  policy: UploadPolicy,
+): Promise<UploadEnvelope> {
+  // Throws completion_token_invalid / completion_token_expired /
+  // storage_not_configured (the last only if UPLOAD_SIGNING_SECRET disappeared
+  // between entry early-check and here, which shouldn't happen in a single
+  // request — defensive).
+  const tokenPayload = verifyCompletionToken(data.completionToken);
+
+  // W3 nit #2 HIGH (78b7d2f): strict bucket+key match via urlToKey,
+  // NOT `.includes()` substring (attacker could craft url containing
+  // finalKey in a query param while pointing to evil.com).
+  const client = getStorage();
+  if (!client.enabled || !client.bucketName) {
+    throw new StorageError(
+      "storage_not_configured",
+      "GCS_BUCKET_NAME is not set — completion verify unavailable",
+    );
+  }
+
+  let extractedKey: string;
+  try {
+    extractedKey = urlToKey(data.blobInfo.url, client.bucketName);
+  } catch (e) {
+    // urlToKey throws `url_not_in_bucket` for cross-bucket / non-GCS URLs.
+    // Surface as `completion_blob_mismatch` so the route layer maps to 400.
+    throw new StorageError(
+      "completion_blob_mismatch",
+      `blobInfo.url does not belong to bucket ${client.bucketName}: ${
+        e instanceof Error ? e.message : String(e)
+      }`,
+      e,
+    );
+  }
+  if (extractedKey !== tokenPayload.finalKey) {
+    throw new StorageError(
+      "completion_blob_mismatch",
+      `blobInfo.url key "${extractedKey}" does not match token finalKey "${tokenPayload.finalKey}"`,
+    );
+  }
+
+  // Forward-compat: `tokenPayload.nonce` is intentionally NOT consumed here.
+  // Future DB-write callers can extend `policy.onCompleted` to accept the
+  // nonce as idempotency key without a token-protocol upgrade (ECC MED-1/2
+  // 4-fold defense of anti-pattern #13).
+
+  if (policy.onCompleted) {
+    try {
+      await policy.onCompleted({
+        url: data.blobInfo.url,
+        pathname: data.blobInfo.pathname,
+        contentType: data.blobInfo.contentType,
+        size: data.blobInfo.size,
+      });
+    } catch (hookError) {
+      console.error(
+        `[${policy.logTag}] onCompleted hook failed:`,
+        hookError,
+      );
+    }
+  }
+
+  return { type: "completion-ack", success: true } as unknown as UploadEnvelope;
 }
