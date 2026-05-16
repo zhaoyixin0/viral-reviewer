@@ -2822,3 +2822,84 @@ W3 现状：W2 commit 1/6 merged，**等 W2 commit 2/6 push**（extractFramesAnd
 
 > **W2 commit 4/6 merged; continue with commit 5/6 (3 routes inherit) when ready.**
 
+---
+
+## [W2 → W3] 2026-05-15 22:08 PDT · P3 #2 phase 3.5 commit 6/6 complete — full chain done
+
+**Branch**: `feat/p3-url-allowlist-phase35-caller-wiring` HEAD: 本 commit
+**Final merge**: origin/main merged clean (含 W1 P5.1 GCS scope draft + W3 light acks)。
+
+### Phase 3.5 6-commit chain 总览
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| 1 | `9420fc8` | prepareAssets async-ify + dns-mock helper + SSRF event propagation 主动防御 | ✅ merged `5ae823e` |
+| 2 | `9876c02` | extractFramesAndAudio + analyze chain (B1 完全替) | ✅ merged `96279209` |
+| 3 | `a4a7c45` | template-brief + dns/private error mapping | ✅ merged `4558a14` |
+| 4 | `a9d615d` | technique-match pre-stream batch + in-stream fetchWithAllowlist | ✅ merged `7a4b211` |
+| 5 | `0542b06` | account-profile/compile-capcut/analyze-video inherit + reason mapping | ⏳ pending |
+| 6 | 本 commit | lib/url-allowlist/README.md phase 3.5 status update + window-2.md final ack | ⏳ pending |
+
+### Commit 6/6 改动清单
+
+| 文件 | 改动 | 行数 |
+|---|---|---|
+| `lib/url-allowlist/README.md` | "Phase 3.5 wiring 待办" 段 → "Phase 3.5 caller wiring (完成)" + caller 升级表 + 错误 mapping 表 + phase 4+ 留作清单 | +37 / -10 |
+| `docs/coordination/window-2.md` | W2 → W3 phase 3.5 final ack (本节)| +75 |
+
+`docs/security/dns-rebinding-defense.md` 已含 caller "Reason 处理建议" 表（phase 3 commit 6/6 写的），phase 3.5 无需重复改动。
+
+### W3 verdict 跟踪（所有决策 + 补充约束达成）
+
+| 决策 / 补充 | W3 verdict | 落地 commit |
+|---|---|---|
+| A2: Promise.all all-or-nothing batch | ✅ | `9420fc8` prepareAssets + `a9d615d` technique-match |
+| B1: 完全替换 sync check (fetchWithAllowlist 内含 fast-fail) | ✅ | `9876c02` ffmpeg.ts |
+| C: caller error mapping (502 retry / 400 + console.error security) | ✅ | `a4a7c45` template-brief + `a9d615d` technique-match + `0542b06` 3 routes + `0542b06` frame-analyze |
+| D2: 共享 dns-mock helper (4 命名约束) | ✅ | `9420fc8` `tests/__stubs__/dns-mock.ts` with mockDnsResolve/Timeout/NxDomain/Rebinding + resetDnsMocks |
+| anti-pattern #4 (stream pre-batch check) | ✅ | `a9d615d` technique-match: 3 测试断言 content-type NOT ndjson 锁定 pre-stream 拒绝 |
+| anti-pattern #2 (lib 必填 caller) | ✅ | 所有 caller 仍走 required `opts.urlAllowlist` |
+| Pre-commit verify (方案 2 PoC) | ✅ | `9420fc8` commit message 含 PoC 跑通输出 + main baseline SHA `5357c41` |
+| commit chain 6 commits 不拆 | ✅ | 严格 6 commits + 每 commit tsc-green |
+| 主动 SSRF event propagation (prepareAssets) | ✅ super-spec | `9420fc8` `Promise.allSettled` 检 `instanceof UrlAllowlistError` 立即 throw（防 security event 进 download stats） |
+
+### 与 spec 的偏离
+
+无偏离。**1 个 super-spec 主动防御**: prepareAssets `Promise.allSettled` rejection scan，捕获 UrlAllowlistError 立即 propagate 而非进 download failure stats (W3 ack 0fe80c5 评为 "主动防御")。
+
+### 三门最终（post-merge）
+
+| Gate | 结果 |
+|---|---|
+| `npx tsc --noEmit` | ✅ 0 error |
+| `npx vitest run` | ✅ **48 files / 460 cases** (phase 3.5 contribution: 450 → 460, +10 cases: 5 prepareAssets + 2 template-brief + 3 technique-match) |
+| `npx next build` | ✅ 23/23 routes, bundle 不变 |
+
+### File ownership lock 全程 observe ✅
+
+phase 3.5 实施期 W2 **零触**:
+- ❌ `lib/storage/**`（P5.1 W1+W2 协作区）
+- ❌ `Dockerfile` / `cloudbuild.yaml` / `.github/workflows/deploy.yml`
+- ❌ `lib/url-allowlist/presets.ts` 加 GCS_PRESET
+- ❌ `lib/url-allowlist/**`（phase 3.5 只动 caller，不动 lib 本身）
+
+### 累积 P3 + Task 14 + P5 状态
+
+| 项 | 状态 |
+|---|---|
+| P3 #1 rate-limit phase 1+2 | ✅ merged |
+| P3 #2 url-allowlist phase 1 / 2 / 2.5 / 3 / 3.5 + nit cleanup | ✅ **全 merged**（phase 3.5 commits 1-5 merged，commit 6 本 commit 待 merge）|
+| P3 #3 rate-limit phase 2（route wiring） | ✅ merged |
+| Task 14 A+B + 14.1 hot fix | ✅ merged |
+| Task 14.2 | dropped → P5 redirect (user) |
+| P5 main scope verdict | ✅ approved |
+| P5.1 GCS lib scope draft | ✅ merged + W3 verdict |
+| P5 实施 | W1 主推 |
+
+### 信箱
+
+**W2 → W3**: phase 3.5 commit 6/6 push 完成,等 W3 综合 verdict。phase 3.5 全部闭环后 W2 回 idle (P5.1 W1+W2 协作时再 split focus)。
+
+> **W2 → W3: phase 3.5 6-commit chain complete; W2 awaits 综合 verdict; next: P5.1 协作 (W1 owner-driven, W2 review).**
+
+
