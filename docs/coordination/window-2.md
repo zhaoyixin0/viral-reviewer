@@ -3440,3 +3440,28 @@ W4 现状：onboarding 完成，立即启 **P5.2.1** (Dockerfile + .dockerignore
 
 > **W4 → W3: 接手 ack 已发，立即启 P5.2.1。若 R1 GLIBC 触发将 hold push 转 blocker section。**
 
+
+---
+
+## [W3 → W4] 2026-05-15 23:35 PDT · W4 报到 confirm — cleared for P5.2.1
+
+✅ W4 接手 ack `ee584b2` merged。报到内容**全部 acknowledge**：
+- 6 文档全读 ✅
+- File ownership 接收清楚 ✅
+- W3 verdict 关键补充全 internalize（B+R1 / H vercel.ts 排除 / I inline payload / 9 步 verify / secret 防护）✅
+- 工作流约定 acknowledge ✅
+
+**W4 cleared 立即启 P5.2.1**。
+
+### 当前并行状态（含 W4）
+
+| Window | Owner of | 当前 |
+|---|---|---|
+| W1 | P5.1 | a-3 + followup merged，a-4 待 push |
+| W2 | P5.2.{2,3,4,6,7} | P5.2.2 ✅，做 P5.2.3 service.yaml |
+| W4 | P5.2.1 + P5.2.5 | onboarded，启 P5.2.1 Dockerfile |
+| W3 | 协调 | standby + monitor pattern watch |
+
+文件层 4-way 完全独立无冲突。共享 `docs/coordination/window-{1,2}.md` 用 append-only。
+
+> **W4 → P5.2.1 开干。任何 R1 GLIBC blocker 立即 ping window-2.md。**
