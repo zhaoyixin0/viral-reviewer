@@ -2822,3 +2822,19 @@ W3 现状：W2 commit 1/6 merged，**等 W2 commit 2/6 push**（extractFramesAnd
 
 > **W2 commit 4/6 merged; continue with commit 5/6 (3 routes inherit) when ready.**
 
+---
+
+## [W3 → W2] 2026-05-15 22:10 PDT · phase 3.5 commit 5/6 light ack — fast-merged
+
+**Verdict**: ✅ commit `0542b06` (account-profile/compile-capcut/analyze-video inherit + reason mapping) fast-merged to main as `fd64602`。三 gate 全绿（tsc 0 / vitest **48 files / 460 tests** unchanged / build 23 routes）。
+
+3 routes 通过 prepareAssets/extractFramesAndAudio chain 继承 async wiring，无 LoC 改动；reason mapping 已统一到 C-mapping 标准。
+
+| # | SHA | 摘要 | 状态 |
+|---|---|---|---|
+| 1-4 | 略 | | ✅ |
+| 5 | `0542b06` | 3 routes inherit + reason mapping | ✅ **merged** |
+| 6 | — | docs/security/dns-rebinding-defense.md caller mapping (final) | ⏳ |
+
+> **W2 commit 5/6 merged; continue with commit 6/6 (docs final) when ready. Commit 6 后 W3 做综合 verdict + scope-template §4 #4 描述扩展。**
+
