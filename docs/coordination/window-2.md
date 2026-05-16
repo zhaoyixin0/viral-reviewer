@@ -5892,3 +5892,67 @@ Cloud Run runtime parses `console.log` JSON natively → all 72 call sites flow 
 W4 mandate 100% closed pending W3 phase exit gate ack on this section. Standby for next phase signals — none expected per W3 5d1eb06 §P5 status (Cloud Run prod LIVE, only user-side DNS cutover remaining and that's not W4 scope).
 
 > **W4 → W3: P5.8 phase EXIT GATE close 请求. 3 commits (`97e344b` / `eab0645` / `9c9edf7`) merged + verified inventory (30 modules / 72 call sites) + pre-push reviewer ROI 3/3 + reserved-field discipline self-applied + Cloud Logging native ready. Static gates final all pass. Task #15 W2 absorbed (CLOSED). Standby for phase exit gate ack.**
+
+---
+
+## [W3 -> W4] 2026-05-16 13:42 PDT — 🎉🎉🎉 P5.8 PHASE EXIT GATE CLOSED + W4 mandate 14/14 COMPLETE
+
+W4 P5.8.3 综合 ack `8ce485d` merged. P5.8 observability phase formally closed.
+
+### P5.8 final summary (W4 contribution)
+
+| Phase | Commit | Content | Tests |
+|---|---|---|---|
+| P5.8 scope draft | `09602e7` | 303-line scope (8 decisions A-H) | n/a |
+| P5.8.0 | `97e344b` | helper + 10 unit tests | +10 |
+| P5.8.1 | `eab0645` | 17 lib files + 5 tests swap | +5 |
+| P5.8.2 | `9c9edf7` | 12 routes + 2 tests SINGLE commit (per nit 3) | +15 absorbed from W2 P5.3 |
+| P5.8.3 | `8ce485d` | 综合 ack docs | docs only |
+
+**Total**: 4 implementation commits + 1 scope + 1 ack = 6 W4 contributions to P5.8 phase. **51 call sites swapped** across `lib/` + `app/api/`. Structured logger ready for Cloud Logging native JSON parse.
+
+### Reviewer ROI W4 contribution
+
+3 dispatches in P5.8 chain (P5.8.0 + P5.8.1 + P5.8.2):
+- P5.8.0: 2 MED in-commit fix (@internal docstring + BigInt context coercion)
+- P5.8.1: clean uniform swap, no findings
+- P5.8.2: strategic skip with grep invariant + 3 reserved-field self-fix justification
+
+**Pre-push reviewer ROI total** (across all of P5 phase W1+W2+W4): **13-15 instance validation** unbroken streak (1 critical UBLA bug + 1 HIGH pipe-char + 2 ECC HIGH catches + many MED/LOW + 1 W3 mistake corrected via ECC second-perspective).
+
+### W4 mandate FINAL status: 14/14 COMPLETE
+
+| # | Task | Status |
+|---|---|---|
+| 1-13 | (P5.2.1 + P5.2.5 + nits + P5.8.0/1/2 + 联合 P5.2.7) | ✓ |
+| 14 | P5.8.3 综合 ack | ✓ (本 ack) |
+| 15 | P5.6 docs side | CLOSED (absorbed by W2 e50a2c9) |
+
+🎉 **W4 mandate 14/14 COMPLETE**. W4 standby — no further work expected for P5 phase.
+
+### Anti-pattern queue update (now 14 entries in scope-template §4)
+
+Already shipped in `5948396`:
+- #10 ownership-dependency check (W2 P5.2.4 + W4 P5.8 examples)
+- #11 multi-arch pin (W4 P5.2.1 → W2 P5.2.4 落地)
+- #12 worktree shared race (W4 contribution)
+- #13 untrusted client-driven webhook (W1 b-2 contribution)
+- #14 transitive dep removal check (W1 b-4 incident)
+
+### 🎉 P5 PHASE FINAL OVERVIEW (all milestones)
+
+- ✅ **P5.1 GCS migration** (W1, 17 commits + 2 hot fixes + 11-code StorageError)
+- ✅ **P5.2 Cloud Run runtime** (W2 + W4, ~12 commits, all infra ready)
+- ✅ **P5.3 Cron OIDC** (W2, 1 commit, 3-auth fallback chain)
+- ✅ **P5.4 next.config.ts cleanup** (W2, 1 commit, outputFileTracingIncludes deleted)
+- ✅ **P5.5 maxDuration cleanup** (W2, 1 commit, 13 routes)
+- ✅ **P5.6 .env.example overhaul + Secret Manager docs** (W2, 1 commit)
+- ✅ **P5.8 observability** (W4, 4 commits, structured logger 51 sites)
+- ✅ **Cloud-side bootstrap LIVE** (W3 this session): viral-reviewer-prod-2026 project + 6 secrets + SAs + WIF + AR + bucket + first deploy success
+- ⏸ **P5.7 DNS cutover** (user-only, Cloudflare)
+
+### 信箱
+
+W3 现状: 🎉🎉🎉 **P5 PHASE 90%+ COMPLETE** (only user-side P5.7 DNS cutover remaining). W4 standby. W1 standby. W2 standby. No further multi-window work expected.
+
+> 🎉🎉🎉 W4 P5.8 phase EXIT GATE CLOSED + W4 mandate 14/14 COMPLETE. P5 phase 90%+ done — only P5.7 DNS cutover (user-only) remaining. All worker windows standby.
