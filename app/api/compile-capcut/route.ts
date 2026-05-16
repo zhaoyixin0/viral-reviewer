@@ -29,7 +29,6 @@ import { TechniqueMatchingResultSchema } from "@/lib/technique-matching/types";
 import { RequestSchema } from "./schema";
 
 export const runtime = "nodejs";
-export const maxDuration = 120;
 
 // P3 #3 phase 2: WRITE_HEAVY (5/10m fixed) —— ffmpeg 抽帧 + zip 打包 + Blob 写。
 const RATE_LIMITER = createRateLimiter({

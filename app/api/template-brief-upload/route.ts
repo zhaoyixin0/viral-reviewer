@@ -14,7 +14,6 @@ import {
 import { ClientPayloadSchema } from "./schema";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
 
 // P3 #3 phase 2: STRICT_PER_IP (10/1m fixed) —— Blob token 换签端点 (PDF brief)。
 const RATE_LIMITER = createRateLimiter({

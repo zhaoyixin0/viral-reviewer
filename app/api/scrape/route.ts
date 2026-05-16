@@ -12,7 +12,6 @@ import {
 } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
-export const maxDuration = 300;
 
 const PRESET_HASHTAGS: Record<string, { tt: string[]; ig: string[] }> = {
   早餐健身: { tt: ["fitness", "highprotein"], ig: ["proteinbreakfast"] },

@@ -14,7 +14,6 @@ import {
 } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
-export const maxDuration = 300;
 
 const RequestSchema = z.object({
   videoUrl: z.string().url(),

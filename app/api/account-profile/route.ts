@@ -26,7 +26,6 @@ import {
 } from "@/lib/account-profile/types";
 
 export const runtime = "nodejs";
-export const maxDuration = 300;
 
 // P3 #3 phase 2: STREAM_HEAVY (3/10m fixed) —— NDJSON stream + Apify scrape +
 // Claude analyze + frame extract，单请求 30-60s 长占用。

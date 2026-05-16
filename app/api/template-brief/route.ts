@@ -32,7 +32,6 @@ const RATE_LIMITER = createRateLimiter({
 });
 
 export const runtime = "nodejs";
-export const maxDuration = 300;
 
 const MULTIPART_MAX_BYTES = 4 * 1024 * 1024;
 const BLOB_MAX_BYTES = 100 * 1024 * 1024;
