@@ -76,9 +76,20 @@ import {
   getDownloadUrl,
   head,
   list,
+  type PutResult,
   put,
   StorageError,
 } from "@/lib/storage";
+
+// Compile-time invariant (commit 3a per W3 verdict efc1715 BLOCKER):
+// PutResult must NEVER carry a `downloadUrl` field again. The Vercel-Blob
+// `?download=1` convention does not work on GCS; callers must explicitly
+// call getDownloadUrl(). A future re-addition of `downloadUrl?: string` to
+// PutResult would make `_NoDownloadUrlOnPutResult` resolve to `never`,
+// turning the const assignment below into a TS error.
+type _NoDownloadUrlOnPutResult = "downloadUrl" extends keyof PutResult ? never : true;
+const _PROOF_NO_DOWNLOAD_URL: _NoDownloadUrlOnPutResult = true;
+void _PROOF_NO_DOWNLOAD_URL;
 
 beforeEach(() => {
   gcs.fileGetMetadata.mockReset();
@@ -165,9 +176,13 @@ describe("storage.put", () => {
     expect(result.url).toBe(
       "https://storage.googleapis.com/viral-reviewer-blob-test/trending/snapshot-2026-W20.json",
     );
-    expect(result.downloadUrl).toBe(`${result.url}?download=1`);
     expect(result.pathname).toBe("trending/snapshot-2026-W20.json");
     expect(result.contentType).toBe("application/json");
+    // downloadUrl field removed in commit 3a per W3 verdict efc1715 BLOCKER
+    // — callers must now call getDownloadUrl() explicitly for a GCS v4 signed
+    // URL with Content-Disposition: attachment (the Vercel `?download=1`
+    // query convention does NOT work on GCS).
+    expect(result).not.toHaveProperty("downloadUrl");
     expect(gcs.fileSave).toHaveBeenCalledWith(
       '{"k":1}',
       expect.objectContaining({

@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { put, StorageError } from "@/lib/storage";
+import { getDownloadUrl, put, StorageError } from "@/lib/storage";
 import {
   prepareAssets,
   readAsset,
@@ -149,7 +149,7 @@ async function impl(req: NextRequest) {
     const safeName = projectName.replace(/[^\w\-\.]+/g, "-");
 
     // 不能把 zip 直接作为 response body 返回 — Vercel function response
-    // 上限 4.5MB，含 mp4 的 zip 必然超限。改成写 Blob + 返回 downloadUrl
+    // 上限 4.5MB，含 mp4 的 zip 必然超限。改成写存储 + 返回 signed download URL
     // 让客户端从 CDN 直接下载（没 size limit）。
     // addRandomSuffix:true — 同毫秒内同名项目并发 export 会撞 key，随机后缀消除覆盖风险。
     try {
@@ -162,29 +162,36 @@ async function impl(req: NextRequest) {
           addRandomSuffix: true,
         },
       );
-      // downloadUrl 自带 Content-Disposition: attachment，保证浏览器下载而非预览。
+      // GCS v4 signed URL with Content-Disposition: attachment; filename=...
+      // 保证浏览器下载而非预览，且保留用户可读 filename
+      // (而非 storage key 末段含时间戳/随机后缀的 raw 文件名).
+      const downloadUrl = await getDownloadUrl(blob.url, {
+        filename: `${safeName}.zip`,
+      });
       return Response.json({
-        url: blob.downloadUrl,
+        url: downloadUrl,
         filename: `${safeName}.zip`,
         sizeBytes: zipBytes.byteLength,
       });
     } catch (e) {
-      // Node 默认不展开 Error.cause；StorageError 把原始 @vercel/blob 错误
-      // 包在 .cause 里，所以要显式把 code + cause 一起打出来，否则 Vercel
-      // Logs 里看不到底层根因（typescript-reviewer 2026-05-15 a-3 finding A）。
+      // 此 catch 同时覆盖 put() 和 getDownloadUrl() 两步：StorageError code
+      // 区分根因 (put_failed / download_url_failed / url_not_in_bucket /
+      // storage_not_configured 等)。Node 默认不展开 Error.cause，所以显式打
+      // code + cause 出来供 Vercel Logs 排查（per typescript-reviewer
+      // 2026-05-15 a-3 finding A）。
       if (e instanceof StorageError) {
         console.error(
-          `[compile-capcut] blob upload failed code=${e.code} message=${e.message}`,
+          `[compile-capcut] storage step failed code=${e.code} message=${e.message}`,
           "cause:",
           e.cause,
         );
       } else {
-        console.error("[compile-capcut] blob upload failed:", e);
+        console.error("[compile-capcut] storage step failed:", e);
       }
       return new Response(
         JSON.stringify({
-          error: "blob_upload_failed",
-          message: "zip 上传到存储失败，请重试",
+          error: "export_failed",
+          message: "zip 导出失败，请重试",
         }),
         { status: 502, headers: { "content-type": "application/json" } },
       );

@@ -151,10 +151,8 @@ export async function put(
         ? { preconditionOpts: { ifGenerationMatch: 0 } }
         : {}),
     });
-    const url = publicUrl(bucketName, finalKey);
     return {
-      url,
-      downloadUrl: `${url}?download=1`,
+      url: publicUrl(bucketName, finalKey),
       pathname: finalKey,
       contentType: opts.contentType,
       contentDisposition: undefined,

@@ -28,9 +28,15 @@ export interface PutOptions {
   cacheControlMaxAge?: number;
 }
 
+/**
+ * `downloadUrl` removed in P5.1.b-1 commit 3a (per W3 verdict efc1715 BLOCKER):
+ * the Vercel Blob `?download=1` convention does NOT trigger
+ * Content-Disposition: attachment on GCS. Callers that need a download URL
+ * must now explicitly call `getDownloadUrl(blob.url, { filename })` to obtain
+ * a GCS v4 signed URL with `responseDisposition=attachment`.
+ */
 export interface PutResult {
   url: string;
-  downloadUrl: string;
   pathname: string;
   contentType?: string;
   contentDisposition?: string;
