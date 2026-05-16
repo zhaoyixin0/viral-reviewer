@@ -3,11 +3,6 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import type { Readable } from "node:stream";
 
-// commit 3 will remove this last @vercel/blob import (del + getDownloadUrl
-// still route through vercel until then). Whitelisted in
-// scripts/check-storage-imports.ts until b-4 removes the dep entirely.
-import { del as vercelDel } from "@vercel/blob";
-
 import { getStorage } from "./client";
 import {
   type BlobInfo,
@@ -20,17 +15,21 @@ import {
 } from "./types";
 
 /**
- * Platform-neutral storage API.
+ * Platform-neutral storage API — fully on `@google-cloud/storage` after
+ * P5.1.b-1 commit 3. caller behavior unchanged from P5.1.a baseline.
  *
- * P5.1.b-1 commit 2: head / put / list now route through
- * `@google-cloud/storage` per W3 verdict c9367c4 (A1 / B1 / C1 / E / F1
- * frozen). del + getDownloadUrl preserved at @vercel/blob until commit 3.
+ * Per W3 verdict c9367c4 (all decisions frozen):
+ * - A1: lazy Storage singleton via lib/storage/client.ts
+ * - B1: getDownloadUrl uses SDK getSignedUrl v4 + ADC/WIF (no SA key)
+ * - C1: head returns null on 404; all other ops throw StorageError
+ * - D3: del/getDownloadUrl accept URLs via urlToKey() strict bucket prefix
+ *   match; cross-bucket URLs throw url_not_in_bucket
+ * - E (12b3b18 I): addRandomSuffix = crypto.randomUUID().slice(0, 8) hex
+ * - H: keys pass through 1:1, no prefix rewriting
  *
- * Per W3 verdict 12b3b18:
- * - B1: `head` returns null on missing object; all other ops throw.
- * - H: keys pass through unchanged (no prefix rewriting).
- * - I: `addRandomSuffix` uses `crypto.randomUUID().slice(0, 8)` hex
- *   (8 chars, equivalent to @vercel/blob's 6-8 base32 suffix length).
+ * StorageError codes after commit 3:
+ *   storage_not_configured / head_failed / put_failed / list_failed
+ *   / del_failed / download_url_failed / url_not_in_bucket
  */
 
 /**
@@ -44,6 +43,36 @@ type PutBody = string | Readable | Buffer | Blob | ArrayBuffer | ReadableStream 
 /** Build a public GCS URL for a bucket-key pair. */
 function publicUrl(bucketName: string, key: string): string {
   return `https://storage.googleapis.com/${bucketName}/${encodeURI(key)}`;
+}
+
+/**
+ * Reverse-map a GCS public URL (or bare key) to a bucket-relative key.
+ *
+ * Per W3 verdict c9367c4 D3: strictly prefix-match the configured bucket
+ * name to prevent cross-bucket accidental deletes / reads. Two GCS public
+ * URL formats are supported:
+ *   A) https://storage.googleapis.com/<bucket>/<key>     (path-style)
+ *   B) https://<bucket>.storage.googleapis.com/<key>     (vhost-style)
+ *
+ * A bare key (no scheme) passes through unchanged. Any URL whose host or
+ * path does NOT match `bucketName` throws `StorageError("url_not_in_bucket")`.
+ */
+function urlToKey(urlOrKey: string, bucketName: string): string {
+  if (!urlOrKey.startsWith("http://") && !urlOrKey.startsWith("https://")) {
+    return urlOrKey;
+  }
+  const u = new URL(urlOrKey);
+  const pathPrefix = `/${bucketName}/`;
+  if (u.host === "storage.googleapis.com" && u.pathname.startsWith(pathPrefix)) {
+    return decodeURI(u.pathname.slice(pathPrefix.length));
+  }
+  if (u.host === `${bucketName}.storage.googleapis.com`) {
+    return decodeURI(u.pathname.slice(1));
+  }
+  throw new StorageError(
+    "url_not_in_bucket",
+    `storage url ${u.host}${u.pathname} does not belong to bucket ${bucketName}`,
+  );
 }
 
 /** Throw if storage is not configured (GCS_BUCKET_NAME missing). */
@@ -181,20 +210,26 @@ export async function list(opts: ListOptions = {}): Promise<ListResult> {
 }
 
 /**
- * Delete one or more objects. Accepts URLs (Vercel Blob convention).
+ * Delete one or more objects. Accepts either bucket keys or full GCS public
+ * URLs; URLs are reverse-mapped to keys via `urlToKey()` per W3 verdict
+ * c9367c4 D3 (strict bucket-name prefix match — cross-bucket URLs throw
+ * `url_not_in_bucket` to prevent accidental deletes across buckets).
  *
- * **commit 3** will swap to GCS via `urlToKey()` reverse mapping +
- * `bucket.file(key).delete()`. Preserved at @vercel/blob here so the
- * commit-2 transient state stays caller-compatible.
+ * `ignoreNotFound: true` so deleting an already-missing key is a no-op
+ * (matches @vercel/blob's silent-on-404 del semantics).
  */
 export async function del(urls: string | string[]): Promise<void> {
+  const { bucket, bucketName } = requireBucket();
+  // Renamed from `list` to avoid shadowing the module-level `list` export.
+  const targets = Array.isArray(urls) ? urls : [urls];
   try {
-    await vercelDel(urls);
+    const keys = targets.map((u) => urlToKey(u, bucketName));
+    await Promise.all(keys.map((k) => bucket.file(k).delete({ ignoreNotFound: true })));
   } catch (err) {
-    const count = Array.isArray(urls) ? urls.length : 1;
+    if (err instanceof StorageError) throw err; // re-throw url_not_in_bucket
     throw new StorageError(
       "del_failed",
-      `storage.del(${count} url${count === 1 ? "" : "s"}) failed: ${errorMessage(err)}`,
+      `storage.del(${targets.length} url${targets.length === 1 ? "" : "s"}) failed: ${errorMessage(err)}`,
       err,
     );
   }
@@ -203,24 +238,38 @@ export async function del(urls: string | string[]): Promise<void> {
 /**
  * Resolve a download URL for an object.
  *
- * **commit 3** will swap to GCS v4 signed URL with
- * `responseDisposition=attachment` + 15 min TTL (per W3 verdict 12b3b18 C).
- * Preserved as a-1 pass-through here for commit-2 transient state.
+ * Per W3 verdict 12b3b18 C: returns a GCS v4 signed URL with
+ * `responseDisposition=attachment`, default TTL 15 min (overridable via
+ * `opts.ttlSeconds`). Accepts bare keys OR full GCS URLs (via `urlToKey()`).
  */
 export async function getDownloadUrl(
   urlOrKey: string,
   opts: DownloadUrlOptions = {},
 ): Promise<string> {
-  void opts;
-  if (urlOrKey.startsWith("http://") || urlOrKey.startsWith("https://")) {
-    const u = new URL(urlOrKey);
-    u.searchParams.set("download", "1");
-    return u.toString();
+  const { bucket, bucketName } = requireBucket();
+  // urlToKey() is intentionally called OUTSIDE the try block below so that
+  // url_not_in_bucket throws cleanly to the caller instead of being wrapped
+  // as download_url_failed. Do not move inside the try.
+  const key = urlToKey(urlOrKey, bucketName);
+  const ttlSeconds = opts.ttlSeconds ?? 900; // W3 verdict 12b3b18 C
+  const responseDisposition = opts.filename
+    ? `attachment; filename="${opts.filename}"`
+    : "attachment";
+  try {
+    const [signedUrl] = await bucket.file(key).getSignedUrl({
+      version: "v4",
+      action: "read",
+      expires: Date.now() + ttlSeconds * 1000,
+      responseDisposition,
+    });
+    return signedUrl;
+  } catch (err) {
+    throw new StorageError(
+      "download_url_failed",
+      `storage.getDownloadUrl(${key}) failed: ${errorMessage(err)}`,
+      err,
+    );
   }
-  throw new StorageError(
-    "download_url_requires_full_url",
-    `storage.getDownloadUrl requires a full URL in P5.1.a (got bare key: ${urlOrKey})`,
-  );
 }
 
 /**
