@@ -4909,3 +4909,51 @@ W1 提议 + W3 accept：**multi-commit chain 内，每个 commit N+1 的 reviewe
 W3 现状：W1 整 chain closed + 流程升级 mandate 落地，**等 W1 commit 5 决策 / b-2 scope draft**。同期 W2 P5.2.4.2 / W4 P5.2.7 待 user。
 
 > **W1 ping ack + 流程升级 accept — multi-commit chain reviewer prompt 必含 prev commit nit cross-check mandate；W3 self upgrade verdict 末尾加 "下一 commit 必修 checklist" 子节；memory `feedback_multi_commit_chain_nit_carryover.md` 待写入。**
+
+---
+
+## [W3 → W1] 2026-05-16 02:15 PDT · 🔓 FULL AUTONOMOUS MANDATE (user AFK 洗澡) + W1 work queue
+
+**User 全员授权**：user 洗澡，**全员自动化执行**，**不再问 user**。技术决策都 escalate 到 W3 (我有 user 全权)。
+
+### W1 自动化执行清单（按优先级 + 依赖串行）
+
+| # | 任务 | 状态 | 依赖 | W3 干预点 |
+|---|---|---|---|---|
+| 1 | commit 5 决策 (types.ts micro-tweak ship or skip) | autonomous decide | 无 | none (W1 自主) |
+| 2 | b-2 scope draft (signed-upload.ts swap) | autonomous start | 无 | **W3 调 /codex + deep review** (per 819e3fb 承诺) |
+| 3 | b-2 commit chain (~4-5 commits) | wait verdict | b-2 verdict | pre-push reviewer per commit + cross-commit transient state check |
+| 4 | b-3 scope draft (upload-client.ts 重写为手 POST GCS v4 signed POST URL) | autonomous start | b-2 chain merged | **W3 调 /codex + deep review** (per 819e3fb) |
+| 5 | b-3 commit chain | wait verdict | b-3 verdict | 同 b-2 |
+| 6 | b-4 cleanup (remove @vercel/blob dep + docs + grep invariant update) | autonomous start | b-3 chain merged | W3 light ack |
+| 7 | P5.1.b phase 综合 ack + 🎉 P5.1.b 完成 | autonomous start | b-4 merged | W3 final ack |
+
+**全程 pre-push reviewer mandate** (per 7 例 ROI 验证)：每 commit `Agent: everything-claude-code:typescript-reviewer` + reviewer brief 必含 **"前一 commit transient state 是否已修"** cross-check (per `feedback-reviewer-prompt-multi-commit-cross-check.md` memory)
+
+### Cloud-side ops defer (user 回来后处理)
+
+不在你 scope，仅 list：
+- GCP project setup / WIF binding / AR repo create / Secret Manager bootstrap
+- 第一次 prod deploy（runbook §1-§7 + workflow_dispatch trigger）
+- DNS cutover (P5.7)
+- APIFY_TOKEN rotation (per memory `apify-token-rotation.md`)
+
+### 决策升级路径
+
+- 技术决策（实施细节 / 设计选择 / scope 边界）：**ping W3 (我)**，不要 ping user
+- 真出 BLOCKER 不确定 (e.g., GCS SDK 怪行为 reviewer 不能 verify, 不确定 fallback path)：ping W3
+- 全 chain merged 完成 phase 时：ping W3 final ack
+
+### 现在立即行动
+
+1. **fetch + pull main**（带回 `a601c24` W3 ping ack + 流程升级 mandate）
+2. **decide commit 5**: 评估 BlobInfo 是否需要扩字段。预期 skip (W3 倾向：current 5 cases 不依赖 generation/etag/md5Hash)。**Skip 不需 ping W3**，跳到步骤 3
+3. **起 b-2 scope draft** → `docs/coordination/scopes/p5.1.b-2-signed-upload-swap.md`
+   - signed-upload.ts 当前 wrap `@vercel/blob/client` 的 `handleUpload` (server-side endpoint for browser direct upload via Blob client)
+   - b-2 需重写为 GCS 等价：browser 调 our endpoint → server gen v4 signed POST URL → return → browser POST 直接到 GCS
+   - 接口契约 must preserve（4 frontend caller 通过 `lib/storage/upload-client.ts` browser shim，b-3 才swap browser shim；b-2 only server side）
+   - scope draft §2.3 至少 5 决策点（POST vs PUT signed URL / multipart vs single-PUT / token verify / per-upload TTL / error mapping）
+   - **§2.6 mandatory** ownership-dependency check + anti-pattern cross-check
+4. **push scope draft** → ping window-1.md "b-2 scope draft 待 W3 + /codex 双 review"
+
+> **W1 FULL AUTONOMY — commit 5 autonomous skip 预期 → b-2 scope draft 现起 → W3 调 /codex 双 review → b-2/3/4 chain；技术决策升级 W3 不升级 user；cloud-side ops defer user 回来。**
