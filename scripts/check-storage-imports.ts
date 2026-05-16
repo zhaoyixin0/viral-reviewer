@@ -38,34 +38,40 @@ const SKIP_DIRS = new Set([
 ]);
 
 /**
- * Matches `import ... from "@vercel/blob"` (top-level package).
+ * Matches `import ... from "@vercel/blob"` or `export ... from "@vercel/blob"`
+ * (top-level package).
  *
- * Requires the `import` keyword at line start to avoid false positives on
- * comments / docstrings / string literals that happen to mention the package
- * name. Lazy `[^"']*?` with `s` flag handles multi-line `import { ... }`.
+ * Requires `import` / `export` keyword at line start to avoid false positives
+ * on comments / docstrings / string literals that mention the package name.
+ * Lazy `[^"']*?` with `s` flag handles multi-line `import { ... }`.
  * Quote-terminated so `@vercel/blob/client` won't match.
+ *
+ * Both `import { x } from` AND `export { x } from` are caught (per
+ * typescript-reviewer 2026-05-16 a-5 LOW #1: re-export form was a latent
+ * gap; upload-client.ts itself uses `export ... from`).
  */
-const TOP_IMPORT = /(?:^|\n)\s*import\b[^"']*?from\s+["']@vercel\/blob["']/s;
+const TOP_IMPORT = /(?:^|\n)\s*(?:import|export)\b[^"']*?from\s+["']@vercel\/blob["']/s;
 
-/** Matches `import ... from "@vercel/blob/client"` (browser/server signed-upload sub-path). */
-const CLIENT_IMPORT = /(?:^|\n)\s*import\b[^"']*?from\s+["']@vercel\/blob\/client["']/s;
+/** Matches `import ... from "@vercel/blob/client"` or `export ... from ...`. */
+const CLIENT_IMPORT = /(?:^|\n)\s*(?:import|export)\b[^"']*?from\s+["']@vercel\/blob\/client["']/s;
 
 /** Files allowed to import top-level `@vercel/blob`. */
 const TOP_WHITELIST = new Set<string>(["lib/storage/api.ts"]);
 
 /**
- * Files allowed to import `@vercel/blob/client`.
+ * Files allowed to import `@vercel/blob/client`. Both are facades:
  *
- * - `lib/storage/signed-upload.ts`: server-side facade (P5.1.a-4, this commit).
- * - 4 client components: legacy direct callers, TO BE REMOVED in P5.1.a-5
- *   when `lib/storage/client/upload.ts` browser shim lands.
+ * - `lib/storage/signed-upload.ts` (server): handleUpload integration for
+ *   the 2 upload routes (P5.1.a-4).
+ * - `lib/storage/upload-client.ts` (browser): re-exports `upload` for the
+ *   4 frontend callers (P5.1.a-5; previously 4 client components imported
+ *   `@vercel/blob/client` directly).
+ *
+ * A 阶段 grep invariant 完成 = these 2 are the only callers.
  */
 const CLIENT_WHITELIST = new Set<string>([
   "lib/storage/signed-upload.ts",
-  "components/technique-match/InputPanel.tsx",
-  "components/technique-match/CapCutExport.tsx",
-  "components/review/InputPanel.tsx",
-  "components/template-review/BriefUploader.tsx",
+  "lib/storage/upload-client.ts",
 ]);
 
 async function* walk(dir: string): AsyncGenerator<string> {

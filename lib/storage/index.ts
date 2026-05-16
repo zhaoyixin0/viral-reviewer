@@ -7,10 +7,12 @@
  *
  *   1. `from "@vercel/blob"` — only `lib/storage/api.ts`.
  *   2. `from "@vercel/blob/client"` — only `lib/storage/signed-upload.ts`
- *      (server) + 4 client components: `components/technique-match/InputPanel.tsx`,
- *      `components/technique-match/CapCutExport.tsx`, `components/review/InputPanel.tsx`,
- *      `components/template-review/BriefUploader.tsx`.
- *      The 4 client components are TO BE REMOVED in P5.1.a-5 via `lib/storage/client/upload.ts`.
+ *      (server, handleUpload integration) + `lib/storage/upload-client.ts`
+ *      (browser shim, `"use client"`, re-exports `upload` for the 4 frontend
+ *      callers). 4 caller components import from `@/lib/storage/upload-client`.
+ *
+ *   `upload-client.ts` NOT re-exported here — index.ts is `server-only`-tainted;
+ *   client components must use the deep path.
  *
  *   CI enforcement: `npm run check:storage-imports` (scripts/check-storage-imports.ts).
  *

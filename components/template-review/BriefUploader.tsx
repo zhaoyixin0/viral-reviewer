@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Upload, FileText, Loader2, AlertTriangle, CheckCircle2 } from "lucide-react";
-import { upload } from "@vercel/blob/client";
+import { upload } from "@/lib/storage/upload-client";
 import type { ExtractedBrief } from "@/lib/template-review/brief-extract";
 
 type Props = {
