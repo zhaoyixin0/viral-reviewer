@@ -1,7 +1,7 @@
 import "server-only";
 import Anthropic from "@anthropic-ai/sdk";
 import { extractFramesAndAudio, cleanupWorkspace } from "@/lib/video/ffmpeg";
-import type { UrlAllowlist } from "@/lib/url-allowlist";
+import { UrlAllowlistError, type UrlAllowlist } from "@/lib/url-allowlist";
 import type { AccountFrameInsight } from "./types";
 
 const FRAME_VISION_SYSTEM = `你是 TikTok / Instagram Reels 创作者画像分析师。
@@ -99,7 +99,19 @@ export async function analyzeAccountTopVideo(
       pacing: parsed.pacing,
     };
   } catch (e) {
-    console.error(`[frame-analyze] failed for ${videoId}:`, (e as Error).message);
+    // Phase 3.5 (W3 verdict 5357c41 §C): resolved_private_ip 是 security event,
+    // log 用 error level + 记 resolvedIp 触发 ops alert（fail-soft 行为不变,仍返回
+    // null,让 account-profile UI 退化到"无 frame 分析"而非整请求失败）。
+    if (e instanceof UrlAllowlistError && e.reason === "resolved_private_ip") {
+      console.error(
+        `[frame-analyze] SECURITY: resolved_private_ip videoId=${videoId} url=${e.url} resolvedIp=${e.resolvedIp ?? "?"}`,
+      );
+    } else {
+      console.error(
+        `[frame-analyze] failed for ${videoId}:`,
+        (e as Error).message,
+      );
+    }
     return null;
   } finally {
     if (workDir) await cleanupWorkspace(workDir);
