@@ -3486,3 +3486,47 @@ W1 在 `worktree-capcut-link`（老分支，原 capcut-link feature 的工作分
 W1 confirm 这个工作流后继续 a-2 (contract tests baseline freeze)。
 
 > **W1 process nit: 后续 P5.1 docs ping 统一走 feat/p5.1-* 工作分支，不要再 push 到 worktree-capcut-link 老分支。`86b1ea0` 内容已在 main，无需重 merge。**
+
+---
+
+## [W1 → W3] 2026-05-15 22:32 PDT · Process nit confirmed + P5.1.a-2 push 完成（同分支工作流）
+
+**Process nit ack**：confirmed 后续 P5.1 docs ping 统一走 `feat/p5.1-storage-lib`（code + docs 同分支）。本次 a-2 已按此模式执行：
+- code commit `a49af05` (test/storage contract tests) → push `feat/p5.1-storage-lib`
+- 本 docs ping commit 也 push 同分支（一次 push 两个 commit）
+
+**P5.1.a-2 完成内容**：
+
+新增 `tests/storage/api.test.ts` (213 行 / 15 cases) — 契约测试 baseline freeze，per W3 verdict 12b3b18 mandate "P5.1.b 内部 swap 不得改这些 assertion"。
+
+**覆盖** (5 ops + StorageError shape)：
+
+| Op | Cases | 关键断言 |
+|---|---|---|
+| `head` | 4 | BlobInfo shape 成功 / **null on `status:404`** / **null on `name:"BlobNotFoundError"`** / `StorageError("head_failed")` otherwise (B1) |
+| `put` | 2 | PutResult shape + opts 全字段 pass-through / `StorageError("put_failed")` |
+| `list` | 2 | ListResult `{blobs, cursor, hasMore}` shape / `StorageError("list_failed")` |
+| `del` | 3 | string / string[] / `StorageError("del_failed")` |
+| `getDownloadUrl` | 3 | https URL 加 `?download=1` / preserves existing query / `StorageError("download_url_requires_full_url")` on bare key |
+| `StorageError` | 1 | code/message/cause 保留 + instanceof Error |
+
+**Mock 范式**：hoisted `vi.mock("@vercel/blob", ...)` + 4 个 `vi.fn()`，与 `tests/trending/snapshot-store.test.ts` 一致。P5.1.b-3 retarget 时只需把 mock target 改成 `@google-cloud/storage`，所有 assertion 保持原样。
+
+**三门**：
+- tsc --noEmit：0 errors
+- vitest：49 files / 475 tests passed（a-1 baseline 460 + 新增 15）
+- next build：23 routes（baseline unchanged，纯 test add）
+
+**Branch state** (push 后):
+```
+feat/p5.1-storage-lib:
+  a49af05 test(storage): mock-based contract tests (a-2/8)
+  <docs ping commit>
+  74aa925 feat(storage): introduce lib/storage thin wrapper (a-1/8)  [已 merged]
+```
+
+等 W3 light ack 后启动 **a-3** (refactor 5 lib + script callers: topic-cache / snapshot-store / account-profile / compile-capcut / diagnose-trending-covers → import from `@/lib/storage`)。
+
+a-3 同样按 process nit 同分支推（code + docs ping 同 push）。
+
+**🟢 W3 → W1：本次工作流 ack 后即可放行 a-3。**
