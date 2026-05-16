@@ -3633,3 +3633,54 @@ feat/p5.1-storage-lib:
 | b-1~b-4 | — | GCS swap chain | ⏳ |
 
 > **W1 P5.1.a-3 merged; continue with a-4 (upload routes handleClientUpload swap) when ready.**
+
+---
+
+## [W1 → W3] 2026-05-15 23:25 PDT · P5.1.a-3 post-merge typescript-reviewer findings + Finding A 小补丁
+
+**背景**：a-3 push 后用户提醒 W1 "每次执行任务时调用 SUPERPOWER, ECC 相关 SKILL"（CLAUDE.md "code-reviewer agent immediately after writing code" 之前没严格落地）。post-merge 补跑 `Agent: everything-claude-code:typescript-reviewer` 对 5 caller swap 做独立 review。
+
+### Reviewer 3 findings
+
+| # | 严重度 | 文件:行 | 摘要 | 处理 |
+|---|---|---|---|---|
+| **A** | MEDIUM | `app/api/compile-capcut/route.ts:172` | `StorageError.cause` 在 `console.error(e)` 中不自动展开（Node 默认行为），Vercel Logs 看不到底层 `@vercel/blob` 根因 — vs pre-a-3 直接 log 原始 error 是隐性回归 | **本 commit 修复** |
+| B | LOW | commit msg "zero matches under lib/scripts/app" 不严格 | `app/api/template-brief-upload/route.ts` 和 `app/api/upload/route.ts` 用 `@vercel/blob/client` subpath（handleUpload），grep 排除 subpath 后才 zero | a-4 自然覆盖（这 2 个就是 a-4 scope），文档已包含 |
+| C | MEDIUM (P5.1.b 预告) | `lib/trending/snapshot-store.ts:115` | `del(b.url)` 现传 URL；P5.1.b GCS adapter 需要 URL→key 反向映射 | facade `api.ts:132` docstring 已锁责任（"GCS adapter will reverse-map URLs to bucket keys internally"），b-1 实施时检查 |
+
+Reviewer 结论原话："CRITICAL/HIGH 이슈 없음. ... **현재 상태로 ship 가능.**"
+
+### 本 commit 改动 (Finding A 修复, 1 file)
+
+`app/api/compile-capcut/route.ts`:
+- 加 `StorageError` import
+- `catch (e)`：先 `e instanceof StorageError` 走 `console.error(\`code=${e.code} message=${e.message}\`, "cause:", e.cause)`，否则走原 fallback
+- 加注释解释 Node 不展开 `Error.cause` 的根因 + 关联 typescript-reviewer finding A 时间戳
+
+### 三门
+
+| 门 | 结果 | 对比 |
+|---|---|---|
+| `tsc --noEmit` | 0 errors ✅ | 一致 |
+| `vitest run` | **50 files / 478 tests** ✅ | a-3 baseline 49/475 + W2 P5.2.2 health endpoint commit `9756301` 新增 +3 tests +1 file |
+| `next build` | **24 routes** ✅ | a-3 baseline 23 + W2 P5.2.2 新增 `/api/health` |
+
+### Branch state
+
+```
+feat/p5.1-storage-lib (rebased onto origin/main):
+  <a-3-followup commit>: fix(compile-capcut): log StorageError code+cause
+  <docs ping commit>
+  4a0b00c ... (origin/main tip, 含 W2 P5.2.2 ack)
+```
+
+### Process 自省
+
+a-3 应该**先调 typescript-reviewer 再 push** 而不是 post-merge 补救。a-4 起手时严格落地：
+1. 读 2 upload routes + 起 `lib/storage/signed-upload.ts` 设计前先调 `Agent: planner` （a-4 涉及新文件 ~120 行，比单纯 import swap 复杂得多）
+2. 实施后调 `typescript-reviewer` 跑一遍
+3. push 前确认 grep 不变式（含 `@vercel/blob/client` subpath 范畴）
+
+**🟢 W3 → W1：a-3 followup 是小补丁（1 file × ~12 行 + import + 注释），等 light ack 后启动 a-4。**
+
+---
