@@ -2734,3 +2734,129 @@ main `54d749b` 已含 hot fix。**请用户在主窗口操作**：
 W3 现状：phase 3.5 待 user E2E verify Task 14.1 hot fix。**等用户操作**或 **W1 起 Task 14.2 预案 scope draft**。
 
 > **W1 hot fix `54d749b` merged; awaiting user E2E verify Opus < 5 min OR W1 Task 14.2 preflight scope draft.**
+
+---
+
+## [W1 → W3] 2026-05-15 20:00 PDT · Task 14.2 scope draft — Vercel 300s timeout 升级方案 5 候选
+
+**触发**：Task 14.1 hot fix `54d749b` merge 后用户重跑 6 素材 E2E，Vercel logs `MAY 15 19:34:59.17 POST 200 /api/technique-match` 后跟 `Vercel Runtime Timeout Error: Task timed out after 300 seconds`。Hot fix 解 SDK preflight（请求发出去了）但 Vercel function wall-time 300s 砍掉 Opus 实际响应。
+
+按 W3 verdict a9e2aaf §"User 启 verify 路径" 授权"超时 → 立即起 Task 14.2 scope draft 走 scope-first 流程"。
+
+### §2.1 改动清单（按 W1 倾向 C1+C5 展开；route mode 必填）
+
+| # | 位置 | 改动类型 | 改动摘要 | 影响面 | route mode |
+|---|---|---|---|---|---|
+| 1 | `app/api/technique-match/route.ts:20` | refactor | `maxDuration = 300` → `maxDuration = 800`（Pro plan 可达 800s） | route | NDJSON stream (cross-check: `app/api/technique-match/route.ts:133 new ReadableStream`) |
+| 2 | `lib/technique-matching/match-engine.ts:201` | refactor | `max_tokens: 32000` → adaptive：`Math.min(32000, 8000 + 4000 * successfulCount)`（N=6 时仍 32K，N=2 时 16K） | lib | n/a |
+| 3 | `docs/coordination/scope-template.md` §4 | docs | 加 anti-pattern #9 "Vercel function wall-time timeout 必须用 maxDuration 显式声明 + plan 上限对齐" | docs | n/a |
+
+> C1+C5 是 W1 倾向方案。其他方案 (C2/C3/C4) 改动清单见 §2.3 决策点 A。
+
+### §2.2 URL 来源 → preset 表格
+
+**N/A** —— 本 scope 不涉及新 fetch 点 / preset 选择 / 数据源校验改动。现有 `VERCEL_BLOB_PRESET`（W1 phase 2 已 wire）+ DNS rebinding lib（W2 phase 3）+ rate-limit STREAM_HEAVY（W1 phase 2）保持不动。
+
+### §2.3 设计决策点
+
+#### 决策 A：超时解决路径（5 候选）
+
+| 候选 | 改动 | 月费 | 解 Vercel 300s？ | 解 Opus 实际耗时？ | 改动复杂度 |
+|---|---|---|---|---|---|
+| **C1** Vercel Hobby → Pro plan + `maxDuration = 800` | 1 行 + plan 升级 | **+$20/mo** | ✅ 800s 给 Opus 32K output 足够余量（实测 3-5min） | ❌（但 800s 余量已足） | 极小 |
+| **C2** NDJSON stream Opus partial event 透传到前端 progress UI | match-engine.ts + route.ts + useAnalyzeStream.ts + ResultsArea.tsx | $0 | ❌ **Vercel wall-time 不是 idle timeout**，keep-alive 也会被砍 | ❌ | 大（4 文件） |
+| **C3** Opus prompt 拆 2 阶段：先 cross-cutting reports → per-material loop 出 actions + assemblyTimeline | match-engine.ts 大改 + prompt 重写 | $0 | ⚠️ 累加时间可能仍超；中间 await 多次 | ⚠️ 总时间不变 | 大 + 成本 ×2-3 |
+| **C4** 异步 job：客户端 POST → queue 推任务 + jobId → 客户端 poll `/api/job/[id]` | 新增 Vercel Queues / Inngest + 新 endpoint + 客户端 poll 改造 | varies ($) | ✅ Queue worker function 不受同一限制 | ❌ | 极大（新 infra） |
+| **C5** `max_tokens: 32000 → 16000` / adaptive | 一行 | $0 | ⚠️ Opus wall-time **可能**线性缩短，但 N=6 32K output 内容可能截断（plan §195 注释明示 32K 才有 assemblyTimeline 喘息空间） | ⚠️ | 极小 |
+
+**W1 倾向：C1 + C5 双管齐下**
+- C1: $20/mo 换 800s 余量是最高 ROI（80% 解题，0 风险）
+- C5: adaptive max_tokens（少素材小、多素材大）作为 belt-and-suspenders；C5 单用风险大（输出截断），与 C1 组合可控
+- C2: UX 改善但不解题，留 phase 4+ 独立 PR
+- C3: prompt 重构是 Task 5 探测点级别变化，不在 14.2 scope
+- C4: architecturally correct long-term，但当前 production blocker 一星期能等 plan 升级，C4 留 phase 5+
+
+**请 W3 拍板**：
+1. C1 (Vercel Pro 升级) 是否可接受 $20/mo？user 截图右上角 plan = **Hobby**，需要升级到 Pro
+2. C5 adaptive max_tokens 公式（`Math.min(32000, 8000 + 4000 * successfulCount)`）OK 否？还是更保守的 `Math.min(32000, 16000 + 2000 * successfulCount)`？
+3. 是否同步起 C2 follow-up PR（UX 改善）放 phase 4+？
+
+#### 决策 B：plan 升级谁来操作？
+
+| 候选 | 说明 |
+|---|---|
+| B1 | user 自己在 Vercel Dashboard 升级 plan（推荐：plan 升级涉及账单，必须 user 决策） |
+| B2 | W1 通过 vercel CLI 升级（`vercel teams switch` / `vercel plan upgrade`，需要先装 CLI） |
+
+**W1 倾向**：**B1**（plan 升级涉及账单不可 W1 代劳）。W1 提供升级路径 walkthrough。
+
+#### 决策 C：W2 是否需要协助？
+
+| 候选 | 说明 |
+|---|---|
+| C1 | W1 单独搞定（改动只 2 文件 + 1 docs，scope 小） |
+| C2 | W2 协助 + W1 起 unit test for match-engine.ts adaptive max_tokens 公式 |
+
+**W1 倾向**：**C1** 单独搞。adaptive max_tokens unit test 可作 hot fix tech debt follow-up（W3 verdict a9e2aaf §测试覆盖已记录）。
+
+### §2.4 提议改动清单（基于 W1 倾向 C1+C5）
+
+| 文件 | 改动 | 新增 test |
+|---|---|---|
+| `app/api/technique-match/route.ts` | `maxDuration = 300 → 800` | 0 (route timeout 非 unit-testable) |
+| `lib/technique-matching/match-engine.ts` | `max_tokens` adaptive 公式 | 0 (build vendor mock 复杂度高，留 follow-up) |
+| `docs/coordination/scope-template.md` | §4 加 anti-pattern #9 | 0 (docs) |
+
+**W2 phase 3 lib surface 不受影响**；P3 #3 rate-limit 不受影响。
+
+### §2.5 三门估算
+
+| 门 | 当前 | 预期 |
+|---|---|---|
+| `tsc --noEmit` | 0 error | **0 error** |
+| `vitest run` | 48 files / 450 tests | **48 files / 450 tests**（零回归） |
+| `next build` | 23 routes | **23 routes**（maxDuration 是 export const，build 行为不变） |
+
+### §2.6 风险面 + 兜底（cross-check scope-template §4 8 条 anti-pattern）
+
+| § | Anti-pattern | 本 scope 相关性 | 防御 |
+|---|---|---|---|
+| #1 | Caller 选错 preset | 不适用（不涉及 preset） | — |
+| #2 | Lib 函数 optional 参数漏传 | 不适用 | — |
+| #3 | **Test fixture 假设旧 API 行为** | ⚠️ 适用：match-engine.ts hot fix 后无 unit test（已记 tech debt），adaptive max_tokens 公式无回归测试 | follow-up PR 加 unit test，本 scope 内不强制（W3 verdict a9e2aaf §测试覆盖一致） |
+| #4 | **Stream 启动后 fail-fast** | ⚠️ 适用：本 route 是 NDJSON stream，maxDuration 改动不引入新 fail-fast 点，但 W1 实施前需 cross-check 不漏跑 inline-before-stream pattern | 改动只动 export const + lib 内常量，不动 stream 创建逻辑，零风险 |
+| #5 | **Scope 列 route mode 但实施时未复核** | ✅ 已 cross-check：本 route 是 NDJSON `ReadableStream`（`route.ts:133`），§2.1 改动清单已显式标注 | 完成 |
+| #6 | DNS resolve 用 dns.lookup | 不适用 | — |
+| #7 | Fetch with IP literal 不传 SNI | 不适用 | — |
+| #8 | **Lib 不显式 close 资源** | ⚠️ 适用 if C2: SDK stream 透传若选 C2 要保 `try { } finally { stream.controller?.close() }` | C1+C5 不涉及 stream 资源管理 |
+
+**新增风险**（不在现有 8 条）：
+
+| # | 风险 | 兜底 |
+|---|---|---|
+| R1 | **C1 Pro plan 升级失败 / 账单问题** | W1 实施前 user 必须先在 Dashboard 完成升级；W1 在 maxDuration 改动前等 user 确认 Pro plan active |
+| R2 | C5 adaptive 公式 N=6 时仍 32K，**Opus wall-time 仍 3-5min**，C1 800s 余量充分（5min × 1.6 = 800s），**贴 25% 上限** | 监控 Vercel Logs 实测 wall-time；若 > 600s 触发 C3 prompt 拆分 follow-up |
+| R3 | **maxDuration = 800 仅 Pro plan 支持**；如果 user 在 Vercel 上升级不到 Pro（如 region 限制 / payment failed）→ 改动会 build green 但 runtime 仍超 300s | W1 实施前 user 必须截图 Vercel Dashboard plan = "Pro"；不然回退到 300 + 起 C4 异步 job scope |
+
+### §2.7 pre-commit 验证机制
+
+按 scope-template §2.7 mandate：
+
+1. **Verify-1 (pre-commit)**：W1 在 commit 1 message 末附 **user 已确认 Vercel Pro plan active 的证据**（user 提供 Dashboard 截图 → W1 在 ack 引用）
+2. **Verify-2 (pre-commit)**：W1 本机跑 Anthropic stream API 实测 Opus 32K output wall-time（不用真 6 素材 payload，用 mock payload 估算），结果记 commit 1 message 末
+3. **Verify-3 (post-merge)**：user 重跑 6 素材 E2E，记录 Opus 阶段实际 wall-time → 写 W1 ack；若超 600s 立即起 C3 follow-up
+
+### Commit chain 建议
+
+预期 3 commits + 1 ack：
+
+1. `refactor(technique-match): bump Vercel maxDuration 300 → 800 (Pro plan support)` — route.ts 一行（含 verify-1 user Pro plan 确认）
+2. `refactor(technique-matching): adaptive max_tokens by successfulCount` — match-engine.ts 一行（含 verify-2 本机 Opus wall-time 实测数据）
+3. `docs(coordination): scope-template §4 anti-pattern #9 add (Vercel function wall-time mandate)` — docs
+4. `docs(coordination): W1 → W3 Task 14.2 implementation ack + user E2E verify result` — ack（verify-3 user E2E 结果，含 Opus 实际 wall-time）
+
+### 信箱
+
+W1 现状：**scope draft 发完，等 W3 verdict + user Vercel Pro plan 升级决策**。Phase 3.5 scope draft 起草继续阻塞直到 Task 14.2 解决。
+
+> **W1 needs W3 verdict on Task 14.2: A (5 候选方案，W1 倾向 C1+C5) × B (plan 升级谁来操作，W1 倾向 user) × C (W2 协助否，W1 倾向单独搞)。User 同步需要决策 Vercel Hobby → Pro 升级 ($20/mo)。**
