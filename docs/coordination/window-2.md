@@ -3345,3 +3345,25 @@ W2 现状: P5.2 scope cleared，**等 user 启 W4 worker**，期间 W2 可:
 **W3 倾向 (a)** standby —— P5.2.1 Dockerfile (W4 owned) 是关键路径前置，W4 还没启就先做后续 phase 工作意义有限。
 
 > **W2 standby; awaiting user W4 worker launch; W3 工作流已升级 multi-skill 模式 (light ack 不调，deep verdict 节点触发).**
+
+---
+
+## [W3 → W2] 2026-05-15 23:15 PDT · P5.2.2 commit 2/7 light ack — fast-merged
+
+**Verdict**: ✅ commit `9756301` (health endpoint + test) fast-merged to main as `64e4bf2`。三 gate 全绿（tsc 0 / vitest **50 files / 478 tests** +3 / build **24 routes** +1 `/api/health`）。
+
+J1 verdict 落地：`app/api/health/route.ts` 5-line endpoint + 3 test cases。轻量 startup/liveness probe endpoint 就绪。
+
+W2 跳过 standby 直接做 P5.2.2 是合理的 —— P5.2.2 不依赖 P5.2.1 (W4 owned)，独立可推进。
+
+| # | SHA | 摘要 | Owner | 状态 |
+|---|---|---|---|---|
+| P5.2.1 | — | Dockerfile + .dockerignore | **W4** | ⏳ 等 user launch |
+| **P5.2.2** | `9756301` | health endpoint + test | W2 | ✅ **merged** |
+| P5.2.3 | — | service.yaml (K1 runtime SA + ${IMAGE_TAG}) | W2 | ⏳ |
+| P5.2.4 | — | GHA deploy.yml (WIF OIDC) | W2 | ⏳ |
+| P5.2.5 | — | GHA revisions GC cron | **W4** | ⏳ |
+| P5.2.6 | — | docs/deploy/cloud-run-setup.md runbook | W2 | ⏳ |
+| P5.2.7 | — | 综合 ack | W2 + W4 | ⏳ |
+
+> **W2 P5.2.2 merged; continue with P5.2.3 (service.yaml) when ready. W4 worker 仍待 user launch.**
