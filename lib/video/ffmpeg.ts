@@ -5,7 +5,10 @@ import ffmpeg from "fluent-ffmpeg";
 import { mkdir, readFile, rm } from "fs/promises";
 import { join } from "path";
 import { tmpdir } from "os";
-import { UrlAllowlistError, type UrlAllowlist } from "@/lib/url-allowlist";
+import {
+  fetchWithAllowlist,
+  type UrlAllowlist,
+} from "@/lib/url-allowlist";
 
 if (ffmpegStatic) ffmpeg.setFfmpegPath(ffmpegStatic);
 if (ffprobeStatic?.path) ffmpeg.setFfprobePath(ffprobeStatic.path);
@@ -20,8 +23,12 @@ export type ExtractResult = {
 /**
  * 从远程 URL 下载视频到 /tmp，抽 N 帧 + 抽音轨。
  *
- * **SSRF 防御（P3 #2 phase 2）**：函数入口 `opts.urlAllowlist.check(videoUrl)`，
- * deny → 抛 `UrlAllowlistError`，未发起任何 fetch / workDir 创建。
+ * **SSRF + DNS rebinding 防御（P3 #2 phase 2 + phase 3.5 · 2026-05-15）**：
+ * 用 `fetchWithAllowlist`（undici Pool with resolved-IP + SNI）替代 plain `fetch`，
+ * 内部 `checkAsync` 含 sync fast-fail（invalid_url / scheme_denied / host_denied /
+ * private_ip 不发 DNS），DNS resolve 后逐 IP 私段校验。**ffmpeg 仅读本地 /tmp 文件**
+ * （fetch 完后 writeFile,ffmpeg 走 libavformat 读本地路径），不触发额外 DNS resolve,
+ * 与"alt path（先下 /tmp → ffmpeg 读本地）"等价。
  *
  * @param videoUrl   远程视频 URL
  * @param frameCount 抽帧数量（default 6）
@@ -35,11 +42,11 @@ export async function extractFramesAndAudio(
   frameCount: number,
   opts: { urlAllowlist: UrlAllowlist },
 ): Promise<ExtractResult> {
-  // SSRF 防御：进入工作目录创建 / 网络请求前先 check
-  const allowlistResult = opts.urlAllowlist.check(videoUrl);
-  if (!allowlistResult.ok) {
-    throw new UrlAllowlistError(allowlistResult.reason, videoUrl);
-  }
+  // P3 #2 phase 3.5 (W3 verdict 5357c41 §B1): fetchWithAllowlist 内部 checkAsync
+  // 已含 sync fast-fail（前 4 个 reason 不发 DNS）+ DNS resolve + 私段校验。
+  // 无需 caller 层额外 sync check（双重 check 浪费 ~30ms latency）。
+  const res = await fetchWithAllowlist(videoUrl, opts.urlAllowlist);
+  if (!res.ok) throw new Error(`Failed to download video: ${res.status}`);
 
   const id = `vr-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const workDir = join(tmpdir(), id);
@@ -48,9 +55,6 @@ export async function extractFramesAndAudio(
   const videoPath = join(workDir, "input.mp4");
   const audioPath = join(workDir, "audio.mp3");
 
-  // 1) 下载远程视频
-  const res = await fetch(videoUrl);
-  if (!res.ok) throw new Error(`Failed to download video: ${res.status}`);
   const buf = Buffer.from(await res.arrayBuffer());
   const { writeFile } = await import("fs/promises");
   await writeFile(videoPath, buf);
