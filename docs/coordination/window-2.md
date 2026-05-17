@@ -6079,3 +6079,188 @@ Read-only investigation complete. **NO fixes pushed**. W3 triages + serial fix o
 **File ownership lock**: Findings A/B (service.yaml) + D/E (upload routes) are W2 owned; G is lib/trending/fetch.ts (W1) — collab needed. F is clean (no action).
 
 > **W2 → W3: 7 findings (2 HIGH cron auth + 1 HIGH apify serial + 2 LOW console.log + 1 MEDIUM admin secret + 1 INFO); awaiting W3 triage.**
+
+
+---
+
+## [W4 → W3] 2026-05-17 13:31 PDT · P5 post-cutover bug hunt findings — `5212b80` mandate (read-only, no fixes)
+
+W4 scope (7 targets per W3 mandate). ~25min audit. main = `5b54bb7` pulled fresh. **Read-only — no files touched.** Findings ranked + W1/W2 overlap explicitly tagged.
+
+### Coverage matrix
+
+| Target | Reviewed | Findings |
+|---|---|---|
+| lib/observability/structured-log.ts | ✅ full code-level | INFO-1 (UI-side validation gap — out of W4 reach) |
+| lib/video/ffmpeg.ts + ffprobe-meta.ts | ✅ full | INFO-2 (binary path verified clean) |
+| lib/video/gemini-understand.ts + analyze.ts + analyze-potential.ts | ✅ full | INFO-3 (env bindings clean) |
+| lib/review-engine/llm.ts + retrieval.ts | ✅ full | clean |
+| lib/capcut-compiler/* (assets/transitions/edit-plan/build/package) | ✅ full | clean |
+| lib/trending/fetch.ts + snapshot-store.ts | ✅ full | **HIGH-1 (ECC of W2-G + extra dim) + MED-1 (lead)** |
+| lib/account-profile/cache.ts + lib/topic-cache/blob-cache.ts | ✅ full | **MED-1 (same root cause)** |
+| Dockerfile multi-stage runtime | ✅ full | INFO-4 (glibc + binary path verified) |
+| Cron 504 collab (W2-G ECC) | ✅ | **HIGH-1 (extra dim)** |
+
+### Findings
+
+---
+
+#### ⚠️ HIGH-1 (ECC of **W2 Finding G**) — Cron 504: extra latency dimension beyond Apify serial
+
+**W2-G already correctly identified** `lib/trending/fetch.ts:66-84` TT Stage 2 serial loop (5 × 30-60s). W4 ECC confirms + adds **two extra dimensions** W2-G didn't enumerate:
+
+1. **Post-scrape LLM batches add 60-180s AFTER scrape collapses** (`lib/trending/fetch.ts:161-162`):
+   - L161 `enrichBatch(merged)` — Anthropic call over merged TT+IG batch (~30-120s)
+   - L162 `classifyTopics(enriched, libraryTopics)` — Haiku call (~30-60s)
+
+2. **Total wall after W2-G fix-(a) alone (parallelize TT Stage 2)**:
+   - parallel scrape (~30-60s, dominated by slowest hashtag) + IG (~30-60s parallel)
+   - **+ enrichBatch (~30-120s) + classifyTopics (~30-60s)**
+   - = **~120-240s total** — still close to / over 180s default deadline
+
+**Implication for W2-G fix triage**:
+- Option (a) alone (parallelize) **insufficient** for tight margin
+- Option (b) alone (extend Scheduler deadline) works immediately but doesn't address worst-case
+- **Option (c) — both — strongly recommended.** Defense-in-depth: parallelize collapses scrape stage; extended deadline absorbs LLM latency variance.
+
+**Files cross-referenced**: `lib/trending/fetch.ts:51-84` (scrape serial), `:161-162` (LLM batch), `lib/research/enrich-one.ts` (batch impl, not re-audited — W1 surface).
+
+**Severity rationale**: Same HIGH as W2-G (cron 504 root cause). W4 contribution is dimensional — not new finding.
+
+---
+
+#### 🔶 MED-1 (NEW) — `BLOB_READ_WRITE_TOKEN` stale env gate post-P5.1 GCS cutover (3 files, 8 sites)
+
+**Files & lines**:
+- `lib/trending/snapshot-store.ts` L21, L47, L81, L108 — readSnapshot / readLatestTwoSnapshots / writeSnapshot / pruneOldSnapshots
+- `lib/account-profile/cache.ts` L40, L56 — readAccountProfileCache / writeAccountProfileCache
+- `lib/topic-cache/blob-cache.ts` L36, L54 — readTopicCache / writeTopicCache
+
+**Pattern (all 8 sites identical)**:
+```ts
+if (!process.env.BLOB_READ_WRITE_TOKEN) return null;  // or `return;`
+// proceeds to call put / head / list / del from @/lib/storage facade
+```
+
+**Why it's a bug**:
+- P5.1 cutover replaced Vercel Blob → GCS. GCS auth is ADC (Workload Identity) + `GCS_BUCKET_NAME` env, **not a write-token**.
+- `BLOB_READ_WRITE_TOKEN` post-cutover has zero semantic meaning — facade `@/lib/storage` reads ADC + `GCS_BUCKET_NAME`, ignoring this env.
+- The gate is a vestigial sentinel from pre-P5.1 days. service.yaml L131-137 acknowledges the drift in its inline comment ("P5.1.b GCS swap 后会替换为 GCS auth") but the swap completed without retiring the binding or the gate.
+
+**Why MED not HIGH** (verified runtime impact = zero):
+- service.yaml L131-137 still **binds** `BLOB_READ_WRITE_TOKEN` from Secret Manager (kept alive defensively across P5.1 cutover per inline comment).
+- W3 bootstrap created `blob-read-write-token` Secret Manager entry (1 of 6 secrets per S1094) — so env IS truthy at runtime.
+- All 8 gates pass at runtime → no early-return fires → trending / account-profile / topic-cache features work normally.
+- **W3 light ack 5d1eb06 §P5 status: `/api/trending verified 200`** — confirms gates not blocking.
+
+**Why it's still a bug** (latent risk + drift):
+- Misleading: future ops reading "BLOB_READ_WRITE_TOKEN" will assume Vercel Blob is still involved.
+- Brittle: if W3 ever rotates / deletes the `blob-read-write-token` secret thinking "we don't use Vercel Blob anymore", **8 sites silently regress** to no-op → trending data stops writing, caches stop populating, snapshots stop pruning.
+- Code lie: gate semantic is `"is storage configured?"` but check tests an unrelated retired env var.
+
+**Suggested fix (W3 triage; W4-touchable)**:
+- Delete all 8 `if (!process.env.BLOB_READ_WRITE_TOKEN) return;` lines (storage facade has its own fail-fast `requireBucket()` per W1 P5.1.b-2 design — these gates are redundant defense as well as misleading).
+- Remove `BLOB_READ_WRITE_TOKEN` env binding from `service.yaml` L131-137.
+- Delete `blob-read-write-token` Secret Manager entry (W3 cloud-side cleanup).
+- Verify no other env name regression vectors via grep `process.env.BLOB|VERCEL_BLOB` audit.
+
+**Severity rationale**: MED — not actively broken in prod, but is an **incomplete P5.1 cutover artifact** that violates the "no stale env / no code lies" hygiene. One careless secret rotation away from breaking trending.
+
+---
+
+#### 🔵 INFO-1 — `lib/observability/structured-log.ts` Cloud Logging UI validation gap
+
+**Status**: Code-level audit clean. Reserved-field collision protection working (severity / timestamp / module / message / gitSha). JSON.stringify circular fallback emit working. `__internals` test surface preserved.
+
+**Unverifiable from W4 read-only scope**: W3 mandate item 1 ("Verify in Cloud Logging — severity field showing as Cloud Logging severity column? Any deserialization issues?") requires Cloud Console UI access — out of W4 reach.
+
+**Recommendation**: When W3 next opens Cloud Logging UI, filter by `resource.type=cloud_run_revision AND jsonPayload.module=*` and confirm:
+1. Severity column renders (WARNING / ERROR) — not just textPayload
+2. `jsonPayload.module` field appears as filterable label
+3. `jsonPayload.gitSha` correlates to current revision
+4. Recursive `cause` chain renders nested (not stringified)
+
+**Severity rationale**: INFO — code is right; only UI verification pending. If UI parse fails, fix is in our code (emit shape).
+
+---
+
+#### 🔵 INFO-2 — ffmpeg-static / ffprobe-static binary paths verified clean
+
+**Cross-check Dockerfile L101-102 vs `require.resolve` runtime path**:
+- `ffmpeg-static@^5.3.0`: binary at `node_modules/ffmpeg-static/ffmpeg` (linux); package main `index.js` exports `path.join(__dirname, "ffmpeg")` → resolves to `/app/node_modules/ffmpeg-static/ffmpeg` at runtime ✅
+- `ffprobe-static@^3.1.0`: binary at `node_modules/ffprobe-static/bin/linux/x64/ffprobe`; package main exports `{ path: ... }` resolving to same ✅
+- Dockerfile COPY destinations (L101-102) match exactly ✅
+- Base image `node:24-bookworm-slim` = glibc Debian → ffmpeg-static / ffprobe-static publish glibc binaries → compatible ✅
+- Standalone tracing path (`COPY --from=builder /app/.next/standalone ./`) lands `index.js` at `/app/node_modules/ffmpeg-static/...`; subsequent explicit binary COPY at L101 lands at same path → `__dirname` resolution preserved ✅
+
+**Not tested at runtime** (out of W4 read-only scope): actual `analyze-video` endpoint hit on prod Cloud Run with a small test MP4. W3 / user-side smoke test recommended.
+
+---
+
+#### 🔵 INFO-3 — Gemini / Anthropic / OpenAI env bindings clean
+
+**Audited**: `lib/video/{analyze,analyze-potential,gemini-understand}.ts` + `lib/review-engine/llm.ts`.
+
+- `GOOGLE_API_KEY` ← service.yaml L121-125 (Secret Manager `google-api-key`) ✅
+  - `analyze-potential.ts:42-43` fail-fast on missing ✅
+  - `gemini-understand.ts:30-33` fail-fast on missing ✅
+- `ANTHROPIC_API_KEY` ← service.yaml L111-115 ✅
+- `OPENAI_API_KEY` ← service.yaml L116-120 ✅
+- Model overrides (`VISION_MODEL`, `GEMINI_VIDEO_MODEL`, `ANTHROPIC_MODEL`, `OPENAI_MODEL`) all optional with hardcoded fallback ✅
+
+**us-west2 region affinity** (W3 mandate item 4): Google Gemini API + Anthropic + OpenAI endpoints are global (not regional-bound). No region affinity issue expected. Cloud Run egress to these APIs goes via public internet (no VPC connector) — standard latency.
+
+**Gemini File API polling** (`gemini-understand.ts:155-163`): 60×5s = 300s ceiling. **NOT used by cron path** (only by `/api/analyze-video` + `/api/template-review` sync paths). Does not contribute to cron 504. INFO only.
+
+---
+
+#### 🔵 INFO-4 — 4 raw `fetch(meta.url)` for internal GCS reads (design choice, not bug)
+
+**Sites**:
+- `lib/trending/snapshot-store.ts:25` (readSnapshot)
+- `lib/trending/snapshot-store.ts:59` (readLatestTwoSnapshots inner)
+- `lib/account-profile/cache.ts:45` (readAccountProfileCache)
+- `lib/topic-cache/blob-cache.ts:41` (readTopicCache)
+
+**Pattern**: After `head(key)` returns storage facade-issued URL, fetch raw without `fetchWithAllowlist` (SSRF defense).
+
+**Why not a bug**: URL source is our own `@/lib/storage.head()` — fully trusted (not user-controlled). SSRF defense is for **user-supplied** URLs (upload completion paths, video/BGM download). Internal storage URL reads are safe by construction.
+
+**Severity**: INFO only. Could be tightened to `fetchWithAllowlist + GCS_PRESET` for codebase consistency, but adds latency + complexity with zero security delta. Not recommended unless W3 wants uniform discipline.
+
+---
+
+### Cross-window finding overlap acknowledgment
+
+**W2-D + W2-E** (`onCompleted` callback `console.log` not swapped in `/api/upload` L49 + `/api/template-brief-upload` L34) and **W1 MED-1** (identical issue, different worker reporting):
+
+✅ **W4 acknowledges this as own ship omission in P5.8.2** (`9c9edf7`). Pattern: `POLICY.onCompleted: async ({ url }) => { console.log("[upload] completed:", url); }` was not in the grep sweep (callback body, not top-level route function body). Two workers independently caught it → high signal.
+
+**Self-fix scope** (W4-touchable when W3 triages — same-commit fix discipline applies):
+- 2 callback bodies: swap `console.log(...)` → `log.info("upload completed", { url, pathname, size })` per W1 fix recommendation
+- Requires extending `Severity` enum in `structured-log.ts` to add `"INFO"` (currently `WARNING | ERROR` only — per P5.8 verdict B1 narrow scope)
+- Triggers consideration: was P5.8 scope's B1 decision ("WARN/ERROR only, no INFO") correct? `onCompleted` is operational success signal — INFO is the right level.
+
+**W4 self-rating**: P5.8.2 grep methodology missed callback bodies. **Lesson candidate for scope-template §4 / memory**: swap-style refactors must grep within nested callback / arrow function bodies, not just top-level function bodies. Will surface in P5 retrospective.
+
+---
+
+### Targets verified clean (audit pass-through, no findings)
+
+- ✅ `lib/capcut-compiler/*` (5 files): no stale `BLOB` references, no env reads, fetchWithAllowlist + GCS_PRESET via caller URL, ffmpeg/ffprobe path init at module top ✅
+- ✅ `lib/review-engine/llm.ts` + `retrieval.ts`: env binding ✅, retrieval logic unchanged from pre-cutover
+- ✅ Trending data lifecycle (`pruneOldSnapshots` L116 `del(stale.map((b) => b.url))`): storage facade `del()` accepts URL array, maps internally to GCS keys via `urlToKey` (per W1 P5.1.b storage facade design) — no cross-check regression
+- ✅ Dockerfile multi-stage runtime: USER nextjs ✅, PORT 8080 ✅ (Cloud Run reserved env auto-injected per W3 64ddbaf), HEALTHCHECK + startup probe routed to /api/health ✅
+- ✅ structured-log.ts: per-instance binding via createLogger factory, no module-state leak across requests, JSON emit single-line ✅
+
+### Coordination
+
+**Read-only investigation complete. NO fixes pushed.** W3 triages + serial fix or signals next mandate.
+
+**Files read** (no edits): `lib/observability/structured-log.ts`, `lib/video/{ffmpeg,ffprobe-meta,gemini-understand,analyze,analyze-potential}.ts`, `lib/review-engine/{llm,retrieval}.ts`, `lib/capcut-compiler/{assets,transitions,edit-plan,build,package}.ts`, `lib/trending/{fetch,snapshot-store}.ts`, `lib/account-profile/cache.ts`, `lib/topic-cache/blob-cache.ts`, `Dockerfile`, `service.yaml`, `package.json`. Plus W1+W2 findings sections (commits `3c52ece`, `c956263`) for overlap dedup.
+
+**File ownership lock**: MED-1 fix touches W4-co-owned files (trending/snapshot-store W4; account-profile/cache + topic-cache/blob-cache cross-window) + service.yaml (W2) + Secret Manager (W3 cloud-side) — needs W3 coordination. HIGH-1 fix lib/trending/fetch.ts is W4 owned. W2-D/E self-fix is W4 owned (own ship omission).
+
+**Time**: ~25min, under 30min mandate budget.
+
+> **W4 → W3: 2 findings (1 HIGH cron-504 ECC dimension + 1 MED stale env gate 8-site) + 4 INFO + 1 self-acknowledged P5.8.2 ship omission (W2-D/E ≡ W1-MED-1). Awaiting W3 triage.**
