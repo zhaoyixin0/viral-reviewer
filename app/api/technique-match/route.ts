@@ -14,7 +14,7 @@ import {
   createUrlAllowlist,
   fetchWithAllowlist,
   UrlAllowlistError,
-  VERCEL_BLOB_PRESET,
+  GCS_PRESET,
 } from "@/lib/url-allowlist";
 import {
   createRateLimiter,
@@ -113,7 +113,7 @@ export async function POST(req: NextRequest) {
   // 任一 deny → 整 batch 拒）。本路由返回 NDJSON stream，一旦 controller 开始 enqueue
   // 就 HTTP 200，无法再回 400。pre-stream batch checkAsync + in-stream fetchWithAllowlist
   // 双重防御：第一层防绝大多数攻击，第二层防 stream 启动后 DNS rebind 时间窗。
-  const urlAllowlist = createUrlAllowlist(VERCEL_BLOB_PRESET);
+  const urlAllowlist = createUrlAllowlist(GCS_PRESET);
   try {
     await Promise.all(
       videoUrls.map(async (url) => {

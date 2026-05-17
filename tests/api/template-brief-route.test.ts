@@ -116,7 +116,7 @@ describe("POST /api/template-brief (JSON blob URL branch)", () => {
     const longName = "a".repeat(256);
     const res = await POST(
       jsonReq({
-        blobUrl: "https://x.public.blob.vercel-storage.com/a.pdf",
+        blobUrl: "https://x.storage.googleapis.com/a.pdf",
         fileName: longName,
       }),
     );
@@ -144,7 +144,7 @@ describe("POST /api/template-brief (JSON blob URL branch)", () => {
     try {
       const res = await POST(
         jsonReq({
-          blobUrl: "http://x.public.blob.vercel-storage.com/a.pdf",
+          blobUrl: "http://x.storage.googleapis.com/a.pdf",
           fileName: "a.pdf",
         }),
       );
@@ -207,7 +207,7 @@ describe("POST /api/template-brief · phase 3.5 dns_resolve_failed + resolved_pr
       mockDnsNxDomain(dns);
       const res = await POST(
         jsonReq({
-          blobUrl: "https://nx.public.blob.vercel-storage.com/a.pdf",
+          blobUrl: "https://nx.storage.googleapis.com/a.pdf",
           fileName: "a.pdf",
         }),
       );
@@ -221,7 +221,7 @@ describe("POST /api/template-brief · phase 3.5 dns_resolve_failed + resolved_pr
         warned.some(
           (m) =>
             m.includes("dns_resolve_failed") &&
-            m.includes("nx.public.blob.vercel-storage.com") &&
+            m.includes("nx.storage.googleapis.com") &&
             m.includes('"module":"api/template-brief"'),
         ),
       ).toBe(true);
@@ -237,12 +237,12 @@ describe("POST /api/template-brief · phase 3.5 dns_resolve_failed + resolved_pr
     try {
       mockDnsResolve(
         dns,
-        "evil.public.blob.vercel-storage.com",
+        "evil.storage.googleapis.com",
         ["169.254.169.254"],
       );
       const res = await POST(
         jsonReq({
-          blobUrl: "https://evil.public.blob.vercel-storage.com/x.pdf",
+          blobUrl: "https://evil.storage.googleapis.com/x.pdf",
           fileName: "x.pdf",
         }),
       );

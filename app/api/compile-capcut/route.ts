@@ -11,7 +11,7 @@ import { createLogger } from "@/lib/observability/structured-log";
 const log = createLogger({ module: "api/compile-capcut" });
 import {
   createUrlAllowlist,
-  VERCEL_BLOB_PRESET,
+  GCS_PRESET,
   UrlAllowlistError,
 } from "@/lib/url-allowlist";
 import {
@@ -90,7 +90,7 @@ async function impl(req: NextRequest) {
   let workDir: string | null = null;
   // P3 #2 phase 2：SSRF allowlist —— `prepareAssets` 入口 batch check 全部 URL
   // （videoUrls + optional bgmUrl），任一 deny → 抛 UrlAllowlistError 走 400。
-  const urlAllowlist = createUrlAllowlist(VERCEL_BLOB_PRESET);
+  const urlAllowlist = createUrlAllowlist(GCS_PRESET);
   try {
     // 1) 下载视频 (N 个并发) + (可选) BGM
     const assets = await prepareAssets(videoUrls, bgmUrl ?? undefined, {

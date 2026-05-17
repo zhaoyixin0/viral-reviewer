@@ -3,7 +3,7 @@ import { z } from "zod";
 import { analyzeVideo } from "@/lib/video/analyze";
 import {
   createUrlAllowlist,
-  VERCEL_BLOB_PRESET,
+  GCS_PRESET,
   UrlAllowlistError,
 } from "@/lib/url-allowlist";
 import {
@@ -60,7 +60,7 @@ async function impl(req: NextRequest) {
   // - dns_resolve_failed → 502 + Retry-After: 5 (transient)
   // - resolved_private_ip → 400 url_denied + console.error (security event)
   // - sync deny → 400 url_denied + console.warn (preserved phase 2)
-  const urlAllowlist = createUrlAllowlist(VERCEL_BLOB_PRESET);
+  const urlAllowlist = createUrlAllowlist(GCS_PRESET);
   try {
     const reviewInput = await analyzeVideo(parsed.data, { urlAllowlist });
     return NextResponse.json(reviewInput);

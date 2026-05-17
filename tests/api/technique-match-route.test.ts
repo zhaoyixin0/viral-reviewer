@@ -113,7 +113,7 @@ describe("POST /api/technique-match · P3 #2 phase 2 SSRF allowlist gate", () =>
     try {
       const res = await POST(
         jsonReq({
-          videoUrls: ["http://x.public.blob.vercel-storage.com/a.mp4"],
+          videoUrls: ["http://x.storage.googleapis.com/a.mp4"],
         }),
       );
       expect(res.status).toBe(400);
@@ -149,7 +149,7 @@ describe("POST /api/technique-match · P3 #2 phase 2 SSRF allowlist gate", () =>
         jsonReq({
           videoUrls: [
             "https://evil-1.com/a.mp4",
-            "https://x.public.blob.vercel-storage.com/b.mp4",
+            "https://x.storage.googleapis.com/b.mp4",
           ],
         }),
       );
@@ -172,14 +172,14 @@ describe("POST /api/technique-match · P3 #2 phase 2 SSRF allowlist gate", () =>
   it("does not return 400 url_denied when all URLs pass allowlist (stream starts normally)", async () => {
     // Phase 3.5: 都解析到 public IP → checkAsync 全部 ok → 进 stream（不再 deny）
     mockHostsPublic([
-      "x.public.blob.vercel-storage.com",
-      "y.public.blob.vercel-storage.com",
+      "x.storage.googleapis.com",
+      "y.storage.googleapis.com",
     ]);
     const res = await POST(
       jsonReq({
         videoUrls: [
-          "https://x.public.blob.vercel-storage.com/a.mp4",
-          "https://y.public.blob.vercel-storage.com/b.mp4",
+          "https://x.storage.googleapis.com/a.mp4",
+          "https://y.storage.googleapis.com/b.mp4",
         ],
       }),
     );
@@ -196,7 +196,7 @@ describe("POST /api/technique-match · phase 3.5 dns_resolve_failed + resolved_p
       mockDnsNxDomain(dns);
       const res = await POST(
         jsonReq({
-          videoUrls: ["https://nx.public.blob.vercel-storage.com/a.mp4"],
+          videoUrls: ["https://nx.storage.googleapis.com/a.mp4"],
         }),
       );
       expect(res.status).toBe(502);
@@ -224,12 +224,12 @@ describe("POST /api/technique-match · phase 3.5 dns_resolve_failed + resolved_p
     try {
       mockDnsResolve(
         dns,
-        "evil.public.blob.vercel-storage.com",
+        "evil.storage.googleapis.com",
         ["127.0.0.1"],
       );
       const res = await POST(
         jsonReq({
-          videoUrls: ["https://evil.public.blob.vercel-storage.com/a.mp4"],
+          videoUrls: ["https://evil.storage.googleapis.com/a.mp4"],
         }),
       );
       expect(res.status).toBe(400);
@@ -259,8 +259,8 @@ describe("POST /api/technique-match · phase 3.5 dns_resolve_failed + resolved_p
       const resolve4Mock = dns.resolve4 as unknown as ReturnType<typeof vi.fn>;
       const resolve6Mock = dns.resolve6 as unknown as ReturnType<typeof vi.fn>;
       resolve4Mock.mockImplementation((h: string) => {
-        if (h === "ok.public.blob.vercel-storage.com") return Promise.resolve(["1.1.1.1"]);
-        if (h === "evil.public.blob.vercel-storage.com") return Promise.resolve(["169.254.169.254"]);
+        if (h === "ok.storage.googleapis.com") return Promise.resolve(["1.1.1.1"]);
+        if (h === "evil.storage.googleapis.com") return Promise.resolve(["169.254.169.254"]);
         return Promise.resolve([]);
       });
       resolve6Mock.mockResolvedValue([]);
@@ -268,8 +268,8 @@ describe("POST /api/technique-match · phase 3.5 dns_resolve_failed + resolved_p
       const res = await POST(
         jsonReq({
           videoUrls: [
-            "https://ok.public.blob.vercel-storage.com/a.mp4",
-            "https://evil.public.blob.vercel-storage.com/b.mp4",
+            "https://ok.storage.googleapis.com/a.mp4",
+            "https://evil.storage.googleapis.com/b.mp4",
           ],
         }),
       );

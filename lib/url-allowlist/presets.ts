@@ -46,6 +46,30 @@ export const VERCEL_BLOB_PRESET: UrlAllowlistOpts = {
  * **每个 suffix 都以 "." 开头**——`HostPattern.suffix` 同时允许根域 + 子域,
  * 与 `VERCEL_BLOB_PRESET` 一致。强制 https + 阻私有 IP 与生产 CDN 实际行为吻合。
  */
+/**
+ * Google Cloud Storage public URL preset — post-P5.1 GCS migration replaces
+ * VERCEL_BLOB_PRESET for routes that consume user-uploaded blob URLs.
+ *
+ * Two URL forms per `urlToKey` (lib/storage/api.ts, b-1 commit 3 D3):
+ * - Path-style: `https://storage.googleapis.com/<bucket>/<key>` (default)
+ * - Virtual-host-style: `https://<bucket>.storage.googleapis.com/<key>` (less common)
+ *
+ * Allowlist accepts both: exact `"storage.googleapis.com"` for path-style,
+ * `{ suffix: ".storage.googleapis.com" }` for vhost-style. https-only +
+ * blockPrivateIps matches VERCEL_BLOB_PRESET defensive posture.
+ *
+ * Server-side `urlToKey` still does strict bucket+key validation downstream
+ * (b-2 c2 HIGH nit #2) — this preset is the first-line host gate.
+ */
+export const GCS_PRESET: UrlAllowlistOpts = {
+  allowedSchemes: ["https:"],
+  allowedHosts: [
+    "storage.googleapis.com",
+    { suffix: ".storage.googleapis.com" },
+  ],
+  blockPrivateIps: true,
+};
+
 export const TIKTOK_INSTAGRAM_CDN_PRESET: UrlAllowlistOpts = {
   allowedSchemes: ["https:"],
   allowedHosts: [

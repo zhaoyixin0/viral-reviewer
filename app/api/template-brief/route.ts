@@ -11,7 +11,7 @@ import {
   createUrlAllowlist,
   fetchWithAllowlist,
   UrlAllowlistError,
-  VERCEL_BLOB_PRESET,
+  GCS_PRESET,
 } from "@/lib/url-allowlist";
 import {
   createRateLimiter,
@@ -23,10 +23,10 @@ import { TemplateBriefJsonBodySchema } from "./schema";
 
 /**
  * P3 #2 phase 2：模块作用域单实例。Allowlist 实例无内部状态，跨请求复用安全，
- * 省每请求一次 Zod 校验开销。VERCEL_BLOB_PRESET 强制 https + 阻私有 IP +
+ * 省每请求一次 Zod 校验开销。GCS_PRESET 强制 https + 阻私有 IP +
  * `*.public.blob.vercel-storage.com` 后缀匹配（含根域 + 子域）。
  */
-const URL_ALLOWLIST = createUrlAllowlist(VERCEL_BLOB_PRESET);
+const URL_ALLOWLIST = createUrlAllowlist(GCS_PRESET);
 
 // P3 #3 phase 2: ANON_AI_HEAVY (10/10m sliding) —— Claude PDF brief extract。
 const RATE_LIMITER = createRateLimiter({
