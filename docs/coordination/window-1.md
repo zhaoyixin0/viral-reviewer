@@ -6619,3 +6619,204 @@ Skip "looks fine" reports — only report actual bugs or strong suspicions.
 - 30min wallclock — report what you've covered + flag what you haven't if time runs out
 
 W3 standby for findings + handle next browser E2E iteration.
+
+## [W1 -> W3] 2026-05-17 13:02 PDT — Bug hunt report (W1 module slice)
+
+Scope per W3 PING 5212b80. ~10 min read-only audit; no files touched. main = `5212b80` (pulled fresh).
+
+### Coverage
+
+| Target | Reviewed | Findings |
+|---|---|---|
+| lib/storage/api.ts 5 ops + 3 b-2 helpers | ✅ full | HIGH-1 + MED-2 (cross-target with signed-upload) |
+| lib/storage/signed-upload.ts lifecycle | ✅ full | MED-2 |
+| lib/storage/upload-client.ts browser shim | ✅ full | MED-3 |
+| lib/url-allowlist/presets.ts GCS_PRESET | ✅ full | clean (urlToKey downstream catches abuse) |
+| 4 frontend callers | ✅ full | BLOCKER-1 + HIGH-2 + LOW-1/2/3 |
+| 2 API routes (upload + template-brief-upload) | ✅ full | BLOCKER-1 + MED-1 |
+| Memory feedback files HMAC cross-ref | ✅ | clean (defenses match) |
+
+### Findings
+
+---
+
+#### 🚨 BLOCKER-1 — STRICT_PER_IP 10/1m sliding 跟 6-file 并行上传冲突，prod 100% 触发
+
+**File:** `app/api/upload/route.ts:23-26` + `components/technique-match/InputPanel.tsx:91-98`
+
+**Description:** `/api/upload` 用 STRICT_PER_IP preset (10 req/1m sliding, `lib/rate-limit/presets.ts:11-14`)。technique-match 主用例是 6 个视频 `Promise.allSettled` 并行上传。每个文件实际走 **2 次** route hit:
+- Phase 1: POST `{type:"generate-signed-url",...}` 拿签名
+- Phase 3: POST `{type:"completion",...}` 完成 ping
+
+6 files × 2 hits = **12 requests in ~30-90s 窗口**。Sliding 10/1m 第 11+ 个 100% 拿 429。
+
+**Repro:**
+1. `/technique-match` 选 6 个 MP4
+2. 点提交 → 6 个 phase 1 sign 几乎同时打过 → 占 6/10 quota
+3. GCS 上传 30-60s
+4. 6 个 phase 3 completion ping 陆续打过 → 第 11 个 429
+5. `upload()` 抛 `UploadError("completion_ping_failed", responseStatus: 429)`
+6. InputPanel `handleSubmit` 的 `Promise.allSettled` catch → 加入 failed[]
+7. `failed.length > 0` → "全部素材必须成功才进入分析" → 全 6 抛弃
+8. 用户重试 → window 没过完 → 还是 429
+
+GCS 实际有 5 个对象 + 1 个失败 → 5 个 orphan 占空间。
+
+**Suggested fix:** 给 `/api/upload` + `/api/template-brief-upload` 单独 preset, capacity ≥ `2 × MAX_FILES = 12`,推荐 `24/1m sliding`(2× MAX_FILES + 2× brief headroom),或 fixed window 增 capacity。例如新增 `UPLOAD_BURST` preset 在 `lib/rate-limit/presets.ts`,limit 24/window 1m sliding。
+
+或保留 STRICT_PER_IP 但前端串行 phase 1+3 给 sliding window 留余地(UX 损失更大,不推荐)。
+
+---
+
+#### ⚠️ HIGH-1 — getDownloadUrl filename Content-Disposition 注入
+
+**File:** `lib/storage/api.ts:265-267`
+
+```
+const responseDisposition = opts.filename
+  ? `attachment; filename="${opts.filename}"`
+  : "attachment";
+```
+
+**Description:** filename 直接字符串插值进 HTTP header,没做 RFC 6266 escape。如果 filename 含 `"`、CRLF (`\r\n`)、或非 ASCII,header 可能被破坏 / 注入额外 header / 截断。
+
+虽然当前 W1 scope 内的 caller 不直接喂 user input,但 `getDownloadUrl` 在 `lib/storage/index.ts` re-export 给任何 caller。trace 表明 compile-capcut route(non-W1 scope)读 `projectName`(user-controlled)调 `getDownloadUrl` — 即 prod 路径已有用户控制 filename。
+
+**Repro (假设):** 用户在 CapCutExport 输入 projectName = `evil"; filename="hacked`,GCS signed URL 的 Content-Disposition 头变成 `attachment; filename="evil"; filename="hacked"`,某些浏览器解析时取最后一个 filename。
+
+**Suggested fix:** 用 RFC 6266 `filename*=UTF-8''<encoded>` + 去除/转义 `"`:
+
+```
+const safeFilename = opts.filename.replace(/["\\\r\n]/g, "_");
+const responseDisposition = opts.filename
+  ? `attachment; filename="${safeFilename}"; filename*=UTF-8''${encodeURIComponent(opts.filename)}`
+  : "attachment";
+```
+
+---
+
+#### ⚠️ HIGH-2 — 4 个 caller 都没传 `opts.signal`,abort 不传播
+
+**Files:**
+- `components/technique-match/InputPanel.tsx:91-99`
+- `components/technique-match/CapCutExport.tsx:66-71`
+- `components/review/InputPanel.tsx:97-103`
+- `components/template-review/BriefUploader.tsx:61-69`
+
+**Description:** `upload()` 接受 `opts.signal: AbortSignal`,但 4 个 caller 全没传。用户点 reset / 切 page / refresh → upload 已经发出去的 phase 2 multipart POST 继续跑完,GCS 创建 orphan 对象,phase 3 completion ping 也照样打过去触发 `onCompleted` 日志 — 即使前端 status 已经 reset。
+
+upload-client.ts:287-293 的注释承认这个 lifecycle gap("partial GCS upload cleanup is NOT attempted here. P5.8.x observability scope adds a bucket lifecycle rule")。caller 这边可以补一半 — 至少未发起的 phase 还能 abort。
+
+**Repro:**
+1. BriefUploader 选 80MB PDF
+2. Phase 1 sign 完后 phase 2 开始(慢慢传)
+3. 用户切到其他 tab 或点 "重新选择"(reset)
+4. 上传后台继续完成,phase 3 ping 把 console.log 打出 → orphan PDF 留 GCS
+
+**Suggested fix:** 每个 caller 加 AbortController + useRef + useEffect cleanup (`abortRef.current?.abort()` on reset + unmount,signal 传入 upload())。
+
+---
+
+#### 🔶 MED-1 — console.log in 2 routes (CLAUDE.md "no console.log" 违反)
+
+**File:** `app/api/upload/route.ts:49` + `app/api/template-brief-upload/route.ts:34`
+
+```
+onCompleted: async ({ url }) => {
+  console.log("[upload] completed:", url);
+},
+```
+
+**Description:** 两个 route 都 import `createLogger` + 用 `log.error(...)` 处理 storage error,但 onCompleted 仍用 `console.log`。CLAUDE.md "No console.log in production code"。`console.error` (W3 D3 swallow 模式)是 ops 可见性场合允许,`console.log` 没有同等理由。
+
+**Suggested fix:** 改为结构化 log:
+
+```
+onCompleted: async ({ url, pathname, size }) => {
+  log.info("upload completed", { url, pathname, size });
+},
+```
+
+---
+
+#### 🔶 MED-2 — completion ping 不交叉验证 blobInfo.contentType vs token.contentType
+
+**File:** `lib/storage/signed-upload.ts:357-364`
+
+```
+await policy.onCompleted({
+  url: data.blobInfo.url,
+  pathname: data.blobInfo.pathname,
+  contentType: data.blobInfo.contentType,  // ← 用 browser 自报,没核
+  size: data.blobInfo.size,
+});
+```
+
+**Description:** Token 里 HMAC-签了 `contentType`(phase-1 用户声明 + server allowlist 校),但 phase-3 onCompleted 用的是 browser-supplied `data.blobInfo.contentType`,没跟 `tokenPayload.contentType` 交叉。Browser 可以在 phase-3 谎报 contentType。
+
+实际 GCS 存的对象 Content-Type 由 phase-2 multipart form field 决定(server-injected,准的)。问题是 onCompleted callback 收到的 contentType 是不可信的。当前 onCompleted 只 console.log,影响小; 但 forward-compat 给未来 DB-write callers 留了坑 — 同 [[feedback-hmac-token-implementation-defenses]] 的精神(server-signed 字段就该用 server-signed 版本)。
+
+**Suggested fix:** 用 token 里的字段不用 browser 的:
+
+```
+await policy.onCompleted({
+  url: data.blobInfo.url,
+  pathname: tokenPayload.finalKey,  // 已 strict 验过等于 extractedKey
+  contentType: tokenPayload.contentType,  // ← HMAC-signed 版本
+  size: data.blobInfo.size,  // size 实在没 server 数据,只能信 browser
+});
+```
+
+或者 assert `data.blobInfo.contentType === tokenPayload.contentType`,不等抛 `completion_blob_mismatch`。
+
+---
+
+#### 🔶 MED-3 — upload-client Blob.type vs fields["Content-Type"] 不对齐(silent)
+
+**File:** `lib/storage/upload-client.ts:271-277`
+
+**Description:** `fd.append("file", body)` 用 Blob 自带 `.type` 作为该 part 的 Content-Type。Server 注入的 `fields["Content-Type"] = contentType`(api.ts:430)是另一个 form field。GCS POST policy `["eq","$Content-Type", ...]` condition 校的是 form field 不是 file part;按 GCS docs,form field 的 Content-Type 决定对象最终的 Content-Type。
+
+当前 caller 一般 `contentType: f.type || "video/mp4"`,正常情况两个一致。但如果 caller 显式传 `opts.contentType` 跟 Blob.type 不同(future regression),GCS 会按 form field 存(对的),但 part header 跟 form field 矛盾的 multipart 是边缘情况(某些 GCS 边缘 case 可能 400 "Content-Type mismatch")。
+
+**Suggested fix:** defensive wrap before `fd.append("file", body)`:
+
+```
+const alignedBody = body.type === envelope.fields["Content-Type"]
+  ? body
+  : new Blob([body], { type: envelope.fields["Content-Type"] });
+fd.append("file", alignedBody);
+```
+
+low 优先级 — 当前没有 caller 触发,但 future-proof。
+
+---
+
+#### 🟦 LOW-1/2/3 — 3 处 "Vercel Blob" 残留文案 / 注释,GCS cutover 后没同步
+
+| 文件 | 行 | 内容 | 类型 |
+|---|---|---|---|
+| `components/review/InputPanel.tsx` | 96 | `// Step 1: client-direct upload to Vercel Blob` | 注释 |
+| `components/review/InputPanel.tsx` | 288 | `"上传后系统会先把视频存到 Vercel Blob..."` | **user-facing UX** |
+| `components/technique-match/CapCutExport.tsx` | 24 | `uploading_bgm: "上传 BGM 到 Blob…"` | **user-facing 状态 label** |
+| `components/technique-match/CapCutExport.tsx` | 102 | `// server 把 zip 写 Blob 返回 downloadUrl` | 注释 |
+
+**Suggested fix:** 注释直接改 "GCS" 或 "云存储"; user-facing 文案统一 "云存储" 不暴露 vendor。compile-capcut route 这种 backend-internal 注释可保留 "Blob" 概念,但跟前端 UX 解耦。
+
+---
+
+### Not bugs (audit pass-through)
+
+- `lib/storage/client.ts` getStorage() singleton:soft-fail 设计 + `__resetStorageForTests` 正确
+- `urlToKey` path-style + vhost-style 双匹配 + decodeURI:OK
+- `verifyCompletionToken` HMAC hex pre-validate 三重 short-circuit:OK
+- `GCS_PRESET` 跟 server-side `urlToKey` 双层 defense:OK
+- Route handler entry `requireUploadSecret()` fail-fast on missing env:OK
+- HMAC token TTL 60min = signed POST policy TTL 60min,token 跟 policy 同步过期:OK
+
+### W1 standby
+
+- ⏸ 等 W3 triage + fix 调度(BLOCKER-1 应该优先 — 阻 6-file 主用例)
+- ⏸ HIGH-1/2 + MED 三条按 W3 排
+- LOW 三条可批量收一个 docs/UX cleanup commit
+- W3 决定 fix 分配 (W1 自己做 vs 跟 W4 一起)
