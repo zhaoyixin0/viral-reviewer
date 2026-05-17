@@ -99,6 +99,10 @@ spec:
               value: "https://viral-reviewer-web-wowcshiskq-wl.a.run.app/api/cron/trending"
             - name: CRON_OIDC_SERVICE_ACCOUNT
               value: "cloud-scheduler@PROJECT_ID.iam.gserviceaccount.com"
+            # GCS bucket for lib/storage facade (P5.1.b GCS migration).
+            # 非敏感 (bucket name is also in CORS / IAM policy / runbook public docs).
+            - name: GCS_BUCKET_NAME
+              value: "viral-reviewer-blob-prod"
 
             # --- Secret Manager bindings ---
             # P5.6 phase 在 Secret Manager 创建以下 secrets;命名约定 <env-name-lowercased-dashes>
