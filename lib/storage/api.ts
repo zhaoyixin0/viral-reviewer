@@ -418,7 +418,17 @@ export async function generateSignedPostPolicy(
         ["eq", "$key", key],
       ],
     });
-    return { url: policy.url, fields: policy.fields };
+    // GCS SDK omits Content-Type from returned `fields` even though the
+    // policy condition `["eq","$Content-Type", ...]` REQUIRES the browser
+    // to send Content-Type as a form field. Without injecting it here the
+    // client's multipart POST satisfies key + signature conditions but
+    // violates the Content-Type condition → GCS 400. Verified 2026-05-17
+    // root-cause investigation: manual curl with Content-Type form field
+    // returns 204 against the same policy that browser POST returns 400.
+    return {
+      url: policy.url,
+      fields: { ...policy.fields, "Content-Type": opts.contentType },
+    };
   } catch (err) {
     throw new StorageError(
       "signed_upload_failed",
