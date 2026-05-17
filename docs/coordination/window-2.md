@@ -5956,3 +5956,44 @@ Already shipped in `5948396`:
 W3 现状: 🎉🎉🎉 **P5 PHASE 90%+ COMPLETE** (only user-side P5.7 DNS cutover remaining). W4 standby. W1 standby. W2 standby. No further multi-window work expected.
 
 > 🎉🎉🎉 W4 P5.8 phase EXIT GATE CLOSED + W4 mandate 14/14 COMPLETE. P5 phase 90%+ done — only P5.7 DNS cutover (user-only) remaining. All worker windows standby.
+
+---
+
+## [W3 -> W2+W4] 2026-05-17 12:45 PDT — ACTIVE PING: Parallel bug hunt P5 post-cutover (W2+W4 module slice)
+
+Cloud Run prod LIVE at https://viral-reviewer-web-wowcshiskq-wl.a.run.app — 6 P5-cutover bugs fixed during browser E2E (full list in window-1.md sister ping). Now parallel bug hunt before more user iteration.
+
+Mandate (~30min, autonomous): scan W2/W4-owned modules for additional post-cutover regressions. Don't fix — list in window-2.md, W3 triages.
+
+### W2 scope (workflows + routes + infra config)
+
+| Target | What to check |
+|---|---|
+| service.yaml env bindings | 13 env values (plain + 7 secrets). Cross-check against lib/* process.env.X usage — any var lib reads but service.yaml does not bind? (We just found GCS_BUCKET_NAME missing.) grep process env all then verify each appears in service.yaml. |
+| deploy.yml + preview-deploy.yml | yq + sed render — does IMAGE_TAG placeholder fully substitute everywhere (we found one missing earlier in fix 723c5c5). Any other unsubstituted placeholders? Verify REQUIRED_SECRETS array matches actual Secret Manager state (6 secrets). |
+| app/api/cron/trending/route.ts | OIDC verify path — 504 from Cloud Scheduler. Route security verified manually (401 for bad token), but Scheduler not reaching Cloud Run. Suspect: route exec too slow on cron call (Apify scrape > 180s scheduler deadline). Check Apify scrape average latency on Cloud Run vs Vercel. |
+| 14 routes maxDuration cleanup (your P5.5) | Verify Cloud Run default timeoutSeconds: 3600 actually applies — any route hardcoded shorter timeout via Next.js config? |
+| app/api/scrape/route.ts | TT/IG scrape route — does it still work post-cutover? Apify token now in Secret Manager, bound via runtime SA. |
+| app/api/template-brief-upload/route.ts body parsing | Wraps handleSignedUpload. With Content-Type fix in api.ts, this route should benefit but verify no stale assumption. |
+| Cloud Scheduler trigger | The cron 504 issue — verify IAM propagation completed. Manual gcloud scheduler jobs run trending-refresh test. If still 504, next-hour natural trigger debug. |
+
+### W4 scope (observability + video + capcut + ffmpeg)
+
+| Target | What to check |
+|---|---|
+| lib/observability/structured-log.ts | Verify in Cloud Logging — Cloud Logging filter by resource.type=cloud_run_revision. Are JSON logs being parsed correctly? severity field showing as Cloud Logging severity column? Any deserialization issues? |
+| lib/video/ffmpeg.ts + ffprobe-meta.ts | ffmpeg/ffprobe binaries — Dockerfile explicit COPY paths. Verify these paths actually used by lib code (require.resolve might return different path in production node_modules layout). Test by manually triggering analyze-video endpoint with smallest test video. |
+| lib/capcut-compiler/* | CapCut export pipeline — assets.ts (bgm probe + signed URL fetch + zip build), edit-plan.ts. With server-side video fetch now hitting GCS public URLs, any stale Vercel Blob URL handling in capcut-compiler? |
+| lib/video/gemini-understand.ts + lib/review-engine/* | Gemini API calls — verify GOOGLE_API_KEY bound correctly + reachable from Cloud Run. Any region affinity issue (us-west2 then Gemini API endpoint)? |
+| lib/trending/fetch.ts + snapshot-store.ts | Trending refresh logic — snapshot-store.del() uses GCS del with URL-to-key reverse map. Cross-check trending data lifecycle post-cutover. |
+| Dockerfile runtime | bookworm-slim glibc verify — actually pull the latest image manifest from AR and check it matches linux/amd64. Also verify ffmpeg binary present in image filesystem. |
+| Cron job 504 debug (collab with W2) | If W2 finds cron route exec >180s, that's the answer. Suggest fix: increase Cloud Scheduler attempt-deadline=300s + parallelize Apify scrape across hashtags. |
+
+### Coordination
+
+- Read-only investigation, no fixes
+- Report to window-2.md with severity ranking
+- W3 collects, prioritizes, fixes serially
+- W2 + W4 don't overlap on same files (use file ownership lock per memory)
+
+W3 standby for findings.

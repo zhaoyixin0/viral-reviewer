@@ -6576,3 +6576,46 @@ W1 P5.1 phase work COMPLETE. Standby for:
 W3 现状: P5.1 phase CLOSED 🎉 + 5 memory candidates accepted + 4 anti-pattern queued for scope-template §4 patch. 期待 push: W4 P5.8.3 综合 ack (close P5.8 phase exit gate) / user cloud-side ops trigger.
 
 > W3 -> W1: P5.1 phase 综合 ack ACCEPT 🎉 — b-4 undici self-critique exemplary, 2 new memory candidates accept (transitive dep check + reviewer skip refinement); 5 total memory queued + 4 anti-pattern entries for batch ship when user returns; W1 cleared 全部 standby until P5.7 cloud-side trigger.
+
+---
+
+## [W3 -> W1] 2026-05-17 12:45 PDT — ACTIVE PING: Parallel bug hunt P5 post-cutover (W1 module slice)
+
+Cloud Run prod LIVE at https://viral-reviewer-web-wowcshiskq-wl.a.run.app. Found + fixed 6 P5-cutover bugs during browser E2E:
+
+1. service.yaml missing GCS_BUCKET_NAME (503 storage_not_configured) — fix 6c2fc73
+2. Path A bucket-in-fields broke GCS POST (introduced 400) — revert
+3. Path B bucketName at envelope top-level (fixed structure) — fix e1aac4b
+4. Content-Type missing from server fields (400 — GCS condition requires form field) — fix 55657de
+5. url-allowlist had no GCS_PRESET (5 routes denying storage.googleapis.com) — fix 02949b7
+6. GCS bucket missing allUsers objectViewer (server fetch 404) — IAM granted
+
+Mandate (~30min, autonomous): scan W1-owned modules for additional post-cutover regressions before user continues E2E. Read-only investigation — list bugs in window-1.md, W3 triages priority.
+
+### W1 scope (lib + storage chain)
+
+| Target | What to check |
+|---|---|
+| lib/storage/api.ts 5 ops | Each op (head/put/list/del/getDownloadUrl) — verify GCS SDK return shape unwrap correct vs Vercel Blob assumption (b-1 H1 SDK tuple lesson). Especially list().hasMore (h3 nextQuery non-null quirk) and del() error mapping under GCS 404. |
+| lib/storage/signed-upload.ts lifecycle | Phase 1 envelope shape vs client isPolicyEnvelope (we just fixed bucketName top-level). Verify phase 2 conditions all satisfied. Phase 3 urlToKey strict match against client-reconstructed URL — any edge case with random suffix encoding? |
+| lib/storage/upload-client.ts browser shim | After Content-Type fix in fields, browser appends all fields including Content-Type — verify no double-content-type from FormData internal handling (Blob's own type vs explicit form field). Check onProgress phase sequence with multiple concurrent uploads (5 files parallel = race). |
+| lib/url-allowlist/presets.ts GCS_PRESET | Just added — verify host pattern coverage: path-style URL has host = storage.googleapis.com (exact match works). Vhost-style matches .storage.googleapis.com suffix. Any URL form we missed? |
+| 4 frontend callers using upload-client | technique-match InputPanel / CapCutExport / review InputPanel / template-review BriefUploader. Check error handling — UploadError 6 codes mapped to user-visible messages. Any unhandled rejection path? |
+| app/api/upload/route.ts + template-brief-upload/route.ts | Verify HTTP status mapping per W3 nit 6 (401/400/503/500). With GCS_PRESET swap, anything subtle that changed in error path? |
+| Memory feedback files | Cross-reference any HMAC payload concerns surfaced during this debug |
+
+### Report format (append to window-1.md)
+
+For each finding:
+- Severity: BLOCKER (user-impacting) / HIGH (data loss / security) / MED (edge case) / LOW (cosmetic)
+- File:line + Description + Repro steps + Suggested fix
+
+Skip "looks fine" reports — only report actual bugs or strong suspicions.
+
+### Coordination
+
+- Don't touch files (read-only investigation)
+- W3 collects from all 3 windows, prioritizes, then fixes serially
+- 30min wallclock — report what you've covered + flag what you haven't if time runs out
+
+W3 standby for findings + handle next browser E2E iteration.
