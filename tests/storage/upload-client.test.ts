@@ -41,7 +41,6 @@ function makeEnvelope(finalKey = "uploads/foo.mp4-abcd1234") {
     type: "signed-upload-policy",
     url: `https://storage.googleapis.com/${TEST_BUCKET}/`,
     fields: {
-      bucket: TEST_BUCKET,
       key: finalKey,
       "Content-Type": "video/mp4",
       policy: "<base64-policy>",
@@ -50,6 +49,7 @@ function makeEnvelope(finalKey = "uploads/foo.mp4-abcd1234") {
       "x-goog-date": "20260516T093000Z",
       "x-goog-signature": "deadbeef",
     },
+    bucketName: TEST_BUCKET,
     completionToken: "abcDEF.deadbeef",
     finalKey,
   };
@@ -156,7 +156,10 @@ describe("upload — happy path", () => {
       expect(keys).toContain(k);
     }
     // Verify specific values to guard against silent field mutation.
-    expect(fd.get("bucket")).toBe(TEST_BUCKET);
+    // bucket is NOT sent as form field (Path B fix: GCS POST policy V4 rejects
+    // 400 for unknown form fields not in policy conditions; bucketName lives
+    // at envelope top-level for client URL reconstruction only).
+    expect(fd.get("bucket")).toBeNull();
     expect(fd.get("key")).toBe("uploads/foo.mp4-abcd1234");
   });
 
@@ -253,14 +256,13 @@ describe("upload — error paths", () => {
     expect(err.responseStatus).toBe(403);
   });
 
-  it("rejects envelope at phase 1 when fields.bucket missing (defense-in-depth: prevents orphan GCS upload)", async () => {
-    // Per pre-push reviewer MED 2026-05-16: bucket presence validated by
-    // isPolicyEnvelope at phase 1 — earlier than the previous post-GCS
-    // guard. This prevents an orphan GCS object in the window between
-    // phase 2 success and phase 3 reconstruction failure (P5.8.x lifecycle
-    // cleanup not yet deployed).
-    const envelope = makeEnvelope();
-    delete (envelope.fields as Record<string, string>).bucket;
+  it("rejects envelope at phase 1 when bucketName missing (defense-in-depth: prevents orphan GCS upload)", async () => {
+    // Path B fix (2026-05-17): bucketName at envelope top-level (was
+    // fields.bucket — broke GCS POST because unknown form fields not in
+    // policy conditions cause 400). Validation still phase-1 to prevent
+    // orphan GCS upload window.
+    const envelope = makeEnvelope() as Record<string, unknown>;
+    delete envelope.bucketName;
     fetchSpy.mockResolvedValueOnce(mockOk(envelope));
     const err = await upload("uploads/foo.mp4", makeBlob(), BASE_OPTS).catch(
       (e) => e,

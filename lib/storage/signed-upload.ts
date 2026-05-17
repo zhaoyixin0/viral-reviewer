@@ -282,16 +282,16 @@ async function handleGenerateSignedUrl(
       contentType: data.contentType,
       maxBytes: policy.maxBytes,
     });
-    // Inject bucket into fields (W3 ECC follow-up mandate: client reconstructs
-    // blobInfo.url from envelope.fields[bucket] + finalKey). GCS SDK doesn't
-    // include bucket in policy fields (bucket is encoded in the URL path); we
-    // inject server-side so client validation + URL reconstruction works.
-    // GCS silently ignores unknown form fields not constrained by policy
-    // conditions, so this extra field is harmless on the multipart POST.
+    // bucketName at envelope top-level (NOT inside fields). GCS POST policy V4
+    // rejects 400 for unknown form fields not listed in policy conditions, so
+    // injecting `bucket` into fields (Path A, commit 411b231) broke uploads.
+    // Top-level bucketName keeps fields clean (only GCS-policy-signed entries)
+    // while client still has bucket info for blobInfo.url reconstruction.
     return {
       type: "signed-upload-policy",
       url,
-      fields: { ...fields, bucket: getStorage().bucketName },
+      fields,
+      bucketName: getStorage().bucketName,
       completionToken,
       finalKey,
     } as unknown as UploadEnvelope;

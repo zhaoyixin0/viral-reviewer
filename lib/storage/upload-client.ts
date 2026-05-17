@@ -106,6 +106,7 @@ interface SignedUploadPolicyEnvelope {
   readonly type: "signed-upload-policy";
   readonly url: string;
   readonly fields: Record<string, string>;
+  readonly bucketName: string;
   readonly completionToken: string;
   readonly finalKey: string;
 }
@@ -113,11 +114,12 @@ interface SignedUploadPolicyEnvelope {
 /**
  * Phase 1 envelope guard — opaque `UploadEnvelope` brand cast back here.
  *
- * Validates `fields.bucket` presence up-front per pre-push reviewer MED fix
- * (a63d93e6 2026-05-16): without this, the missing-bucket guard fires only
- * AFTER phase 2 GCS POST completes, leaving an orphan object in the bucket
- * (P5.8.x lifecycle cleanup not yet deployed). Fail-fast at phase 1 keeps
- * the orphan window closed.
+ * Validates `bucketName` top-level presence (was previously `fields.bucket`
+ * but Path A regressed at 411b231: GCS POST policy V4 rejects 400 for any
+ * unknown form field not in policy conditions — `bucket` is not a policy
+ * condition so sending it as form field broke uploads). bucketName is now
+ * at envelope top-level: out-of-band for client (URL construction) without
+ * polluting the multipart form sent to GCS.
  */
 function isPolicyEnvelope(value: unknown): value is SignedUploadPolicyEnvelope {
   if (!value || typeof value !== "object") return false;
@@ -127,13 +129,14 @@ function isPolicyEnvelope(value: unknown): value is SignedUploadPolicyEnvelope {
     typeof v.url !== "string" ||
     typeof v.completionToken !== "string" ||
     typeof v.finalKey !== "string" ||
+    typeof v.bucketName !== "string" ||
+    v.bucketName.length === 0 ||
     v.fields === null ||
     typeof v.fields !== "object"
   ) {
     return false;
   }
-  const fields = v.fields as Record<string, unknown>;
-  return typeof fields.bucket === "string" && fields.bucket.length > 0;
+  return true;
 }
 
 /**
@@ -204,9 +207,10 @@ export async function upload(
   // WRONG; GCS POST 204 typically has no Location). The server-side
   // `urlToKey` (b-2 c2 HIGH nit #2) does strict bucket+key validation,
   // so a forged URL would be rejected at the completion-ping verify step.
-  // `fields.bucket` presence is already enforced by isPolicyEnvelope at
-  // phase 1 (per pre-push reviewer MED defense-in-depth fix).
-  const blobUrl = `https://storage.googleapis.com/${envelope.fields["bucket"]}/${envelope.finalKey}`;
+  // bucketName from envelope top-level (Path B fix to 411b231 regression):
+  // GCS POST policy V4 rejects unknown form fields, so bucket can't ride
+  // along inside the `fields` object — it lives at envelope top-level instead.
+  const blobUrl = `https://storage.googleapis.com/${envelope.bucketName}/${envelope.finalKey}`;
 
   // -------- Phase 3: completion ping back to server ----------------------
   opts.onProgress?.("completing");
