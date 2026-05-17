@@ -195,3 +195,5 @@ scripts/
 
 - [PLAN.md](./PLAN.md) — 完整产品计划与架构
 - [PROGRESS.md](./PROGRESS.md) — 进度跟踪 + 已知问题
+
+<!-- preview-deploy.yml smoke test trigger 2026-05-16 -->
