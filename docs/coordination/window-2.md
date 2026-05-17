@@ -5997,3 +5997,85 @@ Mandate (~30min, autonomous): scan W2/W4-owned modules for additional post-cutov
 - W2 + W4 don't overlap on same files (use file ownership lock per memory)
 
 W3 standby for findings.
+
+
+---
+
+## [W2 → W3] 2026-05-17 13:30 PDT · P5 post-cutover bug hunt findings — `5212b80` mandate (read-only, no fixes)
+
+7 W2-owned modules scanned. **7 findings, severity-ranked**. No fixes per mandate — W3 triage + serial fix.
+
+### Finding A — HIGH: `CRON_SECRET` not bound in service.yaml ⚠️
+
+**Symptom potential**: Cron 504 fallback path. If Cloud Scheduler OIDC fails (current observed behavior — see Finding G), `isAuthorized()` falls back to `CRON_SECRET` compare. But `service.yaml` does NOT bind `CRON_SECRET` env. So `process.env.CRON_SECRET = undefined` → secret-compare path is dead → always 401.
+
+**Reproduce**: `gcloud scheduler jobs run trending-snapshot` → check Cloud Logging — if OIDC fail, fallback returns 401 even with valid CRON_SECRET passed manually.
+
+**Root cause**: P5.3 commit (`1cfb3e0`) added OIDC envs to service.yaml but did NOT add CRON_SECRET binding (assumed it was preserved from earlier config — but service.yaml was first authored in P5.2.3 `a6d7d5c` and never had CRON_SECRET).
+
+**Fix (W3 triage)**: Add `CRON_SECRET` to service.yaml secretKeyRef bindings (+ to Secret Manager bootstrap + REQUIRED_SECRETS in workflows). Or formally retire CRON_SECRET path now that OIDC is wired (W3 decides).
+
+### Finding B — MEDIUM: `ADMIN_TRIGGER_SECRET` not bound in service.yaml ⚠️
+
+**Symptom**: Per `route.ts` docstring "始终保留 (ops 紧急路径)" — manual emergency trigger path documented but **completely dead**. `process.env.ADMIN_TRIGGER_SECRET = undefined` → always 401.
+
+**Fix (W3 triage)**: Add to service.yaml secretKeyRef + bootstrap, OR formally retire if Cloud Scheduler OIDC is now sole production path. Either way, doc-code drift needs resolution.
+
+### Finding C — INFO: Optional model override envs not bound
+
+ANTHROPIC_MODEL / VISION_MODEL / ENRICH_MODEL / HASHTAG_MODEL / TOPIC_INFERENCE_MODEL / GEMINI_VIDEO_MODEL / OPENAI_MODEL / ANTHROPIC_HAIKU_MODEL — all optional with hardcoded defaults in lib code (e.g. `process.env.X || "claude-opus-4-7"`). **No production impact** — defaults work. Listed for completeness only.
+
+### Finding D — LOW: `console.log` not swapped in template-brief-upload onCompleted callback
+
+**File**: `app/api/template-brief-upload/route.ts:34`
+**Issue**: P5.8.2 swap (W4) replaced inline `console.warn/error` to `log.warn/error`, but missed `POLICY.onCompleted` callback `console.log("[brief-upload] completed:", url)`. Route file imports `createLogger` (line 15) + instantiates `log` (line 17) but onCompleted callback still uses raw console.log.
+**Impact**: Cloud Logging doesn't structured-parse this line; ops can't filter by structured fields for upload completions.
+
+### Finding E — LOW: `console.log` not swapped in upload onCompleted callback (same pattern)
+
+**File**: `app/api/upload/route.ts:49`
+**Issue**: Same as Finding D — both upload routes have identical pattern, P5.8.2 swap missed both POLICY.onCompleted callbacks.
+
+### Finding F — INFO: service.yaml render pipeline analysis (no bug)
+
+deploy.yml `sed -e "s|PROJECT_ID|...|g" -e "s|\${IMAGE_TAG}|...|g"` correctly handles 3 PROJECT_ID occurrences (serviceAccountName line 53, image line 66, CRON_OIDC_SERVICE_ACCOUNT line 101) + 2 ${IMAGE_TAG} occurrences (image line 66, GIT_SHA line 91). Then yq overwrites image field (defensive redundant). preview-deploy.yml does NOT render service.yaml (uses `gcloud run deploy --image=...` directly), so PROJECT_ID/IMAGE_TAG placeholders are irrelevant for preview path (which inherits env config from current prod service). **No bug — defensive double-replace is correct.**
+
+REQUIRED_SECRETS arrays in both workflows match service.yaml's 6 secretKeyRef bindings 1:1. ✅
+
+### Finding G — HIGH (confirms W3 active ping hypothesis): Cron 504 likely Apify scrape serial latency
+
+**Path**: Cloud Scheduler → POST /api/cron/trending → `fetchTrendingSnapshot()` →
+- TT Stage 1 `scrapeTikTokTrendingHashtags` (~30-60s)
+- TT Stage 2 `for h of topHashtags { await scrapeTikTokByHashtag(...) }` — **SERIAL** 5 × ~30-60s = **150-300s**
+- IG `scrapeInstagramByHashtag` (parallel with TT Stage 2 via Promise.allSettled, ~30-60s)
+- enrichBatch LLM (~30-120s)
+- topic-classifier LLM (~30-60s)
+
+**Total wall time**: ~250-540s (TT Stage 2 dominates).
+
+**Cloud Scheduler default attempt-deadline**: 180s → 504 deadline exceeded.
+
+**Fix options (W3 triage)**:
+- (a) Parallelize TT Stage 2: `lib/trending/fetch.ts:66-86` change `for h of topHashtags` → `Promise.allSettled(topHashtags.map(...))`. Saves ~120-240s (collapses 5×30-60s serial to 1×30-60s parallel). lib-level change, W1-touchable, needs careful Apify rate-limit consideration.
+- (b) `gcloud scheduler jobs update http trending-snapshot --attempt-deadline=600s` — operational change, no code, immediate fix but raises Scheduler's max deadline cap.
+- (c) Both (defense-in-depth).
+
+W3 active ping already hinted exact same fix path — confirmed.
+
+### Other targets verified clean
+
+- ✅ All 14 routes have NO `maxDuration` export (P5.5 cleanup intact). `runtime = "nodejs"` and `dynamic = "force-dynamic"` (health) remain as-is.
+- ✅ Cloud Run timeoutSeconds: 3600 applies uniformly (no per-route Next.js timeout overrides).
+- ✅ `app/api/scrape/route.ts` clean — reads APIFY_TOKEN (env bound ✅), no post-cutover regression visible.
+- ✅ OIDC audience env value matches actual prod URL (user fixed `790fddd`).
+- ✅ runbook §10.1 `roles/run.invoker` scoped to specific service (security correct).
+
+### Coordination
+
+Read-only investigation complete. **NO fixes pushed**. W3 triages + serial fix or signals next mandate.
+
+**Files read** (no edits): `lib/trending/fetch.ts`, `lib/apify/scrapers.ts`, `app/api/cron/trending/route.ts`, `app/api/{upload,template-brief-upload,scrape}/route.ts`, `service.yaml`, `.github/workflows/{deploy,preview-deploy}.yml`, `docs/deploy/cloud-run-setup.md`.
+
+**File ownership lock**: Findings A/B (service.yaml) + D/E (upload routes) are W2 owned; G is lib/trending/fetch.ts (W1) — collab needed. F is clean (no action).
+
+> **W2 → W3: 7 findings (2 HIGH cron auth + 1 HIGH apify serial + 2 LOW console.log + 1 MEDIUM admin secret + 1 INFO); awaiting W3 triage.**
