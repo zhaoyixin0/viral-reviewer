@@ -140,11 +140,14 @@ jobs:
             --quiet
 
           # Get tagged URL: format is <tag>---<service>-<hash>-<region>.run.app
+          # Use jq (preinstalled on ubuntu-latest) because gcloud projection
+          # filter `[?tag=='X']` is JMESPath-like syntax not supported by gcloud's
+          # own resource projection language (returns empty silently).
           TAG_URL=$(gcloud run services describe "${SERVICE}" \
             --region="${REGION}" \
             --project="${{ secrets.GCP_PROJECT_ID }}" \
-            --format="value(status.traffic[?tag=='${PR_TAG}'].url)" \
-            | head -1)
+            --format=json \
+            | jq -r ".status.traffic[] | select(.tag==\"${PR_TAG}\") | .url")
           echo "tag_url=${TAG_URL}" >> "$GITHUB_OUTPUT"
           echo "::notice::Preview URL: ${TAG_URL}"
 
