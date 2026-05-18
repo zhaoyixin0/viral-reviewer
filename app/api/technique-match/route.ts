@@ -12,7 +12,6 @@ const log = createLogger({ module: "api/technique-match" });
 import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
 import {
   createUrlAllowlist,
-  fetchWithAllowlist,
   UrlAllowlistError,
   GCS_PRESET,
 } from "@/lib/url-allowlist";
@@ -202,10 +201,22 @@ export async function POST(req: NextRequest) {
         );
         await Promise.all(
           videoUrls.map(async (url, i) => {
-            // Phase 3.5 (W3 verdict 5357c41 §B3): fetchWithAllowlist 在 stream
-            // 内防 DNS rebind 时间窗（pre-stream check 与 in-stream fetch 之间
-            // attacker 可能 rebind DNS）。UrlAllowlistError 会冒泡到 stream catch。
-            const res = await fetchWithAllowlist(url, urlAllowlist);
+            // 2026-05-18: in-stream fetchWithAllowlist 与 GCS 在 undici 7+
+            // 不兼容（IP-literal dispatcher + virtual host 一律 404，本地 plain
+            // fetch 同 URL 200）。downloads 走的都是我方自有 bucket（host 固定
+            // storage.googleapis.com，由 lib/storage signed POST 写入），不是
+            // 用户自由输入的 URL —— pre-stream allowlist 已防 SSRF，in-stream
+            // DNS rebind 二次防御对自家 bucket 属过度设计。降级 plain fetch +
+            // 显式 host hard-check 兜底任何残余的 URL 注入向量。
+            const parsedDownload = new URL(url);
+            if (
+              parsedDownload.protocol !== "https:" ||
+              (parsedDownload.hostname !== "storage.googleapis.com" &&
+                !parsedDownload.hostname.endsWith(".storage.googleapis.com"))
+            ) {
+              throw new Error(`下载视频 ${i + 1}/${totalMaterials} 失败 (URL host not allowed)`);
+            }
+            const res = await fetch(url);
             if (!res.ok) {
               // Log url + status to GCP before throwing — error message goes to
               // user (CJK string) but URL diagnostic only lands in structured log.
