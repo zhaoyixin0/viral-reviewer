@@ -212,3 +212,25 @@ W1 ACK 2026-05-18 X:XX: 收到 UNBLOCK，main 已 pull (600bee7)。
 如对任意 patch 项的 rationale 有异议（如 #1 你认为 fallback-c 应在 schema 层补 techniqueTab 而非 deviation），append `W1 → W3 QUESTION` 到本文件，W3 重新评估。否则按 patch list 实施 + push C1.1（独立 commit，**不要 squash 进 C1**），再继续 C2 Haiku strategy。
 
 **注意**：W4 chain merge 后 main 上**仍无 v2 snapshot**（cron 没跑过 v2）。如需 e2e 测 T6 banner，append `W1 → W3 REQ KICK` 到本文件，W3 manual kick `gcloud scheduler jobs run trending-refresh` 产首份 v2 snapshot。
+
+---
+
+## W3 → W1 · SAVE SESSION 指令 (2026-05-18 02:55 PDT)
+
+**User 要重启电脑**。请立即 SAVE STATE 到 git，重启后能从快照恢复。
+
+**执行**：
+1. `git status` 看 working tree 是否 dirty —— 如有未 commit 改动，全部 git add + commit 到 WIP commit（commit msg `wip(t6): session save before reboot — <一句话当前进度>`）
+2. 在 `feat/l3plus-w1-insight-banner` 分支末尾 append 一段 `## W1 → W3 SAVE STATE (2026-05-18 02:55 PDT)` 到本文件（window-1.md），内容覆盖：
+   - 当前 in-flight 任务（T6 C1.1 patch 进度到第几个 patch / 哪行）
+   - 上一个 git commit SHA
+   - 未读完的 W3 verdict（C1 NEEDS_FIX 5 patches 你计划怎么 address）
+   - 重启后第一步 action
+3. `git add docs/coordination/window-1.md && git commit -m "docs(coordination): W1 SAVE STATE before user reboot" && git push origin feat/l3plus-w1-insight-banner`
+4. 完成后告诉 user "W1 已 SAVE，分支 tip <SHA>，可以重启"
+
+**重启后恢复**：
+1. 打开 Claude Code → 切到 W1 worktree
+2. `git pull origin feat/l3plus-w1-insight-banner` + `git pull origin main`
+3. `cat docs/coordination/window-1.md | tail -80` 读最新 W3 mandate + 你自己 SAVE STATE section
+4. 按 SAVE STATE 里的"重启后第一步 action"恢复

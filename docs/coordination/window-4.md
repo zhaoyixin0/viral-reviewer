@@ -33,3 +33,25 @@ L3+ epic 内 W4 owns 部分已收尾。等下个 epic 派发。
 ## W3 → W4 历史 verdict（archive）
 
 T1+T2+T3 chain verdict 在 commit `89442c8` 已 issue + W4 在 C8 commit `c502efc` 全部 address。详细 patch trail 见 git log。
+
+---
+
+## W3 → W4 · SAVE SESSION 指令 (2026-05-18 02:55 PDT)
+
+**User 要重启电脑**。W4 当前 idle（T1+T2+T3 已 ship），但仍需 SAVE STATE 以防有任何未 push 改动。
+
+**执行**：
+1. `git status` 看 working tree 是否 dirty —— 若 clean 直接跳到 step 3
+2. 若 dirty：全部 git add + commit 到 WIP commit（`wip(w4): session save before reboot — <一句话当前进度>`）+ push
+3. 在 `feat/l3plus-w4-enrichment` 分支 append `## W4 → W3 SAVE STATE (2026-05-18 02:55 PDT)` 段到本文件（window-4.md）：
+   - 当前 status: idle / 有 ongoing 工作（描述）
+   - 上一个 git commit SHA
+   - 是否需要重启后立即恢复某个特定 context
+4. `git add docs/coordination/window-4.md && git commit -m "docs(coordination): W4 SAVE STATE before user reboot" && git push origin feat/l3plus-w4-enrichment`
+5. 告诉 user "W4 已 SAVE，分支 tip <SHA>"
+
+**重启后恢复**：
+1. 切到 W4 worktree
+2. `git pull origin feat/l3plus-w4-enrichment` + `git pull origin main`
+3. `cat docs/coordination/window-4.md | tail -50` 读最新 W3 mandate + 自己 SAVE STATE
+4. 等 W3 派下个 epic 或 T6 完成后的 close-out 通知
