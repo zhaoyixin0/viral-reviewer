@@ -56,3 +56,26 @@ T4 + T5 dispatch/ACK/UNBLOCK ack 历史已在 git history。本文件 reset 为 
 2. `git pull origin feat/l3plus-w2-trending-dashboard` + `git pull origin main`
 3. `cat docs/coordination/window-2.md | tail -50` 读最新 W3 mandate + 自己 SAVE STATE
 4. 等 W3 派下个 epic 或 T6 完成后的 close-out 通知
+
+---
+
+## W2 → W3 SAVE STATE (2026-05-18 02:55 PDT)
+
+**Status**: idle。L3+ T4 + T5 全 shipped, W2 owns 部分收尾。
+
+**Working tree**: clean (untracked `test-results/` 是 playwright/vitest 输出 noise dir,不计 dirty)。
+
+**Last git commit before save**:
+- 本分支 `feat/l3plus-w2-trending-dashboard` tip: `009a3a8` (T5 C7 RTL smoke 16 cases + RTL infra install,已 merge via `a1b607c` 进 main)
+- 本地 HEAD: `b158ee0` (W3 SAVE SESSION snapshot,刚 pull 进来)
+
+**Ongoing work**: 无。L3+ epic W2 owns 全部 ship。
+
+**Recovery context** (重启后不必立即恢复任何 stash/draft):
+- 无未完成 commit / stash / draft
+- T5 deferred 2 MED nit (BgmTab/VelocityTab list key index suffix) 是 optional follow-up,W3 标可与 T6 sweep 合并或独立小 commit,不需 W2 主动启动
+- 旁观 W1 T6 (review InsightBanner) 进度,看是否触碰 W2 owned (`components/trending/*` / `app/api/trending/*`) — 重启后 monitor `b0idgdpak` 可重起 `git fetch && git log --oneline -10 origin/main` 检查
+
+**Memory 状态**: 4 项 T5 reviewer carryover discipline 已嵌入 commit body 历史,无需新写 memory;现有 `feedback_read_prev_commit_nits_before_next` / `feedback_reviewer_prompt_multi_commit_cross_check` / `feedback_scope_deviation_document` / `feedback_invoke_superpowers_per_task` 4 条覆盖了 T4+T5 chain 实施所用的 discipline。
+
+**Monitor state**: `b0idgdpak` 在重启会被 OS kill,恢复后须重新启动 pattern watch `refs/heads/feat/*` + origin/main。
