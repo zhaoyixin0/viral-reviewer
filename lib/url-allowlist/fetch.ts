@@ -45,6 +45,22 @@ export async function fetchWithAllowlist(
     return fetch(url, init);
   }
 
+  // 2026-05-18: GCS bypass for IP-locked dispatcher.
+  // 现象: undici 7.25 + IP-literal Pool origin + storage.googleapis.com 一律 404
+  //       (technique-match / compile-capcut / template-brief / ffmpeg 全部命中)；
+  //       同 URL anonymous plain HTTPS HEAD 返回 200，文件确实在 bucket。
+  // 评估: GCS 是我方写入的 bucket（path-style + UBLA public read），URL 由 lib/storage
+  //       signed POST 生成，attacker 无法注入；pre-stream allowlist.checkAsync 已 resolve
+  //       DNS 防 SSRF。in-stream IP-lock 二次防御原意是防 DNS rebind 时间窗 attack，但
+  //       attacker 必须能改 storage.googleapis.com 的 authoritative DNS 记录才能 rebind ——
+  //       不现实。降级 plain fetch 是 acceptable trade-off。
+  if (
+    parsed.hostname === "storage.googleapis.com" ||
+    parsed.hostname.endsWith(".storage.googleapis.com")
+  ) {
+    return fetch(url, init);
+  }
+
   const ip = pickPreferredIp(resolvedAddresses);
   const port = parsed.port || (parsed.protocol === "https:" ? "443" : "80");
   const isIpv6 = ip.includes(":");
