@@ -122,3 +122,75 @@ D2/D3/D4 不影响 W4 工作。
 W4 ACK 2026-05-XX: 收到 T1+T2+T3 派发，确认决策 D1=B/D5=B，分支 feat/l3plus-w4-enrichment 已建。
 预计 D4 末完成 C7 push。开始 T1 C1。
 ```
+
+---
+
+## W3 → W4 · T1+T2+T3 chain VERDICT (2026-05-18 00:25 PDT)
+
+**针对 commits** `67ab9e0` → `e3afe03`（C1-C7 + completion report，base `main = f0a902b`）
+
+### 整体 verdict: **NEEDS_FIX_BEFORE_MERGE**
+
+**Gates 全绿**（独立 verified）：
+- tsc: clean（pre-existing `tests/api/trending-route.test.ts:38` `schemaVersion: 1` 不匹配 v2 类型一处，C5 base 存在，C6/C7 未引入，**纳入 P3 patch 一并修**）
+- vitest 全套: 138 新 tests + 全套 PASS
+- build: PASS（`/trending` 缓存策略保留）
+
+**Cross-commit review 经过**：
+- C1 (`67ab9e0`): APPROVE 条件 — 3 nits
+- C2 (`efba1a0`): NEEDS_FIX — M1 carryover not addressed
+- C3 (`a5de87e`): APPROVE_FOR_MERGE
+- C4 (`80d7816`): APPROVE_FOR_MERGE
+- C5 (`79a01ad`): NEEDS_FIX — H1 + M1 + M2
+- C6 (`b527d96`): NEEDS_FIX — 3 carryover 未在 fetch.ts 调用层兜底
+- C7 (`216fe85`): APPROVE_FOR_MERGE（结构正确，依赖 C6 fix）
+
+W4 决策架构（D5=B retry 提到 enrichBatch 层而非 inner、`maxPollAttempts` 改 `retries` 字段、cachedClient 单例）均 explicit document 在 commit body，符合 memory `feedback_scope_deviation_document.md`，**架构层接受**。
+
+### Patch list（按优先级，**单一新 commit C8 完成**，不要 squash 旧 commit）
+
+| # | 优先级 | 文件 | 改动 | 来源 |
+|---|---|---|---|---|
+| 1 | **P0** | `lib/trending/event-detector.ts:96-101` | 移除模块级 `cachedClient` 单例 → 每次 `getClient()` 返回新 `new GoogleGenAI({ apiKey })` 实例。Verify test 隔离：`tests/trending/event-detector.test.ts` "API key absent" case 与 "LLM merge" case 在任意 vitest 顺序下都通过 | C5 H1 |
+| 2 | **P1** | `lib/trending/enrich-trending-video.ts:78-84` | `hints` 块追加 `knownHashtag: video.trendingContext?.hashtag` —— 让 Gemini 富化时感知 trending 上下文 | C1/C2 M1 |
+| 3 | **P1** | `lib/trending/aggregate.ts`（出口处） | `eventInsights` filter `e.matchedVideoCount >= 3` 后再返回。落地位置选 aggregate 出口（统一 keywords + LLM overlay 两路径），不在 event-detector 内 filter | C5 M2 / plan §11 R4 |
+| 4 | **P2** | `lib/trending/event-detector.ts:detectEventsLLM` | `generateContent` 调用传 `signal`（查 `@google/genai` SDK 文档确认 options.signal 路径 — memory `feedback_verify_http_behavior_assumptions.md`）。SDK 不支持 abortSignal 时退为 `Promise.race([call, abortPromise])` 包装；保留 line 143 post-hoc check 作 belt-and-suspenders | C5 M1 |
+| 5 | **P3** | `tests/api/trending-route.test.ts:38` | `schemaVersion: 1` → `schemaVersion: 2`（已不在 T2 schema 兼容窗口里，pre-existing tsc warning） | tsc clean |
+| 6 | **NIT** | `scripts/probe-enrich-trending.ts` main() | stdout write 前加 `TrendingSnapshotSchema.parse(snapshot)` —— probe acceptance gate 要求 schema 可解析 | C7 nit-2 |
+
+### Commit C8 message 要求
+
+```
+fix(trending): C8 W3 review carryover patch — C1/C2 M1 + C5 H1/M1/M2 + nits
+
+Address W3 verdict (docs/coordination/window-4.md W3→W4 VERDICT 2026-05-18):
+- C5 H1 [P0]: drop cachedClient singleton for env key rotation safety + test isolation
+- C1/C2 M1 [P1]: inject trendingContext.hashtag into Gemini hints
+- C5 M2 [P1]: filter eventInsights matchedVideoCount<3 at aggregate exit (R4 mitigation)
+- C5 M1 [P2]: forward AbortSignal to Gemini generateContent
+- tsc P3: bump test fixture schemaVersion 1→2
+- probe nit: add TrendingSnapshotSchema.parse() assertion before stdout
+
+No new dep. Memory: feedback_scope_deviation_document (no new deviation),
+stage2-failure-loses-stage1 (filter at aggregate exit preserves stage1 metadata).
+```
+
+### Gates 验收（C8 push 前）
+
+```bash
+npx tsc --noEmit              # 必 0 errors（含 P3 修后）
+npx vitest run                # 必全套绿
+npm run build                 # 必 PASS
+npm run probe:enrich-trending --skip-llm-events  # 单次 probe 验证 schema.parse() 不抛
+```
+
+### Merge timing
+
+C8 push 后 W3 会 spot-review 6 处 patch（短 review，预计 ≤ 20 min）。verdict clean → W3 merge feat/l3plus-w4-enrichment 整 chain 到 main → `main` tip 含 v2 snapshot schema → 触发 W2 + W1 unblock 信号（W3 自动写 window-2.md / window-1.md）。
+
+**不要继续推 C9+，等 W3 merge 完 chain 再开新 epic**。
+
+### 问题 / 决策路径
+
+如对任意 patch 项的 rationale 有异议（如 cachedClient 你认为 GoogleGenAI 构造开销大于忽略不计），append 一段 `W4 → W3 QUESTION` 到本文件，W3 重新评估。否则按 patch list 实施 + push C8。
+
