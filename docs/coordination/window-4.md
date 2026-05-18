@@ -124,3 +124,107 @@ echo "
 收到 RESUME，已 pull main + 本分支，idle continue 等 T6 close-out。" >> docs/coordination/window-4.md
 git add docs/coordination/window-4.md && git commit -m "docs(coordination): W4 RESUME ack idle" && git push origin feat/l3plus-w4-enrichment
 ```
+
+---
+
+## W3 → W4 · TASK DISPATCH: T7 hotfix — PIPELINE_TIMEOUT_MS bump (2026-05-18 13:50 PDT)
+
+**User 决策 + W1 转达**：选 Option C — 先修 prod bug 再 W1 C5 e2e。T6 close-out 顺延到本 fix landed。
+
+### 背景（W3 diagnosis）
+
+我 manual kick 了 scheduler 2 次 (UTC 20:05+)，结果：
+- ✅ V2 snapshot 写 GCS 成功 (`gs://viral-reviewer-blob-prod/trending/snapshot-2026-W21.json`, 577KB, schemaVersion=2, 400 videos)
+- ❌ `insight` **全空**（hashtagInsights / bgmInsights / eventInsights / velocity 全空 / totalEnriched=0）
+- 日志 (gitSha=a58c2b4) `L3+ enrichment pipeline aborted before start` × 2
+
+### Root cause
+
+`app/api/cron/trending/route.ts:22` `const PIPELINE_TIMEOUT_MS = 150_000` 太紧：
+- Apify 抓 (fetchTikTokTwoStage + fetchInstagram 并行，400 视频) + Haiku 元数据富化 + topic 分类 3 个 upstream 阶段**消耗满 150s**
+- `runEnrichmentPipeline` 入口 check `signal?.aborted` 已 true → emptyInsight return
+- snapshot 写成 v2 schema 但 insight 全空
+
+Cloud Scheduler `attemptDeadline` 现 = **600s**（充足余量，可放心 bump 我方 timeout）。
+
+### Scope（**严格 1 个 const + commit body 说明，不扩**）
+
+**单文件单常量改动**：
+
+| 文件 | 行 | 改动 |
+|---|---|---|
+| `app/api/cron/trending/route.ts` | 22 | `const PIPELINE_TIMEOUT_MS = 150_000;` → `const PIPELINE_TIMEOUT_MS = 270_000;` (150s → 270s) |
+
+**Rationale**（commit body 必含，引用 memory `feedback_scope_deviation_document.md`）：
+- Apify 抓 400 视频 + Haiku 元数据 + topic 分类 3 阶段实测占满 150s budget
+- 这 3 阶段**未透传 AbortSignal**（只 runEnrichmentPipeline 入口检查 signal），所以 abort 仅起到 "在 enrichment 入口跳过" 作用，不会真正缩短 scrape
+- 270s 给 Gemini CutPlan + detectEvents 留 ~120s 充足预算
+- Cloud Scheduler attemptDeadline=600s，余量充足
+- **不**触碰 AbortSignal 透传（fetchTikTokTwoStage / fetchInstagram / enrichMetadataBatch / classifyTopics 4 阶段透传是单独 follow-up epic，不在本 hotfix scope）—— hotfix 单常量是 minimum viable fix
+
+### 执行步骤
+
+```bash
+git checkout feat/l3plus-w4-enrichment
+git pull origin feat/l3plus-w4-enrichment
+git pull origin main                                  # 拉最新 W1 T6 进展
+
+# 编辑 1 行 app/api/cron/trending/route.ts:22
+
+npx tsc --noEmit                                       # exit 0
+npx vitest run                                         # 全套绿
+npm run build                                          # exit 0（route 是 ƒ Dynamic）
+
+git add app/api/cron/trending/route.ts
+git commit -m "fix(cron/trending): T7 hotfix — bump PIPELINE_TIMEOUT_MS 150s → 270s (Apify scrape eats budget, enrichment aborted)"
+git push origin feat/l3plus-w4-enrichment
+```
+
+**Commit body 模板**（必含 root cause + 引用 follow-up）：
+```
+Apify scrape (fetchTikTokTwoStage + fetchInstagram parallel, 400 videos)
++ Haiku metadata enrichment + topic classification — three upstream
+stages do NOT propagate the AbortSignal forwarded into fetchTrendingSnapshot.
+Empirically these three stages consume the full 150s budget; by the time
+control reaches runEnrichmentPipeline's `if (signal?.aborted)` guard at
+lib/trending/fetch.ts:255, the abort flag is already set and enrichment
+returns emptyInsight. Verified via prod log on gitSha a58c2b4 / GCS
+snapshot-2026-W21.json (577KB v2 schema, but insight = empty arrays).
+
+Hotfix: bump PIPELINE_TIMEOUT_MS to 270s (Cloud Scheduler
+attemptDeadline is 600s — ample margin). This gives Gemini CutPlan
+batch + detectEvents ~120s after scrape completes, enough for the
+selected enrichment cohort.
+
+Out of scope (follow-up issue): propagate AbortSignal through the 4
+upstream stages so any one phase can short-circuit on timeout. Memory:
+feedback_scope_deviation_document.md.
+
+Gates: tsc 0 / vitest <N>/<N> / npm run build exit 0.
+```
+
+### Push 后 W3 动作
+
+1. W3 spot-review (<10min)
+2. APPROVED → merge `feat/l3plus-w4-enrichment` → main (fast-forward or --no-ff)
+3. 等 GitHub Actions Cloud Run deploy 完成（~5min）
+4. W3 re-kick scheduler `gcloud scheduler jobs run trending-refresh`
+5. 等 ~5min cron 跑完 + verify GCS `snapshot-2026-W21.json` 含 `insight.hashtagInsights.length > 0`
+6. W3 ping W1 mailbox `W3 → W1 BUG FIXED + SNAPSHOT POPULATED` 含 GCS path + insight metric
+7. W1 e2e → push T6 COMPLETE → W3 cross-commit review C1..C5 全链 → merge
+
+### Scope 边界（严禁扩）
+
+- ❌ 不动 lib/trending/fetch.ts 任何代码（AbortSignal 透传留 follow-up）
+- ❌ 不动 Cloud Scheduler config（attemptDeadline 600s 已充足）
+- ❌ 不动 Apify config / topic 分类 / Haiku 元数据
+- ❌ 不动任何 W1/W2 owned 文件
+
+### 完工 ACK
+
+```
+## W4 → W3 ACK · T7 hotfix (2026-05-18 XX:XX PDT)
+PIPELINE_TIMEOUT_MS 150s → 270s 已改 + gates 全绿，push <SHA>，等 W3 review。
+```
+
+完工后回 idle continue 模式。L3+ epic close-out 由 W3 在 T6 整链 merge 后处理。
