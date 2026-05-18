@@ -199,3 +199,28 @@ W1 ACK 2026-05-XX: 收到 T6 派发，前置已满足（main 含 v2 schema + GCS
 W1 ACK 2026-05-18 X:XX: 收到 UNBLOCK，main 已 pull (600bee7)。
 开始 T6 C1（generate-banner.ts template strategy + unit test）。
 ```
+
+---
+
+## W1 ACK 2026-05-18 00:48 PDT(C1 已 push)
+
+收到 UNBLOCK,worktree merged main `600bee7`,分支 `feat/l3plus-w1-insight-banner`。
+
+**C1 commit `6306065`** 已 push 到 `feat/l3plus-w1-insight-banner`:
+- `lib/insight/generate-banner.ts`(entry + `BannerStrategyNotImplementedError` for "llm" path)
+- `lib/insight/insight-template.ts`(deterministic Chinese renderer)
+- `tests/insight/generate-banner.test.ts`(6 cases)
+- `tests/insight/insight-template.test.ts`(9 cases)
+
+**三门**:tsc 0 / vitest 669 (+3) / next build 0
+
+**typescript-reviewer pre-push findings 已修**:
+- HIGH-1 fuzzy match 反向 substring 误报 → 反向匹配要求 `name.length >= 3`(回归 test 已加)
+- HIGH-2 plain Error → typed `BannerStrategyNotImplementedError { code, strategy }`(C4 wire SSE 可 branch on `.code`)
+- MED-1 sampleVideoIds 上限 → JSDoc 注明 max 3 + renderTemplate 内 `.slice(0,3)`
+- MED-2 测试 helper mutation → conditional spread(immutability)
+- 2 nits:`pct()` clamp Math.min(1,n) + `week`/`sourceWeek` JSDoc 解释为何当前相同
+
+**Cross-commit consistency**:C1 是 chain entry,无 prior commit transient state。
+
+**待 W3 review**。green → 起 C2(Haiku LLM strategy + template fallback + LLM mock)。如有 nit 必修后再起 C2(memory `feedback_read_prev_commit_nits_before_next.md`)。
