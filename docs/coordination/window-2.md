@@ -148,3 +148,71 @@ git add docs/coordination/window-2.md && git commit -m "docs(coordination): W2 R
 **Monitor**: 重启 pattern watch `refs/heads/feat/*` + `origin/main` 移动，等 W1 T6 close-out 或新 epic 派发。
 
 不动 owned 文件（`components/trending/*` / `app/api/trending/*` / `app/trending/page.tsx`），不主动 ping W3。
+
+---
+
+## W3 → W2 · TASK DISPATCH: T5 nit cleanup (2026-05-18 12:32 PDT)
+
+User 派 1 个小活并行（W1 在跑 T6 C3）。预计 **5min + 1 commit**。
+
+### Scope（**严格 3 处 key 改动，不扩**）
+
+| 文件 | 行 | 改动 |
+|---|---|---|
+| `components/trending/tabs/BgmTab.tsx` | ~51 | `key={\`${b.name}-${idx}\`}` → `key={b.name}` |
+| `components/trending/tabs/VelocityTab.tsx` | bgmWoW map | `key={\`${b.name}-${i}\`}` → `key={b.name}` |
+| `components/trending/tabs/VelocityTab.tsx` | eventWoW map | `key={\`${e.name}-${i}\`}` → `key={e.name}` |
+
+**Rationale**：name 在 projection 层已 unique（参考 `lib/trending/insight-projection.ts` 已对 bgmTab / bgmWoW / eventWoW dedupe）。index suffix 是当时保守加的，T5 reviewer 标 deferred MED。`techniqueWoW` 已用 `key={tech}` 无 index，与本次改动后一致。
+
+### 执行步骤
+
+```bash
+git checkout feat/l3plus-w2-trending-dashboard
+git pull origin feat/l3plus-w2-trending-dashboard
+git pull origin main                                  # 拉最新 W1 进展（无冲突）
+
+# 编辑 BgmTab.tsx + VelocityTab.tsx 3 处 key
+# （也可 sed -i 但要小心 backtick 转义）
+
+npx tsc --noEmit                                       # 必须 exit 0
+npx vitest run tests/components/trending/             # 16 RTL test 必须全绿
+npx vitest run                                         # 全套必须全绿（718 PASS）
+
+git add components/trending/tabs/BgmTab.tsx components/trending/tabs/VelocityTab.tsx
+git commit -m "fix(trending): T5 nit cleanup — drop list key index suffix in BgmTab + VelocityTab (deferred from T5 reviewer)"
+git push origin feat/l3plus-w2-trending-dashboard
+```
+
+**Commit body 模板**：
+```
+T5 reviewer flagged 2 deferred MED nits on list key index suffix
+(BgmTab L51, VelocityTab bgmWoW/eventWoW maps). Name uniqueness is
+guaranteed by projection layer (lib/trending/insight-projection.ts
+dedupes bgmTab/bgmWoW/eventWoW by name). Index suffix was conservative
+guard, no longer needed. Aligns with existing techniqueWoW key={tech}
+pattern.
+
+Gates: tsc 0 / vitest 718/718.
+```
+
+### 不在 scope 内（**不许扩**）
+
+- ❌ 任何 T6 / InsightBanner 相关文件
+- ❌ 任何 `lib/insight/*` / `lib/trending/*`（W1/W4 owned）
+- ❌ `app/api/cron/trending/*`（W4）
+- ❌ 其他 trending 组件优化 / refactor / UX polish
+- ❌ npm dep 改动
+
+### Push 后
+
+W3 monitor 触发 review，clean 后直接 merge 进 main（fast-forward）。预计 W3 review ≤ 10min。
+
+### 完工 ACK
+
+```
+## W2 → W3 ACK · T5 nit (2026-05-18 XX:XX PDT)
+3 处 key 已改 + gates 全绿，push <SHA>，等 W3 review。
+```
+
+完工后再回 idle continue 模式。
