@@ -381,3 +381,56 @@ onboarding doc 完工 + smoke check passed (timing: <min>)。Push <SHA> 到 feat
 - ❌ 不动 GCS bucket / IAM 配置（写 doc 引导 user 自己改）
 - ❌ 不动 `lib/insight/*` / `lib/trending/*` / `components/trending/*` 等其他 worker owned 文件
 - ❌ 不擅自 rotate APIFY_TOKEN（doc 提建议，user 决策执行）
+
+---
+
+## W2 → W3 ACK · Item 3 (2026-05-18 16:57 PDT)
+
+Onboarding doc shipped。Push `c077c25` 到 `feat/onboarding-local-dev-setup`。
+
+### Deliverable
+
+| 文件 | 状态 |
+|---|---|
+| `docs/onboarding/local-dev-setup.md` (new) | 250+ LOC，4-section Diataxis（Quick start / From-zero setup / Env vars reference / Troubleshooting） |
+| `.env.example` (modified) | 顶部加 link + `GCS_BUCKET_NAME` 取消注释 + `GOOGLE_APPLICATION_CREDENTIALS` 完整块（含 SigningError rationale + Win/Mac/Linux 路径示例） |
+| `README.md` (modified) | "本地开发" 段重写指向 onboarding doc（保留 optional scripts 段） |
+
+### W3 5 项 checklist 覆盖
+
+1. **gcloud auth ladder** — §2.3 三 option（SA JSON download 推荐 / impersonation / ADC user partial mode），含 SigningError 完整 explanation + Option B 加了 `GOOGLE_CLOUD_PROJECT` footnote
+2. **env vars + 来源 + rotation policy** — §3 reference 表分必填 / 可选 / 自动注入三段，每条含 rotation trigger（APIFY_TOKEN 标 memory 2026-05-13 暴露过）
+3. **Smoke check sequence** — §2.6 三步（/ → /trending → /technique-match upload）
+4. **Troubleshooting** — §4 6 项（含 W1 T6 C5 撞的 3 个真实 issue：SigningError / storage_not_configured / /trending 空 + Apify rate limit + port 冲突 + tsc error）
+5. **Secret mgmt 安全** — §5 含 `.gitignore` 建议 + 主保护是 `$HOME/.gcp/` 物理隔离 + pre-commit gitleaks hook + APIFY rotation memory link
+
+### Scope 遵守（W3 boundary）
+
+- ✅ 不动 `app/api/upload/*` 现有逻辑（doc 只描述现状）
+- ✅ 不动 GCS bucket / IAM 配置（doc 引导 user 自己跑 gcloud）
+- ✅ 不动其他 worker owned 文件（`lib/insight/*` `lib/trending/*` `components/trending/*` `lib/storage/*`）
+- ✅ 不擅自 rotate APIFY_TOKEN（doc 建议，user 决策）
+
+### Pre-push reviewer (typescript-reviewer)
+
+- HIGH H1 本 commit 内修：reference 表补 `ANTHROPIC_HAIKU_MODEL`
+- MED M1 本 commit 内修：澄清 `.gitignore` 是兜底，物理隔离是主保护
+- MED M2 本 commit 内修：Option B 加 `GOOGLE_CLOUD_PROJECT` footnote
+- MED M3 本 commit 内修：去掉脆弱行号引用改用函数名
+- LOW L1 本 commit 内修：Node 版本跟 `package.json` engines `>=20` 对齐（原写"24 LTS"是错的）
+- LOW L2 本 commit 内修：typo "期" → "预期"
+- NIT N1 (zh 注释一致性) / N2 (force-push 警告) 留给 W3 verdict batch
+
+### Verification 限制
+
+- ❌ 没跑 hands-on §2.6 smoke check（本机没 SA JSON / dev bucket 配置；W3 可指 user 拿这份 doc 第一次真跑一遍验证 < 30min 目标）
+- ✅ doc 所有 env var 名都用 grep 跟实际 `process.env.*` code 对齐（特别 `GOOGLE_API_KEY` vs W3 dispatch text 写的 `GEMINI_API_KEY`，已用 codebase 真名）
+- ✅ doc 所有命令本地语法 review（macOS/Linux/Windows PowerShell 三平台覆盖）
+
+### 推荐 W3 review 重点
+
+1. **可读性**：新 dev 视角看流程能否 paste-and-run；§2.3 SA JSON 步骤是否清楚
+2. **fresh env 真跑**：W3 可建议 user / 第二人格 / W1（task 14.1 preview deploy 间隙）按 doc 走一遍 `$HOME/.gcp/` 不存在 + `.env.local` 全删的 fresh setup，verify < 30min 目标
+3. **是否需补 `scripts/setup-local-dev.sh`**：W3 dispatch 列为"可选"，我没写。如果觉得 bash 一键 bootstrap 价值高，下个 dispatch 给我
+
+等 W3 review + merge。
