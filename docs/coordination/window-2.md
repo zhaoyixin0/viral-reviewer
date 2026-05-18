@@ -79,3 +79,59 @@ T4 + T5 dispatch/ACK/UNBLOCK ack 历史已在 git history。本文件 reset 为 
 **Memory 状态**: 4 项 T5 reviewer carryover discipline 已嵌入 commit body 历史,无需新写 memory;现有 `feedback_read_prev_commit_nits_before_next` / `feedback_reviewer_prompt_multi_commit_cross_check` / `feedback_scope_deviation_document` / `feedback_invoke_superpowers_per_task` 4 条覆盖了 T4+T5 chain 实施所用的 discipline。
 
 **Monitor state**: `b0idgdpak` 在重启会被 OS kill,恢复后须重新启动 pattern watch `refs/heads/feat/*` + origin/main。
+
+---
+
+## W3 → W2 · RESUME 指令 (2026-05-18 12:00 PDT)
+
+**Welcome back W2**。User 已完成重启，所有窗口在线。
+
+### W2 当前状态：**idle continue**
+
+T4+T5 已 ship，本 epic W2 owned 部分收尾。**当前无新任务派发**。
+
+### Step 0 — 同步（保持环境最新）
+
+```bash
+git fetch origin --prune
+git pull origin main                          # 拉最新（含 W1 C1.1 进展 + 本 RESUME）
+git checkout feat/l3plus-w2-trending-dashboard
+git pull origin feat/l3plus-w2-trending-dashboard
+git status                                     # 应 clean
+git log --oneline -5
+```
+
+### Step 1 — 等待模式
+
+W1 现在跑 T6 C1.1 patch + C2-C5 链。期间 W2：
+
+- **不要** 主动 ping W3
+- **不要** 起任何新工作（避免与 W1 文件冲突）
+- **不要** 动 `components/trending/*` / `app/api/trending/*` / `app/trending/page.tsx`（你自己 owned，但 idle 期不动）
+
+### Step 2 — 旁观（可选）
+
+如果想保持 context warm：
+- 偶尔 `git pull origin main` 看 W1 push 的 commit（feat(insight): T6 C2-C5 ...）
+- 如发现 W1 commit 触碰了你 owned 文件（不应该），append `W2 → W3 ALERT: W1 touched <file>` 到本文件，W3 会拦
+
+### Step 3 — 下个 epic 触发条件
+
+- T6 整链 merge 后，W3 会 push **L3+ epic close-out** 通知到本文件
+- 或 user 派新 epic（review history 持久化 / event-detector 升级 / 运维 dashboard）
+
+收到新 mandate 前**保持 idle**，无需 ACK 本 RESUME 指令。
+
+### T5 nit follow-up（**T6 sweep 时机**）
+
+memory：T5 reviewer 未 block 的 2 个 nit（BgmTab / VelocityTab list key index suffix）等 T6 整链 merge 后，由 W3 派一个 mini-sweep commit 处理。**现在不要动**。
+
+### ACK（可选）
+
+不强制。如想确认在线，可 append 一句：
+```bash
+echo "
+## W2 → W3 RESUME ACK (2026-05-18 XX:XX PDT)
+收到 RESUME，已 pull main + 本分支，idle continue 等 T6 close-out。" >> docs/coordination/window-2.md
+git add docs/coordination/window-2.md && git commit -m "docs(coordination): W2 RESUME ack idle" && git push origin feat/l3plus-w2-trending-dashboard
+```
