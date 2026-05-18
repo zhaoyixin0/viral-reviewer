@@ -1014,3 +1014,80 @@ C5 visual e2e 挂 task 14.1 backlog（preview deploy 顺带跑）。
 4. T7 stale docblock 清理
 
 **Great work W1!** 6 commits ~4h 推完 + 2 scope deviations 都正确 catch。
+
+---
+
+## W3 → W1 · BACKLOG TASK: task 14.1 — preview deploy + 6 素材 E2E + C5 visual (2026-05-18 16:48 PDT)
+
+**前提**：user 已 /compact 你的对话。本 task 自包含，无需历史 context。
+
+### 目标
+
+1. **Preview deploy** main 当前 tip (`55a89f3`) 到 Vercel preview env（real SA creds，能 sign GCS POST URL，能 upload 视频，能跑完整 review flow）
+2. **6 素材 E2E**（task 14.1 原始 scope）— 6 个不同类型视频上传 + review，验证：
+   - upload 成功（HEAD/200 → GCS POST → finalize）
+   - review SSE 流跑完所有 stage（load_refs → insight → opus → result）
+   - verdict + score + technique_match 输出正常
+   - **新增**：InsightBanner 顶部显示 5 段内容（headline + bullets + actionable + sourceWeek + sampleVideoIds chips）—— 这是 C5 visual e2e 同时覆盖
+3. **C5 Scenario 2**（banner 不渲染）— W3 临时改 GCS snapshot 名让 readLatestTwoSnapshots 返 null，W1 跑 1 个 review 验 banner 段在 ResultsArea 不出现
+
+### 推荐 skills（按顺序）
+
+1. **`/browse`** — 替代 mcp__claude-in-chrome（项目 CLAUDE.md 已禁），跑 headless Chromium：preview URL → 上传 → 等 SSE → 截图 verdict + banner DOM
+2. **`/canary`** — preview 部署后 smoke check 关键路由 `/technique-match` + `/trending`，验 banner 数据流端到端
+3. **`/qa`** — 系统跑 6 素材的 e2e checklist，每个素材独立 run + 截图存档
+4. （可选）**`/document-release`** — 完工后写 task 14.1 release notes 含 6 素材测试结果 + banner 行为记录
+
+### 6 素材建议（**user 可能已有清单，先看本地 `/test-materials/` 或 ping user**）
+
+参考类型分布（你可向 user 确认）：
+- vlog (1 个) — 验 banner headline 含 "vlog/travel/dance" 之一
+- 美食 (1 个)
+- 知识科普 (1 个)
+- 卡点剪辑 (1 个) — 验 banner BGM segment
+- 教程 (1 个)
+- 短情景剧 (1 个)
+
+如果本地无现成素材，append `W1 → W3 REQ ASSETS` 到本文件，W3 协助 user 准备。
+
+### Preview deploy 步骤
+
+```bash
+git pull origin main                                 # 确保到 55a89f3 或更新
+git status                                            # clean
+# Vercel CLI deploy preview (不上 prod)
+vercel deploy --no-clipboard                          # 或 vercel pull + vercel deploy
+# 等待 deploy URL output
+```
+
+**或** 让 W3 协助：append `W1 → W3 REQ PREVIEW` 到本文件，W3 用 Vercel CLI / Cloud Run preview revision 路径 deploy。
+
+### C5 Scenario 2 协议
+
+跑完 6 素材 + Scenario 1 后：
+1. Append `W1 → W3 REQ SNAPSHOT REMOVE` 到本文件
+2. W3 临时备份 + 改名 `snapshot-2026-W21.json` → `snapshot-2026-W21.json.bak`，或换回 v1（W20 文件）
+3. W1 跑 1 个 review → verify banner 不渲染 + review 流程正常 → 截图
+4. Append `W1 → W3 DONE` + W3 恢复 fake snapshot
+
+### 完工 deliverable
+
+Push 一个 `docs/release/L3plus-T14.1-preview-e2e.md`（或 append 到本文件）含：
+- 6 素材 e2e 结果表（pass/fail per 素材 × per check）
+- Banner Scenario 1 截图（DOM 含 5 段 + Haiku 输出真实示例）
+- Banner Scenario 2 截图（不渲染）
+- Bug list（如有）+ severity 标签
+
+### 完工 ACK
+
+```
+## W1 → W3 ACK · task 14.1 (2026-05-18 XX:XX PDT)
+6 素材 e2e 跑完，N pass / M fail（fail 见 release notes）。
+Banner Scenario 1 + 2 全通过。
+Preview URL: <URL>
+Release notes: docs/release/L3plus-T14.1-preview-e2e.md @ <SHA>
+```
+
+### Skill 调用必读
+
+`/browse` 项目约定（CLAUDE.md）：**禁用** `mcp__claude-in-chrome__*` 任何工具，**只用** `/browse` 跑浏览器烟测。
