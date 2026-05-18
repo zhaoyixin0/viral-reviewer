@@ -41,14 +41,16 @@ describe("selectForEnrichment", () => {
     expect(r.map((v) => v.id)).toEqual(["h1-a", "h2-a"]);
   });
 
-  it("buckets IG videos separately under a synthetic key", () => {
+  it("buckets IG videos separately under a synthetic key (when IG enrichment enabled)", () => {
+    // T9: enabledPlatforms default is ["tiktok"], so to verify the IG-bucket
+    // behavior we must explicitly enable instagram for this test.
     const r = selectForEnrichment(
       [
         vid("tt", 100, "x"),
         vid("ig1", 200, undefined, "instagram"),
         vid("ig2", 500, undefined, "instagram"),
       ],
-      { topPerHashtag: 1, maxTotal: 10 },
+      { topPerHashtag: 1, maxTotal: 10, enabledPlatforms: ["tiktok", "instagram"] },
     );
     expect(r.map((v) => v.id).sort()).toEqual(["ig2", "tt"]);
   });
@@ -81,5 +83,58 @@ describe("selectForEnrichment", () => {
 
   it("returns empty on empty input", () => {
     expect(selectForEnrichment([], { topPerHashtag: 3, maxTotal: 15 })).toEqual([]);
+  });
+});
+
+describe("selectForEnrichment — enabledPlatforms (T9)", () => {
+  it("defaults to TT-only: filters out instagram videos before bucketing", async () => {
+    const r = selectForEnrichment(
+      [
+        vid("tt-a", 100, "x"),
+        vid("ig-1", 500, undefined, "instagram"),
+        vid("ig-2", 400, undefined, "instagram"),
+        vid("tt-b", 50, "x"),
+      ],
+      { topPerHashtag: 5, maxTotal: 15 },
+    );
+    expect(r.map((v) => v.id).sort()).toEqual(["tt-a", "tt-b"]);
+  });
+
+  it("explicit enabledPlatforms=['tiktok'] matches default behavior", () => {
+    const input = [
+      vid("tt-a", 100, "x"),
+      vid("ig-1", 999, undefined, "instagram"),
+    ];
+    const r = selectForEnrichment(input, {
+      topPerHashtag: 5, maxTotal: 15,
+      enabledPlatforms: ["tiktok"],
+    });
+    expect(r.map((v) => v.id)).toEqual(["tt-a"]);
+  });
+
+  it("explicit enabledPlatforms=['instagram'] inverts: keeps only IG videos", () => {
+    const r = selectForEnrichment(
+      [
+        vid("tt-a", 100, "x"),
+        vid("ig-1", 500, undefined, "instagram"),
+        vid("ig-2", 400, undefined, "instagram"),
+      ],
+      { topPerHashtag: 5, maxTotal: 15, enabledPlatforms: ["instagram"] },
+    );
+    expect(r.map((v) => v.id).sort()).toEqual(["ig-1", "ig-2"]);
+  });
+
+  it("explicit enabledPlatforms=['tiktok','instagram'] = pre-T9 behavior (all platforms enrich)", () => {
+    const r = selectForEnrichment(
+      [
+        vid("tt-a", 100, "x"),
+        vid("ig-1", 500, undefined, "instagram"),
+      ],
+      {
+        topPerHashtag: 5, maxTotal: 15,
+        enabledPlatforms: ["tiktok", "instagram"],
+      },
+    );
+    expect(r.map((v) => v.id).sort()).toEqual(["ig-1", "tt-a"]);
   });
 });
