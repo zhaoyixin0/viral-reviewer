@@ -17,7 +17,18 @@ export type SelectOptions = {
   topPerHashtag: number;
   /** Global cap across all buckets (weekly cost ceiling, default 15). */
   maxTotal: number;
+  /**
+   * Platforms eligible for per-video CutPlan enrichment. Default `["tiktok"]`
+   * — Instagram requires authenticated cookies for per-video download in
+   * prod (memory: video-download-stack.md). When IG cookie infra lands,
+   * callers can pass `["tiktok", "instagram"]` to restore mixed-mode
+   * enrichment. The IG raw videos still ride on the snapshot's `videos[]`
+   * field — they are just skipped from the Gemini CutPlan budget here.
+   */
+  enabledPlatforms?: ViralVideo["platform"][];
 };
+
+const DEFAULT_ENABLED_PLATFORMS: ViralVideo["platform"][] = ["tiktok"];
 
 export function selectForEnrichment(
   videos: ViralVideo[],
@@ -25,9 +36,12 @@ export function selectForEnrichment(
 ): ViralVideo[] {
   if (opts.maxTotal <= 0 || opts.topPerHashtag <= 0) return [];
 
+  const enabled = opts.enabledPlatforms ?? DEFAULT_ENABLED_PLATFORMS;
+  const filtered = videos.filter((v) => enabled.includes(v.platform));
+
   const buckets = new Map<string, ViralVideo[]>();
   const HASHTAG_KEYS: string[] = [];
-  for (const v of videos) {
+  for (const v of filtered) {
     const key = v.trendingContext?.hashtag ?? `__ig:${v.platform}`;
     if (!buckets.has(key)) {
       buckets.set(key, []);

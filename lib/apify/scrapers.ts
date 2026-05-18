@@ -8,6 +8,33 @@ import type { ViralVideo } from "@/lib/review-engine/types";
 import type { TrendingHashtag } from "@/lib/trending/types";
 
 /**
+ * Race an in-flight Apify SDK promise against an AbortSignal so the cron-route
+ * watchdog can bail out of JS-side waits. The Apify actor itself keeps running
+ * on Apify's servers (SDK has no native abort), but the local Promise rejects
+ * promptly with AbortError, releasing the cron pipeline to write partial data.
+ */
+function raceAbort<T>(p: Promise<T>, signal?: AbortSignal): Promise<T> {
+  if (!signal) return p;
+  if (signal.aborted) {
+    return Promise.reject(new DOMException("Aborted", "AbortError"));
+  }
+  return new Promise<T>((resolve, reject) => {
+    const onAbort = () => reject(new DOMException("Aborted", "AbortError"));
+    signal.addEventListener("abort", onAbort, { once: true });
+    p.then(
+      (v) => {
+        signal.removeEventListener("abort", onAbort);
+        resolve(v);
+      },
+      (e) => {
+        signal.removeEventListener("abort", onAbort);
+        reject(e);
+      },
+    );
+  });
+}
+
+/**
  * Run TikTok scraper for a list of hashtags or search terms.
  * Uses clockworks/tiktok-scraper (popular, well-maintained Apify actor).
  */
@@ -15,18 +42,25 @@ export async function scrapeTikTokByHashtag(opts: {
   hashtags: string[];
   topic: string;
   resultsPerPage?: number;
+  signal?: AbortSignal;
 }): Promise<ViralVideo[]> {
   const client = getApifyClient();
-  const { hashtags, topic, resultsPerPage = 20 } = opts;
+  const { hashtags, topic, resultsPerPage = 20, signal } = opts;
 
-  const run = await client.actor("clockworks/tiktok-scraper").call({
-    hashtags,
-    resultsPerPage,
-    shouldDownloadVideos: false,
-    shouldDownloadCovers: false,
-  });
+  const run = await raceAbort(
+    client.actor("clockworks/tiktok-scraper").call({
+      hashtags,
+      resultsPerPage,
+      shouldDownloadVideos: false,
+      shouldDownloadCovers: false,
+    }),
+    signal,
+  );
 
-  const { items } = await client.dataset(run.defaultDatasetId).listItems();
+  const { items } = await raceAbort(
+    client.dataset(run.defaultDatasetId).listItems(),
+    signal,
+  );
 
   return (items as Record<string, unknown>[])
     .map((item) => normalizeTikTokItem(item, topic))
@@ -41,16 +75,23 @@ export async function scrapeInstagramByHashtag(opts: {
   hashtags: string[];
   topic: string;
   resultsLimit?: number;
+  signal?: AbortSignal;
 }): Promise<ViralVideo[]> {
   const client = getApifyClient();
-  const { hashtags, topic, resultsLimit = 20 } = opts;
+  const { hashtags, topic, resultsLimit = 20, signal } = opts;
 
-  const run = await client.actor("apify/instagram-hashtag-scraper").call({
-    hashtags,
-    resultsLimit,
-  });
+  const run = await raceAbort(
+    client.actor("apify/instagram-hashtag-scraper").call({
+      hashtags,
+      resultsLimit,
+    }),
+    signal,
+  );
 
-  const { items } = await client.dataset(run.defaultDatasetId).listItems();
+  const { items } = await raceAbort(
+    client.dataset(run.defaultDatasetId).listItems(),
+    signal,
+  );
 
   // IG hashtag scraper 返回 image + video 混合，不过滤 type，让 normalize 全接
   return (items as Record<string, unknown>[])
@@ -70,16 +111,23 @@ export async function scrapeInstagramByHashtag(opts: {
 export async function scrapeTikTokTrendingHashtags(opts: {
   countryCode?: string;
   maxItems: number;
+  signal?: AbortSignal;
 }): Promise<{ hashtags: TrendingHashtag[]; runId: string }> {
   const client = getApifyClient();
-  const { countryCode = "US", maxItems } = opts;
+  const { countryCode = "US", maxItems, signal } = opts;
 
-  const run = await client.actor("clockworks/tiktok-trends-scraper").call({
-    countryCode,
-    maxItems,
-  });
+  const run = await raceAbort(
+    client.actor("clockworks/tiktok-trends-scraper").call({
+      countryCode,
+      maxItems,
+    }),
+    signal,
+  );
 
-  const { items } = await client.dataset(run.defaultDatasetId).listItems();
+  const { items } = await raceAbort(
+    client.dataset(run.defaultDatasetId).listItems(),
+    signal,
+  );
   const hashtags = (items as Record<string, unknown>[])
     .map((item) => normalizeTikTokTrendingHashtag(item))
     .filter((h): h is TrendingHashtag => h !== null)

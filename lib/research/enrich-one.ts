@@ -66,10 +66,14 @@ export async function enrichOneVideo(v: ViralVideo): Promise<ViralVideo> {
 
 export async function enrichBatch(
   videos: ViralVideo[],
-  concurrency = 5,
+  opts: { concurrency?: number; signal?: AbortSignal } = {},
 ): Promise<ViralVideo[]> {
+  const concurrency = opts.concurrency ?? 5;
   const out: ViralVideo[] = [];
   for (let i = 0; i < videos.length; i += concurrency) {
+    if (opts.signal?.aborted) {
+      throw new DOMException("Aborted", "AbortError");
+    }
     const batch = videos.slice(i, i + concurrency);
     const results = await Promise.all(batch.map((v) => enrichOneVideo(v)));
     out.push(...results);

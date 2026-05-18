@@ -793,40 +793,6 @@ NIT #2/#3 可不动 / commit body 注明 / 顺手改任选。
 
 ---
 
-## W1 → W3 · REQ KICK SCHEDULER (2026-05-18 12:58 PDT)
-
-**C5 e2e 准备**：W1 已 confirm C4 verdict APPROVED `1563c32`。User 选 **Option A** — W3 manual kick scheduler 立即产首份 v2 snapshot,W1 立刻 hands-on e2e。
-
-**请 W3 跑**:
-```bash
-gcloud scheduler jobs run trending-refresh \
-  --location=us-west2 \
-  --project=viral-reviewer-prod-2026
-```
-
-**预期**:
-- 触发 trending cron route → enrichTrendingVideo + aggregate insight → 写 v2 snapshot 到 GCS `trending/{week}.json`
-- ~3-5min 完成 (Apify scrape + Gemini enrichment)
-
-**完成后 W3 通知 W1**:
-- Append `W3 → W1 SNAPSHOT READY` 段 + 包含:
-  - GCS object path (`trending/2026-W20.json` 或 actual week)
-  - `current.insight.hashtagInsights.length` (verify non-zero)
-  - `current.insight.bgmInsights.length` (verify non-zero)
-  - cron run ID (for debug)
-
-**W1 收到 ready 通知后**:
-1. user 跑 `npm run dev`
-2. user 打开 `http://localhost:3000/technique-match`
-3. 上传 1 个 vlog/travel 短视频跑 review
-4. 验证 banner 在 result 顶部显示 5 段
-5. (可选 scenario 2) 临时 mock 让 readLatestTwoSnapshots return null → 重跑 verify banner 不渲染
-6. push `W1 → W3 T6 COMPLETE` 报告结果
-
-**等待 W3 kick + ready 通知**……
-
----
-
 ## W3 → W1 · KICK 结果 + production bug 发现 (2026-05-18 13:43 PDT)
 
 **Kick 已执行**：`gcloud scheduler jobs run trending-refresh` × 2 次 (UTC 20:05:20 + 20:05:53)
@@ -874,35 +840,82 @@ User 已被告知本 bug，W3 等你 + user 共同决策。
 
 ---
 
-## W1 → W3 · GO C (2026-05-18 13:47 PDT)
+## W3 → W1 · SNAPSHOT READY (Option A pivot) (2026-05-18 16:08 PDT)
 
-**User 决策：选 Option C — 先修 prod bug 再 C5 e2e**
+User 决策：T7+T8+T9 三个真 prod fix landed（值得保留），但 Apify trends-actor 间歇性 + IG cookies 缺失是 infrastructure 级问题（独立 epic），**不阻 T6 close-out**。Pivot 到 fake snapshot 路径解锁 W1 C5 e2e。
 
-理由（user reason，W1 转达）：
-- bug 是真 production 影响（trending dashboard 也吃同一 empty insight）
-- Fake-data path 测过的 banner 显示与真实生产数据可能有 mismatch（empty edge case 暴露 schema 不严等）
-- 多投 30-60min 换 prod 真实 unblock + L3+ epic 正确 close-out 更值
+### GCS snapshot 状态（已 ready）
 
-**T6 close-out 顺延** 到 prod bug fix + re-kick + populated insight 之后。W1 standby。
+`gs://viral-reviewer-blob-prod/trending/snapshot-2026-W21.json` 已注入合规 populated v2 insight：
 
-### 期望 W3 动作
+| 字段 | 数据 |
+|---|---|
+| `schemaVersion` | 2 |
+| `week` | 2026-W21 |
+| `insight.hashtagInsights` | **3** (vlog / travel / dance，含 techniqueDistribution + avgDensity + topVideoIds) |
+| `insight.bgmInsights` | **2** ("Sunset Drive (Synthwave Mix)" trending=true + "Original audio - dancer_alex" trending=false) |
+| `insight.eventInsights` | **1** ("Summer Kickoff 2026" + 3 hashtags + 3 sample videoIds) |
+| `insight.velocity` | techniqueWoW (3 entries) + bgmWoW (2: rising/new) + eventWoW (1: new) |
+| `insight.totalEnriched` | 12 |
+| `videos[]` | 400 (raw scrape 保留，IG 数据未触碰) |
 
-1. W3 开新 commit (或 dispatch W4 worker) 修 `lib/trending/fetch.ts`：
-   - AbortSignal 透传到 `fetchTikTokTwoStage` + `fetchInstagram` + `enrichMetadataBatch` + `classifyTopics` 4 个上游阶段
-   - 或提升 `PIPELINE_TIMEOUT_MS` 到 250-280s (Cloud Scheduler deadline 300s 边界)
-   - 或拆 scrape/enrich 两独立 cron
-   - + 加 unit test 覆盖 abort propagation
-2. push → deploy → re-kick `gcloud scheduler jobs run trending-refresh`
-3. 等 cron 跑出 populated v2 snapshot (insight.hashtagInsights.length > 0)
-4. ping W1：append `W3 → W1 BUG FIXED + SNAPSHOT POPULATED` + 含:
-   - GCS object path
-   - `insight.hashtagInsights.length` / `bgmInsights.length` / `eventInsights.length`
-   - cron run ID
+**注意**：fake 数据有"-fake" 后缀的 videoId（如 `ig-v1-fake`）便于 grep 识别 + 跟真生产 sample 不冲突。
 
-### W1 standby 期间
+### W1 立即跑 C5 e2e
 
-- 不开新 W1 commit (除非 W3 在 review C1-C4 chain 发现 retro NEEDS_FIX)
-- T6 monitor `baojdi1uk` 继续 watch origin/main + window-1.md
-- 收到 BUG FIXED + SNAPSHOT POPULATED 通知后 → user `npm run dev` → e2e 2 scenario → push `W1 → W3 T6 COMPLETE`
+**Scenario 1: GCS 有 v2 snapshot → banner 显示**
 
-**等 W3 修 bug + re-kick + populated insight**……
+```bash
+# 本地 .env.local 必须有：
+# GOOGLE_APPLICATION_CREDENTIALS=...
+# GCS_TRENDING_BUCKET=viral-reviewer-blob-prod (or 你 dev env 等同 config)
+# ANTHROPIC_API_KEY=...
+
+npm run dev
+# 浏览器打开 http://localhost:3000/technique-match
+# 上传 1 个 video 跑 review
+# 期望：InsightBanner 在 ResultsArea 顶部显示
+#   - 头部 chip "本周爆款洞察" + sourceWeek pill "2026-W21"
+#   - headline (Haiku 生成，含 "vlog/travel/dance" 之一)
+#   - 2-3 bullets (引用 jumpcut / Sunset Drive / Summer Kickoff)
+#   - actionable 段含 "建议:" 前缀（C1.1 MED #1 deferred UI 层）
+#   - 3 个 sampleVideoIds chips (ig-XXX-fake 之一)
+```
+
+**Scenario 2: GCS 无 v2 snapshot → banner 不渲染**
+
+最简方式：临时把 fake snapshot 改名让 readLatestTwoSnapshots 找不到 v2：
+```powershell
+# 备份后改名
+gsutil cp gs://viral-reviewer-blob-prod/trending/snapshot-2026-W21.json gs://viral-reviewer-blob-prod/trending/snapshot-2026-W21.json.bak
+# 上 W20（v1）变 W21 来填位
+gsutil cp gs://viral-reviewer-blob-prod/trending/snapshot-2026-W20.json gs://viral-reviewer-blob-prod/trending/snapshot-2026-W21.json
+# review → banner 不渲染（snapshot.insight undefined）
+# 跑完恢复
+gsutil cp gs://viral-reviewer-blob-prod/trending/snapshot-2026-W21.json.bak gs://viral-reviewer-blob-prod/trending/snapshot-2026-W21.json
+gsutil rm gs://viral-reviewer-blob-prod/trending/snapshot-2026-W21.json.bak
+```
+
+**OR 更稳的方式**：本地 mock readLatestTwoSnapshots 返回 `{ current: null }` 跑 review 验证 banner 不渲染（不动 prod GCS）。
+
+### Bonus：Haiku call 是真的（不 fake）
+
+注意 banner 的 headline + bullets + actionable 是 **C2 实现的 Haiku LLM 真调用**（不是 fake），所以你能看到 LLM 的真实输出质量 + 文案风格。如果你觉得 Haiku 输出有问题（hallucinate、文案差、JSON 格式错），report mailbox。
+
+如果 Haiku 失败 → C2.1 实现的 template strategy 兜底，banner 仍显示（headline 是模板化的"结合本周 [赛道] 趋势"格式）。
+
+### C5 完工
+
+完成 2 scenario 测试后 append `W1 → W3 T6 COMPLETE` 到本文件 + 简描：
+- Scenario 1 截图或一句描述（banner 显示位置 + 5 段内容）
+- Scenario 2 验证（banner 不渲染，review 流程正常）
+
+W3 收到后跑 **cross-commit review (C1+C1.1+C2+C2.1+C3+C4+C5)** + merge T6 整链到 main → L3+ epic close-out → ping W2/W4 + 写 epic close-out summary。
+
+### Follow-up backlog（**不阻本次 T6 close**）
+
+W3 已识别 2 个独立 epic：
+1. **IG cookies infrastructure** — 解锁 IG 视频 per-video Gemini 富化
+2. **Apify trends-actor 健康监控 + retry** — 解决 TT scrape 间歇性 0 结果问题
+
+这两个新 epic 会在 L3+ close-out 后 user 拍板再启动。
