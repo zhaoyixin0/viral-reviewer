@@ -8,7 +8,14 @@ export default defineConfig({
     jsx: { runtime: "automatic" },
   },
   test: {
-    include: ["tests/**/*.test.ts"],
+    // T5 C7:.tsx 测试用 per-file `// @vitest-environment jsdom` directive
+    // 切到 DOM env;.ts 仍跑 default node env (无 React 依赖,启动快)。
+    //
+    // 写新 RTL test 必须做的两件事 (否则 DOM API 不存在 / matcher 报错):
+    //   1. 文件首行加 `// @vitest-environment jsdom`
+    //   2. 顶部 import `@testing-library/jest-dom/vitest` 加载 toBeInTheDocument 等 matcher
+    // 参考 tests/components/trending/insight-tabs.test.tsx 作模板。
+    include: ["tests/**/*.test.ts", "tests/**/*.test.tsx"],
     // P3 #2 phase 3 commit 5/6 (W3 verdict 9154701 §"Pre-commit verify" 防御性 exclude):
     // 当前 include 用 tests/** 不会扫到 lib/__demo__/,但显式 exclude 保证未来 test
     // 范围扩展时 lib/url-allowlist/__demo__/dns-rebinding-poc.ts (runnable PoC,需真实
