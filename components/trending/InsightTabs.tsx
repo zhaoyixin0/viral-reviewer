@@ -1,7 +1,10 @@
 "use client";
 
 import type { ReactNode } from "react";
-import type { BoardInsightDTO } from "@/app/api/trending/route";
+import { HashtagTab } from "./tabs/HashtagTab";
+import { TechniqueTab } from "./tabs/TechniqueTab";
+import type { Platform } from "./PlatformFilter";
+import type { BoardInsightDTO, TrendingHashtagCard } from "@/app/api/trending/route";
 
 /**
  * 6-tab nav 容器 (L3+ plan §6.3)。
@@ -9,7 +12,7 @@ import type { BoardInsightDTO } from "@/app/api/trending/route";
  * - v1 老快照 / 无 insight (BoardInsightDTO === null) 降级:只渲 videos tab,
  *   隐藏 5 个 insight tab 入口 (plan §6.3 + W3 mailbox carryover #3)。
  * - 默认 activeTab 由父组件决定 (TrendingBoard:insight ? "hashtag" : "videos")
- * - C4 框架:5 个 insight tab body 是 placeholder,C5/C6 替换为真实 tab 组件。
+ * - C5 落地:hashtag / technique 接真实 tab 组件;C6 落地 bgm / event / velocity。
  * - videos tab body 走 `videosSlot` (现有视频 grid + loading + empty state 透传)。
  */
 
@@ -37,18 +40,26 @@ type Props = {
   insight: BoardInsightDTO | null;
   activeTab: TabKey;
   onTabChange: (tab: TabKey) => void;
+  platform: Platform;
+  trendingHashtags: TrendingHashtagCard[];
   /** videos tab 的内容 (现有视频 grid + loading + empty state 由父组件透传)。 */
   videosSlot: ReactNode;
 };
 
-export function InsightTabs({ insight, activeTab, onTabChange, videosSlot }: Props) {
+export function InsightTabs({
+  insight,
+  activeTab,
+  onTabChange,
+  platform,
+  trendingHashtags,
+  videosSlot,
+}: Props) {
   const isDegraded = insight === null;
   const visibleTabs = isDegraded ? TABS.filter((t) => t.key === "videos") : TABS;
 
   return (
     <div>
-      {/* reviewer Nit1:用 div 不用 nav,避免 role="navigation"(<nav> 隐式) 与
-          role="tablist" 双 role 冲突 */}
+      {/* div + role="tablist" (而非 nav) 避免 role="navigation" 与 tablist 双 role 冲突 */}
       <div
         role="tablist"
         aria-label="趋势数据视图切换"
@@ -82,35 +93,61 @@ export function InsightTabs({ insight, activeTab, onTabChange, videosSlot }: Pro
         id={`insight-tabpanel-${activeTab}`}
         aria-labelledby={`insight-tab-${activeTab}`}
       >
-        {renderTabBody(activeTab, insight, videosSlot)}
+        {renderTabBody({ activeTab, insight, platform, trendingHashtags, videosSlot })}
       </div>
     </div>
   );
 }
 
-function renderTabBody(
-  activeTab: TabKey,
-  insight: BoardInsightDTO | null,
-  videosSlot: ReactNode,
-): ReactNode {
+function renderTabBody({
+  activeTab,
+  insight,
+  platform,
+  trendingHashtags,
+  videosSlot,
+}: {
+  activeTab: TabKey;
+  insight: BoardInsightDTO | null;
+  platform: Platform;
+  trendingHashtags: TrendingHashtagCard[];
+  videosSlot: ReactNode;
+}): ReactNode {
   if (activeTab === "videos") return videosSlot;
-  // insight === null 时父组件应已把 activeTab 锁在 "videos" (visibleTabs 只剩 videos)
-  // 这条 guard 是 defensive:防 URL hash / 历史 state 注入异常 activeTab。
-  // reviewer M2:return 空 <span /> 而非 null,保 tabpanel DOM 节点存在,
-  // WAI-ARIA tabs 要求 aria-selected="true" 必须关联非空 tabpanel。
+  // insight === null 时父组件应已把 activeTab 锁在 "videos"。
+  // defensive guard:返 <span /> 保 tabpanel DOM 节点存在 (WAI-ARIA 要求
+  // aria-selected="true" 必关联非空 tabpanel)。
   if (insight === null) return <span />;
-  // C5/C6 placeholder。C5 替换 hashtag / technique;C6 替换 bgm / event / velocity。
-  return (
-    <div className="glass-card p-8 text-center text-sm text-white/45">
-      {tabPlaceholderLabel(activeTab)} 视图开发中
-    </div>
-  );
+  switch (activeTab) {
+    case "hashtag":
+      return (
+        <HashtagTab
+          trendingHashtags={trendingHashtags}
+          hashtagInsights={insight.hashtagTab}
+        />
+      );
+    case "technique":
+      return <TechniqueTab techniques={insight.techniqueTab} platform={platform} />;
+    case "bgm":
+    case "event":
+    case "velocity":
+      // C6 替换为 BgmTab / EventTab / VelocityTab
+      return (
+        <div className="glass-card p-8 text-center text-sm text-white/45">
+          {tabPlaceholderLabel(activeTab)} 视图开发中
+        </div>
+      );
+    default: {
+      // Exhaustiveness assertion:防 TabKey 加新值 + switch 漏 case 时静默返
+      // undefined (tabpanel 空白) 而非编译错误。reviewer M2 fix。
+      const _exhaustive: never = activeTab;
+      void _exhaustive;
+      return null;
+    }
+  }
 }
 
-function tabPlaceholderLabel(activeTab: Exclude<TabKey, "videos">): string {
-  const labels: Record<Exclude<TabKey, "videos">, string> = {
-    hashtag: "Hashtag 榜",
-    technique: "技法分布",
+function tabPlaceholderLabel(activeTab: "bgm" | "event" | "velocity"): string {
+  const labels: Record<"bgm" | "event" | "velocity", string> = {
     bgm: "BGM",
     event: "热点事件",
     velocity: "动量",

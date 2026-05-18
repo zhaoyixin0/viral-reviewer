@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { TrendingCard, formatVelocityBadge } from "./TrendingCard";
+import { TrendingCard } from "./TrendingCard";
 import { PlatformFilter, type Platform } from "./PlatformFilter";
 import { InsightTabs, type TabKey } from "./InsightTabs";
 import type {
@@ -72,10 +72,6 @@ export function TrendingBoard({
     );
   }
 
-  // hashtag 榜:平台筛选为 Instagram 时隐藏(IG 无 trendingHashtags,spec 4.7)。
-  // C4 暂保留板顶位置;C5 实现 HashtagTab.tsx 时会把这段挪进 hashtag tab。
-  const showHashtagBoard = platform !== "instagram" && trendingHashtags.length > 0;
-
   // 视频 grid + loading + empty state 透传给 InsightTabs 的 videos slot
   const videosSlot =
     loading ? (
@@ -97,42 +93,15 @@ export function TrendingBoard({
         <PlatformFilter value={platform} onChange={handleChange} />
       </div>
 
-      {/* v4.1:趋势 hashtag 榜(仅 TikTok,spec 4.7) — C5 会挪进 hashtag tab */}
-      {showHashtagBoard && (
-        <div className="glass-card mb-8 p-4">
-          <h2 className="mb-3 text-sm font-semibold text-white/70">TikTok 趋势 Hashtag 榜</h2>
-          <ul className="space-y-2">
-            {trendingHashtags.map((h) => {
-              const badge = formatVelocityBadge(h.velocity);
-              return (
-                <li
-                  key={h.name}
-                  className="flex items-center gap-3 rounded-lg bg-white/[0.04] px-3 py-2 text-sm"
-                >
-                  <span className="w-6 text-right text-xs text-white/40">#{h.rank}</span>
-                  <span className="flex-1 font-medium text-white/85">#{h.name}</span>
-                  <span className="text-xs text-white/45">
-                    {(h.viewCount / 1_000_000).toFixed(1)}M 播放
-                  </span>
-                  <span className="text-xs text-white/45">{h.videoCount} 视频</span>
-                  <span
-                    className="flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-bold"
-                    style={{ background: `${badge.color}26`, color: badge.color }}
-                  >
-                    <badge.Icon className="h-3 w-3" />
-                    {badge.label}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
-
+      {/* C5 reviewer CR2:原 v4.1 顶部 hashtag 榜已挪进 InsightTabs > HashtagTab。
+          IG 平台时 HashtagTab 仍渲染空态 (trendingHashtags=[] + hashtagInsights=[]),
+          不会重复显示。 */}
       <InsightTabs
         insight={insight}
         activeTab={activeTab}
         onTabChange={setActiveTab}
+        platform={platform}
+        trendingHashtags={trendingHashtags}
         videosSlot={videosSlot}
       />
     </div>
