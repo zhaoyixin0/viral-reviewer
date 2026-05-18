@@ -50,7 +50,7 @@ function failedMeta(source: PlatformMeta["source"]): PlatformMeta {
  *   —— 否则会写一份「TikTok 成功但 0 视频」的假成功快照
  * - Stage 1 成功且 Stage 2 至少抓到 1 条 → ok=true(部分 hashtag 失败是软降级)
  */
-async function fetchTikTokTwoStage(): Promise<{
+async function fetchTikTokTwoStage(opts: { signal?: AbortSignal } = {}): Promise<{
   hashtags: TrendingHashtag[];
   videos: ViralVideo[];
   runId: string;
@@ -61,6 +61,7 @@ async function fetchTikTokTwoStage(): Promise<{
   try {
     const stage1 = await scrapeTikTokTrendingHashtags({
       maxItems: TT_TRENDING_FETCH_LIMIT,
+      signal: opts.signal,
     });
     hashtags = stage1.hashtags;
     runId = stage1.runId;
@@ -84,6 +85,7 @@ async function fetchTikTokTwoStage(): Promise<{
         hashtags: [h.name],
         topic: "",
         resultsPerPage: TT_VIDEOS_PER_HASHTAG,
+        signal: opts.signal,
       }),
     ),
   );
@@ -146,11 +148,12 @@ export async function fetchTrendingSnapshot(
   let igMeta: PlatformMeta = failedMeta("hashtag-proxy");
 
   const [ttResult, igResult] = await Promise.allSettled([
-    fetchTikTokTwoStage(),
+    fetchTikTokTwoStage({ signal: opts.signal }),
     scrapeInstagramByHashtag({
       hashtags: IG_HOT_HASHTAGS,
       topic: "",
       resultsLimit: IG_RESULTS_LIMIT,
+      signal: opts.signal,
     }),
   ]);
 
@@ -196,8 +199,10 @@ export async function fetchTrendingSnapshot(
   const libraryTopics = Array.from(
     new Set((await loadVideos()).map((v) => v.topic)),
   );
-  const enriched = await enrichMetadataBatch(merged);
-  const classified = await classifyTopics(enriched, libraryTopics);
+  const enriched = await enrichMetadataBatch(merged, { signal: opts.signal });
+  const classified = await classifyTopics(enriched, libraryTopics, {
+    signal: opts.signal,
+  });
 
   ttMeta.enrichedCount = classified.filter((v) => v.platform === "tiktok").length;
   igMeta.enrichedCount = classified.filter((v) => v.platform === "instagram").length;

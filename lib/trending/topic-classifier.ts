@@ -35,8 +35,9 @@ ${libraryTopics.map((t) => `- ${t}`).join("\n")}
 export async function classifyTopics(
   videos: ViralVideo[],
   libraryTopics: string[],
-  concurrency = 5,
+  opts: { concurrency?: number; signal?: AbortSignal } = {},
 ): Promise<ViralVideo[]> {
+  const concurrency = opts.concurrency ?? 5;
   const system = systemPrompt(libraryTopics);
   const model = process.env.ENRICH_MODEL || "claude-haiku-4-5-20251001";
 
@@ -79,6 +80,9 @@ export async function classifyTopics(
 
   const out: ViralVideo[] = [];
   for (let i = 0; i < videos.length; i += concurrency) {
+    if (opts.signal?.aborted) {
+      throw new DOMException("Aborted", "AbortError");
+    }
     const batch = videos.slice(i, i + concurrency);
     const results = await Promise.all(batch.map((v) => classifyOne(v)));
     out.push(...results);

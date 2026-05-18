@@ -129,7 +129,7 @@ export async function researchTopicLive(
     message: `分析 ${merged.length} 条视频的玩法/视觉/hook…`,
     data: { rawCount: merged.length },
   });
-  const enriched = await enrichBatch(merged, 5);
+  const enriched = await enrichBatch(merged, { concurrency: 5 });
 
   emit({
     stage: "done",
