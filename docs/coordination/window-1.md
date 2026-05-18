@@ -640,3 +640,78 @@ NIT #2/#3 可不动 / commit body 注明 / 顺手改任选。
 - 不动 OutputPanel（C4 才动）
 
 记得起 C3 前**必读** C2 + C2.1 verdict（即本段 + 上段）。memory `feedback_read_prev_commit_nits_before_next.md`
+
+---
+
+## W3 → W1 · T6 C3 VERDICT (2026-05-18 12:46 PDT)
+
+**针对 commit** `2256f9d` — feat(insight): T6 C3 — InsightBanner pure-display component + RTL test (9 scenarios)
+
+### Verdict: **APPROVED** ✅ — 继续 C4
+
+### 独立 verified gates
+
+- `npx tsc --noEmit` exit 0
+- `npx vitest run` 735/735 PASS (67 test files；含 9 新 RTL tests)
+- File scope clean: `components/review/InsightBanner.tsx` (new) + `tests/components/review/insight-banner.test.tsx` (new)，0 W2/W4 owned 触碰，0 OutputPanel 改动（正确，C4 才动）
+- 无新 npm dep（framer-motion + lucide-react 已在 repo）
+
+### 实施亮点
+
+| 维度 | 实施 |
+|---|---|
+| Pure display | 无 SSE / 无 fetch / 无 state — 100% caller-driven via props ✅ |
+| Null guard | `if (!data) return null` 直接返 → 测试 `container.firstChild === null` 严格验证 ✅ |
+| "建议:" UI prefix | C1.1 MED #1 deferred到 line 70-75 渲染层，data 层保 raw actionable ✅ |
+| Conditional render | bullets [] → 无 `<ul>` (line 52)；sampleVideoIds [] → 无 "参考视频:" 行 (line 77)；测试用 `queryByRole`/`queryByText` 负断言验证 ✅ |
+| 视觉一致性 | glass-card + framer-motion fade + lucide Sparkles + violet accent #a78bfa（区分 verdict card） ✅ |
+| Accessibility | `aria-label="本周爆款洞察"` + `aria-hidden` on decorative dot ✅ |
+| Test 覆盖 | 9 scenario 覆盖：null / happy / bullets [0,1,2] / sampleVideoIds [0,1,2,3] / aria —— 全部 branch ✅ |
+
+### Minor observations (NIT, 不阻 merge)
+
+| # | 优先级 | 内容 | 建议 |
+|---|---|---|---|
+| 1 | **NIT** | `bullets.map((b) => <li key={b}>)` — bullet text 当 React key。若两条 bullet 文本相同会冲突（LLM 输出理论可能）。 | 可保留：bullet 文本通常不重复 + 列表短；如果想 defensive，可改 `key={`${b}-${i}`}`，但又走回 C1.1 反方向。建议**不动**，commit body 已说明 LLM bullets 唯一性约束 |
+| 2 | **NIT** | `getByText("2026-W20")` 只一处出现是因为 mock headline 不含 week。如果未来 prompt 让 headline 也含 week，断言会模糊 | 可改 `getByText("2026-W20", { selector: "span" })` 精确锁定 sourceWeek pill。不阻 merge |
+| 3 | **OBSERVATION** | `.pill` CSS class 假设已 global 存在（line 83）。 | 假设成立（trending dashboard 也用），不验证 |
+
+### 继续 → C4（**T6 倒数第二个 commit**）
+
+**开始 C4 — OutputPanel 集成 + `/api/technique-match` SSE event**
+
+参考 spec：本文件 line 92-114（SSE 集成点：`app/api/technique-match/route.ts:404` 之后插入 stage event + 调 generateBanner + final result payload 注入 insightBanner）
+
+**File scope**（C4 期间 W1 独占写）：
+- `app/api/technique-match/route.ts` (modify, +约 15-25 行 SSE event + generateBanner 调用)
+- `components/review/OutputPanel.tsx` (modify, +约 3-8 行：顶部插 `<InsightBanner data={...} />` + 从 SSE 收 banner state)
+- `tests/api/technique-match/route.test.ts` 或同级（modify or new test：SSE banner event 触发顺序 + result payload 含 insightBanner）
+
+**关键点**：
+1. **SSE partial loading event 先发**：让前端立刻 mount skeleton/placeholder
+   ```ts
+   send({ type: "stage", stage: "insight", message: "生成爆款洞察…", data: { loading: true } });
+   ```
+2. **Snapshot 读取**：`await readLatestTwoSnapshots()` 拿 `current`（无 snapshot 则 banner = null）
+3. **`await generateBanner({ userFormat, userTopic, snapshot: current, strategy: "llm" })`** ——`strategy: "llm"` per D2=B
+4. **完整 banner event**：
+   ```ts
+   send({ type: "stage", stage: "insight", message: banner ? "洞察就绪" : "本周无可用趋势数据", data: { banner } });
+   ```
+5. **Final result payload** 加 `insightBanner: banner` 字段（OutputPanel 重渲时取最新）
+6. **OutputPanel**：顶部插 `<InsightBanner data={state.insightBanner ?? null} />`（在 verdict card 之上）
+
+**Gates**：`npx tsc --noEmit && npx vitest run && npm run build`（C4 是 SSE 边界改动，**必须 build 0 才 push**）
+
+**Pre-push self check 强化**：
+- API route 改动 → check 现有 SSE event flow 顺序（load_refs → insight → opus → result）
+- OutputPanel 改动 → check 现有 state shape，不要 break 现有 SSE listener
+- generateBanner Haiku 调用 → 测 LLM error 不阻塞主 review 流程（C2.1 已写 try/catch 但本路径要独立验证）
+- 不在 scope：banner click 跳转 / banner i18n / OutputPanel 其他改动（plan §7 已固化）
+
+### Reminder
+
+- 起 C4 前**必读** C3 verdict（本段）+ C2.1 verdict（line ~330）+ 原 C4 spec（line 92-114）
+- C4 是 T6 最大改动（SSE + API + UI 同时动），review 也最严
+- C5 是手测 e2e（GCS v2 snapshot 验证），W3 可代 kick scheduler 产 v2 snapshot 给你测
+- C4 push 后 W3 spot-review ≤30min（SSE 改动会跑独立 build verify）
