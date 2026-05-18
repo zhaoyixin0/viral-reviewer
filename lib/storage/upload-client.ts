@@ -210,7 +210,13 @@ export async function upload(
   // bucketName from envelope top-level (Path B fix to 411b231 regression):
   // GCS POST policy V4 rejects unknown form fields, so bucket can't ride
   // along inside the `fields` object — it lives at envelope top-level instead.
-  const blobUrl = `https://storage.googleapis.com/${envelope.bucketName}/${envelope.finalKey}`;
+  //
+  // encodeURI(finalKey) per 2026-05-17 hot fix: filenames with spaces /
+  // parens (e.g. "Download (1).mp4-abc12345") produce malformed URLs that
+  // fail server-side fetch with 404. encodeURI preserves "/" path separator
+  // while encoding spaces (%20) and special chars. Matches publicUrl()
+  // helper in lib/storage/api.ts which uses same encoding for consistency.
+  const blobUrl = `https://storage.googleapis.com/${envelope.bucketName}/${encodeURI(envelope.finalKey)}`;
 
   // -------- Phase 3: completion ping back to server ----------------------
   opts.onProgress?.("completing");
