@@ -6264,3 +6264,101 @@ if (!process.env.BLOB_READ_WRITE_TOKEN) return null;  // or `return;`
 **Time**: ~25min, under 30min mandate budget.
 
 > **W4 → W3: 2 findings (1 HIGH cron-504 ECC dimension + 1 MED stale env gate 8-site) + 4 INFO + 1 self-acknowledged P5.8.2 ship omission (W2-D/E ≡ W1-MED-1). Awaiting W3 triage.**
+
+
+---
+
+## [W4 → W3] 2026-05-17 20:55 PDT · W3 fix(batch) `565e7b1` triage ack (W4-touched files verified)
+
+Pulled W3 batch fix. W4-owned / co-owned files inspected + 3 gates re-run on pulled state.
+
+### Files W4 cares about (6 of 15 in W3 batch)
+
+| File | W3 fix | W4 verify |
+|---|---|---|
+| `lib/trending/snapshot-store.ts` | 4 `BLOB_READ_WRITE_TOKEN` gate lines removed (L21/47/81/108) | ✅ clean, storage facade fail-fast covers `requireBucket()` |
+| `lib/account-profile/cache.ts` | 2 gate lines removed (L40/56) | ✅ clean |
+| `lib/topic-cache/blob-cache.ts` | 2 gate lines removed (L36/54) | ✅ clean |
+| `lib/trending/fetch.ts` | TT Stage 2 serial → `Promise.allSettled` parallel | ✅ rank-order first-hit-wins dedup preserved (iterates `topHashtags[i]` by INDEX, not settle order); `log.error("TikTok Stage 2 failed", ...)` per-hashtag preserved |
+| `app/api/upload/route.ts` | STRICT_PER_IP → UPLOAD_BURST + onCompleted callback log swap | ⚠️ see drift below |
+| `app/api/template-brief-upload/route.ts` | same pattern as upload route | ⚠️ see drift below |
+
+### Static gates (post-pull on `565e7b1`)
+
+| Gate | Result |
+|---|---|
+| `tsc --noEmit` | 0 errors ✅ |
+| `vitest run` | **551/551 pass** ✅ (was 539; W3 batch added +12 tests covering cron-trending + snapshot-store fixes) |
+| MED-1 gate retirement | grep `process.env.BLOB_READ_WRITE_TOKEN` in `lib/` returns **0 sites** ✅ |
+
+### MED-1 retirement verification (deeper)
+
+Confirmed across W4-touched lib files:
+```
+$ grep -rn 'BLOB_READ_WRITE_TOKEN' lib/
+(no output)
+```
+All 8 stale gates cleanly removed. Storage facade `requireBucket()` (from W1 P5.1.b-2 design) remains as the single fail-fast for missing config — correct invariant per `lib/storage` ownership.
+
+### HIGH-1 parallelize verification (semantic correctness)
+
+W3 fix preserves rank-order first-hit-wins dedup via **index-based result consumption**:
+```ts
+const scrapeResults = await Promise.allSettled(topHashtags.map((h) => scrapeTikTokByHashtag(...)));
+for (let i = 0; i < topHashtags.length; i++) {
+  const h = topHashtags[i];          // ← rank-order
+  const result = scrapeResults[i];   // ← Promise.allSettled preserves input order
+  // ...
+  for (const v of result.value) {
+    if (seen.has(v.id)) continue;    // ← higher rank claimed first
+    seen.add(v.id);
+  }
+}
+```
+
+Promise.allSettled preserves input order in the result array (spec-guaranteed); iterating by `i` instead of `for ... of scrapeResults` makes the rank-order contract explicit + audit-friendly. ✅
+
+### ⚠️ Logger architecture drift observation (W2-D/E + W1-MED-1 fix)
+
+**What W3 shipped** (`app/api/{upload,template-brief-upload}/route.ts` onCompleted):
+```ts
+onCompleted: async ({ url, pathname, size }) => {
+  console.log(JSON.stringify({
+    severity: "INFO",
+    module: "api/upload",
+    message: "upload completed",
+    url, pathname, size,
+    timestamp: new Date().toISOString(),
+  }));
+},
+```
+
+**Why this works**: Cloud Logging parses the JSON correctly, severity column renders, fields filterable. Pragmatic minimal-change fix in batch.
+
+**Drift introduced** (deliberately flagged per memory `feedback_scope_deviation_document`):
+1. **Bypasses `createLogger` factory** — the only 2 call sites in app/ code emitting structured JSON without going through `lib/observability/structured-log.ts`
+2. **Loses 4 factory protections**:
+   - Reserved-field collision guard (caller passing `severity` / `module` / `message` etc. would silently override — N/A here but pattern erodes)
+   - Recursive `cause` chain serialization (no Error param here so N/A, but future copy-paste callers might pass `err: e`)
+   - `gitSha` auto-injection from `process.env.GIT_SHA` (these 2 emits show `gitSha=undefined`, losing log → revision correlation)
+   - JSON.stringify circular fallback envelope
+3. **Hand-crafted JSON shape will drift** from `createLogger` shape if either is updated independently
+
+**Root cause**: P5.8 verdict B1 narrowed Logger surface to `WARNING | ERROR` only (no `INFO`). `onCompleted` success log naturally needs INFO severity → no factory method available → minimum-change path was hand-crafted JSON.
+
+**Proposed P5.8.4 follow-up** (W4-touchable, ~10 line + 1 test, NOT blocking — flag only):
+1. `Severity` type: add `"INFO"` (`structured-log.ts:24`)
+2. `Logger` interface: add `info(message, context?): void`
+3. `createLogger`: return `info` method calling `emit("INFO", ...)`
+4. 2 routes: replace hand-crafted JSON with `log.info("upload completed", { url, pathname, size })`
+5. 1 unit test: severity INFO mapping (mirror existing WARNING/ERROR tests)
+
+**Recommendation**: queue as P5.8.4 batch (low priority — code works at runtime; drift is architectural / forward-compat hygiene). W3 triage decision.
+
+### Coordination
+
+- W3 fix batch accepted on all 6 W4-touched files. No regression. No reversion proposed.
+- 1 architectural follow-up flagged (Logger.info extension) — defer to W3 P5.8.4 schedule decision.
+- W4 standby.
+
+> **W4 → W3: `565e7b1` fix batch ack — 6 W4-touched files clean (gates 551/551 + tsc 0 + grep 0); 1 architectural drift flagged (hand-crafted JSON bypasses Logger factory, proposed P5.8.4 follow-up `Logger.info()` extension). W4 standby for next signal.**
