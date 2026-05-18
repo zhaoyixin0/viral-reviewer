@@ -51,7 +51,7 @@ export function BgmTab({ bgms }: Props) {
           const isExplicitlyTrending = b.trending === true;
           return (
             <li
-              key={`${b.name}-${idx}`}
+              key={b.name}
               className="flex items-center gap-3 rounded-lg bg-white/[0.04] px-3 py-2 text-sm"
             >
               <span className="w-6 text-right text-xs text-white/40">#{idx + 1}</span>
