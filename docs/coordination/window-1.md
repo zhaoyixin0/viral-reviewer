@@ -465,3 +465,58 @@ W3 monitor (`bblhbuuau`) 会立刻收到通知。
 ### 如果你卡住了（任意原因）
 
 append `W1 → W3 BLOCKER: <一句话症状>` 到本文件 push 一下，W3 会立即介入。
+
+---
+
+## W3 → W1 · T6 C1.1 VERDICT (2026-05-18 12:18 PDT)
+
+**针对 commit** `6c19ac1` — fix(insight): T6 C1.1 — C1 review patches
+
+### Verdict: **APPROVED** ✅ — 继续 C2
+
+### 独立 verified gates
+
+- `npx tsc --noEmit` exit 0
+- `npx vitest run` 708/708 PASS (64 test files；含 18 insight tests = 16 original + 2 新 pct edge)
+- File scope clean: 只动 `lib/insight/insight-template.ts` (+1/-1) + `tests/insight/insight-template.test.ts` (+41) —— W2/W4 owned 0 行触碰
+
+### Cross-commit consistency (C1 + C1.1)
+
+- 6 `InsightBannerData` 字段对齐 plan §7.4 ✅
+- `strategy` 参数 + `BannerStrategyNotImplementedError` 仍为 C2 LLM hook 预留 ✅
+- 全 5 C1 patches 已 address：
+  | # | Patch | C1.1 处理 |
+  |---|---|---|
+  | HIGH | fallback-c (techniqueTab) | commit body 引用 `lib/trending/insight-schema.ts` 确认字段不存在 → N/A document ✅ |
+  | MED #1 | actionable "建议:" 前缀 | commit body 注明延后到 C4 UI 层 ✅ |
+  | MED #2 | sampleVideoIds slice(0,3) cap | commit body 注明 cap 来自 JSDoc，code 中 .slice() 已存在 ✅ |
+  | NIT #1 | 标点 ";" → "；" | diff 验证 ✅ |
+  | NIT #2 | pct half-up edge | 2 个新 test (0.005→1%, 0.004→0%) PASS ✅ |
+
+### 继续 → C2
+
+**开始 C2 — `insight-llm.ts` Haiku strategy + fallback to template + LLM mock unit test**
+
+参考 spec：本文件 line 76（C2 commit）+ line 35 D2=B Haiku 决策 + `feedback_hmac_token_implementation_defenses.md` 安全 + `llm-schema-looseness.md`（Haiku 输出字段用 `z.string()` 不用 `z.enum()`）。
+
+**关键点**：
+1. `insight-llm.ts` export `generateBannerLlm(input): Promise<InsightBannerData | null>`，返回 null → template fallback by caller
+2. `generate-banner.ts` 入口里 `strategy === "llm"` 分支 try `generateBannerLlm` → catch error / null return → fallback 到 `renderTemplate`（**memory `stage2-failure-loses-stage1.md`**：LLM 失败不能丢 template 数据）
+3. Haiku model id: `claude-haiku-4-5-20251001`（CLAUDE.md 项目 stack 已固化）
+4. ANTHROPIC_API_KEY 从 `process.env.ANTHROPIC_API_KEY` 读，启动时 validate 存在
+5. Test 必含：
+   - happy path (Haiku 返回合规 JSON → parse OK)
+   - schema fail (Haiku 返回字段缺失 → 返回 null，触发 fallback)
+   - API error (mock throw → 返回 null)
+   - timeout (mock 超时 → 返回 null)
+   - empty insight (snapshot.insight 空 → 直接返回 null 不调 LLM 省成本)
+
+**Gates 前置**：`npx tsc --noEmit && npx vitest run`
+
+**Push 后 W3 monitor** 自动 review。
+
+### Reminder
+
+- 起 C2 前**必读** C1 verdict（line 190-214）+ 本 C1.1 verdict (line above)。memory `feedback_read_prev_commit_nits_before_next.md`
+- C2 push 之前**pre-push self review**不准 skip dep change（如果加了 `@anthropic-ai/sdk` import 必须独立 audit）。memory `feedback_pre_push_reviewer_skip_dep_changes.md`
+- 如发现 plan 漏洞 → commit body explicit document。memory `feedback_scope_deviation_document.md`
