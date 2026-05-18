@@ -919,3 +919,66 @@ W3 已识别 2 个独立 epic：
 2. **Apify trends-actor 健康监控 + retry** — 解决 TT scrape 间歇性 0 结果问题
 
 这两个新 epic 会在 L3+ close-out 后 user 拍板再启动。
+
+
+---
+
+## W1 → W3 · T6 COMPLETE + C5 DEFERRED (2026-05-18 16:33 PDT)
+
+**T6 chain ready for W3 cross-commit review + merge close-out。**
+
+### C5 hands-on e2e — DEFERRED to task 14.1 (rationale)
+
+User 尝试 local dev e2e 跑 banner UI 验证，遇到 **3 个连环 local-dev-only env friction**（与 T6 feature 无关，是 P5.1 GCS 迁移后遗 sandbox 配置问题）：
+
+1. **缺 `GCS_BUCKET_NAME`** → readLatestTwoSnapshots soft-fail return null → banner null path (= Scenario 2 degrade, 但不能验 Scenario 1) — **已 fix**：加 env var
+2. **缺 `UPLOAD_SIGNING_SECRET`** → /api/upload 503 storage_not_configured → 视频无法上传 → review 起不来 — **已 fix**：生成 random local secret
+3. **ADC user creds 不能 sign GCS URL** → `Cannot sign data without 'client_email'` (`SigningError`)：`@google-cloud/storage` `generateSignedPostPolicy` 需要 service account creds（含 `client_email`），user `gcloud auth application-default login` 不带 client_email,无法签 → 上传 500 — **未 fix**（需 SA JSON 或 impersonate, friction 过高）
+
+**结论**：local dev 跑 review 整链需要 service account JSON 或 SA impersonation,这套 sandbox config 不在 T6 scope（属 P5.1 onboarding doc 缺口,follow-up）。
+
+### C5 用 task 14.1 preview deploy 覆盖
+
+C5 spec 是"e2e 看 banner UI 显示"。**Preview deploy 用真 Vercel/Cloud Run SA**,signed URL 能 sign,upload 能跑,GCS read OK,Haiku call 真。task 14.1（pending,user hands-on preview deploy + 6 素材 E2E）顺带覆盖 banner UI 验证 — 同一次 hands-on 跑两 epic。
+
+**C5 验证落地（顺 task 14.1 preview e2e）**：
+- Scenario 1: upload 1 视频 → review 顶部看到 banner 5 段
+- Scenario 2: W3/W4 临时把 GCS snapshot 改名（或 user hands-on 删 trending/snapshot-2026-W21.json）→ review → banner 不渲染
+
+### 自动测覆盖（740/740 全绿）
+
+C5 visual e2e 之外的 banner data flow 已被 unit/RTL test 完整覆盖：
+
+| 层 | Test | 覆盖 |
+|---|---|---|
+| **Lib** | tests/insight/insight-template.test.ts (10) | template strategy 全 branch |
+| **Lib** | tests/insight/insight-llm.test.ts (8) | Haiku happy / API error / timeout / schema fail / invalid JSON / markdown fence / empty insight / missing API key |
+| **Lib** | tests/insight/generate-banner.test.ts (10) | snapshot null / no insight / template / llm success / llm null fallback / llm throw fallback / userTopic propagation |
+| **Lib** | tests/insight/hashtag-match.test.ts (8) | fuzzy match all branches |
+| **Component** | tests/components/review/insight-banner.test.tsx (9) | data=null / 5 sections / bullets [0,1,N] / sampleVideoIds [0,1,2,3] / aria-label |
+| **Integration** | tests/components/technique-match/results-area-banner.test.tsx (5) | full.insightBanner authoritative / stages derive / fallback / precedence |
+
+**总计** insight 模块 50 tests + ResultsArea integration 5 + 全套 740 PASS。
+
+### 期望 W3 动作
+
+1. **Cross-commit review** C1 + C1.1 + C2 + C2.1 + C3 + C4 整链 (review file scope / contract stability / memory rules / scope deviations document 都完整)
+2. **Merge `feat/l3plus-w1-insight-banner` 到 main** → L3+ T6 close
+3. **L3+ epic close-out**: W3 写 summary + ping W2/W4 + 把 C5 visual e2e 挂到 task 14.1 backlog
+4. **Follow-up backlog（不阻 close）**: 
+   - 修 P5.1 onboarding doc 加 local dev SA JSON / impersonation 指南
+   - IG cookies infrastructure
+   - Apify trends-actor 健康监控
+
+### T6 chain commit summary
+
+| # | Commit | Verdict |
+|---|---|---|
+| C1 | `6306065` feat(insight): T6 C1 generator + template + 16 unit | NEEDS_FIX → C1.1 |
+| C1.1 | `6c19ac1` fix(insight): NIT punctuation + pct edge + scope deviation | APPROVED |
+| C2 | `d95a159` feat(insight): T6 C2 Haiku LLM + fallback + 10 mock tests | APPROVED (1 MED + 2 NIT) |
+| C2.1 | `a351559` refactor(insight): dedup fuzzy-match + 2 NIT polish | APPROVED |
+| C3 | `2256f9d` feat(insight): InsightBanner pure-display + 9 RTL | APPROVED (3 NIT 不动) |
+| C4 | `1563c32` feat(insight): wire SSE + ResultsArea integration + 5 RTL | APPROVED (scope deviation W1 caught) |
+
+W1 standby for W3 cross-commit review + merge。
