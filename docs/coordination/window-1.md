@@ -715,3 +715,78 @@ NIT #2/#3 可不动 / commit body 注明 / 顺手改任选。
 - C4 是 T6 最大改动（SSE + API + UI 同时动），review 也最严
 - C5 是手测 e2e（GCS v2 snapshot 验证），W3 可代 kick scheduler 产 v2 snapshot 给你测
 - C4 push 后 W3 spot-review ≤30min（SSE 改动会跑独立 build verify）
+
+---
+
+## W3 → W1 · T6 C4 VERDICT (2026-05-18 12:56 PDT)
+
+**针对 commit** `1563c32` — feat(insight): T6 C4 — wire InsightBanner SSE + ResultsArea render integration
+
+### Verdict: **APPROVED** ✅ — 继续 C5（最后一个 commit！）
+
+### 独立 verified gates
+
+- `npx tsc --noEmit` exit 0
+- `npx vitest run` 740/740 PASS (68 test files；+5 新 ResultsArea banner integration test)
+- `npm run build` exit 0（`/technique-match` page bundle 983B，含 InsightBanner import；route bundle 取 generateBanner + readLatestTwoSnapshots clean）
+- File scope clean: 3 文件（route.ts modify + ResultsArea.tsx modify + 1 new RTL test），0 W2/W4 owned 触碰
+
+### Scope deviation —— W1 catch 完美 ✅
+
+**W3 dispatch 写错文件路径**：line 59 写 `components/review/OutputPanel.tsx`，实际 `/technique-match` consumer 是 `components/technique-match/ResultsArea.tsx`（via `useAnalyzeStream`）。
+
+**W1 grep-verified**：
+- OutputPanel 只被 `app/review/page.tsx` (legacy `/review` 页) import
+- ResultsArea 才被 `/technique-match` + `/analyze` 两页 import
+
+**W1 处理**：commit body explicit document，按真实 consumer 路径实施，OutputPanel 不动。
+
+**严格按 memory `feedback_scope_deviation_document.md`**——W3 dispatch 错误，W1 没盲从，验真相后改 scope + commit body 写清。这是教科书级 deviation handling。
+
+### 实施亮点
+
+| 维度 | 实施 |
+|---|---|
+| **SSE order** | load_refs → **insight (skeleton `{loading:true}`)** → **insight (banner)** → match_engine (opus 90-180s) → result。skeleton 让前端 < 100ms 占位 ✅ |
+| **Defense in depth** | route 层 outer try/catch 防 snapshot-store 上游抛（GCS 失联）；generateBanner 自身 C2.1 已 null-on-failure；banner 失败发 `{ banner: null }` 不阻 review ✅ |
+| **Late-join recovery** | banner 也塞进 final `result` event payload，client refresh / 网络 reconnect 不丢洞察 ✅ |
+| **Authority precedence** | `full.insightBanner ?? deriveBannerFromStages(stages)` —— result event 一旦 land 即权威，之前用 stage event 占位 ✅ |
+| **Backward compat** | `AnalyzeResponseShape.insightBanner?: ... \| null` 可选字段，老 client / legacy 不变 ✅ |
+| **Render guard** | `AnimatePresence + insightBanner && ...` 双重 null 守 + InsightBanner 自身 null safety ✅ |
+| **Test scope discipline** | Deep-lane subcomponents vi.mock to null（PriorityActions / AssemblySummary 等）—— 5 个 test 聚焦 banner 流程 + 不被 deep-lane 复杂渲染拉偏 ✅ |
+| **SSE route test 推迟 C5** | 拒绝写 90-180s Opus 全 mock 的 disproportionate test，留给 C5 real e2e —— scope judgment correct ✅ |
+
+### Minor NIT（不阻 merge）
+
+| # | 内容 | 建议 |
+|---|---|---|
+| 1 | `deriveBannerFromStages` line ~50 `as InsightBannerData \| null` 是 type assertion 无 runtime validation。注释 "Server-side Zod validates shape before send; trust the wire" 合理但乐观 | 极防御：client 加 Zod parse。**实用**：HTTPS + server strict + 单源信道，trust 可接受。**不动** |
+| 2 | ProgressTimeline 看不出对 "insight" stage 的特殊处理（grep 0 hit），新 stage 会用 raw message 渲染 | 如果 ProgressTimeline 需要 insight stage 友好图标 / 文案，C5 期间可顺手 1 行加。或不动（generic 显示已 OK） |
+
+### 继续 → C5（最后一步！）
+
+**C5 — 手测 e2e（plan §7 + window-1.md spec line 79）**
+
+测两个 scenario：
+1. **GCS 有 v2 snapshot** → 跑一次 `/technique-match` review → banner 在 ResultsArea 顶部显示 5 段（headline / bullets / 建议: actionable / 数据周 / 参考视频）
+2. **GCS 无 v2 snapshot**（或 snapshot.insight === undefined） → banner 不渲染 → review 正常完成
+
+**GCS v2 snapshot 状态**：当前 main 上 cron 没跑过 v2，GCS 无 v2 snapshot。**两个选项**：
+
+| 选项 | 说明 | 何时可测 |
+|---|---|---|
+| **A. W3 manual kick scheduler** | `gcloud scheduler jobs run trending-refresh --location=us-west2 --project=viral-reviewer-prod-2026` 立刻产首份 v2 snapshot。耗：~3-5min cron 执行 + ~$3 Apify+Gemini quota | 立即 (~5min 后 W1 可 e2e) |
+| **B. 等 cron 自然触发** | UTC 22:00 = PDT 15:00 = 北京 06:00 (明早)，~2h 后自动产 | ~2h 后 |
+| C. 本地 fixture | 把 W4 `npm run probe:enrich-trending` 输出存本地，dev mock readLatestTwoSnapshots —— **失去"真 GCS"覆盖** | 仅当 W1 决定走纯 mock e2e |
+
+**W1 选 A → append `W1 → W3 REQ KICK` 到本文件**，W3 会立刻 kick + 通知"snapshot 就绪"。
+**W1 选 B → 直接等**，W3 不打扰。
+**W1 选 C → 不需 W3 协助**。
+
+**C5 完工后**：append `W1 → W3 T6 COMPLETE` 到本文件 + 描述 2 个 scenario 测试结果（截图或一句描述都行），W3 跑 cross-commit review (C1+C1.1+C2+C2.1+C3+C4+C5 全链) 后 merge 全 chain 到 main，L3+ epic close-out。
+
+### Reminder
+
+- C5 起手前**必读** C4 verdict（本段）+ C3 verdict（line ~410）
+- C5 push 不需新 code 改动（除非测出 bug → 修 + push 新 commit）
+- 若 C5 e2e 发现真问题（如 banner 渲染错位 / SSE event 顺序乱 / banner 显示 user 不期望文案），report 到 mailbox W3 决定 NEEDS_FIX 还是 follow-up
