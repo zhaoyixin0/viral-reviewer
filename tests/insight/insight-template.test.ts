@@ -243,6 +243,47 @@ describe("renderTemplate", () => {
     expect(result.bullets[0]).not.toContain("150%");
   });
 
+  it("pct half-up edge: share=0.005 → '1%' (上行)", () => {
+    const result = renderTemplate({
+      userFormat: "vlog",
+      insight: mkInsight({
+        hashtagInsights: [
+          {
+            name: "x",
+            videoCount: 1,
+            techniqueDistribution: { edge: 0.005 },
+            avgDensity: 0,
+            topVideoIds: [],
+          },
+        ],
+      }),
+      week: "2026-W20",
+    });
+    // bullet format: "剪辑手法:edge 占 1%" — leading space disambiguates from "10%/100%"
+    expect(result.bullets[0]).toContain(" 1%");
+    expect(result.bullets[0]).not.toContain(" 0%");
+  });
+
+  it("pct half-down edge: share=0.004 → '0%' (下行)", () => {
+    const result = renderTemplate({
+      userFormat: "vlog",
+      insight: mkInsight({
+        hashtagInsights: [
+          {
+            name: "x",
+            videoCount: 1,
+            techniqueDistribution: { edge: 0.004 },
+            avgDensity: 0,
+            topVideoIds: [],
+          },
+        ],
+      }),
+      week: "2026-W20",
+    });
+    expect(result.bullets[0]).toContain(" 0%");
+    expect(result.bullets[0]).not.toContain(" 1%");
+  });
+
   it("sampleVideoIds 截到 3 条(topVideoIds 超过 3 时)", () => {
     const result = renderTemplate({
       userFormat: "vlog",

@@ -135,5 +135,5 @@ function composeActionable(
   if (parts.length === 0) {
     return `本周暂无显著趋势,按你的 ${userFormat} 常用手法剪即可`;
   }
-  return parts.join(";") + "。";
+  return parts.join("；") + "。";
 }
