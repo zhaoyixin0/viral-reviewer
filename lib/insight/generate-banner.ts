@@ -1,9 +1,7 @@
-import type {
-  HashtagInsight,
-  TrendingInsight,
-} from "@/lib/trending/insight-schema";
+import type { TrendingInsight } from "@/lib/trending/insight-schema";
 import type { TrendingSnapshot } from "@/lib/trending/types";
 
+import { findBestHashtag } from "./hashtag-match";
 import { generateBannerLlm } from "./insight-llm";
 import { renderTemplate } from "./insight-template";
 
@@ -94,29 +92,15 @@ export async function generateBanner(
   }
 }
 
-const MIN_FUZZY_LENGTH = 3;
-
 /**
  * Deterministic — picks 0..3 video IDs from the best-matching hashtag insight
  * so the LLM path produces identical sampleVideoIds to the template path.
- * Match logic mirrors insight-template.ts findBestHashtag (asymmetric fuzzy:
- * forward always, reverse only when hashtag name >= 3 chars).
+ * Selection logic shared with renderTemplate via lib/insight/hashtag-match.
  */
 function pickSampleVideoIds(
   insight: TrendingInsight,
   userTopic: string | undefined,
 ): string[] {
-  const hashtags = insight.hashtagInsights;
-  if (hashtags.length === 0) return [];
-  let best: HashtagInsight | undefined;
-  if (userTopic) {
-    const lower = userTopic.toLowerCase();
-    best = hashtags.find((h) => {
-      const n = h.name.toLowerCase();
-      if (n.includes(lower)) return true;
-      return n.length >= MIN_FUZZY_LENGTH && lower.includes(n);
-    });
-  }
-  best ??= hashtags[0];
+  const best = findBestHashtag(insight.hashtagInsights, userTopic);
   return best?.topVideoIds.slice(0, 3) ?? [];
 }

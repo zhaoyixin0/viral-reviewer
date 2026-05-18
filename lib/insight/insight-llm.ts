@@ -23,13 +23,18 @@ const TIMEOUT_MS = 8000;
 
 // Loose Zod schema — fields are free-form strings, never z.enum() for LLM
 // descriptive output (memory: llm-schema-looseness.md). Length floors only
-// catch the pathological empty-string case.
-const LlmBannerSchema = z.object({
-  headline: z.string().min(1),
-  bullets: z.array(z.string()),
-  actionable: z.string().min(1),
-  sourceWeek: z.string().min(1),
-});
+// catch the pathological empty-string case. sourceWeek is built per-call
+// (see buildResponseSchema) so the LLM cannot return a week different from
+// the input week — schema enforcement of an attribution invariant the
+// prompt only requests.
+function buildResponseSchema(week: string) {
+  return z.object({
+    headline: z.string().min(1),
+    bullets: z.array(z.string()),
+    actionable: z.string().min(1),
+    sourceWeek: z.literal(week),
+  });
+}
 
 export type GenerateBannerLlmInput = {
   userFormat: string;
@@ -86,7 +91,7 @@ export async function generateBannerLlm(
     const parsed = parseJsonOutput(text);
     if (parsed === null) return null;
 
-    const validated = LlmBannerSchema.safeParse(parsed);
+    const validated = buildResponseSchema(input.week).safeParse(parsed);
     if (!validated.success) return null;
 
     return {
@@ -130,10 +135,15 @@ function buildUserPrompt(input: GenerateBannerLlmInput): string {
 type AnthropicContentBlock = Anthropic.Message["content"][number];
 
 function extractText(content: readonly AnthropicContentBlock[]): string | null {
+  // Join all text blocks — Haiku is unlikely to split JSON across blocks but
+  // future model behavior (or thinking blocks interleaved with text) makes
+  // single-block extraction brittle. Joining preserves whole-response JSON.
+  const parts: string[] = [];
   for (const block of content) {
-    if (block.type === "text" && block.text) return block.text;
+    if (block.type === "text" && block.text) parts.push(block.text);
   }
-  return null;
+  if (parts.length === 0) return null;
+  return parts.join("\n");
 }
 
 function parseJsonOutput(text: string): unknown {

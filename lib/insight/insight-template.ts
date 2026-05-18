@@ -5,6 +5,7 @@ import type {
   TrendingInsight,
 } from "@/lib/trending/insight-schema";
 import type { InsightBannerData } from "./generate-banner";
+import { findBestHashtag } from "./hashtag-match";
 
 /**
  * Deterministic template strategy for InsightBanner.
@@ -43,29 +44,6 @@ export function renderTemplate(input: TemplateRenderInput): InsightBannerData {
     sourceWeek: input.week,
     sampleVideoIds: bestHashtag?.topVideoIds.slice(0, 3) ?? [],
   };
-}
-
-const MIN_FUZZY_LENGTH = 3;
-
-function findBestHashtag(
-  insights: readonly HashtagInsight[],
-  userTopic: string | undefined,
-): HashtagInsight | null {
-  if (insights.length === 0) return null;
-  if (userTopic) {
-    const lower = userTopic.toLowerCase();
-    // Asymmetric fuzzy match: forward direction always (name contains topic),
-    // reverse (topic contains name) only when the hashtag name is long enough
-    // to avoid false positives like name="go" matching topic="ego" or
-    // name="or" matching topic="tutorial".
-    const hit = insights.find((h) => {
-      const name = h.name.toLowerCase();
-      if (name.includes(lower)) return true;
-      return name.length >= MIN_FUZZY_LENGTH && lower.includes(name);
-    });
-    if (hit) return hit;
-  }
-  return insights[0] ?? null;
 }
 
 function pickTopTechniques(h: HashtagInsight | null): TechniqueShare[] {
