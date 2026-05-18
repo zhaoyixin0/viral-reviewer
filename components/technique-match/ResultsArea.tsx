@@ -10,7 +10,9 @@ import { CapCutExport } from "@/components/technique-match/CapCutExport";
 import { BgmRecommendations } from "@/components/technique-match/BgmRecommendations";
 import { AssemblySummary } from "@/components/technique-match/AssemblySummary";
 import { ProgressTimeline } from "@/components/review/ProgressTimeline";
+import { InsightBanner } from "@/components/review/InsightBanner";
 import type { StageEvent } from "@/app/review/page";
+import type { InsightBannerData } from "@/lib/insight/generate-banner";
 import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
 import type { TechniqueMatchingResult } from "@/lib/technique-matching/types";
 
@@ -24,7 +26,36 @@ export type AnalyzeResponseShape = {
   referenceSource: string;
   referenceNotice?: string;
   match: TechniqueMatchingResult;
+  /** L3+ T6 — present when snapshot.insight exists at review time; null
+   * when no v2 snapshot is available. Undefined for legacy callers. */
+  insightBanner?: InsightBannerData | null;
 };
+
+/**
+ * Extract the latest banner payload from the SSE stage stream. The route
+ * emits two `insight` events: a `{ loading: true }` skeleton then a
+ * `{ banner: ... }` payload. We scan from the tail for the first event
+ * carrying `banner` so the banner shows up while Opus is still running.
+ *
+ * Returns null when no banner has been streamed yet, or when the snapshot
+ * has no v2 insight (banner === null).
+ */
+function deriveBannerFromStages(
+  stages: StageEvent[],
+): InsightBannerData | null {
+  for (let i = stages.length - 1; i >= 0; i--) {
+    const s = stages[i];
+    if (s.stage !== "insight") continue;
+    const d = s.data;
+    if (d && typeof d === "object" && "banner" in d) {
+      // Server-side Zod (insight-schema + LlmBannerSchema) validates shape
+      // before send; trust the wire here.
+      const v = (d as { banner?: unknown }).banner;
+      return (v as InsightBannerData | null) ?? null;
+    }
+  }
+  return null;
+}
 
 export type AnalyzeResultsProps = {
   loading: boolean;
@@ -107,8 +138,27 @@ export function AnalyzeResults({
     .map((n) => n ?? undefined)
     .slice(0, exportVideoUrls.length);
 
+  // L3+ T6: banner — full.insightBanner authoritative once result lands;
+  // before that, latest `insight` stage event provides the data.
+  const insightBanner =
+    full?.insightBanner ?? deriveBannerFromStages(stages);
+
   return (
     <div className="space-y-6">
+      {/* L3+ T6: InsightBanner 顶部插入 — null 时组件自身返 null 不占位 */}
+      <AnimatePresence>
+        {insightBanner && (
+          <motion.div
+            key="insight-banner"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+          >
+            <InsightBanner data={insightBanner} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Progress timeline 在 Opus 完成前一直挂着，partial 出现也不影响 */}
       <AnimatePresence>
         {showTimeline && (

@@ -7,6 +7,11 @@ import { analyzeMaterialPotential } from "@/lib/video/analyze-potential";
 import { loadReferenceCutPlans } from "@/lib/sample-references";
 import { matchTechniques } from "@/lib/technique-matching/match-engine";
 import { createLogger } from "@/lib/observability/structured-log";
+import {
+  generateBanner,
+  type InsightBannerData,
+} from "@/lib/insight/generate-banner";
+import { readLatestTwoSnapshots } from "@/lib/trending/snapshot-store";
 
 const log = createLogger({ module: "api/technique-match" });
 import type { MaterialPotential } from "@/lib/cut-plan/material-potential";
@@ -403,6 +408,37 @@ export async function POST(req: NextRequest) {
           },
         });
 
+        // ============ Stage 4.5: 本周爆款洞察 (L3+ T6) ============
+        // 早发 skeleton stage event 让前端立刻占位（Haiku < 3s 或 fallback
+        // template < 50ms）。任何失败 → banner = null，主 review 流不阻塞
+        // (memory: stage2-failure-loses-stage1)。
+        send({
+          type: "stage",
+          stage: "insight",
+          message: "生成爆款洞察…",
+          data: { loading: true },
+        });
+        let insightBanner: InsightBannerData | null = null;
+        try {
+          const { current: snapshot } = await readLatestTwoSnapshots();
+          insightBanner = await generateBanner({
+            userFormat,
+            userTopic: topic || undefined,
+            snapshot,
+            strategy: "llm",
+          });
+        } catch (e) {
+          // generateBanner 内已 try/catch 返 null，这里再守一层抗 snapshot-store
+          // 等上游意外 throw（GCS 失联等）。banner 失败永远不阻塞 review。
+          log.warn("insight banner generation failed", { err: e });
+        }
+        send({
+          type: "stage",
+          stage: "insight",
+          message: insightBanner ? "洞察就绪" : "本周无可用趋势数据",
+          data: { banner: insightBanner },
+        });
+
         // ============ Stage 5: Opus 匹配引擎 + N 视频编排 ============
         // Task 5：把 N 份 potential 一起喂给 Opus，让它产出 assemblyTimeline。
         // failedVideoIndexes 走 prompt 显式禁用，后端 sanitizeAssemblyTimeline
@@ -450,6 +486,7 @@ export async function POST(req: NextRequest) {
             referenceSource: refs.source,
             referenceNotice: refs.notice,
             match: matchResult,
+            insightBanner,
           },
         });
       } catch (e) {
