@@ -157,3 +157,74 @@ W4 ACK 2026-05-XX: 收到 T1+T2+T3 派发，确认决策 D1=B/D5=B，分支 feat
 
 **问题**: 无。开始 T1 C1 (`enrichTrendingVideo`)。
 
+---
+
+## W4 → W3 · L3+ T1+T2+T3 COMPLETION 报告
+
+**W4 DONE 2026-05-18**: T1+T2+T3 全部 C1→C7 落地，分支 `feat/l3plus-w4-enrichment` HEAD @ `216fe85`。等待 W3 review + 决定 probe 执行时机。
+
+**Commit chain** (all green: tsc 0 / vitest 全绿 / build 0):
+
+| # | SHA | Subject | Tests |
+|---|---|---|---|
+| C0 | `e06c571` | docs ack | — |
+| C1 | `67ab9e0` | T1 enrichTrendingVideo helper | +10 (561 total) |
+| C2 | `efba1a0` | T1 enrichBatch + retry + abort | +14 (575) |
+| C3 | `a5de87e` | T2 insight-schema + v1→v2 bump | +18 (593) |
+| C4 | `80d7816` | T2 aggregate.ts (pure) | +17 (610) |
+| C5 | `79a01ad` | T2 event-detector keywords + LLM | +16 (626) |
+| C6 | `b527d96` | T3 fetch.ts pipeline + select-for-enrichment | +17 (643) |
+| C7 | `216fe85` | T3 cron 150s watchdog + probe + scripts entry | +3 (646) |
+
+**Acceptance gates 自检** (plan §2.6 / §3.7 / §4.6):
+
+- ✅ `npx tsc --noEmit` exit 0 — every commit
+- ✅ `npx vitest run` 全绿 — 646 tests total (+138 new)
+- ✅ `npm run build` exit 0 — every commit
+- ⏳ `npm run probe:enrich-trending` 真跑一次 — **由 W3 / user 决定时机**，理由：消耗真实 APIFY + Gemini Pro 配额 (~$0.08 × 15 视频 + $0.05 event LLM ≈ $1.25/run)，worker 不擅自 spend
+- ⏳ curl POST `/api/cron/trending` (带 `Authorization: Bearer $ADMIN_TRIGGER_SECRET`) 验证 200 + insight summary — 部署后 user-side
+
+**重要 scope deviations** (memory `feedback_scope_deviation_document`，commit body 含详细 rationale):
+
+1. **C1 video download**: plan §2.3 假设 `plain fetch + GCS allowlist` 可下载 `video.url`。实际 `ViralVideo.url` 是 TT/IG **post page URL** (`webVideoUrl`)，plain fetch 拿不到 mp4。改用既有 `lib/enrichment/video-downloader.ts` (yt-dlp wrapper) — 零 npm dep 增减 + 复用已 battle-tested 的 2-retry/90s-timeout 策略。SSRF defence 降级理由：URL 来源是 Apify 抓取 (not user input)。
+2. **C2 enrichBatch naming**: 与既有 `lib/research/enrich-one.ts` 的 `enrichBatch` 同名 (Haiku metadata enrichment)。无重命名，在调用方用 as-alias 区分：`enrichMetadataBatch` vs `enrichCutPlanBatch`。
+3. **C4 aggregate purity**: plan §3.3 pseudo 把 `detectEvents` inline 调用。改为 caller (T3 fetch.ts) 显式 pre-detect 后传 `eventInsights[]` 给 aggregate — 保 aggregate 全 sync + 纯函数 + 易测 (无需 mock Gemini)。
+
+**约束自检全部通过**:
+- ✅ 零 npm dep 增减 (无 p-limit / 手写 semaphore)
+- ✅ LLM 输出 loose Zod (event-detector LLM `passthrough()`)
+- ✅ Stage 1 失败不丢 (`emptyInsight()` 路径 + `failures[]` 收集)
+- ✅ `passthrough()` forward-compat (insight schema 每层)
+- ✅ Pre-push reviewer 无 skip (C3/C5/C7 W3 active review 已 push)
+- ✅ Multi-commit cross-check (C2 起手读 C1 nit list — observation `1392`: D5 retry deferred to C2 已照办)
+
+**只读不动文件** (W2 owned / shared) — 0 字节修改:
+- `lib/video/gemini-understand.ts` · `lib/video/ffprobe-meta.ts`
+- `lib/cut-plan/schema.ts` · `lib/review-engine/types.ts`
+
+**新增文件清单**:
+- `lib/trending/enrich-trending-video.ts` (99 LoC)
+- `lib/trending/enrich-batch.ts` (134 LoC)
+- `lib/trending/insight-schema.ts` (129 LoC)
+- `lib/trending/aggregate.ts` (228 LoC, plan ≤250 ✓)
+- `lib/trending/event-detector.ts` (231 LoC)
+- `lib/trending/event-keywords.ts` (63 LoC)
+- `lib/trending/select-for-enrichment.ts` (52 LoC)
+- `scripts/probe-enrich-trending.ts` (60 LoC)
+- 8 个 test files (`tests/trending/enrich-*.test.ts` + `aggregate.test.ts` + `event-detector.test.ts` + `insight-schema.test.ts` + `select-for-enrichment.test.ts`)
+
+**修改文件清单** (W4 scope):
+- `lib/trending/types.ts` (v1→v2 schema bump + `SUPPORTED_SCHEMA_VERSIONS` constant)
+- `lib/trending/velocity.ts` (`=== TRENDING_SCHEMA_VERSION` → window membership check)
+- `lib/trending/fetch.ts` (L3+ pipeline wiring + FetchTrendingOptions)
+- `app/api/cron/trending/route.ts` (AbortController 150s + insight summary)
+- `package.json` (+1 scripts entry `probe:enrich-trending`)
+- `tests/trending/fetch.test.ts` (+9 L3+ pipeline tests, 3 mocks added)
+- `tests/api/cron-trending.test.ts` (+3 watchdog/insight tests)
+- `tests/api/trending-route.test.ts` (literal `1` → `TRENDING_SCHEMA_VERSION`)
+
+**W3 review trigger 点** (per plan §3 monitor pattern): C3 (`a5de87e`) / C5 (`79a01ad`) / C7 (`216fe85`)。W3 monitor `refs/heads/feat/l3plus-*` 已自动 catch 全部 7 个 commit。
+
+**Standby**: W4 等待 W3 active review verdict (C3/C5/C7) 或 user-side probe 结果。无下一 task pending。
+
+
