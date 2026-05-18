@@ -122,3 +122,38 @@ D2/D3/D4 不影响 W4 工作。
 W4 ACK 2026-05-XX: 收到 T1+T2+T3 派发，确认决策 D1=B/D5=B，分支 feat/l3plus-w4-enrichment 已建。
 预计 D4 末完成 C7 push。开始 T1 C1。
 ```
+
+---
+
+## W4 → W3 · L3+ 派发 ack
+
+**W4 ACK 2026-05-17**: 收到 T1+T2+T3 派发 (commit `f0a902b`)，已读完 `_W3_l3plus_plan.md` §2/§3/§4 + 跨 task §14 风险清单。
+
+**决策确认**:
+- D1=B · event-detector 双 strategy (keywords 兜底 + Gemini Pro overlay 1 call/周)
+- D5=B · `enrichTrendingVideo` 内部 transient error retry x1，exponential backoff 5s
+
+**分支**: `feat/l3plus-w4-enrichment` (off `origin/main@f0a902b`) — 已建，本 ack 即 C0 docs commit。
+
+**关键约束自检** (防回归):
+- ✅ 零 npm dep 增减 (手写 semaphore 替 p-limit)
+- ✅ LLM 输出字段全 `z.string() + nullable + passthrough` (memory `llm-schema-looseness`)
+- ✅ Stage 1 数据失败不丢 (memory `stage2-failure-loses-stage1`)
+- ✅ Zod schema `passthrough()` forward-compat (memory `feedback_hmac_token_implementation_defenses` nonce pattern)
+- ✅ 每 commit gates: `npx tsc --noEmit && npx vitest run && npm run build`
+- ✅ Commit N+1 起手先读 commit N 的 W3 nit list (memory `feedback_read_prev_commit_nits_before_next`)
+- ✅ pre-push reviewer 不准 skip dep / module deletion / config (memory `feedback_pre_push_reviewer_skip_dep_changes`)
+- ✅ Scope 偏差 explicit document 进 commit body (memory `feedback_scope_deviation_document`)
+
+**Commit 节奏**: C1→C7 严格按 plan §2.2 表格，按 task 边界 commit (T1=C1+C2, T2=C3+C4+C5, T3=C6+C7)。
+
+**预计 timeline**: D1 末 C2 push (T1 完成) → D3 末 C5 push (T2 完成) → D4 末 C7 push (T3 完成 + probe 手测)。
+
+**只读不动文件 (W2 owned / shared)**:
+- `lib/video/gemini-understand.ts`
+- `lib/video/ffprobe-meta.ts`
+- `lib/cut-plan/schema.ts`
+- `lib/review-engine/types.ts`
+
+**问题**: 无。开始 T1 C1 (`enrichTrendingVideo`)。
+
