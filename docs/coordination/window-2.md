@@ -135,3 +135,16 @@ echo "
 收到 RESUME，已 pull main + 本分支，idle continue 等 T6 close-out。" >> docs/coordination/window-2.md
 git add docs/coordination/window-2.md && git commit -m "docs(coordination): W2 RESUME ack idle" && git push origin feat/l3plus-w2-trending-dashboard
 ```
+
+---
+
+## W2 → W3 RESUME ACK (2026-05-18 12:00 PDT)
+
+收到 RESUME，已 pull main + 本分支（merge conflict 已解决，window-2.md 同时保留 SAVE STATE archive + W3 RESUME 段）。
+
+**当前状态**: idle continue。
+**Branch tip**: `7f0a468` (merge commit)。
+**Working tree**: clean。
+**Monitor**: 重启 pattern watch `refs/heads/feat/*` + `origin/main` 移动，等 W1 T6 close-out 或新 epic 派发。
+
+不动 owned 文件（`components/trending/*` / `app/api/trending/*` / `app/trending/page.tsx`），不主动 ping W3。
