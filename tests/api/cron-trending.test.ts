@@ -155,3 +155,55 @@ describe("POST /api/cron/trending — Google Cloud Scheduler OIDC (P5.3)", () =>
     expect(res.status).toBe(401);
   });
 });
+
+describe("POST /api/cron/trending — L3+ T3 watchdog + insight projection", () => {
+  it("forwards an AbortSignal into fetchTrendingSnapshot (watchdog wired)", async () => {
+    verifyIdTokenMock.mockRejectedValue(new Error("not a JWT"));
+    await POST(req("Bearer admin-secret"));
+    expect(fetchSnapshotMock).toHaveBeenCalledTimes(1);
+    const arg = fetchSnapshotMock.mock.calls[0][0];
+    expect(arg).toBeDefined();
+    expect(arg.signal).toBeInstanceOf(AbortSignal);
+    expect(arg.signal.aborted).toBe(false);
+  });
+
+  it("projects insight summary fields into the response when snapshot has insight", async () => {
+    verifyIdTokenMock.mockRejectedValue(new Error("not a JWT"));
+    fetchSnapshotMock.mockResolvedValue({
+      week: "2026-W20",
+      trendingHashtags: [],
+      videos: [{ id: "x" }],
+      meta: { partial: false },
+      insight: {
+        week: "2026-W20",
+        capturedAt: "2026-05-14T08:00:00Z",
+        hashtagInsights: [{ name: "h", videoCount: 1 }],
+        bgmInsights: [{ name: "b", hitCount: 1 }, { name: "c", hitCount: 1 }],
+        eventInsights: [{ name: "e", displayName: "E", matchedVideoCount: 1 }],
+        velocity: { techniqueWoW: {}, bgmWoW: [], eventWoW: [] },
+        totalEnriched: 3,
+      },
+    });
+    const res = await POST(req("Bearer admin-secret"));
+    const body = await res.json();
+    expect(body).toMatchObject({
+      ok: true,
+      week: "2026-W20",
+      videoCount: 1,
+      insight: {
+        totalEnriched: 3,
+        hashtagInsightCount: 1,
+        bgmInsightCount: 2,
+        eventInsightCount: 1,
+      },
+    });
+  });
+
+  it("response insight is null when snapshot has no insight (v1 / skip path)", async () => {
+    verifyIdTokenMock.mockRejectedValue(new Error("not a JWT"));
+    // Default fetchSnapshotMock from beforeEach already omits insight.
+    const res = await POST(req("Bearer admin-secret"));
+    const body = await res.json();
+    expect(body.insight).toBeNull();
+  });
+});
