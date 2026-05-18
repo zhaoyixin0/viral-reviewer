@@ -4,7 +4,9 @@ import {
   type TrendingHashtag,
   type TrendingSnapshot,
 } from "@/lib/trending/types";
+import type { TrendingInsight } from "@/lib/trending/insight-schema";
 import type { ViralVideo } from "@/lib/review-engine/types";
+import { _resetBackendForTests } from "@/lib/rate-limit/backend";
 
 const readLatestTwoMock = vi.fn();
 vi.mock("@/lib/trending/snapshot-store", () => ({
@@ -37,9 +39,14 @@ function snap(
   week: string,
   videos: ViralVideo[],
   trendingHashtags: TrendingHashtag[] = [],
+  insight?: TrendingInsight,
+  /** 默认 v2 (current);v1 老快照场景显式传 1 to faithfully simulate pre-L3+ data。 */
+  schemaVersion: number = TRENDING_SCHEMA_VERSION,
 ): TrendingSnapshot {
   return {
-    schemaVersion: TRENDING_SCHEMA_VERSION, week, capturedAt: `${week}T08:00:00Z`,
+    schemaVersion: schemaVersion as typeof TRENDING_SCHEMA_VERSION,
+    week,
+    capturedAt: `${week}T08:00:00Z`,
     trendingHashtags,
     videos,
     meta: {
@@ -47,10 +54,48 @@ function snap(
       instagram: { source: "hashtag-proxy", actorRun: "", rawCount: 0, enrichedCount: 0, ok: true },
       partial: false,
     },
+    ...(insight ? { insight } : {}),
   };
 }
 
-beforeEach(() => readLatestTwoMock.mockReset());
+function mkInsight(overrides: Partial<TrendingInsight> = {}): TrendingInsight {
+  return {
+    week: "2026-W20",
+    capturedAt: "2026-05-18T08:00:00Z",
+    hashtagInsights: [
+      {
+        name: "#morningroutine",
+        videoCount: 5,
+        techniqueDistribution: { push_in: 0.6, match_cut: 0.4 },
+        avgDensity: 42,
+        topVideoIds: ["v1", "v2"],
+      },
+    ],
+    bgmInsights: [{ name: "BGM-A", hitCount: 3, hitVideoIds: ["v1"], trending: true }],
+    eventInsights: [
+      {
+        name: "met_gala",
+        displayName: "Met Gala 2026",
+        matchedHashtags: ["#metgala"],
+        matchedVideoCount: 5,
+        sampleVideoIds: ["v3", "v4"],
+      },
+    ],
+    velocity: {
+      techniqueWoW: { push_in: 0.08 },
+      bgmWoW: [{ name: "BGM-A", trend: "rising", deltaHits: 2 }],
+      eventWoW: [{ name: "met_gala", trend: "new" }],
+    },
+    totalEnriched: 5,
+    ...overrides,
+  };
+}
+
+beforeEach(() => {
+  readLatestTwoMock.mockReset();
+  // STRICT_PER_IP 桶 10/1m,跨 case 累积会让 11+ 个 cases 触 429。
+  _resetBackendForTests();
+});
 
 describe("GET /api/trending", () => {
   it("returns slim card projection, not the full enriched video", async () => {
@@ -124,6 +169,8 @@ describe("GET /api/trending", () => {
     expect(body.cards).toEqual([]);
     expect(body.trendingHashtags).toEqual([]);
     expect(body.week).toBeNull();
+    // T4 C2:无 snapshot → insight:null (前端 T5 隐藏 5 个 insight tab)
+    expect(body.insight).toBeNull();
   });
 
   it("rejects invalid platform query with 400", async () => {
@@ -146,5 +193,75 @@ describe("GET /api/trending", () => {
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.cards).toHaveLength(2);
+  });
+
+  describe("T4 C2 — insight projection field", () => {
+    it("v1 老快照 (schemaVersion=1, 无 insight 字段) → response.insight === null", async () => {
+      readLatestTwoMock.mockResolvedValue({
+        // schemaVersion=1 真实模拟 pre-L3+ 数据;route 不读 schemaVersion 分支,
+        // 走的是 insight===undefined → null 降级路径。
+        current: snap("2026-W20", [vid("a", "tiktok", 9000)], [], undefined, 1),
+        previous: null,
+      });
+      const res = await GET(new Request("https://x/api/trending"));
+      const body = await res.json();
+      expect(body.insight).toBeNull();
+    });
+
+    it("v2 snapshot 含 insight → response.insight 含 hashtagTab/techniqueTab/bgmTab/eventTab/velocityTab", async () => {
+      readLatestTwoMock.mockResolvedValue({
+        current: snap("2026-W20", [vid("a", "tiktok", 9000)], [], mkInsight()),
+        previous: null,
+      });
+      const res = await GET(new Request("https://x/api/trending"));
+      const body = await res.json();
+      expect(body.insight).not.toBeNull();
+      expect(body.insight.hashtagTab[0]?.name).toBe("#morningroutine");
+      expect(body.insight.techniqueTab.map((t: { technique: string }) => t.technique)).toContain("push_in");
+      expect(body.insight.bgmTab[0]?.name).toBe("BGM-A");
+      expect(body.insight.bgmTab[0]?.trend).toBe("rising");
+      expect(body.insight.eventTab[0]?.displayName).toBe("Met Gala 2026");
+      // sampleVideoIds 不应进 board DTO (projection 剥离 internal-only 字段)
+      expect(body.insight.eventTab[0]).not.toHaveProperty("sampleVideoIds");
+      expect(body.insight.velocityTab.eventWoW[0]?.trend).toBe("new");
+    });
+
+    it("platform=instagram + v2 → insight.hashtagTab 为空 (TT 独占源),其他 tab 仍有数据", async () => {
+      readLatestTwoMock.mockResolvedValue({
+        current: snap(
+          "2026-W20",
+          [vid("ig", "instagram", 8000)],
+          [],
+          mkInsight(),
+        ),
+        previous: null,
+      });
+      const res = await GET(
+        new Request("https://x/api/trending?platform=instagram"),
+      );
+      const body = await res.json();
+      expect(body.insight.hashtagTab).toEqual([]);
+      expect(body.insight.techniqueTab.length).toBeGreaterThan(0);
+      expect(body.insight.bgmTab.length).toBeGreaterThan(0);
+      expect(body.insight.eventTab.length).toBeGreaterThan(0);
+    });
+
+    it("platform=tiktok + v2 → insight.hashtagTab 透传 TT 数据", async () => {
+      readLatestTwoMock.mockResolvedValue({
+        current: snap(
+          "2026-W20",
+          [vid("tt", "tiktok", 9000)],
+          [],
+          mkInsight(),
+        ),
+        previous: null,
+      });
+      const res = await GET(
+        new Request("https://x/api/trending?platform=tiktok"),
+      );
+      const body = await res.json();
+      expect(body.insight.hashtagTab).toHaveLength(1);
+      expect(body.insight.hashtagTab[0]?.name).toBe("#morningroutine");
+    });
   });
 });
