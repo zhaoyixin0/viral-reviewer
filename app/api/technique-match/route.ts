@@ -425,6 +425,22 @@ export async function POST(req: NextRequest) {
         });
 
         // ============ Stage 6: 结果 ============
+        // Mirror full review output to Cloud Logging so it can be inspected
+        // post-hoc (SSE stream discards result after delivery). Severity=INFO
+        // keeps it out of error alerts; payload large but acceptable —
+        // technique-match runs ~10-50x/day, not bulk traffic.
+        console.log(JSON.stringify({
+          severity: "INFO",
+          module: "api/technique-match",
+          message: "review result",
+          userVideoIds,
+          referenceSource: refs.source,
+          failedVideoIndexes,
+          successfulCount: successful.length,
+          userPotentials,
+          match: matchResult,
+          timestamp: new Date().toISOString(),
+        }));
         send({
           type: "result",
           data: {
