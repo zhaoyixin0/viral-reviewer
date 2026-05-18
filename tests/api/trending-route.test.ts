@@ -1,5 +1,9 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
-import type { TrendingSnapshot, TrendingHashtag } from "@/lib/trending/types";
+import {
+  TRENDING_SCHEMA_VERSION,
+  type TrendingHashtag,
+  type TrendingSnapshot,
+} from "@/lib/trending/types";
 import type { ViralVideo } from "@/lib/review-engine/types";
 
 const readLatestTwoMock = vi.fn();
@@ -35,7 +39,7 @@ function snap(
   trendingHashtags: TrendingHashtag[] = [],
 ): TrendingSnapshot {
   return {
-    schemaVersion: 1, week, capturedAt: `${week}T08:00:00Z`,
+    schemaVersion: TRENDING_SCHEMA_VERSION, week, capturedAt: `${week}T08:00:00Z`,
     trendingHashtags,
     videos,
     meta: {

@@ -64,7 +64,7 @@ beforeEach(() => {
 describe("fetchTrendingSnapshot (two-stage TikTok)", () => {
   it("produces a snapshot with trendingHashtags + merged videos", async () => {
     const snap = await fetchTrendingSnapshot();
-    expect(snap.schemaVersion).toBe(1);
+    expect(snap.schemaVersion).toBe(2);
     expect(snap.trendingHashtags.map((h) => h.name)).toEqual(["morningroutine", "glowup"]);
     // 2 TT 视频(每 hashtag 1 条)+ 1 IG 视频
     expect(snap.videos).toHaveLength(3);
