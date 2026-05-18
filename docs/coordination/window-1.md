@@ -299,3 +299,129 @@ User 鼠标失灵 + Zed 多窗口切换快捷键不响应 → 无法 trigger W1 
 - `git log --oneline -5` 应含 `64be362` + 之前 `6306065` C1 code commit
 - `ls lib/insight/` 应含 `generate-banner.ts` + `insight-template.ts`
 - `cat docs/coordination/window-1.md | grep "VERDICT"` 应找到 2026-05-18 00:57 PDT 那段
+
+---
+
+## W3 → W1 · RESUME 指令 (2026-05-18 12:00 PDT) · 重启后**第一条**要执行的
+
+**Welcome back W1**。User 已完成重启，所有窗口在线。继续昨晚 T6 C1.1 patch 工作。
+
+### Step 0 — 同步 + 读 mailbox（30 秒）
+
+```bash
+git fetch origin --prune
+git pull origin main                       # 拉最新 main（含 W3 verdict + 本 RESUME 指令）
+git checkout feat/l3plus-w1-insight-banner # 确认在 T6 分支
+git pull origin feat/l3plus-w1-insight-banner
+git status                                  # working tree 应 clean
+git log --oneline -5                        # 应见 64be362（你的 ACK push）+ 6306065（C1 code）
+```
+
+### Step 1 — 读 W3 verdict（已 push 在本文件 line 190-214）
+
+C1 verdict: **NEEDS_FIX** — 5 个 patch 在本文件 "Patch list" 段。
+
+### Step 2 — HIGH patch 决策（**推荐 Option B = scope deviation document**）
+
+**理由**（W3 已 verify W4 实际 shipped 的 schema）：
+- `lib/trending/insight-schema.ts` 的 `TrendingInsightSchema` 实际只出 `hashtagInsights` / `bgmInsights` / `eventInsights` / `velocity` / `totalEnriched` 5 个 top-level 字段
+- **`insight.techniqueTab` 字段在 W4 shipped 的 schema 里不存在**
+- 所有 technique 数据本就嵌套在 `hashtagInsights[i].techniqueDistribution` 里
+- 所以 plan §7.3 fallback-c 路径在当前实际 schema 下**自动 N/A**
+
+**Commit body 必须含**：
+```
+scope deviation: plan §7.3 fallback-c references `insight.techniqueTab` field
+which does not exist in W4-shipped TrendingInsightSchema (verified in
+lib/trending/insight-schema.ts). All technique data lives in
+hashtagInsights[i].techniqueDistribution. Fallback-c path is therefore N/A
+at schema level — no implementation needed. Memory: feedback_scope_deviation_document.md.
+```
+
+### Step 3 — C1.1 单 commit 含全 5 patch（**不要 squash 进 C1**）
+
+| # | 文件 | 改动 |
+|---|---|---|
+| 1 (HIGH) | commit body | 上面 scope deviation 段落 |
+| 2 (MED) | commit body OR `composeActionable` | "建议:" 前缀 — 推荐 commit body 说明"前缀由 C4 InsightBanner UI 渲染时加（UI 层更灵活）"，不动 lib 代码 |
+| 3 (MED) | commit body | sampleVideoIds slice(0,3) 来源说明（cap 来自 JSDoc 而非伪代码） |
+| 4 (NIT) | `lib/insight/insight-template.ts` `composeActionable` | `parts.join(";") + "。"` → 统一中文 `parts.join("；") + "。"` |
+| 5 (NIT) | `tests/insight/insight-template.test.ts` | 添加 `pct(0.005) === 1` + `pct(0.004) === 0` 两个 edge case 断言 |
+
+### Step 4 — Gates + push
+
+```bash
+npx tsc --noEmit          # 必须 exit 0
+npx vitest run            # 必须全绿（含新加的 pct edge test）
+git add lib/insight/insight-template.ts tests/insight/insight-template.test.ts
+git commit -m "fix(insight): T6 C1.1 — C1 review patches (NIT punctuation + pct edge tests + scope deviation document)"
+git push origin feat/l3plus-w1-insight-banner
+```
+
+**Commit body 模板**（必含 scope deviation 段）：
+```
+Address W3 C1 review (NEEDS_FIX) 5 patches:
+
+HIGH: plan §7.3 fallback-c references `insight.techniqueTab` field which does
+not exist in W4-shipped TrendingInsightSchema (verified lib/trending/insight-schema.ts).
+All technique data lives in hashtagInsights[i].techniqueDistribution. Fallback-c
+path is therefore N/A at schema level. Memory: feedback_scope_deviation_document.md.
+
+MED #1: "建议:" actionable prefix deferred to C4 InsightBanner UI layer (more
+flexible than baking into lib).
+
+MED #2: sampleVideoIds slice(0, 3) cap source is plan §7.4 JSDoc "capped at
+3 items" (伪代码 omits cap).
+
+NIT #1: punctuation unified to 中文 ";" → "；" in composeActionable join.
+
+NIT #2: added pct() half-up edge tests (0.005 → 1, 0.004 → 0).
+```
+
+### Step 5 — ACK 给 W3
+
+```bash
+# Append 到 window-1.md 末尾
+echo "
+
+## W1 → W3 ACK · RESUME (2026-05-18 XX:XX PDT)
+
+收到 RESUME 指令，已 pull main + 本分支。开始 C1.1 patch（5 个 fix）：
+- HIGH: scope deviation document（Option B）
+- MED x2: commit body 说明
+- NIT x2: 标点 + pct edge test
+Gates 跑完即 push。" >> docs/coordination/window-1.md
+git add docs/coordination/window-1.md && git commit -m "docs(coordination): W1 RESUME ack + C1.1 patch plan" && git push origin feat/l3plus-w1-insight-banner
+```
+
+### Step 6 — 等 W3 review verdict（≤20min）
+
+W3 monitor 会 detect push 并主动 review。clean 后继续 **C2 Haiku LLM strategy**（spec 在 line 76）。
+
+### 后续 commit cadence（C2 → C5）
+
+| Commit | 内容 | 预计耗时 |
+|---|---|---|
+| C2 | `insight-llm.ts` Haiku strategy + fallback to template + LLM mock unit test | 2-3h |
+| C3 | `InsightBanner.tsx` 组件 + RTL test（含 `banner=null` 不渲染） | 1.5h |
+| C4 | `OutputPanel.tsx` 顶部插 InsightBanner + `/api/technique-match` SSE event（含 partial loading skeleton 事件 + "建议:" 前缀 UI 层加） | 2h |
+| C5 | 手测（GCS 有 v2 snapshot 时 banner 显示，无时 degrade） | 1h |
+
+**注意每个 commit 起手前**：
+- 先读 commit N 的 W3 nit list（memory `feedback_read_prev_commit_nits_before_next.md`）
+- 跑 `npx tsc --noEmit && npx vitest run`
+- C4 还要 `npm run build`
+
+### GCS v2 snapshot 状态（C5 e2e 测要用）
+
+cron `0 22 * * *` UTC = BJT 06:00 = PDT 15:00。今天 PDT 15:00 = 3 小时后才会自然触发首份 v2 snapshot（W4 chain merge 后的首次）。
+
+如果 C5 时刻还没到 PDT 15:00，append `W1 → W3 REQ KICK` 到本文件 → W3 manual kick `gcloud scheduler jobs run trending-refresh --location=us-west2 --project=viral-reviewer-prod-2026`。
+
+### 别动的文件（W2/W4 owns）
+
+- `lib/trending/*`（W4）
+- `components/trending/*`（W2）
+- `app/api/trending/*`（W2）
+- `app/api/cron/trending/*`（W4）
+- `app/trending/page.tsx`（W2）
