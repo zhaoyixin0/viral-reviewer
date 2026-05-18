@@ -462,4 +462,43 @@ PIPELINE_TIMEOUT_MS 150s → 270s 已改 + gates 全绿（tsc 0 / vitest 690/690
 
 **Reviewer 注意**：docblock `app/api/cron/trending/route.ts:18-20` 仍写 "Cloud Scheduler 180s attempt-deadline / ~30s buffer" 已 stale（实际 600s deadline + 270s timeout）。Per W3 "1 const only" scope 没动，commit body 已 flag 为 follow-up cleanup commit。
 
+---
+
+## W4 → W3 ACK · T8 full AbortSignal forwarding (2026-05-18 14:45 PDT)
+
+Signal forwarding 完整链路 + PIPELINE_TIMEOUT_MS 540s 已改，gates 全绿（tsc 0 / vitest **711/711** (+21 新测试 / +2 新测试文件) / npm run build exit 0），push `73c9ca0`，等 W3 review。
+
+### 实际改动 scope
+
+**5 src（W3 列 5 + 1 caller adapt）**：
+- `lib/apify/scrapers.ts` — 加 `raceAbort` helper（inline，不抽 abort-race.ts，单 use 不值得新 file）+ 3 scrape 函数 `opts.signal?` + wrap actor.call() & dataset.listItems()
+- `lib/trending/fetch.ts` — `fetchTikTokTwoStage` accept signal + 主 body 透传 signal 到 4 上游阶段
+- `lib/research/enrich-one.ts` — `enrichBatch` 签名换 `opts: { concurrency?, signal? }` + 批间 abort check 抛 `DOMException("Aborted", "AbortError")`
+- `lib/trending/topic-classifier.ts` — `classifyTopics` 同样签名 + 批间 check
+- `app/api/cron/trending/route.ts:22` — `270_000` → `540_000`
+- `lib/research/topic-research.ts:132` — **caller adapt only**：`enrichBatch(merged, 5)` → `enrichBatch(merged, { concurrency: 5 })`（signature 改动的 transitive 后果，唯一其它 caller，1 行，已 commit body 解释非 scope deviation）
+
+**4 test（W3 列 4，2 新建 + 2 extend）**：
+- `tests/apify/scrapers.test.ts` (NEW) — 8 tests（3 scrape × already-aborted + mid-flight + no-signal）
+- `tests/research/enrich-one.test.ts` (NEW) — 4 tests（already-aborted / 批间 abort / no-signal / 自定 concurrency）
+- `tests/trending/topic-classifier.test.ts` (EXTEND) — +3 tests（same pattern）
+- `tests/trending/fetch.test.ts` (EXTEND) — +6 tests（signal 透传到 4 上游阶段各自验证 + no-signal 全部 undefined）
+
+### 关键设计 reviewer 注意
+
+1. **raceAbort 语义**：Apify SDK 不接 signal（long-poll 内部），race wrapper 只让 JS-side wait 提前 reject。Apify actor 仍在 Apify 服务器跑（账单仍计入）—— commit body 已记 SDK 局限，不是 bug。
+
+2. **enrichOneVideo SDK-level signal 没加**：Per W3 dispatch "如果太深可先到 enrichBatch 层 OK"，Haiku call latency ~1-3s，批间 check 已足够（in-flight batch 在 abort 后 ~3s 内自然完成）。commit body explicit document deferred。
+
+3. **AbortError 类型**：用 `DOMException("Aborted", "AbortError")` per W3 example，与 Anthropic SDK / fetch API 一致。
+
+4. **`signal?: AbortSignal` 默认 undefined**：所有签名向后兼容（旧 caller 仅有 fetch.ts 的 `enrichMetadataBatch(merged)` 和 `classifyTopics(enriched, libraryTopics)` 调用，已就地补 signal，但语义未变）。
+
+### 完工后回 idle 等
+
+- W3 review → APPROVED / NEEDS_FIX
+- 若 APPROVED → merge → deploy ~5min → W3 re-kick scheduler → 等 cron 跑完 (~7-9min) → verify GCS `snapshot-2026-W21.json` 含 `insight.hashtagInsights.length > 0` → W3 ping W1 `BUG FIXED + SNAPSHOT POPULATED`
+- 若 NEEDS_FIX → 看 W3 issue list patch
+
+
 Push 后回 idle。等 W3 verdict（APPROVED / NEEDS_FIX）或 merge + Cloud Run deploy 完毕的 re-kick 结果通知。
