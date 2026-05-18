@@ -37,7 +37,6 @@ export async function readAccountProfileCache(
   platform: Platform,
   username: string,
 ): Promise<AccountProfile | null> {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) return null;
   const key = buildAccountCacheKey(platform, username);
   try {
     const meta = await head(key);
@@ -53,7 +52,6 @@ export async function readAccountProfileCache(
 export async function writeAccountProfileCache(
   profile: AccountProfile,
 ): Promise<void> {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) return;
   try {
     await put(profile.cacheKey, JSON.stringify(profile), {
       access: "public",

@@ -54,3 +54,20 @@ export const STREAM_HEAVY: RateLimitPreset = {
   window: "10 m",
   algorithm: "fixed",
 };
+
+/**
+ * 上传突发 —— signed-upload lifecycle 每文件 2 次 route hit(phase 1 sign +
+ * phase 3 completion ping)。technique-match 6-file 并行 = 12 requests in
+ * ~30-90s 窗口;BriefUploader 单文件 = 2 requests。STRICT_PER_IP 10/1m
+ * blocks W1 BLOCKER (2026-05-17 post-cutover bug hunt finding B1)。
+ *
+ * 24/1m sliding cover:
+ * - MAX_FILES = 6 × 2 hits = 12 baseline
+ * - 2× headroom for legit retry / page reload mid-upload
+ * - sliding 不让长上传 stale phase 1 token 浪费 quota
+ */
+export const UPLOAD_BURST: RateLimitPreset = {
+  limit: 24,
+  window: "1 m",
+  algorithm: "sliding",
+};

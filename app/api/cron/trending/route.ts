@@ -65,33 +65,26 @@ async function verifyGoogleOidc(token: string): Promise<boolean> {
 }
 
 /**
- * P5.3 三认证 (P5 verdict §2.6 R7 落地):
- * - **Google Cloud Scheduler OIDC** (主路径, P5.7 cutover 后)
- * - **CRON_SECRET** (Vercel Cron 遗留, P5.7 cutover 完成后可退役)
- * - **ADMIN_TRIGGER_SECRET** (手动降级路径, 始终保留)
- * 任一通过即可。
+ * P5.3 双认证 (post P5.7 cutover 简化):
+ * - **Google Cloud Scheduler OIDC** (主路径, prod cron)
+ * - **ADMIN_TRIGGER_SECRET** (手动 ops 紧急触发降级, ops 用 curl 测试 / 紧急再扫)
  *
- * 注: OIDC 校验涉及 JWKS HTTP fetch (cached), 首次 ~100ms; CRON_SECRET / ADMIN
- * 是 string compare 微秒级。优先 try OIDC 让 Cloud Scheduler 生产路径走真实校验,
- * fallback secret-compare 让本地 / Vercel 旧路径仍 work。
+ * 任一通过即可。CRON_SECRET (Vercel Cron 遗留) 已 2026-05-17 retire (W2 finding A) —
+ * Vercel Cron 不再用,fallback 一直 dead code,删除避免 reviewer 误以为 active。
+ *
+ * 注: OIDC 校验涉及 JWKS HTTP fetch (cached), 首次 ~100ms; ADMIN secret-compare
+ * 微秒级 timingSafeEqual。
  */
 async function isAuthorized(request: Request): Promise<boolean> {
   const auth = request.headers.get("authorization");
   if (!auth || !auth.startsWith("Bearer ")) return false;
   const token = auth.slice(7);
-  // security-reviewer LOW (route.ts:70): short-circuit empty token,
-  // 避免无意义 verifyIdToken / secret-compare cycle
   if (!token) return false;
 
-  // OIDC verify (生产 cron 主路径)
+  // OIDC verify (Cloud Scheduler 生产路径)
   if (await verifyGoogleOidc(token)) return true;
 
-  // Legacy secret compare (Vercel Cron + manual admin).
-  // security-reviewer LOW (route.ts:77,79): timingSafeEqual defense-in-depth
-  // 防 string compare timing side-channel; P5.7 cutover 退役 CRON_SECRET 后
-  // 整段可删,本期保留 fallback path.
-  const cronSecret = process.env.CRON_SECRET;
-  if (cronSecret && timingSafeStringEq(token, cronSecret)) return true;
+  // ADMIN_TRIGGER_SECRET (manual ops emergency)
   const adminSecret = process.env.ADMIN_TRIGGER_SECRET;
   if (adminSecret && timingSafeStringEq(token, adminSecret)) return true;
 

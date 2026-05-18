@@ -1,0 +1,151 @@
+
+> viral-reviewer@0.1.0 enrich:cutplans
+> tsx --conditions=react-server --env-file=.env.local scripts/enrich-cutplans-batch.ts
+
+[enrich] 178 jobs queued (skipping 121 missing mp4s)
+Both GOOGLE_API_KEY and GEMINI_API_KEY are set. Using GOOGLE_API_KEY.
+  [70/178] OK  tt-7496709640424672530 81.5s
+  [71/178] OK  tt-6714409127583419654 95.5s
+  [72/178] OK  tt-7453781359845264662 106.0s
+  [73/178] OK  tt-7632814115227995422 106.0s
+  [74/178] OK  tt-7631883213002296590 150.2s
+  [75/178] OK  tt-7633011034449612045 95.3s
+  [76/178] OK  tt-7632637332079906070 87.6s
+  [77/178] OK  tt-7634139745899007246 104.5s
+  [78/178] OK  tt-7587423214519848214 92.1s
+  [79/178] OK  tt-7632393398128790806 153.3s
+  [80/178] OK  tt-7632428236516887830 114.3s
+  [81/178] OK  tt-7594438908549664014 117.6s
+  [82/178] OK  tt-7586601665852149006 137.5s
+  [83/178] OK  tt-7632628115314855182 116.6s
+  [84/178] OK  tt-7631145591241772301 122.3s
+  [85/178] OK  tt-7595902010868682014 100.6s
+  [86/178] OK  tt-7600276477468282134 114.7s
+[stage1-cutplan] Zod issues (first 10):
+  - path=["bgm","name"] msg="Expected string, received null" received="null"
+  [87/178] FAIL[gemini] tt-7579560143910620471 Stage 1 (CutPlan) parse failed: [
+  {
+    "code": "invalid_t
+  [88/178] OK  tt-7609549831039700238 114.6s
+  [89/178] OK  tt-7614243422974545166 92.7s
+  [90/178] OK  tt-7628571619019214102 116.7s
+  [91/178] OK  tt-7598603264179047702 83.2s
+  [92/178] OK  tt-7523152472265772295 91.8s
+  [93/178] OK  tt-7594138825635417357 139.2s
+  [94/178] OK  tt-7574585895970475294 110.1s
+  [95/178] OK  tt-7180653911232007430 97.9s
+  [96/178] OK  tt-7632322849960889623 119.6s
+  [97/178] OK  tt-7532887475371527431 64.9s
+  [98/178] OK  tt-7602530246901943570 78.8s
+  [99/178] OK  tt-7630553858632109326 144.7s
+  [100/178] OK  tt-7598506874014534930 102.1s
+  [101/178] OK  tt-7602847157560937758 105.1s
+  [102/178] OK  tt-7610935433660337422 149.8s
+[stage2-potential] Zod issues (first 10):
+  - path=["potential","sceneTransitionCandidates",0,"scenes"] msg="Array must contain at least 2 element(s)" received=undefined
+  [103/178] FAIL[gemini] tt-7467420729022270766 Stage 2 (Potential) parse failed: [
+  {
+    "code": "too_sma
+  [104/178] OK  tt-7573961891643428117 65.4s
+  [105/178] OK  tt-7522539721369619768 87.4s
+  [106/178] OK  tt-7594916354117881119 91.7s
+  [107/178] OK  tt-7610014192711503125 86.1s
+[stage2-potential] Zod issues (first 10):
+  - path=["potential","sceneTransitionCandidates",0,"scenes"] msg="Array must contain at least 2 element(s)" received=undefined
+  [108/178] FAIL[gemini] tt-7592045683687869718 Stage 2 (Potential) parse failed: [
+  {
+    "code": "too_sma
+  [109/178] OK  tt-7332583878802099498 101.8s
+  [110/178] OK  tt-7625672162195639565 135.8s
+  [111/178] OK  tt-7633996997933944084 123.0s
+  [112/178] OK  tt-7634171226679823629 141.4s
+  [113/178] OK  tt-7629788232871316749 122.0s
+[stage2-potential] Zod issues (first 10):
+  - path=["potential","cutPoints",7,"suitableTechniques"] msg="Required" received="undefined"
+  [114/178] FAIL[gemini] tt-7634188406351727885 Stage 2 (Potential) parse failed: [
+  {
+    "code": "invalid
+  [115/178] OK  tt-7274388424327482654 149.2s
+  [116/178] OK  tt-7335335013640178987 135.2s
+  [117/178] OK  tt-7633954223591410975 151.8s
+  [118/178] OK  tt-7338146580723191070 113.1s
+[stage2-potential] Zod issues (first 10):
+  - path=["potential","sceneTransitionCandidates",1,"scenes"] msg="Array must contain at least 2 element(s)" received=undefined
+  [119/178] FAIL[gemini] tt-7351403354926484743 Stage 2 (Potential) parse failed: [
+  {
+    "code": "too_sma
+  [120/178] OK  tt-7634205861577231636 153.2s
+  [121/178] OK  tt-7632706695457672479 99.1s
+  [122/178] OK  tt-7606766130681728287 102.8s
+  [123/178] OK  tt-7631993520496069910 93.3s
+  [124/178] OK  tt-7633525163694378258 109.1s
+  [125/178] OK  tt-7630853307766033695 112.8s
+  [126/178] OK  tt-7616851311111228680 117.2s
+  [127/178] OK  tt-7630212428940250382 140.3s
+  [128/178] OK  tt-7632286164568919318 135.1s
+  [129/178] OK  tt-7633618814139174175 166.6s
+  [130/178] OK  tt-7634008038168448264 157.7s
+  [131/178] OK  tt-7594163757257985302 63.6s
+  [132/178] OK  tt-7622013966125993246 96.8s
+  [133/178] OK  tt-7631375969122651423 162.2s
+  [134/178] OK  tt-7628290397378268448 92.5s
+  [135/178] OK  tt-7618942237535194390 139.1s
+  [136/178] OK  tt-7545562790338071863 234.3s
+  [137/178] OK  tt-7630129138162044191 107.6s
+  [138/178] OK  tt-7537734160731868430 125.2s
+  [139/178] OK  tt-7495884873522040069 93.1s
+  [140/178] OK  tt-7522492007806274846 97.8s
+  [141/178] OK  tt-7620166385724919072 102.4s
+  [142/178] OK  tt-7362674968385080619 94.9s
+  [143/178] OK  tt-7589763529754856718 123.4s
+  [144/178] OK  tt-7555059743493016840 133.4s
+  [145/178] OK  tt-7598982047964712206 98.6s
+  [146/178] OK  tt-7613849826253409558 119.5s
+  [147/178] FAIL[gemini] tt-7382368246277754154 {"error":{"code":503,"message":"The service is currently una
+  [148/178] OK  tt-7617957590588312845 83.3s
+  [149/178] OK  tt-7623124573692693773 109.3s
+  [150/178] OK  tt-7604991714616478998 114.1s
+  [151/178] OK  tt-7633266114436369694 97.3s
+  [152/178] OK  tt-7631735193656659221 97.8s
+  [153/178] OK  tt-7632690933141638423 149.1s
+  [154/178] OK  tt-7530112674860977421 99.9s
+  [155/178] OK  tt-7624368002238041358 120.9s
+  [156/178] OK  tt-7021637822595550465 93.2s
+  [157/178] OK  tt-7527435451125321015 139.0s
+  [158/178] OK  tt-6781192819651382533 75.2s
+  [159/178] OK  tt-7609524381554838798 94.6s
+  [160/178] OK  tt-6761496798738599174 88.1s
+  [161/178] OK  tt-6778965287950748934 80.5s
+  [162/178] OK  tt-6781549056414993669 81.9s
+  [163/178] OK  tt-6780212564426099973 76.1s
+  [164/178] OK  tt-6775837990242585857 65.5s
+  [165/178] OK  tt-6768899523008859398 84.8s
+  [166/178] OK  tt-6770042602340257030 86.3s
+  [167/178] OK  tt-6780063701400669446 75.4s
+  [168/178] OK  tt-6759275111787908357 86.2s
+  [169/178] OK  tt-7082052435174231302 90.3s
+  [170/178] OK  tt-7096883311024475438 70.2s
+  [171/178] OK  tt-7085439936094113070 81.6s
+[stage2-potential] Zod issues (first 10):
+  - path=["potential","sceneTransitionCandidates",0,"scenes"] msg="Array must contain at least 2 element(s)" received=undefined
+  [172/178] FAIL[gemini] tt-7102871892285050158 Stage 2 (Potential) parse failed: [
+  {
+    "code": "too_sma
+  [173/178] OK  tt-7083247125227654446 82.9s
+  [174/178] OK  tt-7095855694599015726 78.9s
+[stage2-potential] Zod issues (first 10):
+  - path=["potential","sceneTransitionCandidates",0,"scenes",1,"at"] msg="Expected object, received null" received="null"
+  - path=["potential","sceneTransitionCandidates",0,"scenes",1,"durationSec"] msg="Expected number, received null" received="null"
+  [175/178] FAIL[gemini] tt-7096136947156012334 Stage 2 (Potential) parse failed: [
+  {
+    "code": "invalid
+[stage2-potential] Zod issues (first 10):
+  - path=["potential","sceneTransitionCandidates",0,"scenes"] msg="Array must contain at least 2 element(s)" received=undefined
+  [176/178] FAIL[gemini] tt-7101790890536111406 Stage 2 (Potential) parse failed: [
+  {
+    "code": "too_sma
+  [177/178] OK  tt-7091704880150301998 68.5s
+  [178/178] OK  tt-7101349140382190853 86.4s
+
+[enrich] done in 38.8min: ok=100, failed=9, skipped=69
+[enrich] errors written to data/enrichment-errors.json

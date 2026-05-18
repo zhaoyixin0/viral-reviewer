@@ -94,7 +94,8 @@ spec:
             # CRON_OIDC_AUDIENCE: Cloud Scheduler 配的 target URL (匹配 token aud claim)
             # CRON_OIDC_SERVICE_ACCOUNT: Cloud Scheduler 用的 SA email (匹配 token email claim)
             # 缺值 → /api/cron/trending isAuthorized() OIDC 路径 fail-secure short-circuit,
-            # 仍回 CRON_SECRET / ADMIN_TRIGGER_SECRET fallback (转 P5.7 cutover 期).
+            # 仍回 ADMIN_TRIGGER_SECRET fallback (CRON_SECRET 2026-05-17 已 retire — Vercel
+            # Cron 不再用; ADMIN 是 ops 紧急触发).
             - name: CRON_OIDC_AUDIENCE
               value: "https://viral-reviewer-web-wowcshiskq-wl.a.run.app/api/cron/trending"
             - name: CRON_OIDC_SERVICE_ACCOUNT
@@ -128,12 +129,13 @@ spec:
                 secretKeyRef:
                   name: apify-token
                   key: "latest"
-            # BLOB_READ_WRITE_TOKEN 在 P5.1.b GCS swap 后会替换为 GCS auth (Workload Identity)
-            # P5.2 阶段 service.yaml 仍 bind,让 P5.1.a 阶段的 lib/storage thin wrapper 能用
-            - name: BLOB_READ_WRITE_TOKEN
+            # ADMIN_TRIGGER_SECRET — manual ops emergency trigger for /api/cron/trending
+            # (W2 finding B 2026-05-17 — was undocumented dead code, bound here to make
+            # OIDC-fallback ops escape hatch usable). curl with Bearer <secret>.
+            - name: ADMIN_TRIGGER_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: blob-read-write-token
+                  name: admin-trigger-secret
                   key: "latest"
             # UPLOAD_SIGNING_SECRET — HMAC-SHA256 signs completion token for
             # browser-direct-upload ping (W1 P5.1.b-2 design + W3 b-2 verdict +

@@ -59,27 +59,38 @@ async function fetchTikTokTwoStage(): Promise<{
     return { hashtags: [], videos: [], runId: "", ok: false };
   }
 
-  // Stage 2:按 rank 升序遍历 top-N hashtag,首次命中锁定 trendingContext
+  // Stage 2:按 rank 升序遍历 top-N hashtag,首次命中锁定 trendingContext。
+  // 2026-05-17 cron 504 fix (W2-G + W4-H1): parallelize Apify scrape calls
+  // via Promise.allSettled — serial loop (5 × ~30-60s = 150-300s) was top
+  // contributor to Cloud Scheduler 180s deadline exceeded. Parallel collapses
+  // to ~max-of-slowest (~30-60s). Rank-based first-hit-wins dedup preserved
+  // by processing results in topHashtags index order (NOT settle order).
   const topHashtags = hashtags.slice(0, TT_TRENDING_HASHTAG_COUNT);
   const seen = new Set<string>();
   const videos: ViralVideo[] = [];
-  for (const h of topHashtags) {
-    try {
-      const raw = await scrapeTikTokByHashtag({
+  const scrapeResults = await Promise.allSettled(
+    topHashtags.map((h) =>
+      scrapeTikTokByHashtag({
         hashtags: [h.name],
         topic: "",
         resultsPerPage: TT_VIDEOS_PER_HASHTAG,
+      }),
+    ),
+  );
+  for (let i = 0; i < topHashtags.length; i++) {
+    const h = topHashtags[i];
+    const result = scrapeResults[i];
+    if (result.status === "rejected") {
+      log.error("TikTok Stage 2 failed", { hashtag: h.name, err: result.reason });
+      continue;
+    }
+    for (const v of result.value) {
+      if (seen.has(v.id)) continue; // 首次命中锁定:已属更高 rank hashtag 的不覆盖
+      seen.add(v.id);
+      videos.push({
+        ...v,
+        trendingContext: { hashtag: h.name, hashtagRank: h.rank },
       });
-      for (const v of raw) {
-        if (seen.has(v.id)) continue; // 首次命中锁定:已属更高 rank hashtag 的不覆盖
-        seen.add(v.id);
-        videos.push({
-          ...v,
-          trendingContext: { hashtag: h.name, hashtagRank: h.rank },
-        });
-      }
-    } catch (e) {
-      log.error("TikTok Stage 2 failed", { hashtag: h.name, err: e });
     }
   }
 

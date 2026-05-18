@@ -73,11 +73,8 @@ describe("writeSnapshot", () => {
     expect(putMock).toHaveBeenCalledTimes(2);
   });
 
-  it("no-ops when BLOB_READ_WRITE_TOKEN is missing", async () => {
-    delete process.env.BLOB_READ_WRITE_TOKEN;
-    await writeSnapshot(SNAP);
-    expect(putMock).not.toHaveBeenCalled();
-  });
+  // BLOB_READ_WRITE_TOKEN gate removed 2026-05-17 (W4 finding M-1 post-P5.1
+  // cutover: stale env gate, storage facade requireBucket() now sole guard).
 
   it("logs a warn on first failure then an error when both put attempts fail", async () => {
     // P5.8: both severities emit via console.log JSON; distinguish via "severity" field
@@ -141,12 +138,8 @@ describe("readSnapshot", () => {
     expect(result).toBeNull();
   });
 
-  it("returns null when BLOB_READ_WRITE_TOKEN is missing", async () => {
-    delete process.env.BLOB_READ_WRITE_TOKEN;
-    const result = await readSnapshot("2026-W20");
-    expect(result).toBeNull();
-    expect(headMock).not.toHaveBeenCalled();
-  });
+  // BLOB_READ_WRITE_TOKEN gate test removed 2026-05-17 (same rationale as
+  // writeSnapshot — stale post-P5.1 cutover).
 
   it("returns null when the blob JSON fails schema validation", async () => {
     headMock.mockResolvedValue({ url: "https://blob/w20" });
@@ -191,13 +184,7 @@ describe("readLatestTwoSnapshots", () => {
     expect(previous).toBeNull();
   });
 
-  it("returns both null when BLOB_READ_WRITE_TOKEN is missing", async () => {
-    delete process.env.BLOB_READ_WRITE_TOKEN;
-    const { current, previous } = await readLatestTwoSnapshots();
-    expect(current).toBeNull();
-    expect(previous).toBeNull();
-    expect(listMock).not.toHaveBeenCalled();
-  });
+  // BLOB_READ_WRITE_TOKEN gate test removed 2026-05-17 (same rationale).
 
   it("returns both null when a blob fetch throws", async () => {
     listMock.mockResolvedValue({

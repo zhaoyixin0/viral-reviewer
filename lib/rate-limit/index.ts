@@ -43,6 +43,7 @@ export {
   WRITE_HEAVY,
   ANON_AI_HEAVY,
   STREAM_HEAVY,
+  UPLOAD_BURST,
   type RateLimitPreset,
 } from "./presets";
 export type {

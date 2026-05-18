@@ -37,7 +37,6 @@ beforeEach(() => {
   writeSnapshotMock.mockReset();
   pruneMock.mockReset();
   verifyIdTokenMock.mockReset();
-  process.env.CRON_SECRET = "cron-secret";
   process.env.ADMIN_TRIGGER_SECRET = "admin-secret";
   // P5.3 OIDC config (per service.yaml env binding when deployed)
   process.env.CRON_OIDC_AUDIENCE = "https://viral-reviewer-web/api/cron/trending";
@@ -50,7 +49,7 @@ beforeEach(() => {
   });
 });
 
-describe("POST /api/cron/trending — legacy secret auth (preserved through P5.7 cutover)", () => {
+describe("POST /api/cron/trending — ADMIN_TRIGGER_SECRET ops emergency auth", () => {
   it("returns 401 when no auth header is present", async () => {
     const res = await POST(req());
     expect(res.status).toBe(401);
@@ -69,10 +68,10 @@ describe("POST /api/cron/trending — legacy secret auth (preserved through P5.7
     expect(res.status).toBe(401);
   });
 
-  it("accepts the Vercel cron secret", async () => {
+  it("accepts ADMIN_TRIGGER_SECRET via Bearer header", async () => {
     // OIDC verify rejects (not an OIDC token) → fallback secret compare matches
     verifyIdTokenMock.mockRejectedValue(new Error("not a JWT"));
-    const res = await POST(req("Bearer cron-secret"));
+    const res = await POST(req("Bearer admin-secret"));
     expect(res.status).toBe(200);
     expect(writeSnapshotMock).toHaveBeenCalledTimes(1);
     expect(pruneMock).toHaveBeenCalledWith(8);
@@ -87,7 +86,7 @@ describe("POST /api/cron/trending — legacy secret auth (preserved through P5.7
   it("returns 502 and does not write when both platforms failed", async () => {
     verifyIdTokenMock.mockRejectedValue(new Error("not a JWT"));
     fetchSnapshotMock.mockRejectedValue(new Error("both platforms failed"));
-    const res = await POST(req("Bearer cron-secret"));
+    const res = await POST(req("Bearer admin-secret"));
     expect(res.status).toBe(502);
     expect(writeSnapshotMock).not.toHaveBeenCalled();
   });

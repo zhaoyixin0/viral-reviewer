@@ -33,7 +33,6 @@ export type TopicCacheEntry = {
 export async function readTopicCache(
   topic: string,
 ): Promise<TopicCacheEntry | null> {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) return null;
   const key = cacheKey(topic);
   try {
     const meta = await head(key);
@@ -51,7 +50,6 @@ export async function writeTopicCache(args: {
   hashtags: string[];
   videos: ViralVideo[];
 }): Promise<void> {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) return;
   const entry: TopicCacheEntry = {
     topic: args.topic,
     hashtags: args.hashtags,

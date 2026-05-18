@@ -18,7 +18,6 @@ export function snapshotKey(week: string): string {
 export async function readSnapshot(
   week: string,
 ): Promise<TrendingSnapshot | null> {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) return null;
   try {
     const meta = await head(snapshotKey(week));
     if (!meta?.url) return null;
@@ -44,9 +43,6 @@ export async function readLatestTwoSnapshots(): Promise<{
   current: TrendingSnapshot | null;
   previous: TrendingSnapshot | null;
 }> {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    return { current: null, previous: null };
-  }
   try {
     const { blobs } = await list({ prefix: `${PREFIX}/`, limit: 52 });
     const sorted = [...blobs].sort((a, b) =>
@@ -78,7 +74,6 @@ export async function readLatestTwoSnapshots(): Promise<{
 
 /** 写本周快照。失败重试 1 次,仍失败则 log 退出(快照幂等,下周重抓)。 */
 export async function writeSnapshot(snapshot: TrendingSnapshot): Promise<void> {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) return;
   const key = snapshotKey(snapshot.week);
   const body = JSON.stringify(snapshot);
   const opts = {
@@ -105,7 +100,6 @@ export async function writeSnapshot(snapshot: TrendingSnapshot): Promise<void> {
  * 攒 velocity history(spec Section 4.4 / architect L2)。
  */
 export async function pruneOldSnapshots(keepWeeks = 8): Promise<void> {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) return;
   try {
     const { blobs } = await list({ prefix: `${PREFIX}/`, limit: 52 });
     const sorted = [...blobs].sort((a, b) =>

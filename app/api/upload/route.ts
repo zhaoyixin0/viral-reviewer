@@ -3,7 +3,7 @@ import {
   createRateLimiter,
   withRateLimit,
   clientIp,
-  STRICT_PER_IP,
+  UPLOAD_BURST,
 } from "@/lib/rate-limit";
 import {
   handleSignedUpload,
@@ -18,11 +18,11 @@ const log = createLogger({ module: "api/upload" });
 
 export const runtime = "nodejs";
 
-// P3 #3 phase 2: STRICT_PER_IP (10/1m sliding) —— Blob token 换签端点,
+// P3 #3 phase 2: UPLOAD_BURST (10/1m sliding) —— Blob token 换签端点,
 // 实际 upload 走 Blob SDK 自身限流,本路由仅签名生成,STRICT 防 token 滥发。
 const RATE_LIMITER = createRateLimiter({
   identifier: "upload",
-  ...STRICT_PER_IP,
+  ...UPLOAD_BURST,
 });
 
 const POLICY: UploadPolicy = {
@@ -45,8 +45,18 @@ const POLICY: UploadPolicy = {
   maxBytes: 200 * 1024 * 1024,
   addRandomSuffix: true,
   clientPayloadSchema: ClientPayloadSchema,
-  onCompleted: async ({ url }) => {
-    console.log("[upload] completed:", url);
+  onCompleted: async ({ url, pathname, size }) => {
+    // Structured Cloud Logging emit (severity INFO — W4 P5.8 helper only
+    // exposes warn/error per B1 verdict; raw console.log + JSON gets
+    // Cloud Run native parse for completion notices without scope-creeping
+    // helper). Per W3 batch fix W1-M1/W2-D 2026-05-17.
+    console.log(JSON.stringify({
+      severity: "INFO",
+      module: "api/upload",
+      message: "upload completed",
+      url, pathname, size,
+      timestamp: new Date().toISOString(),
+    }));
   },
 };
 
