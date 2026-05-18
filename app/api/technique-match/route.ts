@@ -207,6 +207,18 @@ export async function POST(req: NextRequest) {
             // attacker 可能 rebind DNS）。UrlAllowlistError 会冒泡到 stream catch。
             const res = await fetchWithAllowlist(url, urlAllowlist);
             if (!res.ok) {
+              // Log url + status to GCP before throwing — error message goes to
+              // user (CJK string) but URL diagnostic only lands in structured log.
+              console.log(JSON.stringify({
+                severity: "ERROR",
+                module: "api/technique-match",
+                message: "video download failed",
+                videoIndex: i,
+                totalMaterials,
+                url,
+                status: res.status,
+                timestamp: new Date().toISOString(),
+              }));
               throw new Error(
                 `下载视频 ${i + 1}/${totalMaterials} 失败 (${res.status})`,
               );
