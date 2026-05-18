@@ -227,4 +227,38 @@ W4 ACK 2026-05-XX: 收到 T1+T2+T3 派发，确认决策 D1=B/D5=B，分支 feat
 
 **Standby**: W4 等待 W3 active review verdict (C3/C5/C7) 或 user-side probe 结果。无下一 task pending。
 
+---
+
+## W4 → W3 · C8 patch DONE ack
+
+**W4 ACK 2026-05-18**: 收到 W3 NEEDS_FIX verdict (commit `89442c8`)。C8 patch 已落地并 push: `c502efc`。
+
+**6 项 patch 全部完成** (按 verdict 列表):
+
+| # | P | 完成位置 | 说明 |
+|---|---|---|---|
+| 1 | P0 | `lib/trending/event-detector.ts:96-105` | cachedClient 移除，每调用 fresh `new GoogleGenAI()`. 新 test cycle 3 个 key 验证无 singleton cache. |
+| 2 | P1a | `lib/trending/enrich-trending-video.ts:70-86` | `trendingContext.hashtag` 注入 `knownTags[0]` (前缀 `#`). **scope deviation**: gemini-understand.ts 是 W2 owned read-only，不能加 knownHashtag 字段；改走 knownTags 既有管道。verified at lib/video/gemini-understand.ts:174-179. |
+| 3 | P1b | `lib/trending/aggregate.ts:25-31, 218-241` | `MIN_EVENT_MATCHED_VIDEO_COUNT = 3` 常量 + 出口 filter，BOTH keywords + LLM overlay 共享。filter 在 empty-input short-circuit 之前，velocity 见 filtered set. |
+| 4 | P2 | `lib/trending/event-detector.ts:detectEventsLLM` | `config.abortSignal` 透传 (SDK 验证: node_modules/@google/genai/dist/genai.d.ts:4207). 保留 post-hoc check 作 belt-and-suspenders. SDK caveat (client-only, 不省 server billing) 已 commit body 标注. |
+| 5 | P3 | (no patch) | `tests/api/trending-route.test.ts:38` C3 (`a5de87e`) 已修，当前用 `TRENDING_SCHEMA_VERSION` import。tsc clean against branch HEAD. W3 verdict 可能针对早期 snapshot. |
+| 6 | NIT | `scripts/probe-enrich-trending.ts:24-27` | `TrendingSnapshotSchema.parse(snapshot)` round-trip assert，invalid → throw + process.exit 1. |
+
+**Gates 全绿**:
+- ✅ `npx tsc --noEmit` exit 0
+- ✅ `npx vitest run` 60 files / **653 tests** (+7 new C8 tests: 1 P0 isolation + 2 P2 abortSignal + 2 P1a knownTags + 2 P1b filter)
+- ✅ `npm run build` exit 0
+- ⏳ `npm run probe:enrich-trending --skip-llm-events` — 仍待 W3/user 决定
+
+**Scope deviations 本 patch 新增 0**：P1a 走 knownTags 是为了避免编辑 W2 read-only 的 `gemini-understand.ts`，符合 plan §13 + window-4.md file lock。Memory `feedback_scope_deviation_document` 已在 commit body 详记。
+
+**Branch chain**:
+```
+e06c571 (ack) → 67ab9e0 (C1) → efba1a0 (C2) → a5de87e (C3) → 80d7816 (C4)
+              → 79a01ad (C5) → b527d96 (C6) → 216fe85 (C7) → e3afe03 (completion)
+              → c502efc (C8 patch)  ← HEAD
+```
+
+**Standby**: 等 W3 spot-review 6 处 patch + merge feat/l3plus-w4-enrichment 整 chain 到 main。Per verdict: 不开 C9+，等 merge 后再领新 epic。
+
 
