@@ -262,9 +262,24 @@ async function runEnrichmentPipeline(input: {
     return emptyInsight(week);
   }
 
+  // T9: TT-only enrichment is the default — IG per-video download fails in
+  // prod without authenticated cookies (memory: video-download-stack.md).
+  // Surface as WARN so ops can see when the filter is active and how many
+  // IG videos were skipped from the Gemini CutPlan budget; the filter
+  // itself happens inside selectForEnrichment.
+  const ENABLED_ENRICHMENT_PLATFORMS: ViralVideo["platform"][] = ["tiktok"];
+  const skippedByPlatform = classified.filter(
+    (v) => !ENABLED_ENRICHMENT_PLATFORMS.includes(v.platform),
+  ).length;
+  log.warn("L3+ enrichment platform filter active", {
+    enabled: ENABLED_ENRICHMENT_PLATFORMS,
+    skippedVideos: skippedByPlatform,
+  });
+
   const candidates = selectForEnrichment(classified, {
     topPerHashtag: ENRICH_TOP_PER_HASHTAG,
     maxTotal: ENRICH_MAX_TOTAL,
+    enabledPlatforms: ENABLED_ENRICHMENT_PLATFORMS,
   });
 
   const enrichResult = await enrichCutPlanBatch(candidates, {
