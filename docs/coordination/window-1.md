@@ -234,3 +234,68 @@ W1 ACK 2026-05-18 X:XX: 收到 UNBLOCK，main 已 pull (600bee7)。
 2. `git pull origin feat/l3plus-w1-insight-banner` + `git pull origin main`
 3. `cat docs/coordination/window-1.md | tail -80` 读最新 W3 mandate + 你自己 SAVE STATE section
 4. 按 SAVE STATE 里的"重启后第一步 action"恢复
+
+---
+
+## W1 → W3 SAVE STATE (2026-05-18 03:00 PDT，**代 W1 由 W3 written** — user 鼠标失灵无法 trigger W1 窗口)
+
+### 上下文
+
+User 鼠标失灵 + Zed 多窗口切换快捷键不响应 → 无法 trigger W1 窗口执行 SAVE 指令。W3 基于已知 git state 代写 W1 SAVE STATE 到 main 上 window-1.md，让 W1 重启后 git pull main 即可看到。
+
+### W1 已知状态（由 W3 推断）
+
+- **分支**：`feat/l3plus-w1-insight-banner`
+- **本地 tip**：`64be362`（docs ack for T6 C1 dispatch + push）
+- **远程 tip**：`64be362`（已与 origin 同步）
+- **Working tree**：W1 push 完 ACK 后**应是 clean state**（W1 当时 push `64be362` 是 docs only commit，无 in-flight code 改动）
+- **当前 task**：T6 C1 — InsightBanner generator + template strategy
+- **上一个 code commit**：`6306065`（T6 C1 — InsightBanner generator + template strategy，含 `lib/insight/generate-banner.ts` + `insight-template.ts` + 2 test files）
+- **当前阶段**：T6 C1 已 push，等 W3 review verdict
+
+### W3 已 push 的 verdict（W1 尚未 pull）
+
+- **commit**：`3a843de` on main（merge order: c5472cd → 19d5c16 → bf5e845 → 19e9232 → e41b472 → c42d321 → **3a843de** → 600bee7 → ...）
+- **位置**：`docs/coordination/window-1.md`（从 "## W3 → W1 · T6 C1 VERDICT (2026-05-18 00:57 PDT)" 行开始）
+- **verdict**: NEEDS_FIX
+- **5 patches** in C1.1：
+  - **HIGH**: plan §7.3 fallback-c 全无 hashtag 时退到 techniqueTab。选 (A) 实现 OR (B) commit body deviation document
+  - **MED**: actionable "建议:" 前缀（建议 UI 层 C4 加更合理）
+  - **MED**: sampleVideoIds slice(0,3) 来源说明（commit body 1 行）
+  - **NIT**: 中英文标点统一（`;` → `；` 或全英文 `.`）
+  - **NIT**: pct() half-up edge test (0.005/0.004)
+
+### 重启后 W1 第一步 action（顺序执行）
+
+1. `cd .claude/worktrees/<W1 worktree path>`（看 W1 实际 worktree 位置）
+2. `git pull origin main` —— 拉到 `b158ee0` 或更新，main 含 verdict + 本 SAVE STATE
+3. `git pull origin feat/l3plus-w1-insight-banner` —— 确认本地分支同步（应已是 `64be362`）
+4. `git status` —— 确认 working tree clean（若 dirty，先 commit/stash）
+5. `cat docs/coordination/window-1.md | tail -90` —— 读 W3 verdict + 本 SAVE STATE
+6. **决策点 HIGH patch**：选 (A) 实现 fallback-c 还是 (B) deviation document？
+   - 推荐 (B)：`insight.techniqueTab` 在 W4 实施的 schema 里**根本不存在**（W4 的 aggregate 出口只产 `hashtagInsights`/`bgmInsights`/`eventInsights`/`velocity`/`totalEnriched`，无独立 techniqueTab 字段）。所以 plan §7.3 c 路径在当前 schema 下**自动 N/A**。commit body 引用 `lib/trending/insight-schema.ts` 实际 schema + 说明 fallback-c 无对应字段
+7. **实施 C1.1**：单 commit 含 5 处 patch（不要 squash 进 C1）
+   - 文件：`lib/insight/insight-template.ts` 主体改动
+   - 测试：可能要更新 `tests/insight/insight-template.test.ts`（pct edge test + actionable 前缀如果加了）
+8. Gates：`npx tsc --noEmit && npx vitest run`
+9. Push C1.1 到 `feat/l3plus-w1-insight-banner`
+10. 等 W3 spot-review verdict（≤20min 周期），clean 即可继续 **C2 Haiku LLM strategy**
+
+### 后续 C2-C5 节奏（plan §7 + window-1.md spec）
+
+- **C2** — `insight-llm.ts` Haiku strategy + fallback to template + LLM mock unit test
+- **C3** — `InsightBanner.tsx` 组件 + RTL test（含 `banner=null` 不渲染）
+- **C4** — `OutputPanel.tsx` 顶部插 InsightBanner + `/api/technique-match` SSE event（含 partial loading skeleton 事件）
+- **C5** — 手测：本地有 v2 snapshot → banner 显示；无 v2 snapshot（删 GCS）→ 不渲染，review 正常
+
+### GCS v2 snapshot 状态（W1 e2e 测时关键）
+
+- **当前 main 无 GCS v2 snapshot**（cron 北京 06:00 自然触发会产首份）
+- 如果 W1 重启时已过 06:00 北京，可能已有 v2 snapshot
+- 否则 W1 append `W1 → W3 REQ KICK` 到本文件让 W3 manual kick `gcloud scheduler jobs run trending-refresh`
+
+### 验证 W1 启动正确性
+
+- `git log --oneline -5` 应含 `64be362` + 之前 `6306065` C1 code commit
+- `ls lib/insight/` 应含 `generate-banner.ts` + `insight-template.ts`
+- `cat docs/coordination/window-1.md | grep "VERDICT"` 应找到 2026-05-18 00:57 PDT 那段
