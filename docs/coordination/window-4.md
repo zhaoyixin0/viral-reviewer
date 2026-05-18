@@ -269,6 +269,114 @@ W4 → idle continue。等 T6 close-out 或新 epic。
 
 ---
 
+## W3 → W4 · TASK DISPATCH: T9 — TT-only enrichment filter (2026-05-18 15:00 PDT)
+
+**User 决策**：T8 修了 AbortSignal 透传后暴露新 production bug：IG 视频在 prod 没有 cookies，per-video 下载 always fail（memory `video-download-stack.md`）。User 决定 **IG ON HOLD，专注 TikTok**。
+
+### 验证 evidence (W3 prod log gitSha=9054c66)
+
+```
+trending/enrich-batch | transient enrichment failure | videoId=ig-DYfp8k_uNc4 | reason=download_failed
+trending/enrich-batch | transient enrichment failure | videoId=ig-DYfp9_nFyPU | reason=download_failed  
+trending/enrich-batch | transient enrichment failure | videoId=ig-DYfp-nDIPTo | reason=download_failed
+trending/fetch | L3+ enrichment had failures
+```
+
+→ snapshot capturedAt 21:59 实测：`totalEnriched=0 / hashtagInsights=0 / bgmInsights=0 / eventInsights=1` (detectEvents 不用下载视频，所以 1 个事件出来了)
+
+### Scope (W4 owned)
+
+| 文件 | 改动 |
+|---|---|
+| `lib/trending/select-for-enrichment.ts` | 加 `enabledPlatforms?: ViralVideo["platform"][]` option，default `["tiktok"]`（TT-only mode）。filter 后再 bucket |
+| `lib/trending/fetch.ts` | 调 selectForEnrichment 时不需改（让 default 接管），或显式传 `enabledPlatforms: ["tiktok"]` 表态 |
+| `tests/trending/select-for-enrichment.test.ts` | 加 4 tests：default TT-only 过滤 IG / 显式 `["tiktok"]` / 显式 `["instagram"]` / 显式 `["tiktok","instagram"]` 等价旧行为 |
+
+可选 logging（推荐加，1-2 行）：
+- 在 `runEnrichmentPipeline` 入口 log `{ message: "L3+ enrichment platform filter", enabled: [...], skipped_videos: <count> }` 便于运维监控
+
+### 设计
+
+```ts
+// lib/trending/select-for-enrichment.ts
+export type SelectOptions = {
+  topPerHashtag: number;
+  maxTotal: number;
+  /** Platforms eligible for per-video enrichment. Default ["tiktok"] —
+   * Instagram requires cookies for video download (memory:
+   * video-download-stack.md); enabled when cookies infra lands.
+   * Caller can pass ["tiktok","instagram"] to restore mixed mode. */
+  enabledPlatforms?: ViralVideo["platform"][];
+};
+
+export function selectForEnrichment(videos, opts) {
+  if (opts.maxTotal <= 0 || opts.topPerHashtag <= 0) return [];
+  const enabled = opts.enabledPlatforms ?? ["tiktok"];
+  const filtered = videos.filter((v) => enabled.includes(v.platform));
+  // existing bucketing on `filtered` ...
+}
+```
+
+### Scope 边界（**严禁扩**）
+
+- ❌ 不动 Instagram download path（cookies / Apify download actor / fallback）—— **单独 epic**
+- ❌ 不动 aggregate.ts / event-detector.ts / insight-schema.ts（IG 原始 videos[] 还是落 snapshot，只是不 enrich + 不 aggregate insight）
+- ❌ 不动 Apify 抓 IG 阶段（继续抓，让 raw videos 数据留下）
+- ❌ 不动 lib/trending/enrich-batch.ts（接受 candidates 就富化，candidates 从哪来不关心）
+- ❌ 不动 lib/insight/*（W1 owned，T6 in flight）
+
+### 执行步骤
+
+```bash
+git checkout feat/l3plus-w4-enrichment
+git pull origin feat/l3plus-w4-enrichment
+git pull origin main                                  # 含 T8 merge
+
+# 编辑 1 src + 1 test
+
+npx tsc --noEmit                                       # exit 0
+npx vitest run                                         # 全套绿
+npm run build                                          # exit 0
+
+git add lib/trending/select-for-enrichment.ts tests/trending/select-for-enrichment.test.ts
+# 如加 logging: + lib/trending/fetch.ts
+git commit -m "fix(trending): T9 — TT-only enrichment filter (IG download fails in prod without cookies)"
+git push origin feat/l3plus-w4-enrichment
+```
+
+**Commit body 必含**：
+- T8 实测 evidence 引用 (3 个 ig-* download_failed log)
+- memory video-download-stack.md 引用
+- default `["tiktok"]` rationale + 未来 mixed mode 路径
+- IG 原始 videos[] 仍落 snapshot 不变
+- 引用 memory `feedback_scope_deviation_document.md`
+
+### Push 后 W3 动作
+
+1. W3 spot-review (<10min)
+2. APPROVED → merge → main
+3. 等 GitHub Actions deploy (~3-5min)
+4. W3 re-kick scheduler
+5. 等 cron 跑完（TT-only enrichment 应 < 2min，total ~7-8min）
+6. Verify GCS snapshot `insight.hashtagInsights.length > 0 + totalEnriched > 0`
+7. Ping W1 mailbox `BUG FIXED + SNAPSHOT POPULATED`
+
+### 时间估算
+
+- W4 实施 + 测：15-25min
+- W3 review：8-10min
+- Deploy + kick + cron：12-15min
+- **Total ~35-50min 到 W1 unblock**
+
+### 完工 ACK
+
+```
+## W4 → W3 ACK · T9 (2026-05-18 XX:XX PDT)
+selectForEnrichment 加 enabledPlatforms option default ["tiktok"]，4 test 加，gates 全绿，push <SHA>。
+```
+
+---
+
 ## W3 → W4 · TASK DISPATCH: T8 — Full AbortSignal forwarding + 540s bump (2026-05-18 14:38 PDT)
 
 **User 决策**：T7 的 270s bump 治标不治本（user 实测确认 Apify scrape 7.5min 跑满，abort 仅推迟，upstream 不响应），**走完整 D 路径修真 bug**。T6 close-out 顺延，本 fix 优先。
