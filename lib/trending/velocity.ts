@@ -1,6 +1,6 @@
 import type { ViralVideo } from "@/lib/review-engine/types";
 import {
-  TRENDING_SCHEMA_VERSION,
+  SUPPORTED_SCHEMA_VERSIONS,
   type TrendingHashtag,
   type TrendingHashtagWithVelocity,
   type TrendingSnapshot,
@@ -27,8 +27,9 @@ function classifyTrend(weekOverWeek: number | null, isNew: boolean): TrendTag {
  * 对比相邻两周快照,给本周每条视频算 velocity / rank / trend。
  * 纯函数,无副作用 —— 注入 current + previous,返回带 velocity 的新数组。
  *
- * 边界:previous 为 null,或 previous.schemaVersion 与当前版本不一致
- * → 当作"无上周快照" → 本周全部标 NEW(weekOverWeek=null,rank.previous=null)。
+ * 边界:previous 为 null,或 previous.schemaVersion 不在 SUPPORTED_SCHEMA_VERSIONS
+ * 窗口内 → 当作"无上周快照" → 本周全部标 NEW(weekOverWeek=null,rank.previous=null)。
+ * L3+ v2 升级时窗口已扩到 [1, 2],v1 旧快照仍能参与对比(spec §3.5)。
  */
 export function computeVelocity(
   current: TrendingSnapshot,
@@ -37,7 +38,9 @@ export function computeVelocity(
   const curSorted = sortedByViews(current.videos);
 
   const usePrevious =
-    previous !== null && previous.schemaVersion === TRENDING_SCHEMA_VERSION;
+    previous !== null &&
+    typeof previous.schemaVersion === "number" &&
+    SUPPORTED_SCHEMA_VERSIONS.includes(previous.schemaVersion);
 
   const prevByIdViews = new Map<string, number>();
   const prevRankById = new Map<string, number>();
@@ -85,7 +88,9 @@ export function computeHashtagVelocity(
   );
 
   const usePrevious =
-    previous !== null && previous.schemaVersion === TRENDING_SCHEMA_VERSION;
+    previous !== null &&
+    typeof previous.schemaVersion === "number" &&
+    SUPPORTED_SCHEMA_VERSIONS.includes(previous.schemaVersion);
 
   const prevByName = new Map<string, TrendingHashtag>();
   if (usePrevious) {

@@ -14,6 +14,13 @@ export const runtime = "nodejs";
 
 const KEEP_WEEKS = 8;
 
+/**
+ * L3+ T3 (plan §4.3): hard watchdog ahead of the Cloud Scheduler 180s
+ * attempt-deadline. Gives the enrichment pipeline a ~30s buffer to land its
+ * partial result onto GCS before Scheduler abandons the request.
+ */
+const PIPELINE_TIMEOUT_MS = 150_000;
+
 // P5.3: lazy singleton — google-auth-library 内部 cache JWKS, 每实例独立缓存,
 // container 生命周期复用避免每请求重建 HTTP client + JWKS fetch round-trip。
 let oauthClient: OAuth2Client | null = null;
@@ -112,9 +119,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
+  // L3+ T3: AbortController watchdog forwarded into fetchTrendingSnapshot so
+  // enrichBatch (Gemini) + detectEvents (Gemini Pro) collapse to partial when
+  // the 150s budget burns. Cloud Scheduler default deadline is 180s; the
+  // 30s margin covers writeSnapshot + pruneOldSnapshots after fetch returns.
+  const ctrl = new AbortController();
+  const timeoutId = setTimeout(() => ctrl.abort(), PIPELINE_TIMEOUT_MS);
+
   let snapshot;
   try {
-    snapshot = await fetchTrendingSnapshot();
+    snapshot = await fetchTrendingSnapshot({ signal: ctrl.signal });
   } catch (e) {
     // 两个平台都失败 → fetchTrendingSnapshot throw → 不写空快照
     log.error("fetch failed", { err: e });
@@ -122,6 +136,8 @@ export async function POST(request: Request) {
       { error: "fetch_failed", message: (e as Error).message },
       { status: 502 },
     );
+  } finally {
+    clearTimeout(timeoutId);
   }
 
   await writeSnapshot(snapshot);
@@ -132,5 +148,13 @@ export async function POST(request: Request) {
     week: snapshot.week,
     partial: snapshot.meta.partial,
     videoCount: snapshot.videos.length,
+    insight: snapshot.insight
+      ? {
+          totalEnriched: snapshot.insight.totalEnriched,
+          hashtagInsightCount: snapshot.insight.hashtagInsights.length,
+          bgmInsightCount: snapshot.insight.bgmInsights.length,
+          eventInsightCount: snapshot.insight.eventInsights.length,
+        }
+      : null,
   });
 }

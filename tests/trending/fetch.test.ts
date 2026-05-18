@@ -8,6 +8,9 @@ const scrapeInstagramByHashtagMock = vi.fn();
 const enrichBatchMock = vi.fn();
 const classifyTopicsMock = vi.fn();
 const loadVideosMock = vi.fn();
+const enrichCutPlanBatchMock = vi.fn();
+const detectEventsMock = vi.fn();
+const readLatestTwoSnapshotsMock = vi.fn();
 
 vi.mock("@/lib/apify/scrapers", () => ({
   scrapeTikTokTrendingHashtags: (...a: unknown[]) => scrapeTikTokTrendingHashtagsMock(...a),
@@ -23,6 +26,21 @@ vi.mock("@/lib/trending/topic-classifier", () => ({
 vi.mock("@/lib/data/load-videos", () => ({
   loadVideos: (...a: unknown[]) => loadVideosMock(...a),
 }));
+vi.mock("@/lib/trending/enrich-batch", () => ({
+  enrichBatch: (...a: unknown[]) => enrichCutPlanBatchMock(...a),
+}));
+vi.mock("@/lib/trending/event-detector", () => ({
+  detectEvents: (...a: unknown[]) => detectEventsMock(...a),
+}));
+vi.mock("@/lib/trending/snapshot-store", async () => {
+  const actual = await vi.importActual<typeof import("@/lib/trending/snapshot-store")>(
+    "@/lib/trending/snapshot-store",
+  );
+  return {
+    ...actual,
+    readLatestTwoSnapshots: (...a: unknown[]) => readLatestTwoSnapshotsMock(...a),
+  };
+});
 
 import { fetchTrendingSnapshot } from "@/lib/trending/fetch";
 
@@ -46,10 +64,17 @@ beforeEach(() => {
   enrichBatchMock.mockReset();
   classifyTopicsMock.mockReset();
   loadVideosMock.mockReset();
+  enrichCutPlanBatchMock.mockReset();
+  detectEventsMock.mockReset();
+  readLatestTwoSnapshotsMock.mockReset();
   loadVideosMock.mockResolvedValue([{ topic: "早餐健身" }, { topic: "旅行 vlog" }]);
   // enrich / classify 默认透传(保留 trendingContext 等字段)
   enrichBatchMock.mockImplementation((vs: ViralVideo[]) => Promise.resolve(vs));
   classifyTopicsMock.mockImplementation((vs: ViralVideo[]) => Promise.resolve(vs));
+  // L3+ defaults: empty enrichment / events / no previous snapshot.
+  enrichCutPlanBatchMock.mockResolvedValue({ plans: [], failures: [] });
+  detectEventsMock.mockResolvedValue([]);
+  readLatestTwoSnapshotsMock.mockResolvedValue({ current: null, previous: null });
   // 默认:Stage 1 给 2 个 hashtag,Stage 2 每个 hashtag 给 1 条视频,IG 给 1 条
   scrapeTikTokTrendingHashtagsMock.mockResolvedValue({
     hashtags: [ht("morningroutine", 1), ht("glowup", 2)],
@@ -64,7 +89,7 @@ beforeEach(() => {
 describe("fetchTrendingSnapshot (two-stage TikTok)", () => {
   it("produces a snapshot with trendingHashtags + merged videos", async () => {
     const snap = await fetchTrendingSnapshot();
-    expect(snap.schemaVersion).toBe(1);
+    expect(snap.schemaVersion).toBe(2);
     expect(snap.trendingHashtags.map((h) => h.name)).toEqual(["morningroutine", "glowup"]);
     // 2 TT 视频(每 hashtag 1 条)+ 1 IG 视频
     expect(snap.videos).toHaveLength(3);
@@ -128,5 +153,158 @@ describe("fetchTrendingSnapshot (two-stage TikTok)", () => {
     expect(classifyTopicsMock).toHaveBeenCalledTimes(1);
     const [, libraryTopics] = classifyTopicsMock.mock.calls[0];
     expect(libraryTopics).toEqual(["早餐健身", "旅行 vlog"]);
+  });
+});
+
+describe("fetchTrendingSnapshot — L3+ enrichment pipeline (T3)", () => {
+  it("produces v2 snapshot with insight when enrichBatch succeeds", async () => {
+    enrichCutPlanBatchMock.mockResolvedValue({
+      plans: [
+        { video: vid("tt-morningroutine", "tiktok"), cutPlan: { videoId: "tt-morningroutine" } },
+      ],
+      failures: [],
+    });
+    // C8 P1b: matchedVideoCount must be >= 3 to survive the aggregate exit filter.
+    detectEventsMock.mockResolvedValue([
+      { name: "metgala", displayName: "Met Gala", matchedHashtags: ["MetGala"], matchedVideoCount: 4, sampleVideoIds: ["tt-morningroutine"] },
+    ]);
+
+    const snap = await fetchTrendingSnapshot();
+
+    expect(snap.schemaVersion).toBe(2);
+    expect(snap.insight).toBeDefined();
+    expect(snap.insight?.totalEnriched).toBe(1);
+    expect(snap.insight?.eventInsights.map((e) => e.name)).toContain("metgala");
+  });
+
+  it("still writes snapshot with emptyInsight when enrichBatch fully fails (stage1 not lost)", async () => {
+    enrichCutPlanBatchMock.mockResolvedValue({
+      plans: [],
+      failures: [{ videoId: "x", reason: "gemini_failed: 500" }],
+    });
+
+    const snap = await fetchTrendingSnapshot();
+
+    expect(snap.schemaVersion).toBe(2);
+    expect(snap.insight).toBeDefined();
+    expect(snap.insight?.totalEnriched).toBe(0);
+    // stage 1 video data still on snapshot.videos[]
+    expect(snap.videos.length).toBeGreaterThan(0);
+  });
+
+  it("forwards AbortController signal into enrichBatch and detectEvents", async () => {
+    const ctrl = new AbortController();
+    await fetchTrendingSnapshot({ signal: ctrl.signal });
+    const enrichOpts = enrichCutPlanBatchMock.mock.calls[0][1];
+    expect(enrichOpts.signal).toBe(ctrl.signal);
+    const detectArg = detectEventsMock.mock.calls[0][0];
+    expect(detectArg.signal).toBe(ctrl.signal);
+  });
+
+  it("signal already aborted before enrichment → emptyInsight, no enrichBatch call", async () => {
+    const ctrl = new AbortController();
+    ctrl.abort();
+    const snap = await fetchTrendingSnapshot({ signal: ctrl.signal });
+    expect(enrichCutPlanBatchMock).not.toHaveBeenCalled();
+    expect(snap.insight?.totalEnriched).toBe(0);
+  });
+
+  it("skipEnrichment=true omits insight + skips L3+ entirely", async () => {
+    const snap = await fetchTrendingSnapshot({ skipEnrichment: true });
+    expect(snap.insight).toBeUndefined();
+    expect(enrichCutPlanBatchMock).not.toHaveBeenCalled();
+    expect(detectEventsMock).not.toHaveBeenCalled();
+  });
+
+  it("skipLLMEventDetection=true passes useLLM=false to detectEvents", async () => {
+    await fetchTrendingSnapshot({ skipLLMEventDetection: true });
+    expect(detectEventsMock).toHaveBeenCalledWith(
+      expect.objectContaining({ useLLM: false }),
+    );
+  });
+
+  it("by default passes useLLM=true to detectEvents (D1=B)", async () => {
+    await fetchTrendingSnapshot();
+    expect(detectEventsMock).toHaveBeenCalledWith(
+      expect.objectContaining({ useLLM: true }),
+    );
+  });
+
+  it("forwards previousSnapshot.insight into aggregate via readLatestTwoSnapshots", async () => {
+    readLatestTwoSnapshotsMock.mockResolvedValue({
+      current: null,
+      previous: {
+        schemaVersion: 2,
+        week: "2026-W19",
+        capturedAt: "2026-05-07T00:00:00Z",
+        trendingHashtags: [],
+        videos: [],
+        meta: {
+          tiktok: { source: "trends-actor", actorRun: "r", rawCount: 0, enrichedCount: 0, ok: true },
+          instagram: { source: "hashtag-proxy", actorRun: "", rawCount: 0, enrichedCount: 0, ok: true },
+          partial: false,
+        },
+        insight: {
+          week: "2026-W19", capturedAt: "2026-05-07T00:00:00Z",
+          hashtagInsights: [],
+          bgmInsights: [{ name: "Last Week BGM", hitCount: 3, hitVideoIds: [] }],
+          eventInsights: [],
+          velocity: { techniqueWoW: {}, bgmWoW: [], eventWoW: [] },
+          totalEnriched: 3,
+        },
+      },
+    });
+    enrichCutPlanBatchMock.mockResolvedValue({
+      plans: [
+        {
+          video: vid("tt-x", "tiktok"),
+          cutPlan: {
+            videoId: "tt-x",
+            density: { editing: 50, transition: 50, effect: 50, bgmSync: 50, overall: 50 },
+            bgm: { name: "Last Week BGM", trending: false },
+            dimensions: {
+              pacing: { shotCount: 1, avgShotDurationSec: 25, cutDensityPerSec: 0, rhythmProfile: null, keyTwistAt: null },
+              camera: { dominantMovements: [], shotSizeDistribution: {}, transitionPatterns: [] },
+              audiovisual: { bgmPattern: null, bgmSyncTightness: null, subtitleStyle: null, colorGrade: null },
+              structure: { hookFormat: null, openingShot: null, endingShot: null, cta: null, payoffAt: null },
+            },
+          },
+        },
+      ],
+      failures: [],
+    });
+
+    const snap = await fetchTrendingSnapshot();
+    const wow = snap.insight?.velocity.bgmWoW.find((b) => b.name === "Last Week BGM");
+    // 1 hit this week vs 3 hits last week → falling (delta -2, threshold max(1, 3*0.05)=1)
+    expect(wow?.trend).toBe("falling");
+  });
+
+  it("survives readLatestTwoSnapshots failure (previousInsight=null fallback)", async () => {
+    readLatestTwoSnapshotsMock.mockRejectedValue(new Error("blob list error"));
+    enrichCutPlanBatchMock.mockResolvedValue({
+      plans: [
+        {
+          video: vid("tt-x", "tiktok"),
+          cutPlan: {
+            videoId: "tt-x",
+            density: { editing: 50, transition: 50, effect: 50, bgmSync: 50, overall: 50 },
+            bgm: null,
+            dimensions: {
+              pacing: { shotCount: 1, avgShotDurationSec: 25, cutDensityPerSec: 0, rhythmProfile: null, keyTwistAt: null },
+              camera: { dominantMovements: ["push_in"], shotSizeDistribution: {}, transitionPatterns: [] },
+              audiovisual: { bgmPattern: null, bgmSyncTightness: null, subtitleStyle: null, colorGrade: null },
+              structure: { hookFormat: null, openingShot: null, endingShot: null, cta: null, payoffAt: null },
+            },
+          },
+        },
+      ],
+      failures: [],
+    });
+
+    const snap = await fetchTrendingSnapshot();
+    expect(snap.insight).toBeDefined();
+    // null prev → techniqueWoW={} per aggregate contract
+    expect(snap.insight?.velocity.techniqueWoW).toEqual({});
   });
 });
