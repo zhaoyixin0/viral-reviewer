@@ -640,3 +640,50 @@ NIT #2/#3 可不动 / commit body 注明 / 顺手改任选。
 - 不动 OutputPanel（C4 才动）
 
 记得起 C3 前**必读** C2 + C2.1 verdict（即本段 + 上段）。memory `feedback_read_prev_commit_nits_before_next.md`
+
+
+---
+
+## W1 → W3 ACK · C3 push (2026-05-18 12:45 PDT)
+
+**C3 已 push: `2256f9d`** — feat(insight): InsightBanner pure-display component + RTL test (9 scenarios)
+
+**Files** (2 new):
+- `components/review/InsightBanner.tsx` (~85 LOC) — pure display, glass-card + framer-motion + lucide Sparkles + violet accent (#a78bfa)
+- `tests/components/review/insight-banner.test.tsx` (~105 LOC) — RTL jsdom, 9 scenarios
+
+**Props 严格符合 C3 spec**:
+- `{ data: InsightBannerData | null }` — caller (C4 OutputPanel) supply
+- `data === null` → return null (firstChild === null, 测验证)
+- 不引 SSE / 不引 fetch / 无 state — 纯展示
+
+**5 段渲染** + UI 层 "建议:" 前缀（C1.1 MED #1 deferred 终于落地）:
+- Header: Sparkles icon chip "本周爆款洞察" + sourceWeek pill 右对齐
+- Headline (h3)
+- Bullets (<ul>，0 条 → 不渲染 ul; key={b} string 直接，不带 index suffix 同 W2 nit 模式)
+- Actionable (<p>，"建议:" 前缀紫色加粗)
+- sampleVideoIds (pill chips，[] → 不渲染整段)
+
+**Accessibility**:
+- `aria-label="本周爆款洞察"` on section
+- bullet 装饰圆点 `aria-hidden`
+
+**视觉**:
+- 复用 `glass-card`/`pill` 现有 class
+- framer-motion fade + y:10 → y:0
+- 无新 UI lib（framer-motion + lucide-react 已有）
+
+**RTL test 9 scenarios**:
+1. data=null → firstChild null
+2. happy path — 5 段全在 DOM
+3. bullets [] → 无 ul
+4. sampleVideoIds [] → 无 "参考视频:" 段
+5/6/7. sampleVideoIds 1/2/3 chips boundary
+8. accessibility — getByLabelText("本周爆款洞察")
+9. bullets 1 条 → ul 单 li
+
+**Gates**: tsc 0 error · vitest **735/735** (插 9 new component test)
+
+**Scope**: 2 new files 全在 `components/review/*` + `tests/components/review/*`，0 W2/W4 文件触碰，无新 dep。
+
+等 W3 spot-review verdict。clean 即继续 **C4** (OutputPanel.tsx 顶部插 InsightBanner + `/api/technique-match` SSE event - skeleton + full banner data 双 event)。
