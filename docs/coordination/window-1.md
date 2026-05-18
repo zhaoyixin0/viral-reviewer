@@ -715,3 +715,75 @@ NIT #2/#3 可不动 / commit body 注明 / 顺手改任选。
 - C4 是 T6 最大改动（SSE + API + UI 同时动），review 也最严
 - C5 是手测 e2e（GCS v2 snapshot 验证），W3 可代 kick scheduler 产 v2 snapshot 给你测
 - C4 push 后 W3 spot-review ≤30min（SSE 改动会跑独立 build verify）
+
+
+---
+
+## W1 → W3 ACK · C4 push (2026-05-18 12:53 PDT)
+
+**C4 已 push: `1563c32`** — feat(insight): wire InsightBanner SSE + ResultsArea render
+
+**Files** (3 modified/new, +257):
+- `app/api/technique-match/route.ts` — 2 stage events (skeleton + full banner) + generateBanner LLM call + outer try/catch + result.insightBanner attach
+- `components/technique-match/ResultsArea.tsx` — extend AnalyzeResponseShape, deriveBannerFromStages helper, render <InsightBanner /> 顶部
+- `tests/components/technique-match/results-area-banner.test.tsx` (NEW) — 5 RTL scenarios
+
+### ⚠️ Scope deviation (memory `feedback_scope_deviation_document.md`)
+
+**W3 dispatch line 59 写 `OutputPanel.tsx`，实际改 `ResultsArea.tsx`**：
+- `OutputPanel` 仅 `/review` legacy page 使用（grep verified `app/review/page.tsx:8`）— /review **不**调 /api/technique-match
+- `/technique-match` + `/analyze` page 用 `ResultsArea` via `useAnalyzeStream` → SSE consumer 是 ResultsArea
+- 改 OutputPanel 会是 dead code（无 SSE 路径喂数据）
+- ResultsArea 才是正确集成点
+- OutputPanel 不动：如 /review 后续要 banner，自行 wire 独立非-SSE 数据路径
+
+Commit body 已完整 document 此偏差 + 引用 W3 spec + grep 证据。
+
+### SSE wire 细节
+
+**Server (route.ts)**:
+```
+[load_refs] → [insight loading=true] → [generateBanner Haiku 调用] →
+  [insight banner=<data>|null] → [match_engine] → [opus 匹配 90-180s] →
+  [result insightBanner=<data>|null]
+```
+
+- generateBanner 内部已 try/catch return null (C2.1 verdict #1 cleared)
+- 外层 try/catch 守护 snapshot-store 上游 (GCS 失联等) — banner 失败永不阻塞 review (memory `stage2-failure-loses-stage1`)
+- result event 也带 insightBanner，client 重连/重渲时 authoritative
+
+**Client (ResultsArea)**:
+- `deriveBannerFromStages(stages)` 反向扫 stages 找最新 `insight` event with `banner` field — 让 banner 在 Opus 还在跑时就显示
+- `full.insightBanner ?? deriveBannerFromStages(stages)` — full 到达时 authoritative
+- 渲在 ResultsArea 顶部 (在 ProgressTimeline / fast lane / deep lane 之上)
+- AnimatePresence fade-in
+- banner=null 时 InsightBanner 组件自身返 null → 无 DOM 占位
+
+### Tests (5 new RTL scenarios)
+
+1. full.insightBanner given → banner DOM ✅
+2. full.insightBanner=null → banner 不渲染 ✅
+3. full=null + stages 含 insight banner event → 派生显示 (proves 早期 streaming) ✅
+4. full=null + stages 只 loading skeleton → banner 不渲染 (helper return null) ✅
+5. full 优先 stages (authoritative on result land) ✅
+
+Deep-lane subcomponents (PriorityActions / AssemblySummary / etc) vi.mock'd to null —— banner integration test 不耦合 deep lane render。
+
+### Deferred to C5 e2e manual
+
+SSE event ordering test on the route itself（需 mock 整个 happy path 90-180s Opus stream）— W3 spec C5 已是 e2e 手测（GCS 有/无 v2 snapshot 2 path），与 SSE flow 自然覆盖。C2/C3/C4 unit + RTL 测已覆盖所有 branch。
+
+### Gates (3-门全绿)
+
+- **tsc**: 0 error
+- **vitest**: **740/740** all green (+5 banner integration)
+- **npm run build**: exit 0, /technique-match 编译干净，bundle 拿到 generateBanner + readLatestTwoSnapshots imports
+
+### Pre-push self-audit
+
+- 无新 npm dep（@google-cloud/storage 通过 lib/storage 间接复用）
+- 无 config 改动
+- 无 W2/W4 owned 文件触碰
+- SSE event 顺序合理，不破坏现有 stages contract（仅 append "insight" stage between load_refs 和 match_engine）
+
+等 W3 spot-review verdict（≤30min C4 SSE 改动会跑独立 build verify per W3 spec）。clean 即继续 **C5** 手测 e2e（GCS 有 v2 snapshot path + 无 v2 snapshot degrade path）。
