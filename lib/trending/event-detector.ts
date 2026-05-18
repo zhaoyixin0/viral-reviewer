@@ -93,12 +93,16 @@ function detectEventsKeywords(input: DetectEventsInput): EventInsight[] {
   return out;
 }
 
-let cachedClient: GoogleGenAI | null = null;
+/**
+ * Fresh client per call (W3 C8 P0). A module-level singleton would survive
+ * env-var rotation (e.g. ops swapping GOOGLE_API_KEY mid-process or test
+ * suites mutating process.env between cases). Construction cost is a small
+ * struct allocation — negligible next to the network round-trip.
+ */
 function getClient(): GoogleGenAI | null {
   const apiKey = process.env.GOOGLE_API_KEY;
   if (!apiKey) return null;
-  if (!cachedClient) cachedClient = new GoogleGenAI({ apiKey });
-  return cachedClient;
+  return new GoogleGenAI({ apiKey });
 }
 
 async function detectEventsLLM(
@@ -131,15 +135,24 @@ Return active events only.`;
 
   let raw: string;
   try {
+    // W3 C8 P2: @google/genai SDK's GenerateContentConfig.abortSignal is the
+    // documented hook (verified via node_modules/@google/genai/dist/genai.d.ts:4207).
+    // SDK note: "AbortSignal is a client-only operation … will not cancel the
+    // request in the service. You will still be charged usage for any applicable
+    // operations." — we accept that trade-off: cancellation here is about freeing
+    // the cron route's await, not avoiding spend.
     const response = await ai.models.generateContent({
       model,
       config: {
         systemInstruction,
         responseMimeType: "application/json",
         temperature: 0.2,
+        ...(input.signal ? { abortSignal: input.signal } : {}),
       },
       contents: createUserContent([userPrompt]),
     });
+    // Belt-and-suspenders: even with abortSignal wired, an early-aborted promise
+    // can resolve with stale text before throwing — re-check before parsing.
     if (input.signal?.aborted) return null;
     raw = (response.text ?? "").trim();
     if (!raw) {

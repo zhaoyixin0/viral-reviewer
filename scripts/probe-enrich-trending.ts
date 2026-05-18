@@ -20,6 +20,7 @@
  */
 
 import { fetchTrendingSnapshot } from "@/lib/trending/fetch";
+import { TrendingSnapshotSchema } from "@/lib/trending/types";
 
 function parseFlags(argv: string[]): {
   skipLLMEventDetection: boolean;
@@ -39,6 +40,11 @@ async function main(): Promise<void> {
   const t0 = Date.now();
 
   const snapshot = await fetchTrendingSnapshot(flags);
+
+  // W3 C8 nit: round-trip through the schema so the probe fails loudly when a
+  // pipeline-introduced field shape would also break writeSnapshot in cron.
+  // Throws (process.exit 1 via main().catch) when invalid.
+  TrendingSnapshotSchema.parse(snapshot);
 
   const elapsedMs = Date.now() - t0;
   process.stderr.write(

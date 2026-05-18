@@ -20,6 +20,13 @@ import type { TrendingHashtag } from "./types";
 const BGM_TOP_LIMIT = 10;
 const TOP_VIDEOS_PER_HASHTAG = 3;
 const TREND_THRESHOLD = 0.05;
+/**
+ * W3 C8 P1b (plan §11 R4 noise mitigation): events with too few matched videos
+ * are likely false positives from either the keyword dictionary OR the LLM
+ * overlay. Filter at the aggregate exit so BOTH strategies share the cutoff —
+ * filtering inside event-detector would let the LLM path bypass it.
+ */
+const MIN_EVENT_MATCHED_VIDEO_COUNT = 3;
 
 export type EnrichedPlan = { video: ViralVideo; cutPlan: CutPlan };
 
@@ -197,10 +204,19 @@ export function aggregate(input: AggregateInput): TrendingInsight {
     capturedAt = new Date().toISOString(),
   } = input;
 
+  // W3 C8 P1b: filter low-confidence events at the public exit. Run BEFORE
+  // the empty-input short-circuit so a caller passing only spurious 1-match
+  // events still gets emptyInsight (not an insight with empty arrays).
+  // Velocity sees the filtered set, so a "new" tag only fires on events that
+  // would actually surface to the UI.
+  const filteredEventInsights = eventInsights.filter(
+    (e) => e.matchedVideoCount >= MIN_EVENT_MATCHED_VIDEO_COUNT,
+  );
+
   if (
     enrichedPlans.length === 0 &&
     trendingHashtags.length === 0 &&
-    eventInsights.length === 0
+    filteredEventInsights.length === 0
   ) {
     return { ...emptyInsight(week), capturedAt };
   }
@@ -212,7 +228,7 @@ export function aggregate(input: AggregateInput): TrendingInsight {
   const velocity = buildVelocity(
     hashtagInsights,
     bgmInsights,
-    eventInsights,
+    filteredEventInsights,
     previousInsight,
   );
 
@@ -221,7 +237,7 @@ export function aggregate(input: AggregateInput): TrendingInsight {
     capturedAt,
     hashtagInsights,
     bgmInsights,
-    eventInsights,
+    eventInsights: filteredEventInsights,
     velocity,
     totalEnriched: enrichedPlans.length,
   };

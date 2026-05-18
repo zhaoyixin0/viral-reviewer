@@ -128,6 +128,41 @@ describe("enrichTrendingVideo", () => {
     expect(understandVideoAsCutPlanMock).toHaveBeenCalledTimes(1);
   });
 
+  it("C8 P1a: prepends trendingContext.hashtag (with `#`) into knownTags", async () => {
+    downloadVideoMock.mockResolvedValue({
+      ok: true, path: "/tmp/h/tt-abc.mp4", bytes: 1_000_000, cached: false,
+    });
+    probeVideoMetaMock.mockResolvedValue({
+      durationSec: 25, fps: 30, width: 1080, height: 1920,
+      codec: "h264", bitrate: 2_000_000, hasAudio: true,
+    });
+    understandVideoAsCutPlanMock.mockResolvedValue(fakeCutPlan());
+
+    await enrichTrendingVideo({
+      ...viralVideo({ tags: ["#travel"] }),
+      trendingContext: { hashtag: "morningroutine", hashtagRank: 1 },
+    });
+
+    const call = understandVideoAsCutPlanMock.mock.calls[0][0];
+    expect(call.hints.knownTags).toEqual(["#morningroutine", "#travel"]);
+  });
+
+  it("C8 P1a: leaves knownTags unchanged when video has no trendingContext", async () => {
+    downloadVideoMock.mockResolvedValue({
+      ok: true, path: "/tmp/h/tt-abc.mp4", bytes: 1_000_000, cached: false,
+    });
+    probeVideoMetaMock.mockResolvedValue({
+      durationSec: 25, fps: 30, width: 1080, height: 1920,
+      codec: "h264", bitrate: 2_000_000, hasAudio: true,
+    });
+    understandVideoAsCutPlanMock.mockResolvedValue(fakeCutPlan());
+
+    await enrichTrendingVideo(viralVideo({ tags: ["#travel"] }));
+
+    const call = understandVideoAsCutPlanMock.mock.calls[0][0];
+    expect(call.hints.knownTags).toEqual(["#travel"]);
+  });
+
   it("passes trending video hints (title / bgm / tags / sourceUrl) into Gemini", async () => {
     downloadVideoMock.mockResolvedValue({
       ok: true,

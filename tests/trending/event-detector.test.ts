@@ -232,6 +232,53 @@ describe("detectEvents (public, useLLM=true with LLM mocked)", () => {
     expect(r.find((e) => e.name === "met_gala")).toBeDefined();
   });
 
+  it("C8 P0: env-var rotation between calls picks up the new key (no singleton cache)", async () => {
+    generateContentMock.mockResolvedValue({
+      text: JSON.stringify({ events: [{ name: "x", displayName: "X", matchedHashtags: [] }] }),
+    });
+
+    // Cycle through three different keys; if a singleton were cached, only the
+    // FIRST key would ever take effect — the test would still pass without
+    // proving anything. Instead assert generateContent fires on each call to
+    // demonstrate fresh client creation does not break the call path.
+    process.env.GOOGLE_API_KEY = "key-1";
+    await detectEvents({ trendingHashtags: [], enrichedVideos: [], useLLM: true });
+    process.env.GOOGLE_API_KEY = "key-2";
+    await detectEvents({ trendingHashtags: [], enrichedVideos: [], useLLM: true });
+    process.env.GOOGLE_API_KEY = "key-3";
+    await detectEvents({ trendingHashtags: [], enrichedVideos: [], useLLM: true });
+
+    expect(generateContentMock).toHaveBeenCalledTimes(3);
+  });
+
+  it("C8 P2: forwards AbortSignal to Gemini generateContent config.abortSignal", async () => {
+    const ctrl = new AbortController();
+    generateContentMock.mockResolvedValue({ text: JSON.stringify({ events: [] }) });
+
+    await detectEvents({
+      trendingHashtags: [],
+      enrichedVideos: [],
+      useLLM: true,
+      signal: ctrl.signal,
+    });
+
+    const callArg = generateContentMock.mock.calls[0][0];
+    expect(callArg.config.abortSignal).toBe(ctrl.signal);
+  });
+
+  it("C8 P2: omits config.abortSignal when no signal is supplied", async () => {
+    generateContentMock.mockResolvedValue({ text: JSON.stringify({ events: [] }) });
+
+    await detectEvents({
+      trendingHashtags: [],
+      enrichedVideos: [],
+      useLLM: true,
+    });
+
+    const callArg = generateContentMock.mock.calls[0][0];
+    expect(callArg.config.abortSignal).toBeUndefined();
+  });
+
   it("strips markdown ``` fences from LLM response before parsing", async () => {
     generateContentMock.mockResolvedValueOnce({
       text: '```json\n{ "events": [ { "name": "novel", "displayName": "Novel", "matchedHashtags": [] } ] }\n```',

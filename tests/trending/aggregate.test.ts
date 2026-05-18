@@ -254,7 +254,8 @@ describe("aggregate (T2 C4)", () => {
           ep(vid("a", "x", 1), plan({ videoId: "a", bgmName: "Track A" })),
         ],
         trendingHashtags: [ht("x")],
-        eventInsights: [{ name: "met_gala", displayName: "Met Gala", matchedHashtags: [], matchedVideoCount: 1, sampleVideoIds: [] }],
+        // C8 P1b: matchedVideoCount must be >= 3 to survive the exit filter.
+        eventInsights: [{ name: "met_gala", displayName: "Met Gala", matchedHashtags: [], matchedVideoCount: 5, sampleVideoIds: [] }],
         week: "2026-W20",
         previousInsight: null,
       });
@@ -315,15 +316,18 @@ describe("aggregate (T2 C4)", () => {
       const r = aggregate({
         enrichedPlans: [],
         trendingHashtags: [],
+        // C8 P1b: all matchedVideoCount bumped >= 3 to survive the exit filter.
+        // previousInsight is opaque carryover so its event matchedVideoCount
+        // is not filtered (only current-week events run through the filter).
         eventInsights: [
-          { name: "vday", displayName: "VDay", matchedHashtags: [], matchedVideoCount: 1, sampleVideoIds: [] },
-          { name: "xmas", displayName: "Xmas", matchedHashtags: [], matchedVideoCount: 1, sampleVideoIds: [] },
+          { name: "vday", displayName: "VDay", matchedHashtags: [], matchedVideoCount: 4, sampleVideoIds: [] },
+          { name: "xmas", displayName: "Xmas", matchedHashtags: [], matchedVideoCount: 5, sampleVideoIds: [] },
         ],
         week: "2026-W20",
         previousInsight: prev({
           eventInsights: [
-            { name: "vday", displayName: "VDay", matchedHashtags: [], matchedVideoCount: 1, sampleVideoIds: [] },
-            { name: "metgala", displayName: "Met Gala", matchedHashtags: [], matchedVideoCount: 1, sampleVideoIds: [] },
+            { name: "vday", displayName: "VDay", matchedHashtags: [], matchedVideoCount: 4, sampleVideoIds: [] },
+            { name: "metgala", displayName: "Met Gala", matchedHashtags: [], matchedVideoCount: 3, sampleVideoIds: [] },
           ],
         }),
       });
@@ -331,6 +335,36 @@ describe("aggregate (T2 C4)", () => {
       expect(byName["vday"]).toBe("stable");
       expect(byName["xmas"]).toBe("new");
       expect(byName["metgala"]).toBe("ended");
+    });
+
+    it("C8 P1b: events with matchedVideoCount < 3 filtered at exit, do NOT surface in eventInsights or velocity", () => {
+      const r = aggregate({
+        enrichedPlans: [],
+        trendingHashtags: [],
+        eventInsights: [
+          { name: "real", displayName: "Real", matchedHashtags: [], matchedVideoCount: 5, sampleVideoIds: [] },
+          { name: "noisy_1hit", displayName: "Noisy 1", matchedHashtags: [], matchedVideoCount: 1, sampleVideoIds: [] },
+          { name: "noisy_2hit", displayName: "Noisy 2", matchedHashtags: [], matchedVideoCount: 2, sampleVideoIds: [] },
+        ],
+        week: "2026-W20",
+      });
+      expect(r.eventInsights.map((e) => e.name)).toEqual(["real"]);
+      expect(r.velocity.eventWoW.map((e) => e.name)).toEqual(["real"]);
+    });
+
+    it("C8 P1b: empty result when ONLY low-confidence events arrive (no plans / hashtags)", () => {
+      const r = aggregate({
+        enrichedPlans: [],
+        trendingHashtags: [],
+        eventInsights: [
+          { name: "noise", displayName: "noise", matchedHashtags: [], matchedVideoCount: 1, sampleVideoIds: [] },
+        ],
+        week: "2026-W20",
+      });
+      // Falls through to emptyInsight: nothing has substance.
+      expect(r.eventInsights).toEqual([]);
+      expect(r.hashtagInsights).toEqual([]);
+      expect(r.totalEnriched).toBe(0);
     });
   });
 

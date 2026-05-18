@@ -71,6 +71,19 @@ export async function enrichTrendingVideo(
     }
 
     try {
+      // W3 C8 P1a: surface trending hashtag context to Gemini. The shared
+      // GeminiUnderstandInput.hints schema (lib/video/gemini-understand.ts, W2
+      // owned, read-only per window-4.md lock) doesn't declare a knownHashtag
+      // field — the prompt builder only iterates sourceUrl / knownTitle /
+      // knownBgm / knownTags. Verified at lib/video/gemini-understand.ts:174-179
+      // per memory feedback_verify_http_behavior_assumptions. Injecting the
+      // hashtag into knownTags (prefixed `#`) is the zero-shared-file-edit path
+      // and feeds Gemini the same trending signal via the existing pipe.
+      const hashtag = video.trendingContext?.hashtag;
+      const knownTags = hashtag
+        ? [`#${hashtag}`, ...(video.tags ?? [])]
+        : video.tags;
+
       const cutPlan = await understandVideoAsCutPlan({
         videoPath: dl.path,
         videoId: video.id,
@@ -79,7 +92,7 @@ export async function enrichTrendingVideo(
           sourceUrl: video.url,
           knownTitle: video.title,
           knownBgm: video.bgm,
-          knownTags: video.tags,
+          knownTags,
         },
       });
       return { ok: true, cutPlan };

@@ -164,8 +164,9 @@ describe("fetchTrendingSnapshot — L3+ enrichment pipeline (T3)", () => {
       ],
       failures: [],
     });
+    // C8 P1b: matchedVideoCount must be >= 3 to survive the aggregate exit filter.
     detectEventsMock.mockResolvedValue([
-      { name: "metgala", displayName: "Met Gala", matchedHashtags: ["MetGala"], matchedVideoCount: 1, sampleVideoIds: ["tt-morningroutine"] },
+      { name: "metgala", displayName: "Met Gala", matchedHashtags: ["MetGala"], matchedVideoCount: 4, sampleVideoIds: ["tt-morningroutine"] },
     ]);
 
     const snap = await fetchTrendingSnapshot();
