@@ -3,6 +3,9 @@
 import type { ReactNode } from "react";
 import { HashtagTab } from "./tabs/HashtagTab";
 import { TechniqueTab } from "./tabs/TechniqueTab";
+import { BgmTab } from "./tabs/BgmTab";
+import { EventTab } from "./tabs/EventTab";
+import { VelocityTab } from "./tabs/VelocityTab";
 import type { Platform } from "./PlatformFilter";
 import type { BoardInsightDTO, TrendingHashtagCard } from "@/app/api/trending/route";
 
@@ -128,29 +131,17 @@ function renderTabBody({
     case "technique":
       return <TechniqueTab techniques={insight.techniqueTab} platform={platform} />;
     case "bgm":
+      return <BgmTab bgms={insight.bgmTab} />;
     case "event":
+      return <EventTab events={insight.eventTab} />;
     case "velocity":
-      // C6 替换为 BgmTab / EventTab / VelocityTab
-      return (
-        <div className="glass-card p-8 text-center text-sm text-white/45">
-          {tabPlaceholderLabel(activeTab)} 视图开发中
-        </div>
-      );
+      return <VelocityTab velocity={insight.velocityTab} />;
     default: {
       // Exhaustiveness assertion:防 TabKey 加新值 + switch 漏 case 时静默返
-      // undefined (tabpanel 空白) 而非编译错误。reviewer M2 fix。
+      // undefined (tabpanel 空白) 而非编译错误 (reviewer M2 fix)。
       const _exhaustive: never = activeTab;
       void _exhaustive;
       return null;
     }
   }
-}
-
-function tabPlaceholderLabel(activeTab: "bgm" | "event" | "velocity"): string {
-  const labels: Record<"bgm" | "event" | "velocity", string> = {
-    bgm: "BGM",
-    event: "热点事件",
-    velocity: "动量",
-  };
-  return labels[activeTab];
 }
