@@ -184,3 +184,31 @@ W1 ACK 2026-05-XX: 收到 T6 派发，前置已满足（main 含 v2 schema + GCS
 W1 ACK 2026-05-18 X:XX: 收到 UNBLOCK，main 已 pull (600bee7)。
 开始 T6 C1（generate-banner.ts template strategy + unit test）。
 ```
+
+---
+
+## W3 → W1 · T6 C1 VERDICT (2026-05-18 00:57 PDT)
+
+**针对 commit** `6306065` — feat(insight): T6 C1 — InsightBanner generator + template strategy
+
+### Verdict: **NEEDS_FIX**
+
+**Gates 全绿**（独立 verified）：tsc 0 / vitest 16 新 tests + 全套 669 PASS / file lock 干净（只动 `lib/insight/*` + `tests/insight/*` + `docs/coordination/window-1.md`）。
+
+**Contract alignment**: 6 个 `InsightBannerData` 字段全对齐 plan §7.4；`strategy` 参数扩展（C2 LLM 落地 hook）+ `BannerStrategyNotImplementedError` export — C2 可直接加 `if (strategy === "llm")` 分支。
+
+### Patch list（C2 起手前先 push 一个 C1.1 fix commit，再继续 C2）
+
+| # | 优先级 | 文件 | 改动 | 来源 |
+|---|---|---|---|---|
+| 1 | **HIGH** | `lib/insight/insight-template.ts` `findBestHashtag` | plan §7.3 fallback-c 缺失：`hashtagInsights.length === 0` 时 plan 要求退到 `insight.techniqueTab` 聚合数据。**两种 fix 选一**：(A) 实现 fallback-c — 在 `pickTopTechniques(null)` 路径下用 `aggregateTechniqueShares(insight.hashtagInsights)` 或全局 fallback string `"通用"`；(B) 声明 scope deviation（"当前 schema 无独立 techniqueTab，所有 technique 数据本就走 hashtagInsights[i].techniqueDistribution；fallback-c 在 schema 层不存在，plan §7.3 c 路径自动 N/A"）+ commit body 引用 plan §7.3 偏差 rationale | C1 H1 |
+| 2 | **MED** | `lib/insight/insight-template.ts` `composeActionable` | plan §7.4 JSDoc 范例 `"建议:开头 0-3s 用 push-in 卡 BGM drop 点,..."` 含 "建议:" 前缀。当前实现 `"vlog 优先尝试 jumpcut(本周占比 45%);..."` 无前缀。**Fix**：`composeActionable` return 时 prepend `"建议:"`；OR commit body scope deviation 说明前缀由 C4 InsightBanner UI 渲染时加（更合理 — UI 层加更灵活） | C1 M1 |
+| 3 | **MED** | `lib/insight/insight-template.ts` `bestHashtag?.topVideoIds.slice(0, 3)` | plan §7.3 伪代码无 cap，plan §7.4 JSDoc 提到 "capped at 3 items"。当前 implementation 用 slice(0,3) 与 JSDoc 对齐。**Fix**：commit body 1 行说明 cap 来源（JSDoc 而非伪代码），符合 memory `feedback_scope_deviation_document.md` | C1 M2 |
+| 4 | **NIT** | `composeActionable` `parts.join(";") + "。"` | 中英文标点混用（`;` 是英文，`。` 是中文）。改 `；` 中文分号 OR 全英文 `.` | C1 N1 |
+| 5 | **NIT** | `lib/insight/insight-template.ts` `pct()` | half-up edge case 测试（0.005 → 1, 0.004 → 0）— 添加 edge test 防回归 | C1 N2 |
+
+### 决策路径
+
+如对任意 patch 项的 rationale 有异议（如 #1 你认为 fallback-c 应在 schema 层补 techniqueTab 而非 deviation），append `W1 → W3 QUESTION` 到本文件，W3 重新评估。否则按 patch list 实施 + push C1.1（独立 commit，**不要 squash 进 C1**），再继续 C2 Haiku strategy。
+
+**注意**：W4 chain merge 后 main 上**仍无 v2 snapshot**（cron 没跑过 v2）。如需 e2e 测 T6 banner，append `W1 → W3 REQ KICK` 到本文件，W3 manual kick `gcloud scheduler jobs run trending-refresh` 产首份 v2 snapshot。
