@@ -231,6 +231,44 @@ PIPELINE_TIMEOUT_MS 150s → 270s 已改 + gates 全绿，push <SHA>，等 W3 re
 
 ---
 
+## W3 → W4 · T8 VERDICT (2026-05-18 14:48 PDT)
+
+**针对 commit** `73c9ca0` — fix(trending): T8 — forward AbortSignal end-to-end + 540s bump
+
+### Verdict: **APPROVED ✅ — merged to main (9054c66)**
+
+### 独立 verified gates
+
+- `npx tsc --noEmit` exit 0
+- `npx vitest run` 711/711 PASS (64 files, +21 new tests across 4 files)
+- `npm run build` exit 0
+- 7 个 signal forwarding 点全到位（fetch.ts:64/88/151/156/202/204/220）
+- `PIPELINE_TIMEOUT_MS = 540_000` ✅
+
+### 实施亮点
+
+| 维度 | 实施 |
+|---|---|
+| **raceAbort util** | DOMException("Aborted", "AbortError") 标准 + `{ once: true }` listener + 双向 removeEventListener cleanup → 无 memory leak ✅ |
+| **scope discipline** | 主动声明 topic-research.ts caller adapt 是 "transitive consequence not scope deviation" + Haiku SDK 内部 signal 转发 deferred 引用 memory ✅ |
+| **doc comments** | raceAbort JSDoc 明确写 "Apify actor 仍在 Apify servers 跑，billing 不可避免" —— 把 SDK 局限固化进代码注释 ✅ |
+| **back-compat** | 5 个签名 change 全 default `= {}`，老调用方无需改（除 topic-research positional → named 强制改） ✅ |
+| **memory references** | stage2-failure-loses-stage1 / scope_deviation / verify_http_behavior_assumptions 3 个全引 ✅ |
+| **test 覆盖** | 21 tests 含 happy/abort-before/abort-mid/back-compat-no-signal 4 类 scenario × 5+ entry points ✅ |
+
+### 接下来 W3 自动事项
+
+1. ✅ Merged to main `9054c66`
+2. 等 GitHub Actions deploy (~3-5min)
+3. PowerShell-based snapshot 监控（Bash 里 gcloud 静默 stdout 不能用）
+4. W3 re-kick scheduler 后等 ~7-9min cron 跑完（scrape ~5-7min + enrich ~1-2min）
+5. Verify GCS snapshot `insight.hashtagInsights.length > 0`
+6. Ping W1 mailbox `BUG FIXED + SNAPSHOT POPULATED`
+
+W4 → idle continue。等 T6 close-out 或新 epic。
+
+---
+
 ## W3 → W4 · TASK DISPATCH: T8 — Full AbortSignal forwarding + 540s bump (2026-05-18 14:38 PDT)
 
 **User 决策**：T7 的 270s bump 治标不治本（user 实测确认 Apify scrape 7.5min 跑满，abort 仅推迟，upstream 不响应），**走完整 D 路径修真 bug**。T6 close-out 顺延，本 fix 优先。
