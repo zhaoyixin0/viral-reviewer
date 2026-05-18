@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { readLatestTwoSnapshots } from "@/lib/trending/snapshot-store";
 import { computeVelocity, computeHashtagVelocity } from "@/lib/trending/velocity";
+import { projectInsightForBoard } from "@/lib/trending/insight-projection";
 import {
   createRateLimiter,
   withRateLimit,
@@ -8,6 +9,8 @@ import {
   STRICT_PER_IP,
 } from "@/lib/rate-limit";
 import { TrendingQuerySchema } from "./schema";
+
+export type { BoardInsightDTO } from "@/lib/trending/insight-projection";
 
 export const runtime = "nodejs";
 
@@ -64,7 +67,12 @@ async function impl(request: Request) {
 
   const { current, previous } = await readLatestTwoSnapshots();
   if (!current) {
-    return NextResponse.json({ week: null, cards: [], trendingHashtags: [] });
+    return NextResponse.json({
+      week: null,
+      cards: [],
+      trendingHashtags: [],
+      insight: null,
+    });
   }
 
   // 视频 velocity
@@ -96,7 +104,16 @@ async function impl(request: Request) {
     velocity: h.velocity,
   }));
 
-  return NextResponse.json({ week: current.week, cards, trendingHashtags });
+  // v2 (L3+):board DTO 投影。v1 老快照 (current.insight === undefined) → null,
+  // 前端 T5 检测 null 时只渲 videos tab (5 个 insight tab 自动隐藏)。
+  const insight = projectInsightForBoard(current.insight, platform ?? "all");
+
+  return NextResponse.json({
+    week: current.week,
+    cards,
+    trendingHashtags,
+    insight,
+  });
 }
 
 export const GET = withRateLimit(RATE_LIMITER, clientIp, impl);

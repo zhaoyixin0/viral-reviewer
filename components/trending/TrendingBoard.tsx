@@ -3,17 +3,28 @@
 import { useState } from "react";
 import { TrendingCard, formatVelocityBadge } from "./TrendingCard";
 import { PlatformFilter, type Platform } from "./PlatformFilter";
-import type { TrendingCard as TrendingCardData, TrendingHashtagCard } from "@/app/api/trending/route";
+import type {
+  TrendingCard as TrendingCardData,
+  TrendingHashtagCard,
+  BoardInsightDTO,
+} from "@/app/api/trending/route";
 
 export function TrendingBoard({
   initialWeek,
   initialCards,
   initialTrendingHashtags,
+  initialInsight = null,
 }: {
   initialWeek: string | null;
   initialCards: TrendingCardData[];
   /** v4.1:hashtag 级 velocity 精简投影,来自 P2.6 RSC / /api/trending(spec 4.7)。 */
   initialTrendingHashtags: TrendingHashtagCard[];
+  /**
+   * T4 C3 (L3+ plan §5):board DTO seed,RSC 投影注入。
+   * v1 老快照 / 无 snapshot → null,T5 C4 检测 null 隐藏 5 个 insight tab,只渲 videos tab。
+   * T5 C4-C6 接管 tab 渲染 + 平台切换时同步刷新本 state。
+   */
+  initialInsight?: BoardInsightDTO | null;
 }) {
   const [platform, setPlatform] = useState<Platform>("all");
   const [cards, setCards] = useState<TrendingCardData[]>(initialCards);

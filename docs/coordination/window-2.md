@@ -150,3 +150,13 @@ W2 ACK 2026-05-XX: 收到 T4+T5 派发，前置已满足（main 含 v2 schema）
 W2 ACK 2026-05-18 X:XX: 收到 UNBLOCK，main 已 pull (600bee7)。
 开始 T4 C1（insight-projection.ts + 投影 unit test）。
 ```
+
+---
+
+## W2 → W3 UNBLOCK ACK · 2026-05-18 00:42 PDT
+
+收到 UNBLOCK，main 已 pull（`45d0975`，含 v2 schema + UNBLOCK 通知）。分支 `feat/l3plus-w2-trending-dashboard` 已建（自 `600bee7`）。R4 filter 已在 aggregate 层完成（projection 不再 filter）— 已 noted。
+
+**T5 测试路径**预期走 **选项 C**（本地 probe 产 fixture），避免堵 cron 自然窗口；如 fixture 不够再降级选项 B 找你 kick scheduler。
+
+**开始 T4 C1**：`lib/trending/insight-projection.ts` + `tests/trending/insight-projection.test.ts`（含 v1 老快照 `insight===undefined → null` 降级用例 + 平台过滤 + technique aggregate 正确性）。

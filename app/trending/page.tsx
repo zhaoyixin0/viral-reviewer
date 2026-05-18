@@ -4,7 +4,12 @@ import { Footer } from "@/components/ui/Footer";
 import { TrendingBoard } from "@/components/trending/TrendingBoard";
 import { readLatestTwoSnapshots } from "@/lib/trending/snapshot-store";
 import { computeVelocity, computeHashtagVelocity } from "@/lib/trending/velocity";
-import type { TrendingCard, TrendingHashtagCard } from "@/app/api/trending/route";
+import { projectInsightForBoard } from "@/lib/trending/insight-projection";
+import type {
+  TrendingCard,
+  TrendingHashtagCard,
+  BoardInsightDTO,
+} from "@/app/api/trending/route";
 
 export const runtime = "nodejs";
 // 看板按周更新,RSC 缓存 1 小时即可
@@ -17,6 +22,10 @@ export default async function TrendingPage() {
   let cards: TrendingCard[] = [];
   // v4.1:hashtag 级 velocity 精简投影,注入 TrendingBoard(spec 4.7)
   let initialTrendingHashtags: TrendingHashtagCard[] = [];
+  // T4 C3 (L3+ plan §5):board DTO 投影。v1 老快照 → null (T5 降级只渲 videos tab)。
+  // RSC 无 platform query,默认走 "all"。客户端切换平台时 fetch /api/trending?platform=X
+  // 自带 insight 字段(C2 落地),覆盖 initialInsight。
+  let initialInsight: BoardInsightDTO | null = null;
 
   if (current) {
     week = current.week;
@@ -43,6 +52,8 @@ export default async function TrendingPage() {
       videoCount: h.videoCount,
       velocity: h.velocity,
     }));
+
+    initialInsight = projectInsightForBoard(current.insight, "all");
   }
 
   return (
@@ -65,6 +76,7 @@ export default async function TrendingPage() {
           initialWeek={week}
           initialCards={cards}
           initialTrendingHashtags={initialTrendingHashtags}
+          initialInsight={initialInsight}
         />
       </main>
       <Footer />
