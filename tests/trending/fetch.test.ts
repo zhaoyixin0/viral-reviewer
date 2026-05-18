@@ -308,3 +308,56 @@ describe("fetchTrendingSnapshot — L3+ enrichment pipeline (T3)", () => {
     expect(snap.insight?.velocity.techniqueWoW).toEqual({});
   });
 });
+
+describe("fetchTrendingSnapshot — T8 upstream AbortSignal forwarding", () => {
+  it("forwards signal into TikTok Stage 1 (scrapeTikTokTrendingHashtags)", async () => {
+    const ctrl = new AbortController();
+    await fetchTrendingSnapshot({ signal: ctrl.signal });
+    expect(scrapeTikTokTrendingHashtagsMock).toHaveBeenCalledWith(
+      expect.objectContaining({ signal: ctrl.signal }),
+    );
+  });
+
+  it("forwards signal into TikTok Stage 2 (scrapeTikTokByHashtag — every call)", async () => {
+    const ctrl = new AbortController();
+    await fetchTrendingSnapshot({ signal: ctrl.signal });
+    expect(scrapeTikTokByHashtagMock.mock.calls.length).toBeGreaterThan(0);
+    for (const call of scrapeTikTokByHashtagMock.mock.calls) {
+      expect(call[0]).toEqual(expect.objectContaining({ signal: ctrl.signal }));
+    }
+  });
+
+  it("forwards signal into Instagram scrape (scrapeInstagramByHashtag)", async () => {
+    const ctrl = new AbortController();
+    await fetchTrendingSnapshot({ signal: ctrl.signal });
+    expect(scrapeInstagramByHashtagMock).toHaveBeenCalledWith(
+      expect.objectContaining({ signal: ctrl.signal }),
+    );
+  });
+
+  it("forwards signal into Haiku metadata enrichBatch (research/enrich-one)", async () => {
+    const ctrl = new AbortController();
+    await fetchTrendingSnapshot({ signal: ctrl.signal });
+    const enrichOpts = enrichBatchMock.mock.calls[0][1];
+    expect(enrichOpts?.signal).toBe(ctrl.signal);
+  });
+
+  it("forwards signal into topic classifier (classifyTopics)", async () => {
+    const ctrl = new AbortController();
+    await fetchTrendingSnapshot({ signal: ctrl.signal });
+    const classifyOpts = classifyTopicsMock.mock.calls[0][2];
+    expect(classifyOpts?.signal).toBe(ctrl.signal);
+  });
+
+  it("when no signal is passed, upstream stages receive signal: undefined (backward compat)", async () => {
+    await fetchTrendingSnapshot();
+    const trendingArg = scrapeTikTokTrendingHashtagsMock.mock.calls[0][0];
+    expect(trendingArg.signal).toBeUndefined();
+    const igArg = scrapeInstagramByHashtagMock.mock.calls[0][0];
+    expect(igArg.signal).toBeUndefined();
+    const enrichOpts = enrichBatchMock.mock.calls[0][1];
+    expect(enrichOpts?.signal).toBeUndefined();
+    const classifyOpts = classifyTopicsMock.mock.calls[0][2];
+    expect(classifyOpts?.signal).toBeUndefined();
+  });
+});

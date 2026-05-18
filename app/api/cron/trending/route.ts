@@ -19,7 +19,7 @@ const KEEP_WEEKS = 8;
  * attempt-deadline. Gives the enrichment pipeline a ~30s buffer to land its
  * partial result onto GCS before Scheduler abandons the request.
  */
-const PIPELINE_TIMEOUT_MS = 270_000;
+const PIPELINE_TIMEOUT_MS = 540_000;
 
 // P5.3: lazy singleton — google-auth-library 内部 cache JWKS, 每实例独立缓存,
 // container 生命周期复用避免每请求重建 HTTP client + JWKS fetch round-trip。

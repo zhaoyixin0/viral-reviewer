@@ -85,3 +85,40 @@ describe("classifyTopics", () => {
     expect(out[1].topic).toBe("旅行 vlog");
   });
 });
+
+describe("classifyTopics — AbortSignal handling", () => {
+  it("throws AbortError when signal is already aborted before first batch", async () => {
+    const ctrl = new AbortController();
+    ctrl.abort();
+    await expect(
+      classifyTopics([vid("a")], ["早餐健身"], { signal: ctrl.signal }),
+    ).rejects.toThrowError(/Aborted/);
+    expect(createMock).not.toHaveBeenCalled();
+  });
+
+  it("throws AbortError between batches when signal aborts mid-flight", async () => {
+    const ctrl = new AbortController();
+    const videos = [vid("a"), vid("b"), vid("c"), vid("d")];
+    let callCount = 0;
+    createMock.mockImplementation(async () => {
+      callCount++;
+      if (callCount === 2) ctrl.abort();
+      return {
+        content: [
+          { type: "text", text: JSON.stringify({ topic: "x", confidence: 0.5 }) },
+        ],
+      };
+    });
+    await expect(
+      classifyTopics(videos, ["x"], { concurrency: 2, signal: ctrl.signal }),
+    ).rejects.toThrowError(/Aborted/);
+    expect(createMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("respects custom concurrency without breaking existing API", async () => {
+    mockReply({ topic: "x", confidence: 0.5 });
+    mockReply({ topic: "y", confidence: 0.6 });
+    const out = await classifyTopics([vid("a"), vid("b")], ["x", "y"], { concurrency: 1 });
+    expect(out).toHaveLength(2);
+  });
+});
