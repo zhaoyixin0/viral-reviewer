@@ -15,9 +15,16 @@ export const runtime = "nodejs";
 const KEEP_WEEKS = 8;
 
 /**
- * L3+ T3 (plan §4.3): hard watchdog ahead of the Cloud Scheduler 180s
- * attempt-deadline. Gives the enrichment pipeline a ~30s buffer to land its
- * partial result onto GCS before Scheduler abandons the request.
+ * Hard watchdog ahead of the Cloud Scheduler 600s attempt-deadline. Gives the
+ * enrichment pipeline a ~60s buffer to land its partial result onto GCS before
+ * Scheduler abandons the request.
+ *
+ * History: T3 set 150s (cron-only path), T7 bumped to 270s after prod cron
+ * timeouts, T8 bumped to 540s when per-video CutPlan enrichment landed end-to-
+ * end AbortSignal forwarding and the pipeline started exercising the full
+ * weekly budget. If you bump this further, also raise Cloud Scheduler's
+ * attemptDeadline (currently 600s) — buffer must stay ≥30s so partial writes
+ * complete before Scheduler aborts.
  */
 const PIPELINE_TIMEOUT_MS = 540_000;
 
