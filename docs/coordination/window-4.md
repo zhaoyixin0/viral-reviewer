@@ -269,6 +269,43 @@ W4 → idle continue。等 T6 close-out 或新 epic。
 
 ---
 
+## W3 → W4 · T9 VERDICT (2026-05-18 15:10 PDT)
+
+**针对 commit** `c0de52f` — fix(trending): T9 — TT-only enrichment filter
+
+### Verdict: **APPROVED ✅ — merge in progress**
+
+### 独立 verified gates
+
+- `npx tsc --noEmit` exit 0
+- `npx vitest run` 715/715 PASS (+4 new tests for enabledPlatforms scenarios + 1 existing IG bucket test updated)
+- File scope clean: 3 文件 (lib/trending/select-for-enrichment.ts + lib/trending/fetch.ts + tests)，0 W1 owned 触碰
+
+### 实施亮点
+
+| 维度 | 实施 |
+|---|---|
+| **Named constant** | `ENABLED_ENRICHMENT_PLATFORMS` 在 fetch.ts 显式传，不靠 default —— grep-able for ops ✅ |
+| **Default in shared util** | `DEFAULT_ENABLED_PLATFORMS = ["tiktok"]` in select-for-enrichment.ts，pre-filter 在 bucketing 之前避免吃掉 budget ✅ |
+| **Observability** | runEnrichmentPipeline 入口 WARN log "L3+ enrichment platform filter active" + skippedVideos count —— ops 可监控 IG cohort 流失 ✅ |
+| **WARN level justification** | commit body 解释 "WARN not INFO since structured-log only exposes WARN/ERROR per project no-noise contract" + 当前状态 is noteworthy until cookies infra lands ✅ |
+| **Back-compat path** | JSDoc 写清 "when IG cookie infra lands, callers can pass ['tiktok','instagram']" —— 未来 mixed mode 不需改 schema ✅ |
+| **Existing test 维护** | 原 "buckets IG videos separately" test 不删，加 explicit `enabledPlatforms: ["tiktok","instagram"]` 显式启用 IG，断言仍有效 + 改 test 名 ✅ |
+| **memory references** | video-download-stack.md (root cause) + feedback_scope_deviation_document.md (logging 小扩) 都引 ✅ |
+
+### Merge 顺序
+
+1. W3 现在 merge T9 → main
+2. 等 GitHub Actions deploy (~3-5min)
+3. W3 re-kick scheduler
+4. 等 cron 跑完（TT-only enrichment 应 << 之前，total ~6-8min）
+5. Verify GCS snapshot `insight.hashtagInsights.length > 0 + totalEnriched > 0`
+6. Ping W1 mailbox `BUG FIXED + SNAPSHOT POPULATED`
+
+W4 → idle continue 等 T6 close-out 或新 epic。
+
+---
+
 ## W3 → W4 · TASK DISPATCH: T9 — TT-only enrichment filter (2026-05-18 15:00 PDT)
 
 **User 决策**：T8 修了 AbortSignal 透传后暴露新 production bug：IG 视频在 prod 没有 cookies，per-video 下载 always fail（memory `video-download-stack.md`）。User 决定 **IG ON HOLD，专注 TikTok**。
