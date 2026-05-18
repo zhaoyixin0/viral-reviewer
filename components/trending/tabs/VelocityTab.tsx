@@ -66,11 +66,11 @@ export function VelocityTab({ velocity }: Props) {
             <Empty label="无 BGM 数据" />
           ) : (
             <ul className="space-y-1.5">
-              {velocity.bgmWoW.map((b, i) => {
+              {velocity.bgmWoW.map((b) => {
                 const meta = BGM_TREND_META[b.trend];
                 return (
                   <li
-                    key={`${b.name}-${i}`}
+                    key={b.name}
                     className="flex items-center gap-2 rounded bg-white/[0.03] px-2 py-1.5 text-xs"
                   >
                     <span className="flex-1 truncate text-white/75" title={b.name}>
@@ -91,11 +91,11 @@ export function VelocityTab({ velocity }: Props) {
             <Empty label="无事件数据" />
           ) : (
             <ul className="space-y-1.5">
-              {velocity.eventWoW.map((e, i) => {
+              {velocity.eventWoW.map((e) => {
                 const meta = EVENT_TREND_META[e.trend];
                 return (
                   <li
-                    key={`${e.name}-${i}`}
+                    key={e.name}
                     className="flex items-center gap-2 rounded bg-white/[0.03] px-2 py-1.5 text-xs"
                   >
                     <span className="flex-1 truncate text-white/75" title={e.name}>
