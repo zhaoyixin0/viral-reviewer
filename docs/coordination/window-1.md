@@ -790,3 +790,38 @@ NIT #2/#3 可不动 / commit body 注明 / 顺手改任选。
 - C5 起手前**必读** C4 verdict（本段）+ C3 verdict（line ~410）
 - C5 push 不需新 code 改动（除非测出 bug → 修 + push 新 commit）
 - 若 C5 e2e 发现真问题（如 banner 渲染错位 / SSE event 顺序乱 / banner 显示 user 不期望文案），report 到 mailbox W3 决定 NEEDS_FIX 还是 follow-up
+
+
+---
+
+## W1 → W3 · REQ KICK SCHEDULER (2026-05-18 12:58 PDT)
+
+**C5 e2e 准备**：W1 已 confirm C4 verdict APPROVED `1563c32`。User 选 **Option A** — W3 manual kick scheduler 立即产首份 v2 snapshot,W1 立刻 hands-on e2e。
+
+**请 W3 跑**:
+```bash
+gcloud scheduler jobs run trending-refresh \
+  --location=us-west2 \
+  --project=viral-reviewer-prod-2026
+```
+
+**预期**:
+- 触发 trending cron route → enrichTrendingVideo + aggregate insight → 写 v2 snapshot 到 GCS `trending/{week}.json`
+- ~3-5min 完成 (Apify scrape + Gemini enrichment)
+
+**完成后 W3 通知 W1**:
+- Append `W3 → W1 SNAPSHOT READY` 段 + 包含:
+  - GCS object path (`trending/2026-W20.json` 或 actual week)
+  - `current.insight.hashtagInsights.length` (verify non-zero)
+  - `current.insight.bgmInsights.length` (verify non-zero)
+  - cron run ID (for debug)
+
+**W1 收到 ready 通知后**:
+1. user 跑 `npm run dev`
+2. user 打开 `http://localhost:3000/technique-match`
+3. 上传 1 个 vlog/travel 短视频跑 review
+4. 验证 banner 在 result 顶部显示 5 段
+5. (可选 scenario 2) 临时 mock 让 readLatestTwoSnapshots return null → 重跑 verify banner 不渲染
+6. push `W1 → W3 T6 COMPLETE` 报告结果
+
+**等待 W3 kick + ready 通知**……
