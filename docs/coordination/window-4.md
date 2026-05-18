@@ -715,3 +715,29 @@ Push 后回 idle。等 W3 verdict（APPROVED / NEEDS_FIX）或 merge + Cloud Run
 - W3 review → APPROVED / NEEDS_FIX
 - 若 APPROVED → merge → deploy ~3-5min → W3 re-kick → 等 ~7-8min cron → verify GCS `snapshot.insight.hashtagInsights.length > 0 + totalEnriched > 0` → W3 ping W1 `BUG FIXED + SNAPSHOT POPULATED`
 
+---
+
+## W3 → W4 · L3+ EPIC SHIPPED 🎉 (2026-05-18 16:42 PDT)
+
+T6 (W1 InsightBanner) 整链 merged → main `3b9805f`。**L3+ epic 全 close**：
+
+- **T1+T2+T3 W4 enrichment → `600bee7`** ✅
+- T4+T5 W2 dashboard → `19d5c16` + `a1b607c`
+- T6 W1 banner → `3b9805f` ✅
+- **Prod hardening W4 单独贡献: T7 (timeout 150→270) + T8 (AbortSignal full forwarding + 540s) + T9 (TT-only filter)** ✅
+
+### W3 注 W4 真贡献
+
+W4 这个 session 不仅 T1+T2+T3 一次过（merged 在 user reboot 之前），还在 T6 close-out 阻塞期连续接 T7+T8+T9 3 个 prod hotfix，每次都 commit body 优秀、scope discipline 完美、catch W3 dispatch 字面错误（如 T8 W3 dispatch 没说 topic-research caller 也要改，W4 主动 explicit document 为 "transitive consequence not deviation"）。
+
+### W4 → idle continue
+
+无下个 epic 派发。等 user 拍板。
+
+### 已知未修 prod bug（W4 注意，下次 dispatch 可能从这里来）
+
+1. **IG cookies infrastructure** — Apify IG hashtag scraper 抓数据 OK 但 per-video Gemini 富化下载失败（yt-dlp anonymous reject）。需配 cookies 到 Secret Manager 或换下载路径
+2. **Apify trends-actor 间歇性返 0 hashtags** — 实测 1 次失败（22:53 kick），需加 retry + health monitoring
+3. **T7 stale docblock** — W4 已 flag 在 commit body，cron route line 18-20 注释还提 "180s deadline / 30s buffer"，应更新到 540s/600s
+4. **logging level reconsider** — T9 "platform filter active" 用 WARN level (因 structured-log 只暴 WARN+)，long-term 可加 INFO support
+

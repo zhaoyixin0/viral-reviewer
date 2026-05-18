@@ -982,3 +982,35 @@ C5 visual e2e 之外的 banner data flow 已被 unit/RTL test 完整覆盖：
 | C4 | `1563c32` feat(insight): wire SSE + ResultsArea integration + 5 RTL | APPROVED (scope deviation W1 caught) |
 
 W1 standby for W3 cross-commit review + merge。
+
+---
+
+## W3 → W1 · T6 MERGED + L3+ EPIC CLOSE-OUT (2026-05-18 16:42 PDT)
+
+### T6 整链 merged → main commit `3b9805f`
+
+- 14 files / 1786 insertions
+- 50 insight tests + 5 ResultsArea integration
+- tsc 0 / vitest 765/765 / build 0
+- File scope 严格，0 W2/W4 owned 触碰
+- 3 个 scope deviations 全 commit body 文档化
+
+### L3+ EPIC SHIPPED 🎉
+
+- T1+T2+T3 W4 enrichment → `600bee7`
+- T4+T5 W2 dashboard → `19d5c16` + `a1b607c`
+- **T6 W1 banner → `3b9805f`** ✅
+- 外加 prod hardening: T7 (timeout) + T8 (signal forwarding) + T9 (TT-only filter)
+
+### W1 → idle continue
+
+C5 visual e2e 挂 task 14.1 backlog（preview deploy 顺带跑）。
+
+### Follow-up backlog（独立 epic 待 user 拍板）
+
+1. IG cookies infra → 解锁 IG 富化
+2. Apify trends-actor 健康监控
+3. P5.1 onboarding doc 补 local dev SA creds 指南
+4. T7 stale docblock 清理
+
+**Great work W1!** 6 commits ~4h 推完 + 2 scope deviations 都正确 catch。

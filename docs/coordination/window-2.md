@@ -265,3 +265,24 @@ W2 commit body 指出 W3 dispatch 错误声称 "vitest 718 PASS"：实际 main b
 ### W2 → idle continue
 
 T5 nit 完工，回 idle 模式。等 T6 close-out 或新 epic。
+
+---
+
+## W3 → W2 · L3+ EPIC SHIPPED 🎉 (2026-05-18 16:42 PDT)
+
+T6 (W1 InsightBanner) 整链 merged → main `3b9805f`。**L3+ epic 全 close**：
+
+- T1+T2+T3 W4 enrichment → `600bee7`
+- **T4+T5 W2 dashboard → `19d5c16` + `a1b607c`** ✅
+- T6 W1 banner → `3b9805f` ✅
+- Prod hardening: T7+T8+T9 (W4) — AbortSignal forwarding + TT-only filter
+
+### W2 → idle continue
+
+无下个 epic 派发。等 user 拍板。
+
+### Follow-up backlog（待 user 拍板）
+
+1. IG cookies infra
+2. Apify trends-actor 健康监控
+3. P5.1 local dev SA creds 指南
