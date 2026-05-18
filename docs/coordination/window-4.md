@@ -231,6 +231,229 @@ PIPELINE_TIMEOUT_MS 150s → 270s 已改 + gates 全绿，push <SHA>，等 W3 re
 
 ---
 
+## W3 → W4 · TASK DISPATCH: T8 — Full AbortSignal forwarding + 540s bump (2026-05-18 14:38 PDT)
+
+**User 决策**：T7 的 270s bump 治标不治本（user 实测确认 Apify scrape 7.5min 跑满，abort 仅推迟，upstream 不响应），**走完整 D 路径修真 bug**。T6 close-out 顺延，本 fix 优先。
+
+### 背景
+
+- T7 hotfix 后 re-kick：snapshot 仍然 **insight 全空**
+- 日志确认 `L3+ enrichment pipeline aborted before start` 仍出现（gitSha c5595d7）
+- 实测 Apify scrape 全程 ~7.5min (450s)，超过 270s budget
+- AbortSignal 在 Apify SDK 的 `client.actor(...).call(...)` **完全不被支持**（SDK 内部 long-polling，无 native signal）
+- 即使 signal fire，upstream 阶段继续跑到自然结束，enrichment 入口看到 aborted → skip
+
+### W4 owned files (本 task 全覆盖)
+
+| 文件 | 改动类型 |
+|---|---|
+| `lib/apify/scrapers.ts` | 3 函数 add signal param + race wrapper |
+| `lib/trending/fetch.ts` | `fetchTikTokTwoStage` accept signal + 主 body 透传到 4 阶段 |
+| `lib/research/enrich-one.ts` | `enrichBatch` accept signal + 迭代间 check |
+| `lib/trending/topic-classifier.ts` | `classifyTopics` accept signal |
+| `app/api/cron/trending/route.ts` | bump `PIPELINE_TIMEOUT_MS = 270_000` → `540_000` |
+| `tests/apify/scrapers.test.ts` | new: signal abort race 测试 (3 函数) |
+| `tests/trending/fetch.test.ts` | new or extend: fetchTikTokTwoStage abort 测 |
+| `tests/research/enrich-one.test.ts` | extend: enrichBatch abort 迭代间停止 |
+| `tests/trending/topic-classifier.test.ts` | extend: classifyTopics abort 测 |
+
+### 关键设计点
+
+#### 1. Apify race wrapper
+
+Apify SDK `client.actor(...).call(...)` 不接 signal。包一层 race 让 JS-side wait 可 bail：
+
+```ts
+// lib/apify/scrapers.ts 顶部加 helper（或抽到 lib/apify/abort-race.ts 独立文件）
+async function raceAbort<T>(p: Promise<T>, signal?: AbortSignal): Promise<T> {
+  if (!signal) return p;
+  if (signal.aborted) throw new DOMException("Aborted", "AbortError");
+  return new Promise<T>((resolve, reject) => {
+    const onAbort = () => reject(new DOMException("Aborted", "AbortError"));
+    signal.addEventListener("abort", onAbort, { once: true });
+    p.then(
+      (v) => { signal.removeEventListener("abort", onAbort); resolve(v); },
+      (e) => { signal.removeEventListener("abort", onAbort); reject(e); },
+    );
+  });
+}
+```
+
+**重要语义**：race wrapper 只让 JS-side wait 提前 reject。Apify actor 仍在 Apify 服务器上跑（账单仍计入）—— 这是 SDK 局限，不是我们能修的。我们获益：abort 时 cron route 不再卡等无意义 wait，能 cleanly 返回 partial snapshot。
+
+#### 2. 3 个 scrape 函数签名扩展
+
+```ts
+export async function scrapeTikTokByHashtag(opts: {
+  hashtags: string[];
+  topic: string;
+  resultsPerPage?: number;
+  signal?: AbortSignal;
+}): Promise<ViralVideo[]> {
+  // ...
+  const run = await raceAbort(client.actor("clockworks/tiktok-scraper").call({...}), opts.signal);
+  const { items } = await raceAbort(client.dataset(run.defaultDatasetId).listItems(), opts.signal);
+  // ...
+}
+```
+
+同样改 `scrapeInstagramByHashtag` + `scrapeTikTokTrendingHashtags`。
+
+#### 3. `fetchTikTokTwoStage` accept signal
+
+```ts
+async function fetchTikTokTwoStage(opts: { signal?: AbortSignal } = {}): Promise<{...}> {
+  try {
+    const stage1 = await scrapeTikTokTrendingHashtags({
+      maxItems: TT_TRENDING_FETCH_LIMIT,
+      signal: opts.signal,
+    });
+    // ...
+  }
+  // Stage 2 parallel:
+  const scrapeResults = await Promise.allSettled(
+    topHashtags.map((h) =>
+      scrapeTikTokByHashtag({
+        hashtags: [h.name],
+        topic: "",
+        resultsPerPage: TT_VIDEOS_PER_HASHTAG,
+        signal: opts.signal,  // 新增
+      }),
+    ),
+  );
+  // ...
+}
+```
+
+#### 4. `fetchTrendingSnapshot` 主 body 透传
+
+```ts
+// 第 148 行 Promise.allSettled
+const [ttResult, igResult] = await Promise.allSettled([
+  fetchTikTokTwoStage({ signal: opts.signal }),  // 新增
+  scrapeInstagramByHashtag({
+    hashtags: IG_HOT_HASHTAGS,
+    topic: "",
+    resultsLimit: IG_RESULTS_LIMIT,
+    signal: opts.signal,  // 新增
+  }),
+]);
+
+// 第 199 行 enrichMetadataBatch
+const enriched = await enrichMetadataBatch(merged, { signal: opts.signal });
+
+// 第 200 行 classifyTopics
+const classified = await classifyTopics(enriched, libraryTopics, { signal: opts.signal });
+```
+
+注意 `enrichMetadataBatch` / `classifyTopics` 的 signal 是新增 param，确认签名签名向后兼容（optional default undefined）。
+
+#### 5. `enrichBatch` (enrich-one.ts) 迭代间 check
+
+L3+ 已有 enrichBatch in `lib/trending/enrich-batch.ts` (新版，accept signal)。但本 task 改的是 `lib/research/enrich-one.ts` 的旧 enrichBatch（用于 metadata 富化）。两者不同函数，别混。
+
+```ts
+export async function enrichBatch(
+  videos: ViralVideo[],
+  opts: { signal?: AbortSignal } = {},
+): Promise<ViralVideo[]> {
+  const results: ViralVideo[] = [];
+  for (const v of videos) {
+    if (opts.signal?.aborted) throw new DOMException("Aborted", "AbortError");
+    results.push(await enrichOneVideo(v));
+  }
+  return results;
+}
+```
+
+如果 enrichOneVideo 内部 Haiku 调用要 forward signal，那再深一层（看 enrichOneVideo 现签名决定，**如果太深可先到 enrichBatch 层 OK**，commit body explicit document deferred）。
+
+#### 6. `classifyTopics` (topic-classifier.ts) accept signal
+
+可能也是 Haiku batch 调用，模式同上：迭代间 check signal。
+
+#### 7. `PIPELINE_TIMEOUT_MS` bump
+
+`app/api/cron/trending/route.ts:22` `270_000` → `540_000`。Cloud Scheduler attemptDeadline=600s，留 60s buffer for writeSnapshot + pruneOldSnapshots + return。
+
+### 测试覆盖（新 + 扩）
+
+| 测试 | 断言 |
+|---|---|
+| `scrapeTikTokByHashtag` with aborted signal → throws AbortError | Apify call 不被 await 完 |
+| `scrapeInstagramByHashtag` aborted → AbortError | 同上 |
+| `scrapeTikTokTrendingHashtags` aborted → AbortError | 同上 |
+| `fetchTikTokTwoStage` aborted in Stage 2 → ok:false return | Stage 2 race 触发 reject |
+| `enrichBatch` (research) aborted mid-loop → throws AbortError | 迭代间 check 生效 |
+| `classifyTopics` aborted → throws AbortError | 迭代间 check 生效 |
+
+Mock Apify client 在 test fixture 中（return pending Promise + 用 fake signal abort 触发）。
+
+### 执行步骤
+
+```bash
+git checkout feat/l3plus-w4-enrichment
+git pull origin feat/l3plus-w4-enrichment
+git pull origin main                                  # 拉最新 (含 T7 merge)
+
+# 编辑 6 个 src 文件 + 4 个 test 文件
+
+npx tsc --noEmit                                       # exit 0
+npx vitest run                                         # 全套绿
+npm run build                                          # exit 0
+
+git add lib/apify/scrapers.ts lib/trending/fetch.ts lib/research/enrich-one.ts lib/trending/topic-classifier.ts app/api/cron/trending/route.ts tests/apify/ tests/trending/fetch.test.ts tests/research/enrich-one.test.ts tests/trending/topic-classifier.test.ts
+git commit -m "fix(trending): T8 — forward AbortSignal through Apify scrape + metadata + topic-classify + bump PIPELINE_TIMEOUT_MS to 540s"
+git push origin feat/l3plus-w4-enrichment
+```
+
+**Commit body 必含**：
+- T7 (270s bump) 不充分原因（实测 scrape 7.5min）
+- Apify SDK 不原生支持 signal，race wrapper 是 best-effort
+- 5 个 src 文件 + 4 个 test 文件 scope
+- 540s budget 在 Cloud Scheduler 600s 内留 60s buffer
+- 引用 memory `feedback_scope_deviation_document.md` / `stage2-failure-loses-stage1.md`
+
+### Scope 边界（**严禁扩**）
+
+- ❌ 不动 `lib/trending/enrich-batch.ts`（L3+ T1 W4 自己写的新 enrichBatch，已 accept signal，无需改）
+- ❌ 不动 `enrichOneVideo` 内部 Haiku 调用（如果要 forward signal 太深，commit body deferred 即可）
+- ❌ 不动 `lib/insight/*`（W1 owned，T6 in flight）
+- ❌ 不动 Cloud Scheduler config（attemptDeadline=600s 已够）
+- ❌ 不优化 Apify 抓量（reduce TT_TRENDING_HASHTAG_COUNT 等独立 epic）
+- ❌ 不拆 scrape/enrich 两 cron（架构改动独立 epic）
+
+### Push 后 W3 动作
+
+1. W3 spot-review (<20min，6 文件 + 4 test)
+2. APPROVED → merge → main
+3. 等 GitHub Actions deploy (~5min)
+4. W3 re-kick scheduler
+5. 等 ~7-9min cron 跑完（scrape ~7min + enrich ~1-2min）
+6. Verify GCS snapshot `insight.hashtagInsights.length > 0`
+7. Ping W1 mailbox `BUG FIXED + SNAPSHOT POPULATED`
+
+### 时间估算
+
+- W4 实施 + 自测：35-45min
+- W3 review：15-20min
+- Deploy + kick + cron 跑 + verify：15-20min
+- **Total ~60-75min 到 W1 unblock**
+
+### 完工 ACK
+
+```
+## W4 → W3 ACK · T8 (2026-05-18 XX:XX PDT)
+Signal forwarding 全 6 src + 4 test 文件完成 + PIPELINE_TIMEOUT_MS 540s 已改，gates 全绿，push <SHA>，等 W3 review。
+具体改动概览：
+- raceAbort util in lib/apify/scrapers.ts (or 独立 lib/apify/abort-race.ts)
+- 3 scrape 函数 + fetchTikTokTwoStage + fetchTrendingSnapshot 主 body 全透传 signal
+- enrichBatch (research) + classifyTopics 迭代间 check signal
+- N 个新 unit test 覆盖 abort propagation
+```
+
+---
+
 ## W4 → W3 ACK · T7 hotfix (2026-05-18 13:55 PDT)
 
 PIPELINE_TIMEOUT_MS 150s → 270s 已改 + gates 全绿（tsc 0 / vitest 690/690 / npm run build exit 0），push `4703df4`，等 W3 review。
