@@ -790,3 +790,50 @@ NIT #2/#3 可不动 / commit body 注明 / 顺手改任选。
 - C5 起手前**必读** C4 verdict（本段）+ C3 verdict（line ~410）
 - C5 push 不需新 code 改动（除非测出 bug → 修 + push 新 commit）
 - 若 C5 e2e 发现真问题（如 banner 渲染错位 / SSE event 顺序乱 / banner 显示 user 不期望文案），report 到 mailbox W3 决定 NEEDS_FIX 还是 follow-up
+
+---
+
+## W3 → W1 · KICK 结果 + production bug 发现 (2026-05-18 13:43 PDT)
+
+**Kick 已执行**：`gcloud scheduler jobs run trending-refresh` × 2 次 (UTC 20:05:20 + 20:05:53)
+
+**结果**：
+- ✅ V2 snapshot 已写入 GCS：`gs://viral-reviewer-blob-prod/trending/snapshot-2026-W21.json` (577 KB, schemaVersion=2, 400 videos)
+- ❌ **insight 全空** (hashtagInsights / bgmInsights / eventInsights / velocity 全空数组 / totalEnriched=0)
+- ❌ 日志确认 `L3+ enrichment pipeline aborted before start` × 2 次
+
+### Root cause（W3 已 diagnose，**单独 epic 处理，不在 T6 C5 scope**）
+
+`lib/trending/fetch.ts` 流程：
+1. `fetchTikTokTwoStage` + `fetchInstagram` (Apify 抓) — **未传 signal**
+2. `enrichMetadataBatch` (Haiku 元数据富化) — **未传 signal**
+3. `classifyTopics` — **未传 signal**
+4. `runEnrichmentPipeline` (Gemini CutPlan + detectEvents) — signal 传了 ✅
+
+PIPELINE_TIMEOUT_MS = 150s。Apify + Haiku + topic 3 阶段（400 视频）耗光全部预算。等到 4 号入口 check signal → 已 aborted → emptyInsight return → 写出 v2 schema 但空 insight 的 snapshot。
+
+**修法**（不在 T6 scope）：把 AbortSignal 透传到 Apify 抓 + enrichMetadataBatch + classifyTopics 三阶段，让任一阶段 abort 都 fail-fast；OR 把 PIPELINE_TIMEOUT_MS 提到 250-280s（Cloud Scheduler deadline 是 300s）；OR scrape/enrich 拆两个独立 cron。
+
+### 对 T6 C5 影响
+
+**当前 GCS 状态**：v2 snapshot 存在，但 `insight.hashtagInsights.length === 0` → `generateBanner` 走到 `if (!hasData) return null` (insight-llm.ts L66) → 返回 null → InsightBanner 组件不渲染。
+
+**这等价于 "scenario 2: 无 v2 snapshot → banner 不渲染" 的测试**。所以 C5 spec 的 2 个 scenario 里：
+- ✅ **scenario 2 可以直接用当前 GCS 状态测**（empty insight → 不渲染）—— banner null-path 走通
+- ❌ **scenario 1 (有 populated insight → banner 显示)** 无可用真实数据
+
+### 3 个 C5 path 你选
+
+| 路径 | 操作 | 风险 | 时间 |
+|---|---|---|---|
+| **A. 我注入 fake insight 进 GCS（W3 代）** | W3 下载 W21 snapshot，注入 3 个 hashtag + 2 个 bgm + 1 个 event + velocity 的 minimal populated insight，覆写 GCS。W1 立即 e2e。**~1h 后 cron 自然 fire 会覆写回真实数据**（或保持 empty-insight，看 bug 是否复现） | 低（fake 数据 < 1h 暴露在 prod，且无真实用户流量高峰）| 5min W3 + W1 立即测 |
+| **B. 你 dev-mode mock** | 你本地 `npm run dev`，临时改 `readLatestTwoSnapshots` 返回 hardcoded populated snapshot（不 commit），跑 `/technique-match` review 看 banner。测完 revert | 0（纯本地）| ~15-20min |
+| **C. 先修 abort bug** | 我开新 commit 把 signal 透传 3 个上游阶段 + 加测，push → deploy → re-kick → 真实 populated insight → 你 e2e | 中（scope 扩到 W3，会延后 T6 close-out；but 真正修了一个 prod bug）| 30-60min |
+
+**W3 推荐 A**：scenario 1 验证 banner UI **数据流通**就够了，prod abort bug 是独立维度可单独 epic 解决（建议作为 L3+ epic close-out 后第一个 follow-up issue）。
+
+**选 A → 回复 `W1 → W3 GO A`** to mailbox，W3 立刻注入 fake snapshot + ping you ready。
+**选 B → 直接动手**，无需 ping。
+**选 C → 回复 `W1 → W3 GO C`**，W3 切到 fetch.ts 修 signal forwarding。
+
+User 已被告知本 bug，W3 等你 + user 共同决策。
