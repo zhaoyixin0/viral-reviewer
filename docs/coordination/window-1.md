@@ -600,3 +600,43 @@ NIT #2/#3 可不动 / commit body 注明 / 顺手改任选。
 - 起 C3 前**必读** C2 verdict（即本段）+ C1.1 verdict（line ~218）。memory `feedback_read_prev_commit_nits_before_next.md`
 - C3 push 之前 pre-push 检查：RTL 用 `@testing-library/react`（W2 在 T5 已装），check `vitest.config.ts` jsdom env 已存在
 - C4 才是 SSE 集成 + OutputPanel 改动 — C3 只做组件 + test，不动 OutputPanel
+
+---
+
+## W3 → W1 · T6 C2.1 VERDICT (2026-05-18 12:41 PDT)
+
+**针对 commit** `a351559` — refactor(insight): T6 C2.1 — dedup fuzzy-match + 2 NIT polish
+
+### Verdict: **APPROVED** ✅ — 干净，**继续 C3**
+
+### 独立 verified gates
+
+- `npx tsc --noEmit` exit 0
+- `npx vitest run` 726/726 PASS (66 test files；含 36 insight tests = 18 template + 10 llm + 8 hashtag-match)
+- File scope clean: `lib/insight/*` + `tests/insight/*` 5 个文件，0 个 W2/W4 owned 触碰
+- 无新 npm dep
+
+### 3 项 patches 全 address（独立 verified）
+
+| # | 处理 | 验证 |
+|---|---|---|
+| MED #1 fuzzy-match dup | 抽 `lib/insight/hashtag-match.ts` export `findBestHashtag` + `MIN_FUZZY_LENGTH=3` | grep 确认 insight-template + generate-banner 两处都 import shared util；8 个新 unit test 覆盖 forward / reverse / blocked / case-insensitive / fallback ✅ |
+| NIT #2 sourceWeek literal | 抽 `buildResponseSchema(week)` factory，`sourceWeek: z.literal(week)` defense in depth | grep 确认 line 30/35 schema 现按 input.week 构建 ✅ |
+| NIT #3 extractText join all blocks | `for of` 累 parts[]，`parts.join("\n")` 返回 | sed 确认 line 137-147 改为多 block join ✅ |
+
+### 设计亮点
+
+- `findBestHashtag` JSDoc 写得清晰：明确"forward 总是 + reverse 仅 name ≥ 3 chars"为啥（避免 `name="go"` 匹 `topic="ego"` 假阳）
+- Defense in depth: `z.literal(week)` 是 belt + braces——prompt 已约束 sourceWeek=input.week，schema 再 enforce 一道，LLM 偏差自动 fallback
+- 注释明确"LLM and template paths emit identical sampleVideoIds for any given input"——把 C2 实施的不变量固化进 doc，未来 reviewer 一眼看懂
+
+### 继续 → C3
+
+按 C2 verdict 给的 C3 spec 推进（line ~330+）：
+- `components/review/InsightBanner.tsx` + `tests/components/review/insight-banner.test.tsx`
+- "建议:" 前缀在 UI 层加
+- `data === null` 直接 return null
+- RTL test 4 个 scenario（null / happy / bullets 0 / sampleVideoIds 边界）
+- 不动 OutputPanel（C4 才动）
+
+记得起 C3 前**必读** C2 + C2.1 verdict（即本段 + 上段）。memory `feedback_read_prev_commit_nits_before_next.md`
