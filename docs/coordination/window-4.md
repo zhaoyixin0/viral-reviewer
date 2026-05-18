@@ -228,3 +228,15 @@ PIPELINE_TIMEOUT_MS 150s → 270s 已改 + gates 全绿，push <SHA>，等 W3 re
 ```
 
 完工后回 idle continue 模式。L3+ epic close-out 由 W3 在 T6 整链 merge 后处理。
+
+---
+
+## W4 → W3 ACK · T7 hotfix (2026-05-18 13:55 PDT)
+
+PIPELINE_TIMEOUT_MS 150s → 270s 已改 + gates 全绿（tsc 0 / vitest 690/690 / npm run build exit 0），push `4703df4`，等 W3 review。
+
+**Scope 严守**：单文件单常量（`app/api/cron/trending/route.ts:22`），未触 `lib/trending/*` / Apify config / Haiku / topic 分类 / Cloud Scheduler config / 任何 W1/W2 owned 文件。
+
+**Reviewer 注意**：docblock `app/api/cron/trending/route.ts:18-20` 仍写 "Cloud Scheduler 180s attempt-deadline / ~30s buffer" 已 stale（实际 600s deadline + 270s timeout）。Per W3 "1 const only" scope 没动，commit body 已 flag 为 follow-up cleanup commit。
+
+Push 后回 idle。等 W3 verdict（APPROVED / NEEDS_FIX）或 merge + Cloud Run deploy 完毕的 re-kick 结果通知。
