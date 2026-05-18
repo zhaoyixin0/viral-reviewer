@@ -44,7 +44,9 @@ export function BgmTab({ bgms }: Props) {
       <h2 className="mb-3 text-sm font-semibold text-white/70">本周热门 BGM (top 10)</h2>
       <ul className="space-y-2">
         {bgms.map((b, idx) => {
-          const meta = b.trend ? TREND_META[b.trend] : null;
+          // reviewer M1:用 !== undefined 替 truthy check,与 BgmTabEntry.trend?:
+          // optional 语义精确对齐,防未来 BgmTrend 加入 null 时静默放 bug。
+          const meta = b.trend !== undefined ? TREND_META[b.trend] : null;
           // W3 carryover #2:严格 === true,见 file-level JSDoc
           const isExplicitlyTrending = b.trending === true;
           return (
