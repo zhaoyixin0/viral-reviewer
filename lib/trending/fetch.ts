@@ -36,8 +36,82 @@ const ENRICH_TOP_PER_HASHTAG = 3;
 const ENRICH_MAX_TOTAL = 15;
 const ENRICH_CONCURRENCY = 3;
 
+/**
+ * Stage 1 (clockworks/tiktok-trends-scraper) intermittently returns 0
+ * hashtags despite a successful actor run — observed in prod on 2026-05-18
+ * 22:53Z cron run. Single immediate retry covers transient actor flakes.
+ *
+ * Budget cost: Stage 1 typically ~20-40s; one retry pushes worst-case
+ * Stage 1 time to ~80s. PIPELINE_TIMEOUT_MS=540s easily absorbs this.
+ */
+const MAX_STAGE1_ATTEMPTS = 2;
+
 function failedMeta(source: PlatformMeta["source"]): PlatformMeta {
   return { source, actorRun: "", rawCount: 0, enrichedCount: 0, ok: false };
+}
+
+/**
+ * Stage 1 trends-scraper with retry on empty/error.
+ *
+ * Retry triggers:
+ *   - actor throws (network error / actor crash)
+ *   - actor returns 0 hashtags (apparent success but no data — likely
+ *     trends-actor flake; treat as failure for retry purposes)
+ *
+ * Abort-aware: re-checks `signal.aborted` before each attempt so an
+ * already-cancelled pipeline doesn't burn retry budget. The Apify SDK call
+ * itself is signal-forwarded via raceAbort inside scrapers.ts.
+ *
+ * Returns the last result (success or final empty/error state) plus
+ * `attempts` for observability — does NOT throw on final failure (matches
+ * fetchTikTokTwoStage's existing "Stage 1 failed → ok=false" contract).
+ */
+async function runStage1WithRetry(opts: { signal?: AbortSignal }): Promise<{
+  hashtags: TrendingHashtag[];
+  runId: string;
+  attempts: number;
+}> {
+  let lastErr: unknown = null;
+  for (let attempt = 1; attempt <= MAX_STAGE1_ATTEMPTS; attempt++) {
+    if (opts.signal?.aborted) {
+      log.warn("TikTok Stage 1 aborted before attempt", { attempt });
+      return { hashtags: [], runId: "", attempts: attempt - 1 };
+    }
+    try {
+      const result = await scrapeTikTokTrendingHashtags({
+        maxItems: TT_TRENDING_FETCH_LIMIT,
+        signal: opts.signal,
+      });
+      if (result.hashtags.length === 0) {
+        if (attempt < MAX_STAGE1_ATTEMPTS) {
+          log.warn("TikTok Stage 1 returned 0 hashtags, retrying", {
+            attempt,
+            runId: result.runId,
+          });
+          continue;
+        }
+        log.error("TikTok Stage 1 returned 0 hashtags after retry", {
+          attempts: attempt,
+          runId: result.runId,
+        });
+        return { hashtags: [], runId: result.runId, attempts: attempt };
+      }
+      return { hashtags: result.hashtags, runId: result.runId, attempts: attempt };
+    } catch (e) {
+      lastErr = e;
+      if (attempt < MAX_STAGE1_ATTEMPTS) {
+        log.warn("TikTok Stage 1 threw, retrying", { attempt, err: e });
+        continue;
+      }
+      log.error("TikTok Stage 1 threw after retry", {
+        attempts: attempt,
+        err: lastErr,
+      });
+      return { hashtags: [], runId: "", attempts: attempt };
+    }
+  }
+  // Unreachable given the loop terminates by return; satisfies TS exhaustiveness.
+  return { hashtags: [], runId: "", attempts: MAX_STAGE1_ATTEMPTS };
 }
 
 /**
@@ -55,19 +129,13 @@ async function fetchTikTokTwoStage(opts: { signal?: AbortSignal } = {}): Promise
   videos: ViralVideo[];
   runId: string;
   ok: boolean;
+  stage1Attempts: number;
 }> {
-  let hashtags: TrendingHashtag[] = [];
-  let runId = "";
-  try {
-    const stage1 = await scrapeTikTokTrendingHashtags({
-      maxItems: TT_TRENDING_FETCH_LIMIT,
-      signal: opts.signal,
-    });
-    hashtags = stage1.hashtags;
-    runId = stage1.runId;
-  } catch (e) {
-    log.error("TikTok Stage 1 failed", { err: e });
-    return { hashtags: [], videos: [], runId: "", ok: false };
+  const stage1 = await runStage1WithRetry({ signal: opts.signal });
+  const { hashtags, runId, attempts: stage1Attempts } = stage1;
+  if (hashtags.length === 0) {
+    // Either retry exhausted or aborted — runStage1WithRetry already logged.
+    return { hashtags: [], videos: [], runId, ok: false, stage1Attempts };
   }
 
   // Stage 2:按 rank 升序遍历 top-N hashtag,首次命中锁定 trendingContext。
@@ -114,7 +182,7 @@ async function fetchTikTokTwoStage(opts: { signal?: AbortSignal } = {}): Promise
       hashtagCount: topHashtags.length,
     });
   }
-  return { hashtags, videos, runId, ok };
+  return { hashtags, videos, runId, ok, stage1Attempts };
 }
 
 export type FetchTrendingOptions = {
@@ -141,6 +209,7 @@ export type FetchTrendingOptions = {
 export async function fetchTrendingSnapshot(
   opts: FetchTrendingOptions = {},
 ): Promise<TrendingSnapshot> {
+  const startTs = Date.now();
   let trendingHashtags: TrendingHashtag[] = [];
   let ttVideos: ViralVideo[] = [];
   let ttMeta: PlatformMeta = failedMeta("trends-actor");
@@ -169,6 +238,7 @@ export async function fetchTrendingSnapshot(
       rawCount: tt.videos.length, // Stage 2 视频数(spec L2)
       enrichedCount: 0,
       ok: tt.ok,                 // Stage 1 失败 / Stage 2 全失败 → false
+      retryAttempts: tt.stage1Attempts,
     };
   } else {
     // fetchTikTokTwoStage 内部已 catch Stage 1 错误并返回 ok:false,
@@ -184,6 +254,7 @@ export async function fetchTrendingSnapshot(
       rawCount: igVideos.length,
       enrichedCount: 0,
       ok: true,
+      retryAttempts: 1,
     };
   } else {
     log.error("Instagram scrape failed", { reason: igResult.reason });
@@ -220,6 +291,24 @@ export async function fetchTrendingSnapshot(
         signal: opts.signal,
         useLLM: !opts.skipLLMEventDetection,
       });
+
+  // Health summary for ops dashboard / log grep (Item 2 of backlog dispatch).
+  // Emitted at WARN because structured-log only exposes WARN+ERROR — the line
+  // is operational signal worth surfacing on every cron run, not an error.
+  // Filter on `event: "trending pipeline health"` to isolate from real warns.
+  log.warn("trending pipeline health", {
+    event: "trending pipeline health",
+    week,
+    tt_hashtag_count: trendingHashtags.length,
+    tt_video_count: ttMeta.rawCount,
+    tt_retry_attempts: ttMeta.retryAttempts ?? 0,
+    tt_ok: ttMeta.ok,
+    ig_video_count: igMeta.rawCount,
+    ig_ok: igMeta.ok,
+    partial: !ttMeta.ok || !igMeta.ok,
+    insight_enriched: insight?.totalEnriched ?? 0,
+    total_runtime_ms: Date.now() - startTs,
+  });
 
   return {
     schemaVersion: TRENDING_SCHEMA_VERSION,

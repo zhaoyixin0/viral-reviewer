@@ -28,6 +28,11 @@ export type PlatformMeta = {
   enrichedCount: number;
   /** 该平台本次抓取是否成功 */
   ok: boolean;
+  /**
+   * 本平台主入口尝试次数 (1 = 成功未重试;2 = 重试一次)。TikTok 记 Stage 1
+   * 实际尝试次数;IG 当前不重试,固定 1。Optional 保持旧快照向后兼容。
+   */
+  retryAttempts?: number;
 };
 
 export type TrendingSnapshot = {

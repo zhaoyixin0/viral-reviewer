@@ -45,7 +45,11 @@ beforeEach(() => {
     week: "2026-W20",
     trendingHashtags: [],
     videos: [],
-    meta: { partial: false },
+    meta: {
+      partial: false,
+      tiktok: { source: "trends-actor", actorRun: "r", rawCount: 0, enrichedCount: 0, ok: true, retryAttempts: 1 },
+      instagram: { source: "hashtag-proxy", actorRun: "", rawCount: 0, enrichedCount: 0, ok: true, retryAttempts: 1 },
+    },
   });
 });
 
@@ -173,7 +177,11 @@ describe("POST /api/cron/trending — L3+ T3 watchdog + insight projection", () 
       week: "2026-W20",
       trendingHashtags: [],
       videos: [{ id: "x" }],
-      meta: { partial: false },
+      meta: {
+        partial: false,
+        tiktok: { source: "trends-actor", actorRun: "r", rawCount: 1, enrichedCount: 1, ok: true, retryAttempts: 1 },
+        instagram: { source: "hashtag-proxy", actorRun: "", rawCount: 0, enrichedCount: 0, ok: true, retryAttempts: 1 },
+      },
       insight: {
         week: "2026-W20",
         capturedAt: "2026-05-14T08:00:00Z",
@@ -205,5 +213,48 @@ describe("POST /api/cron/trending — L3+ T3 watchdog + insight projection", () 
     const res = await POST(req("Bearer admin-secret"));
     const body = await res.json();
     expect(body.insight).toBeNull();
+  });
+
+  it("surfaces per-platform health (Item 2: tiktok/instagram block with retryAttempts)", async () => {
+    verifyIdTokenMock.mockRejectedValue(new Error("not a JWT"));
+    fetchSnapshotMock.mockResolvedValue({
+      week: "2026-W20",
+      trendingHashtags: [{ name: "morningroutine", rank: 1 }, { name: "glowup", rank: 2 }],
+      videos: [{ id: "tt-1" }, { id: "tt-2" }, { id: "ig-1" }],
+      meta: {
+        partial: false,
+        tiktok: { source: "trends-actor", actorRun: "r1", rawCount: 2, enrichedCount: 2, ok: true, retryAttempts: 2 },
+        instagram: { source: "hashtag-proxy", actorRun: "", rawCount: 1, enrichedCount: 1, ok: true, retryAttempts: 1 },
+      },
+    });
+    const res = await POST(req("Bearer admin-secret"));
+    const body = await res.json();
+    expect(body.tiktok).toEqual({
+      ok: true,
+      hashtagCount: 2,
+      videoCount: 2,
+      retryAttempts: 2,
+    });
+    expect(body.instagram).toEqual({
+      ok: true,
+      videoCount: 1,
+    });
+  });
+
+  it("retryAttempts is null when snapshot meta omits the field (old snapshot back-compat)", async () => {
+    verifyIdTokenMock.mockRejectedValue(new Error("not a JWT"));
+    fetchSnapshotMock.mockResolvedValue({
+      week: "2026-W20",
+      trendingHashtags: [],
+      videos: [],
+      meta: {
+        partial: false,
+        tiktok: { source: "trends-actor", actorRun: "", rawCount: 0, enrichedCount: 0, ok: true },
+        instagram: { source: "hashtag-proxy", actorRun: "", rawCount: 0, enrichedCount: 0, ok: true },
+      },
+    });
+    const res = await POST(req("Bearer admin-secret"));
+    const body = await res.json();
+    expect(body.tiktok.retryAttempts).toBeNull();
   });
 });

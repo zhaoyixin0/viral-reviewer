@@ -361,3 +361,86 @@ describe("fetchTrendingSnapshot — T8 upstream AbortSignal forwarding", () => {
     expect(classifyOpts?.signal).toBeUndefined();
   });
 });
+
+describe("fetchTrendingSnapshot — Item 2: Stage 1 retry on 0-hashtag / throw", () => {
+  it("Stage 1 returns 0 hashtags → retry once → succeed on second attempt", async () => {
+    scrapeTikTokTrendingHashtagsMock
+      .mockResolvedValueOnce({ hashtags: [], runId: "run-empty" })
+      .mockResolvedValueOnce({
+        hashtags: [ht("retrysuccess", 1)],
+        runId: "run-retry-ok",
+      });
+
+    const snap = await fetchTrendingSnapshot();
+
+    expect(scrapeTikTokTrendingHashtagsMock).toHaveBeenCalledTimes(2);
+    expect(snap.meta.tiktok.ok).toBe(true);
+    expect(snap.meta.tiktok.retryAttempts).toBe(2);
+    expect(snap.meta.tiktok.actorRun).toBe("run-retry-ok");
+    expect(snap.trendingHashtags.map((h) => h.name)).toEqual(["retrysuccess"]);
+  });
+
+  it("Stage 1 returns 0 hashtags both attempts → meta.tiktok.ok=false, partial=true", async () => {
+    scrapeTikTokTrendingHashtagsMock
+      .mockResolvedValueOnce({ hashtags: [], runId: "run-empty-1" })
+      .mockResolvedValueOnce({ hashtags: [], runId: "run-empty-2" });
+
+    const snap = await fetchTrendingSnapshot();
+
+    expect(scrapeTikTokTrendingHashtagsMock).toHaveBeenCalledTimes(2);
+    expect(snap.meta.tiktok.ok).toBe(false);
+    expect(snap.meta.tiktok.retryAttempts).toBe(2);
+    expect(snap.meta.partial).toBe(true);
+    expect(snap.trendingHashtags).toEqual([]);
+    // Stage 2 must not have been called when Stage 1 produced 0 hashtags.
+    expect(scrapeTikTokByHashtagMock).not.toHaveBeenCalled();
+    // IG path still produces its video, so snapshot is not empty.
+    expect(snap.videos.map((v) => v.id)).toEqual(["ig1"]);
+  });
+
+  it("Stage 1 throws on first attempt → retry → succeed on second attempt", async () => {
+    scrapeTikTokTrendingHashtagsMock
+      .mockRejectedValueOnce(new Error("trends actor 503"))
+      .mockResolvedValueOnce({
+        hashtags: [ht("recovered", 1)],
+        runId: "run-after-throw",
+      });
+
+    const snap = await fetchTrendingSnapshot();
+
+    expect(scrapeTikTokTrendingHashtagsMock).toHaveBeenCalledTimes(2);
+    expect(snap.meta.tiktok.ok).toBe(true);
+    expect(snap.meta.tiktok.retryAttempts).toBe(2);
+    expect(snap.trendingHashtags.map((h) => h.name)).toEqual(["recovered"]);
+  });
+
+  it("Stage 1 throws both attempts → meta.tiktok.ok=false, retryAttempts=2", async () => {
+    scrapeTikTokTrendingHashtagsMock
+      .mockRejectedValueOnce(new Error("first throw"))
+      .mockRejectedValueOnce(new Error("second throw"));
+
+    const snap = await fetchTrendingSnapshot();
+
+    expect(scrapeTikTokTrendingHashtagsMock).toHaveBeenCalledTimes(2);
+    expect(snap.meta.tiktok.ok).toBe(false);
+    expect(snap.meta.tiktok.retryAttempts).toBe(2);
+    expect(snap.meta.partial).toBe(true);
+  });
+
+  it("Stage 1 success first attempt → no retry, retryAttempts=1", async () => {
+    // default beforeEach mock returns valid hashtags on first call
+    const snap = await fetchTrendingSnapshot();
+    expect(scrapeTikTokTrendingHashtagsMock).toHaveBeenCalledTimes(1);
+    expect(snap.meta.tiktok.retryAttempts).toBe(1);
+    expect(snap.meta.tiktok.ok).toBe(true);
+  });
+
+  it("signal already aborted → Stage 1 short-circuits, no Apify call, ok=false", async () => {
+    const ctrl = new AbortController();
+    ctrl.abort();
+    const snap = await fetchTrendingSnapshot({ signal: ctrl.signal });
+    expect(scrapeTikTokTrendingHashtagsMock).not.toHaveBeenCalled();
+    expect(snap.meta.tiktok.ok).toBe(false);
+    expect(snap.meta.tiktok.retryAttempts).toBe(0);
+  });
+});

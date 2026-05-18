@@ -119,10 +119,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
-  // L3+ T3: AbortController watchdog forwarded into fetchTrendingSnapshot so
-  // enrichBatch (Gemini) + detectEvents (Gemini Pro) collapse to partial when
-  // the 150s budget burns. Cloud Scheduler default deadline is 180s; the
-  // 30s margin covers writeSnapshot + pruneOldSnapshots after fetch returns.
+  // AbortController watchdog forwarded into fetchTrendingSnapshot so
+  // enrichBatch (Gemini) + detectEvents (Gemini Pro) + Apify scrapes collapse
+  // to partial when the 540s budget burns. Cloud Scheduler attemptDeadline is
+  // 600s; the 60s margin covers writeSnapshot + pruneOldSnapshots after fetch
+  // returns. See PIPELINE_TIMEOUT_MS docblock above for the bump history.
   const ctrl = new AbortController();
   const timeoutId = setTimeout(() => ctrl.abort(), PIPELINE_TIMEOUT_MS);
 
@@ -148,6 +149,19 @@ export async function POST(request: Request) {
     week: snapshot.week,
     partial: snapshot.meta.partial,
     videoCount: snapshot.videos.length,
+    // Item 2 (backlog dispatch aa3d66d): surface per-platform health so manual
+    // `curl` kicks during incident response can confirm Stage 1 actually
+    // returned hashtags before declaring success.
+    tiktok: {
+      ok: snapshot.meta.tiktok.ok,
+      hashtagCount: snapshot.trendingHashtags.length,
+      videoCount: snapshot.meta.tiktok.rawCount,
+      retryAttempts: snapshot.meta.tiktok.retryAttempts ?? null,
+    },
+    instagram: {
+      ok: snapshot.meta.instagram.ok,
+      videoCount: snapshot.meta.instagram.rawCount,
+    },
     insight: snapshot.insight
       ? {
           totalEnriched: snapshot.insight.totalEnriched,
