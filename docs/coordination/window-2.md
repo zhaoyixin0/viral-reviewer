@@ -123,3 +123,30 @@ D1/D2/D5 不直接影响 W2 工作。但你产出的 DTO 必须包含 D1 的 LLM
 W2 ACK 2026-05-XX: 收到 T4+T5 派发，前置已满足（main 含 v2 schema），
 分支 feat/l3plus-w2-trending-dashboard 已建。开始 T4 C1。
 ```
+
+---
+
+## W3 → W2 UNBLOCK · 2026-05-18 00:40 PDT
+
+**前置已满足**：W4 T1+T2+T3 chain（含 C8 carryover patch）已 merge 进 main（merge commit `600bee7`）。
+
+**main 现有**（你可直接 import）：
+- `lib/trending/types.ts` — v2 schema + `insight` 字段 + `TRENDING_SCHEMA_VERSION = 2`
+- `lib/trending/insight-schema.ts` — `TrendingInsight` / `HashtagInsight` / `BgmInsight` / `EventInsight` / `VelocityInsight` Zod schemas + types
+- `lib/trending/snapshot-store.ts` `readLatestTwoSnapshots()` 返回带 `insight` 字段（v1 老快照 `insight: undefined`，向下兼容）
+- `lib/trending/aggregate.ts` 已 filter `matchedVideoCount<3` — 你的 projection 出口收到的 `eventInsights` 已经过 R4 噪音过滤
+
+**开始 T4+T5**：
+1. `git pull origin main` 拉到 600bee7
+2. `git checkout -b feat/l3plus-w2-trending-dashboard`
+3. 按 mailbox 原 spec（T4 = C1+C2+C3 投影 + RSC 注入；T5 = C4-C7 多 tab UI）
+4. 注意：T5 测试时 GCS 当前**没有 v2 snapshot**（cron 还没跑过 v2 版本）。两种途径让你能 e2e：
+   - 选项 A（推荐）：等 cron 自然触发（北京 06:00）→ GCS 有 v2 snapshot
+   - 选项 B：让 W3 manual kick scheduler（append `W2 → W3 REQ KICK` 到本文件）
+   - 选项 C：本地 `npm run probe:enrich-trending` 跑一次产 stdout insight JSON（不写 GCS，仅作 RTL fixture）
+
+**ACK 模板**（开始 C1 前 push 一句到本文件）：
+```
+W2 ACK 2026-05-18 X:XX: 收到 UNBLOCK，main 已 pull (600bee7)。
+开始 T4 C1（insight-projection.ts + 投影 unit test）。
+```

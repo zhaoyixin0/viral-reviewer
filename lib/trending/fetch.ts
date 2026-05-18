@@ -4,10 +4,10 @@ import {
   scrapeTikTokByHashtag,
   scrapeInstagramByHashtag,
 } from "@/lib/apify/scrapers";
-import { enrichBatch } from "@/lib/research/enrich-one";
+import { enrichBatch as enrichMetadataBatch } from "@/lib/research/enrich-one";
 import { classifyTopics } from "./topic-classifier";
 import { loadVideos } from "@/lib/data/load-videos";
-import { currentWeek } from "./snapshot-store";
+import { currentWeek, readLatestTwoSnapshots } from "./snapshot-store";
 import {
   TRENDING_SCHEMA_VERSION,
   type PlatformMeta,
@@ -17,6 +17,11 @@ import {
 import { IG_HOT_HASHTAGS } from "./ig-hot-hashtags";
 import type { ViralVideo } from "@/lib/review-engine/types";
 import { createLogger } from "@/lib/observability/structured-log";
+import { enrichBatch as enrichCutPlanBatch } from "./enrich-batch";
+import { selectForEnrichment } from "./select-for-enrichment";
+import { aggregate } from "./aggregate";
+import { detectEvents } from "./event-detector";
+import { emptyInsight, type TrendingInsight } from "./insight-schema";
 
 const log = createLogger({ module: "trending/fetch" });
 
@@ -25,6 +30,11 @@ const TT_TRENDING_FETCH_LIMIT = 20;  // Stage 1 趋势榜抓回条数;Stage 1 �
 const TT_TRENDING_HASHTAG_COUNT = 5; // Stage 2 从 Stage 1 的 20 条里取 top-5 hashtag
 const TT_VIDEOS_PER_HASHTAG = 30;    // 每个趋势 hashtag 抓 30 条视频
 const IG_RESULTS_LIMIT = 50;
+
+// L3+ 富化预算(plan §4.3 + §10):每周 ~15 视频 Gemini Pro = $10.9/wk
+const ENRICH_TOP_PER_HASHTAG = 3;
+const ENRICH_MAX_TOTAL = 15;
+const ENRICH_CONCURRENCY = 3;
 
 function failedMeta(source: PlatformMeta["source"]): PlatformMeta {
   return { source, actorRun: "", rawCount: 0, enrichedCount: 0, ok: false };
@@ -105,14 +115,30 @@ async function fetchTikTokTwoStage(): Promise<{
   return { hashtags, videos, runId, ok };
 }
 
+export type FetchTrendingOptions = {
+  /** Forward AbortController signal so cron-route can cancel mid-pipeline. */
+  signal?: AbortSignal;
+  /**
+   * Skip the Gemini-Pro event overlay (D1=B) — used by tests / local probe
+   * to avoid burning quota when running outside cron.
+   */
+  skipLLMEventDetection?: boolean;
+  /** Skip the L3+ CutPlan enrichment pipeline entirely (testing only). */
+  skipEnrichment?: boolean;
+};
+
 /**
- * 抓 TikTok 趋势(两阶段)+ IG 热门 hashtag 代理 → enrichBatch 富化 → Haiku 题材标签
- * → 合并成一份 TrendingSnapshot(不落盘,落盘交给调用方 + snapshot-store)。
+ * 抓 TikTok 趋势(两阶段)+ IG 热门 hashtag 代理 → enrichBatch 富化(L3+ Gemini CutPlan)
+ * → aggregate insight → 合并成一份 v2 TrendingSnapshot(不落盘,落盘交给调用方 + snapshot-store)。
  *
  * 容错:单平台失败 → 该平台 meta.ok=false + partial=true,另一平台继续。
  * 两个平台都失败 → throw(调用方据此跳过写空快照,避免覆盖上周好数据)。
+ * L3+ 富化失败:plans=[] → insight=emptyInsight(stage 1 数据不丢,memory
+ * stage2-failure-loses-stage1)。
  */
-export async function fetchTrendingSnapshot(): Promise<TrendingSnapshot> {
+export async function fetchTrendingSnapshot(
+  opts: FetchTrendingOptions = {},
+): Promise<TrendingSnapshot> {
   let trendingHashtags: TrendingHashtag[] = [];
   let ttVideos: ViralVideo[] = [];
   let ttMeta: PlatformMeta = failedMeta("trends-actor");
@@ -164,20 +190,35 @@ export async function fetchTrendingSnapshot(): Promise<TrendingSnapshot> {
     throw new Error("[trending/fetch] both platforms failed — skip writing snapshot");
   }
 
-  // 富化(playStyle / visualStyle / hook)+ 题材标签
+  // 富化(playStyle / visualStyle / hook)+ 题材标签 — 这是 v1 既有的 Haiku 元数据富化,
+  // 与 L3+ 新加的 Gemini CutPlan 富化是两件事(后者下面单独跑 + 落 insight)。
   const merged = [...ttVideos, ...igVideos];
   const libraryTopics = Array.from(
     new Set((await loadVideos()).map((v) => v.topic)),
   );
-  const enriched = await enrichBatch(merged);
+  const enriched = await enrichMetadataBatch(merged);
   const classified = await classifyTopics(enriched, libraryTopics);
 
   ttMeta.enrichedCount = classified.filter((v) => v.platform === "tiktok").length;
   igMeta.enrichedCount = classified.filter((v) => v.platform === "instagram").length;
 
+  // L3+ T3 (plan §4.3): select-for-enrichment → enrichBatch (Gemini CutPlan)
+  // → detectEvents → aggregate → insight. Abort-aware: signal forwarded through
+  // enrichBatch + detectEvents so cron 150s timeout can collapse to partial.
+  const week = currentWeek();
+  const insight = opts.skipEnrichment
+    ? undefined
+    : await runEnrichmentPipeline({
+        classified,
+        trendingHashtags,
+        week,
+        signal: opts.signal,
+        useLLM: !opts.skipLLMEventDetection,
+      });
+
   return {
     schemaVersion: TRENDING_SCHEMA_VERSION,
-    week: currentWeek(),
+    week,
     capturedAt: new Date().toISOString(),
     trendingHashtags,
     videos: classified,
@@ -186,5 +227,75 @@ export async function fetchTrendingSnapshot(): Promise<TrendingSnapshot> {
       instagram: igMeta,
       partial: !ttMeta.ok || !igMeta.ok,
     },
+    ...(insight ? { insight } : {}),
   };
+}
+
+/**
+ * L3+ enrichment sub-pipeline (T3 §4.3) — kept separate from
+ * fetchTrendingSnapshot to keep the orchestrator under 50 lines per CLAUDE.md
+ * "Functions < 50 lines" rule.
+ *
+ * Returns a TrendingInsight regardless of partial / full failure:
+ *   - signal already aborted before we start → emptyInsight, log only
+ *   - enrichBatch returns 0 plans → emptyInsight (stage 1 data lives on
+ *     the snapshot's videos[] field — not lost, per memory
+ *     stage2-failure-loses-stage1)
+ *   - readLatestTwoSnapshots fails or returns no previous → previousInsight
+ *     becomes null, aggregate degrades gracefully (all WoW tags 'new')
+ */
+async function runEnrichmentPipeline(input: {
+  classified: ViralVideo[];
+  trendingHashtags: TrendingHashtag[];
+  week: string;
+  signal?: AbortSignal;
+  useLLM: boolean;
+}): Promise<TrendingInsight> {
+  const { classified, trendingHashtags, week, signal, useLLM } = input;
+  if (signal?.aborted) {
+    log.warn("L3+ enrichment pipeline aborted before start");
+    return emptyInsight(week);
+  }
+
+  const candidates = selectForEnrichment(classified, {
+    topPerHashtag: ENRICH_TOP_PER_HASHTAG,
+    maxTotal: ENRICH_MAX_TOTAL,
+  });
+
+  const enrichResult = await enrichCutPlanBatch(candidates, {
+    concurrency: ENRICH_CONCURRENCY,
+    maxVideos: ENRICH_MAX_TOTAL,
+    signal,
+  });
+
+  if (enrichResult.failures.length > 0) {
+    log.warn("L3+ enrichment had failures", {
+      attempted: candidates.length,
+      succeeded: enrichResult.plans.length,
+      failureCount: enrichResult.failures.length,
+    });
+  }
+
+  const eventInsights = await detectEvents({
+    trendingHashtags,
+    enrichedVideos: classified,
+    useLLM,
+    signal,
+  });
+
+  let previousInsight: TrendingInsight | null = null;
+  try {
+    const { previous } = await readLatestTwoSnapshots();
+    previousInsight = previous?.insight ?? null;
+  } catch (e) {
+    log.warn("L3+ readLatestTwoSnapshots failed, previousInsight=null", { err: e });
+  }
+
+  return aggregate({
+    enrichedPlans: enrichResult.plans,
+    trendingHashtags,
+    eventInsights,
+    previousInsight,
+    week,
+  });
 }

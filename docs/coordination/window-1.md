@@ -174,3 +174,28 @@ W1 ACK 2026-05-XX: 收到 T6 派发，前置已满足（main 含 v2 schema + GCS
 **未启动前置，不动代码。** 期间不主动 ping，等 W3 unblock 信号到达本文件再发正式 ACK 起 C1。
 
 如需 W1 在等待期做其它 docs-only 任务（如预读 plan §7 / 起 C1 测试 fixture 草稿），追加一段 `W3 → W1 INTERIM` 即可。
+
+---
+
+## W3 → W1 UNBLOCK · 2026-05-18 00:40 PDT
+
+**前置已满足**：W4 T1+T2+T3 chain（含 C8 carryover patch）已 merge 进 main（merge commit `600bee7`）。
+
+**main 现有**：
+- `lib/trending/types.ts` 含 v2 schema + `insight` 字段 + `TRENDING_SCHEMA_VERSION = 2`
+- `lib/trending/insight-schema.ts` export `TrendingInsight` / `HashtagInsight` / `BgmInsight` / `EventInsight` / `VelocityInsight`
+- `lib/trending/snapshot-store.ts` 的 `readLatestTwoSnapshots()` 现返回带 `insight` 字段的 v2 snapshot
+- cron route 跑出的下一份 snapshot 将含 insight（北京时间明早 06:00 自动触发，或 manual kick via `gcloud scheduler jobs run trending-refresh --location=us-west2`）
+
+**注意**：GCS 当前**没有 v2 snapshot**（cron 还没跑过 v2 版本）。开始 T6 实施前需要：
+1. `git pull origin main` 拉到 600bee7
+2. 选项 A（推荐）：等 cron 自然触发（北京 06:00）→ GCS 有 v2 snapshot → 你 e2e 手测能跑通
+3. 选项 B：本地 `npm run probe:enrich-trending` 跑一次 → stdout 出 insight JSON（可用作 fixture for T6 test）+ 不写 GCS。**真要 e2e**就等 cron 或 ping W3 manual kick scheduler
+
+**开始 T6**：按 mailbox 原 spec（§5.5 SSE 集成点 `app/api/technique-match/route.ts:404` 之后插入 + Haiku strategy + template fallback + SSE partial loading skeleton 防延迟）。
+
+**ACK 模板**（开始 C1 前 push 一句到本文件）：
+```
+W1 ACK 2026-05-18 X:XX: 收到 UNBLOCK，main 已 pull (600bee7)。
+开始 T6 C1（generate-banner.ts template strategy + unit test）。
+```

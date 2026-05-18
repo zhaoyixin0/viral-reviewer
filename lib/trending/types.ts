@@ -1,8 +1,21 @@
 import { z } from "zod";
 import type { ViralVideo } from "@/lib/review-engine/types";
+import { TrendingInsightSchema, type TrendingInsight } from "./insight-schema";
 
-/** 快照 schema 版本。velocity.ts 跨周比较时校验,不一致 → 当作"无上周" → 全 NEW。 */
-export const TRENDING_SCHEMA_VERSION = 1 as const;
+/**
+ * 快照 schema 版本。velocity.ts 跨周比较时落在 SUPPORTED_SCHEMA_VERSIONS 窗口
+ * 内的 prev 才参与对比;窗口外或缺字段 → 当作"无上周" → 全 NEW。
+ *
+ * v1 → v2 (L3+ plan §3.5):新增 optional `insight` 字段。读侧 loose passthrough,
+ * v1 老快照(无此字段)解析仍过。
+ */
+export const TRENDING_SCHEMA_VERSION = 2 as const;
+
+/**
+ * 跨周对比允许的旧版本窗口。v1 旧快照(本周 v=2 / 上周 v=1)仍能算 velocity。
+ * 任何新版本必须显式加入此数组,以避免"突然全部标 NEW"的静默回归。
+ */
+export const SUPPORTED_SCHEMA_VERSIONS: readonly number[] = [1, 2];
 
 export type PlatformMeta = {
   /** TikTok = 两阶段(Stage 1 是 trends-actor);Instagram = 热门 hashtag 代理 */
@@ -33,6 +46,11 @@ export type TrendingSnapshot = {
     /** 任一平台失败 = true */
     partial: boolean;
   };
+  /**
+   * v2 (L3+) 新增:aggregate insight(hashtag/BGM/event/velocity 维度报表)。
+   * 富化全失败时仍写一份 emptyInsight(stage1 数据不丢);v1 旧快照无此字段。
+   */
+  insight?: TrendingInsight;
 };
 
 export type TrendTag = "rising" | "stable" | "falling" | "new";
@@ -94,5 +112,8 @@ export const TrendingSnapshotSchema = z
     trendingHashtags: z
       .array(z.object({ name: z.string() }).passthrough())
       .optional(),
+    // v2 (L3+):insight 是 v2 新加的聚合层。optional 让 v1 旧快照解析仍过。
+    // TrendingInsightSchema 已 .passthrough(),writer 加新字段不破读侧。
+    insight: TrendingInsightSchema.optional(),
   })
   .passthrough();
