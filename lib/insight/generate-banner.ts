@@ -1,12 +1,19 @@
+import type {
+  HashtagInsight,
+  TrendingInsight,
+} from "@/lib/trending/insight-schema";
 import type { TrendingSnapshot } from "@/lib/trending/types";
+
+import { generateBannerLlm } from "./insight-llm";
 import { renderTemplate } from "./insight-template";
 
 /**
  * InsightBannerData — payload rendered above /technique-match verdict.
  *
  * Forward shape: fields are stable; bullets length 0..3, actionable is a
- * single Chinese paragraph. T6 C1 ships only the deterministic `template`
- * strategy. The `llm` strategy (Haiku) lands in C2 with template fallback.
+ * single Chinese paragraph. T6 C1 ships the deterministic `template`
+ * strategy; T6 C2 lands the `llm` strategy with template fallback on any
+ * LLM failure (memory: stage2-failure-loses-stage1.md).
  */
 export type InsightBannerData = {
   /** Snapshot week the banner reflects (e.g. "2026-W20"). */
@@ -30,46 +37,86 @@ export type GenerateBannerInput = {
   userFormat: string;
   userTopic?: string | undefined;
   snapshot: TrendingSnapshot | null;
-  /** Default "template". "llm" is shipped in T6 C2. */
+  /** Default "template". "llm" shipped in T6 C2 with fallback. */
   strategy?: BannerStrategy;
 };
 
 /**
- * Sentinel thrown by `generateBanner` when an unimplemented strategy is
- * requested. C2 will replace this throw with an actual LLM call (Haiku) plus
- * fallback to the template strategy. Exported so C4 wiring / callers can
- * distinguish "not implemented yet" from arbitrary runtime crashes.
- */
-export class BannerStrategyNotImplementedError extends Error {
-  readonly code = "BANNER_STRATEGY_NOT_IMPLEMENTED" as const;
-  readonly strategy: BannerStrategy;
-  constructor(strategy: BannerStrategy) {
-    super(`generateBanner: strategy='${strategy}' not yet implemented`);
-    this.name = "BannerStrategyNotImplementedError";
-    this.strategy = strategy;
-  }
-}
-
-/**
  * Entry. Returns null when the snapshot has no v2 insight (v1 legacy snapshot
  * or no snapshot at all) — caller renders nothing in that case.
+ *
+ * For strategy="llm", any LLM failure (null return from generateBannerLlm)
+ * falls back to renderTemplate so the data path is never broken.
  */
 export async function generateBanner(
   input: GenerateBannerInput,
 ): Promise<InsightBannerData | null> {
   const snapshot = input.snapshot;
   if (!snapshot?.insight) return null;
-
+  const insight = snapshot.insight;
   const strategy = input.strategy ?? "template";
 
-  if (strategy === "template") {
-    return renderTemplate({
-      userFormat: input.userFormat,
-      userTopic: input.userTopic,
-      insight: snapshot.insight,
-      week: snapshot.week,
+  const templateInput = {
+    userFormat: input.userFormat,
+    userTopic: input.userTopic,
+    insight,
+    week: snapshot.week,
+  };
+
+  switch (strategy) {
+    case "template":
+      return renderTemplate(templateInput);
+    case "llm": {
+      const sampleVideoIds = pickSampleVideoIds(insight, input.userTopic);
+      let llm: InsightBannerData | null = null;
+      try {
+        llm = await generateBannerLlm({
+          userFormat: input.userFormat,
+          userTopic: input.userTopic,
+          insight,
+          week: snapshot.week,
+          sampleVideoIds,
+        });
+      } catch {
+        // Defense in depth — generateBannerLlm contract returns null on
+        // failure, but errors must not leak past this caller (memory:
+        // stage2-failure-loses-stage1).
+        llm = null;
+      }
+      if (llm) return llm;
+      return renderTemplate(templateInput);
+    }
+    default: {
+      // Exhaustiveness guard — TypeScript error if BannerStrategy expands.
+      const _exhaustive: never = strategy;
+      return _exhaustive;
+    }
+  }
+}
+
+const MIN_FUZZY_LENGTH = 3;
+
+/**
+ * Deterministic — picks 0..3 video IDs from the best-matching hashtag insight
+ * so the LLM path produces identical sampleVideoIds to the template path.
+ * Match logic mirrors insight-template.ts findBestHashtag (asymmetric fuzzy:
+ * forward always, reverse only when hashtag name >= 3 chars).
+ */
+function pickSampleVideoIds(
+  insight: TrendingInsight,
+  userTopic: string | undefined,
+): string[] {
+  const hashtags = insight.hashtagInsights;
+  if (hashtags.length === 0) return [];
+  let best: HashtagInsight | undefined;
+  if (userTopic) {
+    const lower = userTopic.toLowerCase();
+    best = hashtags.find((h) => {
+      const n = h.name.toLowerCase();
+      if (n.includes(lower)) return true;
+      return n.length >= MIN_FUZZY_LENGTH && lower.includes(n);
     });
   }
-
-  throw new BannerStrategyNotImplementedError(strategy);
+  best ??= hashtags[0];
+  return best?.topVideoIds.slice(0, 3) ?? [];
 }
