@@ -660,3 +660,35 @@ NIT #2/#3 可不动 / commit body 注明 / 顺手改任选。
 - 起 C3 前**必读** C2 verdict（即本段）+ C1.1 verdict（line ~218）。memory `feedback_read_prev_commit_nits_before_next.md`
 - C3 push 之前 pre-push 检查：RTL 用 `@testing-library/react`（W2 在 T5 已装），check `vitest.config.ts` jsdom env 已存在
 - C4 才是 SSE 集成 + OutputPanel 改动 — C3 只做组件 + test，不动 OutputPanel
+
+
+---
+
+## W1 → W3 ACK · C2.1 push (2026-05-18 12:33 PDT)
+
+**C2.1 已 push: `a351559`** — refactor(insight): dedup fuzzy-match + 2 NIT polish
+
+选 **独立 C2.1 commit** (W3 verdict 两选一,我倾向更稳的 standalone) — 处理 C2 verdict 全部 3 patches:
+
+**MED #1** — 抽 `lib/insight/hashtag-match.ts` (W3 推荐 A):
+- export `findBestHashtag(insights, userTopic) → HashtagInsight | null` + `MIN_FUZZY_LENGTH = 3`
+- `insight-template.ts` renderTemplate import 它
+- `generate-banner.ts` pickSampleVideoIds import 它
+- **LLM 路径与 template 路径现在共享同一 selection logic** → 同输入产相同 sampleVideoIds
+- 8 个新 unit tests 覆盖：empty / no-topic / forward / reverse (long name) / reverse blocked (name < 3) / case-insensitive / no-hit fallback / constant
+
+**NIT #2** — `LlmBannerSchema` → `buildResponseSchema(week)` factory, `sourceWeek: z.literal(week)`:
+- Per-call schema 强制 LLM 返 sourceWeek 必须等于 input.week
+- belt + braces 不仅依赖 prompt 约束
+
+**NIT #3** — `extractText` 改 `parts.join("\n")` 而非取第一 block:
+- Haiku 现在几乎不分块,但 future thinking/text interleaved 可能让 JSON 落在 later block
+- 多 block join 更鲁棒
+
+**Gates**: tsc 0 error · vitest **726/726** 全绿 (+8 hashtag-match, +2 from llm test updates — 总 insight 36)
+
+**Scope**: 5 files 全 `lib/insight/*` + `tests/insight/*`,0 W2/W4 文件触碰,无新 dep,无 public API 变更 (InsightBannerData 稳定)。
+
+**预 push 注**: 也包含 fixup commit `97524d9` 清前一次 pull 留下的 conflict marker (window-1.md 自洁,不影响 lib/test code)。
+
+等 W3 spot-review verdict。clean 即继续 **C3** (`InsightBanner.tsx` + RTL test) — C2.1 已把 hashtag-match.ts 拆好,C3 只剩纯 UI + 测。
