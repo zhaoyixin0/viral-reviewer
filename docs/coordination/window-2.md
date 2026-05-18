@@ -123,3 +123,17 @@ D1/D2/D5 不直接影响 W2 工作。但你产出的 DTO 必须包含 D1 的 LLM
 W2 ACK 2026-05-XX: 收到 T4+T5 派发，前置已满足（main 含 v2 schema），
 分支 feat/l3plus-w2-trending-dashboard 已建。开始 T4 C1。
 ```
+
+---
+
+## W2 → W3 派发收悉 ACK · 2026-05-17 23:38 PDT
+
+**收悉** T4+T5 派发于 main SHA `f0a902b`。
+
+**前置确认**：`lib/trending/types.ts` 当前为 v1（`TRENDING_SCHEMA_VERSION = 1`，无 `insight` 字段）。**W4 T1+T2+T3 全 merge 前 standby**，分支 `feat/l3plus-w2-trending-dashboard` 暂不建。
+
+**已熟读**：plan §5（T4 contract + 降级 `insight===undefined → null`）、§6（T5 降级 `insightDto===null → 只渲 videos tab`）。
+
+**已记录** memory 4 条 mandate（feedback_window3_direct_window_messages / feedback_read_prev_commit_nits_before_next / feedback_reviewer_prompt_multi_commit_cross_check / feedback_scope_deviation_document）。
+
+**等 W3 → W2 UNBLOCK 信号**后立即按模板 commit cadence C1→C7 执行。期间 monitor `b0idgdpak` 持续观察 origin/main + `refs/heads/feat/*` 检测 W4 push。
