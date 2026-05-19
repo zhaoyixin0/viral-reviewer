@@ -80,23 +80,27 @@
 
 ## 本地开发
 
+> **新 dev / 重装环境 → 走完整指南**：[`docs/onboarding/local-dev-setup.md`](./docs/onboarding/local-dev-setup.md)
+> （含 gcloud auth ladder、env vars 全清单、smoke check、troubleshooting）
+
+已配过本机的 dev 快速启动：
+
 ```bash
-# 1. 装依赖
+git pull origin main
 npm install
-
-# 2. 配 .env.local
-cp .env.example .env.local
-# 填入：
-#   APIFY_TOKEN
-#   ANTHROPIC_API_KEY
-#   OPENAI_API_KEY (用于 Whisper)
-#   BLOB_READ_WRITE_TOKEN (Vercel Blob)
-
-# 3. 启动 dev server
 npm run dev
+# 浏览器开 http://localhost:3000
 ```
 
-可选：
+第一次 setup 三件套（详见 onboarding doc）：
+
+1. `cp .env.example .env.local` + 填值（API keys + `GCS_BUCKET_NAME` + `UPLOAD_SIGNING_SECRET`）
+2. GCS auth：下载 service account JSON + 设 `GOOGLE_APPLICATION_CREDENTIALS`
+   （ADC user creds 不能 sign GCS POST URL — 详见 onboarding §2.3）
+3. Smoke check：`/` → `/trending` → `/technique-match` 上传 1 个 mp4
+
+可选脚本：
+
 ```bash
 # 抓取真实数据（消耗 Apify 余额）
 npm run scrape:tiktok
